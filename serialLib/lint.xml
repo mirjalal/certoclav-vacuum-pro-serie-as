@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lint>
+    <issue id="ContentDescription" severity="ignore" />
+    <issue id="HardcodedText" severity="ignore" />
+    <issue id="MissingRegistered" severity="ignore" />
+    <issue id="MissingTranslation" severity="ignore" />
+    <issue id="RtlSymmetry" severity="ignore" />
+    <issue id="ScrollViewSize" severity="ignore" />
+    <issue id="UnusedResources" severity="ignore" />
+</lint>

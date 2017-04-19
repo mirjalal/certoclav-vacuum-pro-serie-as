@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/information_messages_list_element"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            tools:ignore="HardcodedText" >
+            
+	       <LinearLayout
+	        android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+	        
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"   >
+                
+             <TextView
+                android:id="@+id/protocols_element_programName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="bottom"
+                android:text="Programmbezeichnung"
+                android:textColor="#000000"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+             <ImageView 
+                android:id="@+id/protocols_element_image_cloud"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/icon_cloud_ok"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+              />
+             
+             </RelativeLayout>          
+
+
+            <LinearLayout 
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1" 
+                android:orientation="horizontal"   
+                          
+                >
+            
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="match_parent"
+                 android:text="ID: "
+                 android:textColor="#000000"
+                 android:textSize="15sp"
+                 tools:ignore="HardcodedText" />
+                       
+            <TextView
+                android:id="@+id/protocols_element_id"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="1"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                tools:ignore="HardcodedText" />
+        
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="  |  "
+                            android:textColor="#000000"
+                            android:textSize="15sp"
+                            tools:ignore="HardcodedText" />
+            
+            <TextView
+                android:id="@+id/protocols_element_startTime"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="14:30"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                tools:ignore="HardcodedText,HardcodedText" />
+        
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="  |  "
+                            android:textColor="#000000"
+                            android:textSize="15sp"
+                            tools:ignore="HardcodedText" />
+                        
+                                    <TextView
+                                        android:id="@+id/protocols_element_startDate"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:text="21.12.12"
+                                        android:textColor="#000000"
+                                        android:textSize="15sp"
+                                        tools:ignore="HardcodedText" />
+                                    
+                                                <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="  |  "
+                android:textSize="15sp"
+                android:textColor="#000000"                
+                />
+                                                <TextView 
+                android:id="@+id/protocols_element_userName"
+                android:layout_width="wrap_content"                
+                android:layout_height="match_parent"
+                android:text="Michael Dirix"
+                android:textSize="15sp"   
+                android:singleLine="true"
+                android:textColor="#000000"             
+                />
+                                                </LinearLayout>
+         </LinearLayout>
+
+	 </FrameLayout>   

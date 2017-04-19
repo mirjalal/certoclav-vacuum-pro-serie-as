@@ -1,0 +1,145 @@
+<RelativeLayout   xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    >
+
+	<LinearLayout
+	    android:id="@+id/contentOfActivity"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@+id/certoclav_actionbar"
+	    android:orientation="horizontal" >
+
+
+
+	    <LinearLayout
+	        android:id="@+id/infobar_container_runninginfo"
+	        android:layout_weight="1"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:background="@android:color/white"
+	        android:orientation="vertical" >
+			
+			<LinearLayout 
+    			android:layout_width="match_parent"
+    			android:layout_height="match_parent"
+    			android:orientation="vertical"
+    			android:layout_marginTop="5dp"
+    			android:layout_marginLeft="5dp"
+    			android:layout_marginRight="5dp"
+    			android:layout_weight="1">
+    
+    	        <LinearLayout
+	            	android:layout_width="match_parent"
+	            	android:layout_height="wrap_content"
+	            	android:background="#C3D69B"
+	            	android:orientation="vertical" >
+
+    	            <TextView
+    	                android:id="@+id/monitor_text_programname"
+    	                android:layout_width="wrap_content"
+    	                android:layout_height="wrap_content"
+    	                android:layout_marginLeft="20dp"
+    	                android:layout_marginRight="5dp"
+    	                android:layout_weight="1"
+    	                android:gravity="bottom"
+    	                android:text="FAST PROGRAM"
+    	                android:textColor="@android:color/black"
+    	                android:textSize="30dp"
+    	                android:textStyle="bold"
+    	                tools:ignore="HardcodedText" >
+  
+        			</TextView>
+        
+        <TextView
+            android:id="@+id/monitor_text_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:text="PROGRAM CANCELLED\nPLEASE WAIT UNTIL DOOR IS UNLOCKED"
+            android:textColor="@android:color/black"
+            android:textSize="20dp"
+            tools:ignore="HardcodedText" >
+          
+        </TextView>
+        <TextView
+            android:id="@+id/monitor_text_cycle_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:text="Cycle 1 of 10"
+            android:textColor="@android:color/black"
+            android:textSize="20dp"
+            tools:ignore="HardcodedText" >
+          
+        </TextView>
+	        </LinearLayout>
+
+    <TextView 
+        android:id="@+id/monitor_text_steps"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"
+        android:background="#E5F8BD"
+        android:text="Vacuum times: 3\nSterilisation time: 20\nSterilisation temperature: 121"
+        />
+
+    </LinearLayout>
+
+
+	        <LinearLayout
+	            android:id="@+id/control_container_stop"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:layout_weight="4"
+	            android:orientation="vertical"
+	            android:layout_margin="5dp" >
+
+	            <Button
+	                android:id="@+id/monitor_button_stop"
+	                android:layout_width="match_parent"
+	                android:layout_height="match_parent"
+	                android:background="@drawable/btn_red_dark"
+	                android:text="@string/stop"
+	                android:textColor="@android:color/white"
+	                android:textSize="35dp"
+	                android:textStyle="bold" />
+	        </LinearLayout>
+	    </LinearLayout>
+
+	    <LinearLayout
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
+	        android:orientation="vertical" >
+	        
+    <fragment android:name="com.certoclav.app.monitor.MonitorCountdownFragment"
+            android:id="@+id/monitor_fragment_countdown"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            />
+    
+      
+	        <com.certoclav.library.view.CustomViewPager
+	            android:id="@+id/monitor_pager"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:background="#ffffff" >
+	        </com.certoclav.library.view.CustomViewPager>
+
+	    </LinearLayout>
+	    	    
+	</LinearLayout>
+    
+    <include layout="@layout/certoclav_navigationbar_clear"
+        android:id="@+id/certoclav_actionbar"/>
+
+
+</RelativeLayout>

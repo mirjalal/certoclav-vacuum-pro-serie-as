@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linear"
+    android:layout_width="fill_parent"
+    android:layout_height="80dp"
+    android:gravity="center_vertical" xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/imageView1" 
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true" 
+        android:src="@drawable/world"
+        android:layout_marginRight="20dp">
+        
+    </ImageView>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_toRightOf="@+id/imageView1"
+            android:gravity="center_vertical"  >
+
+        <TextView
+            android:id="@+id/language_first_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="first line"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/language_second_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="second line"
+            android:textSize="15dp"
+            tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/user_list_element_container_button"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentRight="true"
+            android:layout_height="match_parent"
+            android:layout_marginRight="20dp" ></LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+        <FrameLayout
+   			xmlns:android="http://schemas.android.com/apk/res/android"
+		    xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/information_video_list_element"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@drawable/btn_white_shadow_clickable">
+            
+	       <RelativeLayout
+	        android:layout_width="match_parent"
+            android:layout_height="match_parent">
+	           
+	         <FrameLayout
+    			android:id="@+id/square"
+    			android:layout_width="wrap_content"
+    			android:layout_height="match_parent"
+    			android:layout_alignParentLeft="true" >
+	            <ImageView
+	                android:id="@+id/information_video_element_image"
+	                android:layout_width="match_parent"
+	                android:layout_height="match_parent"
+	                android:scaleType="centerInside"
+	                android:adjustViewBounds="true"
+	                android:src="@drawable/movie" ></ImageView>
+			</FrameLayout>
+			
+            <TextView
+                android:id="@+id/information_video_element_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/square"
+                android:text="Contentdescription of this video"
+                android:textSize="40dp"
+                tools:ignore="HardcodedText" />
+        
+         </RelativeLayout>
+
+	 </FrameLayout>   

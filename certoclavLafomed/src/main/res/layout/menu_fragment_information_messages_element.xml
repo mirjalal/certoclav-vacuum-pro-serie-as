@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+        <RelativeLayout
+   			xmlns:android="http://schemas.android.com/apk/res/android"
+		    xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/information_messages_list_element"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+            
+	       <LinearLayout
+	        android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical">
+	           
+            <TextView
+                android:id="@+id/information_message_element_text_head"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="bottom"
+                android:text="Maintenance"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/information_message_element_text_body"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/white"
+                android:layout_weight="1"
+                android:text="Please change the seal of the lid"
+                android:textSize="15sp"
+                tools:ignore="HardcodedText" />
+        
+         </LinearLayout>
+
+
+
+	 </RelativeLayout>  

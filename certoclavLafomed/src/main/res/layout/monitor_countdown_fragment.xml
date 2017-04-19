@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+        android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="@android:color/white"
+    
+    >
+    
+    <FrameLayout 
+        android:id="@+id/monitor_countdown_bar_background"
+        android:layout_width="300dp"
+        android:layout_height="5dp"
+        android:layout_alignParentBottom="true"
+        android:background="#254061"
+        android:layout_centerHorizontal="true"
+        
+        ></FrameLayout>
+    
+      <FrameLayout 
+        android:id="@+id/monitor_countdown_bar"
+        android:layout_width="100dp"
+        android:layout_height="5dp"
+        android:layout_alignParentBottom="true"
+        android:background="#4BACC6"
+        android:layout_alignLeft="@+id/monitor_countdown_bar_background"
+        
+        ></FrameLayout>  
+        
+      <TextView
+          android:id="@+id/monitor_countdown_number"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_above="@+id/monitor_countdown_bar"
+          android:layout_alignLeft="@+id/monitor_countdown_bar"
+          android:text="23"
+          android:textSize="60dp"
+          android:textStyle="bold"
+          tools:ignore="HardcodedText" >
+</TextView>
+      
+            <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_toRightOf="@+id/monitor_countdown_number"
+          android:layout_alignBottom="@+id/monitor_countdown_number"
+          android:textSize="20dp"
+          android:layout_marginBottom="10dp"
+          android:textStyle="bold"
+          android:text="@string/minutes_remaining"
+          ></TextView>
+
+
+        </RelativeLayout>
+
+		    

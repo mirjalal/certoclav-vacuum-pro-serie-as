@@ -1,0 +1,90 @@
+<RelativeLayout   xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    >
+
+
+
+
+
+	<RelativeLayout
+    	android:id="@+id/contentOfActivity"
+    	android:layout_height="250dp"
+    	android:layout_width="550dp"
+		android:layout_centerInParent="true"
+		android:padding="15dp"
+		android:gravity="center_horizontal"
+		android:background="@drawable/rounded_corner">
+
+
+	<EditText
+		android:id="@+id/dialog_label_text_edittext_line1"
+		android:layout_width="match_parent"
+		android:layout_height="70dp"
+		android:gravity="center_vertical"
+		android:textSize="25sp"
+		android:textScaleX="1.375"
+		android:layout_weight="1"
+		android:hint="@string/barcode"
+		android:maxLength="15"
+		android:imeOptions="actionDone"
+		android:singleLine="true"
+
+		/>    
+
+        <EditText
+            android:layout_below="@+id/dialog_label_text_edittext_line1"
+            android:id="@+id/dialog_label_text_edittext_line2"
+            android:layout_width="match_parent"
+			android:layout_height="70dp"
+			android:gravity="center_vertical"
+			android:textSize="25sp"
+			android:textScaleX="1.375"
+            android:hint="@string/text_line"
+			android:maxLength="15"
+			android:imeOptions="actionDone"
+			android:singleLine="true"
+
+            />
+
+	<ImageView
+        android:layout_below="@+id/dialog_label_text_edittext_line2"
+		android:layout_margin="10dp"
+		android:id="@+id/imageViewBarcode"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true"
+
+
+		/>
+	</RelativeLayout>
+
+
+	
+		<include layout="@layout/certoclav_navigationbar_clear"
+		android:id="@+id/navigationbar"></include>
+		
+			<Button
+		android:id="@+id/menu_main_label_button_print"
+		android:layout_width="150dp"
+		android:layout_height="70dp"
+		android:layout_margin="5dp"
+		android:text="@string/print"
+		style="@style/button_default"
+		android:layout_alignParentTop="true"
+		android:layout_alignParentRight="true" />
+
+</RelativeLayout>
+
+
+
+
+
+
+
+    
+
+
+

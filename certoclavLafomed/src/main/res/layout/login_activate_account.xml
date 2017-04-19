@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?><RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/login_qube_register"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="@android:color/white">
+    
+    <ScrollView 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/certoclav_actionbar"
+        >
+        
+       <RelativeLayout 
+       	    android:layout_height="match_parent"
+       	    android:layout_width="match_parent"
+       	    >
+
+
+
+
+    <LinearLayout
+        android:id="@+id/register_container_edit_text_items"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical" ></LinearLayout>
+
+    <Button
+        android:id="@+id/register_button_activate"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/btn_blue_dark"
+        android:layout_below="@+id/register_container_edit_text_items"
+        android:layout_alignRight="@+id/register_container_edit_text_items"
+        android:layout_alignLeft="@+id/register_container_edit_text_items"
+        android:layout_margin="10dp"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:textColor="@android:color/white"
+        android:text="@string/register_user" />
+    
+        <Button
+        android:id="@+id/register_button_resend_mail"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/btn_blue_dark"
+        android:layout_below="@+id/register_button_activate"
+        android:layout_alignRight="@+id/register_container_edit_text_items"
+        android:layout_alignLeft="@+id/register_container_edit_text_items"
+        android:layout_margin="10dp"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:textColor="@android:color/white"
+        android:text="@string/resend_activation_key_via_mail" />
+        
+    </RelativeLayout>
+    </ScrollView>
+    
+        <include layout="@layout/certoclav_navigationbar_clear"
+        android:id="@+id/certoclav_actionbar"/>
+
+        <ProgressBar
+            android:id="@+id/register_progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" />
+            
+</RelativeLayout>

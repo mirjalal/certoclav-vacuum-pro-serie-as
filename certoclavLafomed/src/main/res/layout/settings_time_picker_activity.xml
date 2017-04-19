@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" 
+    android:layout_height="match_parent"
+    android:id="@+id/layout1" xmlns:tools="http://schemas.android.com/tools">
+    
+    <TableLayout android:layout_height="match_parent"
+        android:layout_width="600dp" 
+        android:layout_below="@+id/certoclav_navigationbar"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/tableLayout1">
+        
+        <TableRow android:id="@+id/settings_time_date" 
+            android:layout_width="wrap_content"
+            android:layout_height="90dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/btn_white_shadow_clickable">
+            
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:textSize="25sp"
+                android:id="@+id/dateText" 
+                android:text="@string/current_date_"
+                android:layout_margin="10dp" />
+            
+            <TextView
+                android:id="@+id/dateDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="01/01/2014"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="70dp"
+                android:layout_marginLeft="100dp"
+                android:layout_height="70dp"
+                android:src="@drawable/pencil" />
+
+        </TableRow>
+        <TableRow android:id="@+id/settings_time_time" 
+            android:layout_width="wrap_content"
+            android:layout_height="90dp"
+                        android:gravity="center_vertical"
+            android:background="@drawable/btn_white_shadow_clickable">
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Current Time:"
+                android:textSize="25sp"
+                tools:ignore="HardcodedText" />
+            
+            <TextView
+                android:id="@+id/timeDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="07:41"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText,HardcodedText" />
+            
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="70dp"
+                android:layout_marginLeft="100dp"
+                android:layout_height="70dp"
+                android:src="@drawable/pencil" />
+        </TableRow>
+    </TableLayout>
+ 
+        <include layout="@layout/certoclav_navigationbar_clear"
+        android:id="@+id/certoclav_navigationbar"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"/>
+        
+</RelativeLayout>

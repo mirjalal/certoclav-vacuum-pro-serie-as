@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/CertoclavLafomed1.iml" filepath="$PROJECT_DIR$/CertoclavLafomed1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/androidsupportv4preferencefragmentmaster/androidsupportv4preferencefragmentmaster.iml" filepath="$PROJECT_DIR$/androidsupportv4preferencefragmentmaster/androidsupportv4preferencefragmentmaster.iml" />
+      <module fileurl="file://$PROJECT_DIR$/certoclavLafomed/certoclavLafomed.iml" filepath="$PROJECT_DIR$/certoclavLafomed/certoclavLafomed.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
+    </modules>
+  </component>
+</project>

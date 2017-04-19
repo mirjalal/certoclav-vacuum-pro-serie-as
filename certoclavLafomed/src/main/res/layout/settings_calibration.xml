@@ -1,0 +1,162 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        		<Button
+           		android:id="@+id/parameter_button_apply"
+			    android:layout_width="match_parent"
+				    android:layout_height="wrap_content"
+				    android:layout_margin="5dp"
+				    android:text="@string/apply"
+				    android:background="@drawable/btn_blue_dark"
+				    android:textColor="@android:color/white"
+				    android:textSize="20sp" />
+        		
+    <TableLayout
+        android:id="@+id/parameter_table"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_below="@+id/parameter_button_apply">
+
+       <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/parameter_temp1_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:layout_margin="5dp"
+                android:text="@string/offset_of_steam_sensor_c_"
+                android:textSize="20sp">
+				
+            </TextView>
+
+            <EditText
+                android:id="@+id/parameter_temp1_coeff1"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                 android:inputType="numberSigned|numberDecimal"
+                 android:textSize="20sp"
+                android:hint="0.0" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+    		
+            <TextView
+                android:id="@+id/parameter_temp2_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:layout_margin="5dp"
+                android:text="@string/offset_of_heater_sensor_c_"
+                android:textSize="20sp">
+				
+            </TextView>
+
+            <EditText
+                android:id="@+id/parameter_temp2_coeff1"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                 android:inputType="numberSigned|numberDecimal"
+                 android:textSize="20sp"
+                android:hint="0.0" />
+
+
+    		
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+    		
+            <TextView
+                android:id="@+id/parameter_temp3_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:layout_margin="5dp"
+                android:text="@string/offset_of_steam_generator_sensor_c_"
+                android:textSize="20sp">
+				
+            </TextView>
+
+            <EditText
+                android:id="@+id/parameter_temp3_coeff1"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:inputType="numberSigned|numberDecimal"
+                android:textSize="20sp"
+                android:hint="0.0" />
+
+
+            
+        </TableRow>
+
+               <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+    		
+            <TextView
+				android:id="@+id/parameter_media_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:layout_margin="5dp"
+                android:text="@string/offset_of_media_sensor_c_"
+                android:textSize="20sp">
+				
+            </TextView>
+
+            <EditText
+                android:id="@+id/parameter_media_coeff1"
+				android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:inputType="numberSigned|numberDecimal"
+                android:textSize="20sp"
+                android:hint="0.0"  />
+
+
+    		
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+    		
+            <TextView
+                android:id="@+id/parameter_press_text"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content" 
+                android:layout_margin="5dp"
+                android:text="@string/offset_of_pressure_sensor_kpa_"
+                android:textSize="20sp">
+				
+            </TextView>
+
+            <EditText
+                android:id="@+id/parameter_press_coeff1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:inputType="numberSigned"
+                android:textSize="20sp"
+                android:hint="0" />
+
+
+    		
+        </TableRow>
+        
+
+        
+    </TableLayout>
+
+</RelativeLayout>

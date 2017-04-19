@@ -1,0 +1,103 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        		<TextView
+    		    android:id="@+id/text_temp"
+    		    android:layout_width="wrap_content"
+    		    android:layout_height="wrap_content"
+    		    android:ems="10"
+    		    android:text="state:\n temp: \n press:\n" >
+
+    	
+    		</TextView>
+    		
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_below="@+id/text_temp">
+ 
+
+    <TableLayout
+        android:id="@+id/parameter_table"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+
+
+                 		
+    		
+     
+    <TableRow
+            android:id="@+id/tableRow11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+    		
+                    <CheckBox
+            android:id="@+id/checkBox_program_finished"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Progr. finished successfully"/>
+           
+                        <CheckBox
+            android:id="@+id/checkBox_program_running"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Progr. is running?"/>
+                        
+                                           <CheckBox
+            android:id="@+id/checkBox_door_closed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Door closed?"/>
+                                           
+    	</TableRow>
+                
+                		
+
+       
+       <TableRow
+            android:id="@+id/tableRow13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+                                                  <CheckBox
+            android:id="@+id/checkBox_door_locked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Door locked?"/>
+
+           <CheckBox
+               android:id="@+id/checkBox_water_low"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Waterlvl low?" />
+           
+        <CheckBox
+            android:id="@+id/checkBox_water_full"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Waterlvl full?" />
+           
+
+           
+             
+       </TableRow>
+       <TableRow
+            android:id="@+id/tableRow14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+              
+             <CheckBox
+            android:id="@+id/checkBox_stopped_by_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stoped by user?" />
+           
+             
+       </TableRow>           
+    </TableLayout>
+</ScrollView>
+</RelativeLayout>

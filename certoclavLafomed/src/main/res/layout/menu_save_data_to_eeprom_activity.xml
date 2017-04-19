@@ -1,0 +1,45 @@
+<RelativeLayout   xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffff"
+    >
+
+	<RelativeLayout 
+    	android:id="@+id/contentOfActivity"
+    	android:layout_height="match_parent"
+    	android:layout_width="match_parent"
+    	android:layout_below="@+id/certoclav_actionbar">
+    	
+	    
+
+	 <ImageView
+		android:id="@+id/menu_save_eeprom_animation"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true"
+		android:adjustViewBounds="true"
+	/>
+	 
+	 <TextView
+	     android:id="@+id/menu_save_eeprom_text_progress"
+	     android:layout_width="wrap_content"
+	     android:layout_height="wrap_content"
+	     android:layout_centerHorizontal="true"
+	     android:layout_marginTop="100dp"
+	     android:text="20%"
+	     android:textColor="@android:color/darker_gray"
+	     android:textSize="70dp"
+	     android:textStyle="bold"
+	     tools:ignore="HardcodedText" />
+
+    </RelativeLayout>
+    
+    <include layout="@layout/certoclav_navigationbar_clear"
+        android:id="@+id/certoclav_actionbar"/>
+    
+
+
+</RelativeLayout>

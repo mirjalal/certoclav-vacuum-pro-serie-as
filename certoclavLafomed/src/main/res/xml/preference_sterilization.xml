@@ -1,0 +1,53 @@
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        
+
+
+		<CheckBoxPreference
+    	android:key="switch_step_by_step"
+    	android:defaultValue="@bool/switch_step_by_step_default"
+    	android:title="@string/step_by_step_guide" >
+    	</CheckBoxPreference>
+
+        <Preference
+                android:key="preferences_export_usb"
+                android:title="@string/export_protocols_to_usb_stick"
+                 />
+    	
+        <Preference
+                android:key="preferences_export_sdcard"
+                android:title="@string/export_protocols_to_micro_sd_card"
+                 />
+        <Preference
+                android:key="preferences_program_user_defined"
+                android:title="@string/edit_user_defined_program"
+                 />
+		<CheckBoxPreference
+    	android:key="switch_preheat"
+    	android:title="@string/preheat_chamber_on_off"
+    	android:summary="@string/if_on_the_sterilizer_will_heat_up_to_50_c_before_program_execution" >
+    	</CheckBoxPreference>
+    	
+    	<CheckBoxPreference
+    	android:key="switch_keep_temp"
+    	android:title="@string/keep_temperature_on_off"
+    	android:summary="@string/if_on_the_sterilizer_will_warm_up_the_chamber_and_steam_generator_permanently" >
+    	</CheckBoxPreference>
+    	
+    	<CheckBoxPreference
+    	android:key="switch_material_testing"
+    	android:title="@string/material_testing_mode"
+    	android:summary="@string/if_enabled_the_user_can_enter_how_often_to_run_a_program_without_user_interaction" >
+    	</CheckBoxPreference>
+    	
+           <Preference
+                android:key="preferences_print_labels"
+                android:title="@string/open_label_printer_designer"
+                 /> 	
+    	
+     	<CheckBoxPreference
+    	android:key="switch_scan_items"
+    	android:title="CertoTrace load documentation"
+    	android:summary="Enable autoclave load documentation. Barcodescanner and labelprinter required." >
+    	</CheckBoxPreference>   	
+</PreferenceScreen>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Green -->
+    <color name="green_temp">#23A96E</color>
+    <color name="blue_temp">#4fd71d</color>
+    <color name="green_dark">#159204</color>
+    <color name="bright_green">#02D8B0</color>
+    <color name="orange">#FF8000</color>
+    <color name="button_green">#10a54a</color>
+
+    <!--<color name="black_temp">#FFFFFF</color>-->
+    <color name="black_temp">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="bg_gradient_start">#31244e</color>
+    <color name="bg_gradient_end">#6b394c</color>
+</resources>

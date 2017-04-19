@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" xmlns:tools="http://schemas.android.com/tools">
+ 
+    <LinearLayout 
+        android:id="@+id/dialog_container_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"  
+        android:layout_margin="20dp"
+        >
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView 
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/vacuum_times_1_10_"/>
+            <EditText 
+                android:id="@+id/dialog_program_edit_vacuum_times"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:numeric="integer"/>
+            
+        </LinearLayout>
+                <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView 
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:capitalize="characters"
+                android:text="@string/sterilization_temperature_105_134_c_"/>
+            <EditText 
+                android:id="@+id/dialog_program_edit_sterilizationtemperature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:numeric="integer"/>
+        </LinearLayout>
+                        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView 
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/sterilization_time_4_60_minutes_"/>
+            <EditText 
+                android:id="@+id/dialog_program_edit_sterilizationtime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:numeric="integer"/>
+        </LinearLayout>
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView 
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/drying_time_1_25_minutes_"/>
+            <EditText 
+                android:id="@+id/dialog_program_edit_dryingtime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:numeric="integer"/>
+        </LinearLayout>
+ 
+    </LinearLayout>
+    
+ <LinearLayout 
+          android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"   
+        android:layout_below="@+id/dialog_container_text"
+     >
+         <Button
+        android:id="@+id/dialog_program_button_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_weight="1"
+        android:text="@string/cancel"
+        android:layout_margin="5dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/btn_blue_dark"
+        />
+         
+     <Button
+        android:id="@+id/dialog_program_button_apply"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_weight="1"
+        android:text="@string/apply"
+        android:layout_margin="5dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/btn_blue_dark"
+
+        />
+
+ </LinearLayout>
+</RelativeLayout>

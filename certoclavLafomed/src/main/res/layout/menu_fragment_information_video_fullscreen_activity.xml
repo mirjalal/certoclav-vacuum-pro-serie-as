@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+		<RelativeLayout
+		    xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+		    android:id="@+id/lin2"
+    		android:layout_height="match_parent"
+    		android:layout_width="match_parent"
+    		android:orientation="vertical">
+
+            <VideoView
+                android:id="@+id/information_video_fullscreen_videoView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/certoclav_actionbar"
+                android:layout_alignParentBottom="true" >
+                
+            </VideoView>		    
+
+		    
+      <include layout="@layout/certoclav_navigationbar_clear"
+        android:id="@+id/certoclav_actionbar"
+        android:layout_alignParentTop="true"
+        android:layout_height="90dp"
+        android:layout_width="match_parent"/>
+             
+        </RelativeLayout>
+
+        
+
+		    
