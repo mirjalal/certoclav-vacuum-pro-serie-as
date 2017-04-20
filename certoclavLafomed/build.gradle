@@ -25,7 +25,9 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
     compile project(':library')
+    compile project(':sweetdialog')
     compile 'com.android.support:appcompat-v7:22.2.1'
+    //compile 'cn.pedant.sweetalert:library:1.3'
 //    compile project(':serialLib')
     compile project(':androidsupportv4preferencefragmentmaster')
 }

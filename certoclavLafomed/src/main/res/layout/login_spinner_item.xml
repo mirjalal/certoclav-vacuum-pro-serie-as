@@ -5,11 +5,11 @@
     	android:layout_height="wrap_content"
     	android:background="@android:color/white">    
 
-<CheckedTextView 
+<TextView
     android:id="@+id/login_dopdown_text_mail"
     style="?android:attr/spinnerDropDownItemStyle"
     android:textSize="30sp"
-    android:singleLine="true"
+    android:lines="1"
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:ellipsize="marquee" 

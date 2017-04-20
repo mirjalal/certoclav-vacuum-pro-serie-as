@@ -383,7 +383,7 @@
     <string name="email_address">email address</string>
     <string name="send_mail_to_certosupport">SEND MAIL TO CERTOSUPPORT</string>
     <string name="print_label">Print label</string>
-    
- 
- 
+    <string name="login_failed_title">Login failed</string>
+
+
 </resources>

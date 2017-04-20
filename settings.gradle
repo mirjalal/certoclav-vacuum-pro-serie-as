@@ -1,3 +1,4 @@
-include ':library'
+include ':library', ':sweetdialog'
 include ':androidsupportv4preferencefragmentmaster'
 include ':certoclavLafomed'
+project(':sweetdialog').projectDir = new File('sweet-alert-dialog/library')

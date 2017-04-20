@@ -25,7 +25,8 @@
     android:focusable="true"
     android:clickable="true"
     android:background="@drawable/quickaction_slider_btn" 
-    android:padding="0dp">
+    android:layout_margin="3dp"
+	android:padding="0dp">
     <ImageView
     	android:id="@+id/quickaction_icon"
     	android:layout_width="70dp"
