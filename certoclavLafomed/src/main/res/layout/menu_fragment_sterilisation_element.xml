@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 
- 
-            
-	<RelativeLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-    android:layout_height="190dp"
-    android:background="@drawable/btn_white_shadow_clickable"
 
-	>
-	           
-	           
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="190dp">
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:clickable="true"
+        android:foreground="@drawable/card_foreground"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="5dp">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
             <TextView
                 android:id="@+id/sterilisation_element_firstline"
                 android:layout_width="match_parent"
@@ -27,72 +37,77 @@
                 android:textSize="30sp"
                 android:textStyle="bold"
                 tools:ignore="HardcodedText" />
-            
-			<FrameLayout android:id="@+id/sterilisation_element_seperator_firstline"
-                         android:layout_width="match_parent"
-                         android:layout_height="1px" 
-                         android:background="#aaaaaa"
-                         android:layout_below="@+id/sterilisation_element_firstline"
-    					 ></FrameLayout>
 
-			<RelativeLayout 
-			              android:id="@+id/sterilisation_element_container_description"
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:background="#ffffff" 
-                          android:layout_below="@+id/sterilisation_element_seperator_firstline"
-                          android:layout_above="@+id/sterilisation_element_container_start">
-    
-                             <TextView
-                                 android:id="@+id/sterilisation_element_text_description"
-                                 android:layout_width="match_parent"
-                                 android:layout_height="wrap_content"
-                                 android:layout_centerVertical="true"
-                                 android:layout_marginRight="10dp"
-                                 android:paddingLeft="20dp"
-                                 android:paddingRight="20dp"
-                                 android:text="20 minutes at 120 °C"
-                                 android:textColor="#333366"
-                                 android:textSize="14sp"
-                                 tools:ignore="HardcodedText" />
-  
-            </RelativeLayout> 
-                           <ImageView 
-                               android:id="@+id/sterilisation_element_autoclave"
-                               android:layout_width="160dp"
-                               android:layout_height="200dp"
-                               android:layout_marginTop="40dp"
-                               android:scaleType="fitStart"
-                               android:src="@drawable/control_autoclave"
-                               android:layout_alignParentRight="true"/>
-				<RelativeLayout 
-			              android:id="@+id/sterilisation_element_container_start"
-                          android:layout_width="match_parent"
-                          android:layout_height="50dp"
-                          android:layout_alignParentBottom="true"
-                          android:background="@drawable/btn_blue_dark"
- >		
-                       
-                       <TextView
-                           android:id="@+id/sterilisation_element_text_start"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:layout_centerInParent="true"
-                           android:text="@string/start_program"
-                           android:textColor="#ffffff"
-                           android:textSize="30sp"
-                           android:textStyle="bold" />
-                           
-                                                  <ImageView 
-                                                      android:id="@+id/sterilisation_element_image_arrow"
-                                                      android:layout_height="30dp"
-                                                      android:layout_width="30dp"
-                                                      android:src="@drawable/arrow_right_white"
-                                                      android:layout_toRightOf="@+id/sterilisation_element_text_start"
-                                                      android:layout_centerVertical="true"
-                                                      />
+            <FrameLayout
+                android:id="@+id/sterilisation_element_seperator_firstline"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_below="@+id/sterilisation_element_firstline"
+                android:background="#aaaaaa"></FrameLayout>
+
+            <RelativeLayout
+                android:id="@+id/sterilisation_element_container_description"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/sterilisation_element_container_start"
+                android:layout_below="@+id/sterilisation_element_seperator_firstline"
+                android:background="#ffffff"
+                android:layout_toLeftOf="@+id/sterilisation_element_autoclave"
+                android:layout_toStartOf="@+id/sterilisation_element_autoclave">
+
+                <TextView
+                    android:id="@+id/sterilisation_element_text_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="10dp"
+                    android:text="20 minutes at 120 °C"
+                    android:textColor="#333366"
+                    android:textSize="14sp"
+                    tools:ignore="HardcodedText" />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/sterilisation_element_autoclave"
+                android:layout_width="160dp"
+                android:layout_height="200dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="40dp"
+                android:scaleType="fitStart"
+                android:src="@drawable/control_autoclave" />
+
+            <RelativeLayout
+                android:id="@+id/sterilisation_element_container_start"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:visibility="gone"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/btn_blue_dark">
+
+                <TextView
+                    android:id="@+id/sterilisation_element_text_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/start_program"
+                    android:textColor="#ffffff"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/sterilisation_element_image_arrow"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/sterilisation_element_text_start"
+                    android:src="@drawable/arrow_right_white" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
 </RelativeLayout>
-         </RelativeLayout>
        
 
        

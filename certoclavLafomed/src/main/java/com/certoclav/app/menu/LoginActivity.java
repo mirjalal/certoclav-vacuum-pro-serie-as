@@ -141,12 +141,7 @@ public class LoginActivity extends Activity implements NavigationbarListener, Da
                         @Override
                         public void onClick(SweetAlertDialog sDialog) {
                             sDialog.dismissWithAnimation();
-                            SharedPreferences prefs = PreferenceManager
-                                    .getDefaultSharedPreferences(LoginActivity.this);
-                            Editor editor = prefs.edit();
-                            editor.putBoolean(AppConstants.PREFERENCE_KEY_ONLINE_MODE,
-                                    false);
-                            editor.commit();
+                            changeApplicationMode(false);
                             onResume();
                         }
                     }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -226,43 +221,27 @@ public class LoginActivity extends Activity implements NavigationbarListener, Da
 
             @Override
             public void onClick(View v) {
-                final Dialog dialog = new Dialog(LoginActivity.this);
-                dialog.setContentView(R.layout.dialog_yes_no);
-                dialog.setTitle(getString(R.string.enable_network_communication));
-                TextView text = (TextView) dialog.findViewById(R.id.text);
-                ImageView image = (ImageView) dialog
-                        .findViewById(R.id.dialog_image);
-                image.setVisibility(View.GONE);
-
-                text.setText(getString(R.string.do_you_want_to_enable_network_communication));
-                Button dialogButton = (Button) dialog
-                        .findViewById(R.id.dialogButtonOK);
-                // if button is clicked, close the custom dialog
-                dialogButton.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        SharedPreferences prefs = PreferenceManager
-                                .getDefaultSharedPreferences(LoginActivity.this);
-                        Editor editor = prefs.edit();
-                        editor.putBoolean(
-                                AppConstants.PREFERENCE_KEY_ONLINE_MODE, true);
-                        textViewNotification.setVisibility(View.GONE);
-                        editor.commit();
-                        dialog.dismiss();
-                    }
-                });
-
-                Button dialogButtonNo = (Button) dialog
-                        .findViewById(R.id.dialogButtonNO);
-                dialogButtonNo.setOnClickListener(new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.show();
+                SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                        .setTitleText(getString(R.string.enable_network_communication))
+                        .setContentText(getString(R.string.do_you_want_to_enable_network_communication))
+                        .setConfirmText(getString(R.string.yes))
+                        .setCancelText(getString(R.string.cancel))
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                                changeApplicationMode(true);
+                                textViewNotification.setVisibility(View.GONE);
+                            }
+                        }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismissWithAnimation();
+                            }
+                        }).setCustomImage(R.drawable.ic_network_connection);
+                sweetAlertDialog.setCanceledOnTouchOutside(true);
+                sweetAlertDialog.setCancelable(true);
+                sweetAlertDialog.show();
 
             }
         });
@@ -699,23 +678,18 @@ public class LoginActivity extends Activity implements NavigationbarListener, Da
         final SweetAlertDialog dialog = new SweetAlertDialog(this, R.layout.dialog_add_create, SweetAlertDialog.WARNING_TYPE);
         dialog.setContentView(R.layout.dialog_add_create);
         dialog.setTitle(R.string.register_new_user);
-
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
         Button buttonCreateLocal = (Button) dialog
                 .findViewById(R.id.dialogButtonCreateLocal);
         Button buttonAddExisting = (Button) dialog
                 .findViewById(R.id.dialogButtonAddExisting);
         Button buttonCreateCloud = (Button) dialog
                 .findViewById(R.id.dialogButtonCreateNew);
-
         buttonCreateLocal.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences prefs = PreferenceManager
-                        .getDefaultSharedPreferences(LoginActivity.this);
-                Editor editor = prefs.edit();
-                editor.putBoolean(AppConstants.PREFERENCE_KEY_ONLINE_MODE,
-                        false);
-                editor.commit();
+                changeApplicationMode(false);
                 Intent intent = new Intent(LoginActivity.this,
                         RegisterActivity.class);
                 startActivity(intent);
@@ -727,12 +701,7 @@ public class LoginActivity extends Activity implements NavigationbarListener, Da
             @Override
             public void onClick(View v) {
                 if (ApplicationController.getInstance().isNetworkAvailable()) {
-                    SharedPreferences prefs = PreferenceManager
-                            .getDefaultSharedPreferences(LoginActivity.this);
-                    Editor editor = prefs.edit();
-                    editor.putBoolean(AppConstants.PREFERENCE_KEY_ONLINE_MODE,
-                            true);
-                    editor.commit();
+                    changeApplicationMode(true);
                     Intent intent = new Intent(LoginActivity.this,
                             AddCloudAccountActivity.class);
                     startActivity(intent);
@@ -825,12 +794,7 @@ public class LoginActivity extends Activity implements NavigationbarListener, Da
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismissWithAnimation();
-                            SharedPreferences prefs = PreferenceManager
-                                    .getDefaultSharedPreferences(LoginActivity.this);
-                            Editor editor = prefs.edit();
-                            editor.putBoolean(AppConstants.PREFERENCE_KEY_ONLINE_MODE,
-                                    false);
-                            editor.commit();
+                            changeApplicationMode(false);
                             refreshUI();
                         }
                     });
@@ -844,5 +808,13 @@ public class LoginActivity extends Activity implements NavigationbarListener, Da
 
     }
 
+    private void changeApplicationMode(boolean isOnline){
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(LoginActivity.this);
+        Editor editor = prefs.edit();
+        editor.putBoolean(AppConstants.PREFERENCE_KEY_ONLINE_MODE,
+                isOnline);
+        editor.commit();
+    }
 
 }

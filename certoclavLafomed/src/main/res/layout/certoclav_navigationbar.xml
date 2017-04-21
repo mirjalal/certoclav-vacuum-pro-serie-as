@@ -5,7 +5,7 @@
     android:layout_height="80dp"
     android:background="#ffffff">
 
-                
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,148 +16,144 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/btn_white_shadow_bottom" >
-            
+            android:background="@drawable/btn_white_shadow_bottom">
+
 
         </FrameLayout>
-        
+
         <FrameLayout
             android:id="@+id/navigationbar_text_information"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/btn_grey_shadow_bottom" >
+            android:background="@drawable/btn_grey_tab_2">
 
         </FrameLayout>
+
         <RelativeLayout
             android:id="@+id/navigationbar_text_sterilisation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/btn_grey_shadow_bottom_right" >
-            
-  
-</RelativeLayout>
+            android:background="@drawable/btn_grey_tab_2_right_shadow">
+
+
+        </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/navigationbar_text_protocols"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/btn_white_shadow_top_right"  >
-            
-  
-</RelativeLayout>
-                <FrameLayout
+            android:background="@drawable/btn_white_shadow_top_right">
+
+
+        </RelativeLayout>
+
+        <FrameLayout
             android:id="@+id/frame2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
- />
-        
+            android:layout_weight="1" />
+
     </LinearLayout>
 
-    
-    
-    
-    
-        <LinearLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
         <LinearLayout
-			android:id="@+id/navigationbar_container_quickaction_left"
+            android:id="@+id/navigationbar_container_quickaction_left"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal"
- />
-        
-        
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/information"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginTop="15dp"
-            android:singleLine="true"
-            android:layout_marginLeft="15dp"
-            android:gravity="center"
-            android:textColor="#444444"
-  />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/sterilisation"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginTop="15dp"
-            android:singleLine="true"
-            android:gravity="center"
-            android:textColor="#444444"
-  />
+            android:orientation="horizontal" />
 
-        
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/logging"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
-            android:singleLine="true"
-            android:layout_marginRight="15dp"
+            android:layout_weight="1"
             android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/information"
             android:textColor="#444444"
-  />
-            
- 
-                <RelativeLayout
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" >
-            
-            <LinearLayout 
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/sterilisation"
+            android:textColor="#444444"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/logging"
+            android:textColor="#444444"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
                 android:id="@+id/navigationbar_actionitems"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                >
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
 
-            
-               <LinearLayout
-                android:id="@+id/navigationbar_container_quickactionitem_rest"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/navigationbar_container_quickactionitem_rest"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/navigationbar_container_quickactionitem_settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal"></LinearLayout>
+
             </LinearLayout>
-               <LinearLayout
-                android:id="@+id/navigationbar_container_quickactionitem_settings"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_weight="2">
-            </LinearLayout>
-                                                                
-            </LinearLayout>
-            
-            
+
+
             <FrameLayout
-            android:id="@+id/navigationbar_shadow_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/btn_white_shadow_bottom" />
-            
-            </RelativeLayout>
-        
+                android:id="@+id/navigationbar_shadow_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/btn_white_shadow_bottom" />
+
+        </RelativeLayout>
+
     </LinearLayout>
 
 
-                        
 </RelativeLayout>

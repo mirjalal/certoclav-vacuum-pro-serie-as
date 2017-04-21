@@ -6,17 +6,11 @@ import java.util.ArrayList;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Point;
-import android.media.MediaPlayer;
 import android.os.Build;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 
 import com.certoclav.app.R;
 import com.certoclav.app.button.QuickActionItem;
@@ -80,14 +74,7 @@ public class CertoclavNavigationbar {
 		tabInformation = mActivity.findViewById(R.id.navigationbar_text_information);
 		tabSterilisation = mActivity.findViewById(R.id.navigationbar_text_sterilisation);		
 		tabProtocols = mActivity.findViewById(R.id.navigationbar_text_protocols);
-		
 
-
-
-
-
-
-		
 		tabSterilisation.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -203,7 +190,7 @@ public class CertoclavNavigationbar {
 		linActionContainer = (LinearLayout) mActivity.findViewById(R.id.navigationbar_container_quickactionitem_settings);
 		actionItemSettings = (QuickActionItem) mActivity.getLayoutInflater().inflate(R.layout.quickaction_item, linActionContainer, false);
 		actionItemSettings.setChecked(false);
-		actionItemSettings.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.ic_menu_manage));
+		actionItemSettings.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.ic_settings));
 		//actionItemAdd.setText("test");
 		linActionContainer.addView(actionItemSettings);
 		actionItemSettings.setOnClickListener(new OnClickListener() {
@@ -222,7 +209,7 @@ public class CertoclavNavigationbar {
 		linActionContainer = (LinearLayout) mActivity.findViewById(R.id.navigationbar_container_quickaction_left);
 		actionItemLogout = (QuickActionItem) mActivity.getLayoutInflater().inflate(R.layout.quickaction_item, linActionContainer, false);
 		actionItemLogout.setChecked(false);
-		actionItemLogout.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.ic_menu_exit));
+		actionItemLogout.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.ic_logout));
 		//actionItemLogout.setText("Logout");
 		linActionContainer.addView(actionItemLogout);
 		actionItemLogout.setOnClickListener(new OnClickListener() {
@@ -264,9 +251,9 @@ public class CertoclavNavigationbar {
 
 
 	public void setTabInformationEnabled() {
-		tabInformation.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.btn_white_shadow_top_left));
-		tabSterilisation.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.btn_grey_shadow_bottom_left));
-		tabProtocols.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.btn_grey_shadow_bottom));
+		tabInformation.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.btn_white_tab_1));
+		tabSterilisation.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.btn_grey_tab_2_shadow_left));
+		tabProtocols.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.btn_grey_tab_3));
 		hideButtonAdd();
 		hideButtonEdit();
 		actionItemPrint.setVisibility(View.INVISIBLE);
@@ -275,9 +262,9 @@ public class CertoclavNavigationbar {
 	}
 
 	public void setTabProtocolsEnabled() {
-		tabInformation.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.btn_grey_shadow_bottom));
-		tabSterilisation.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.btn_grey_shadow_bottom_right));
-		tabProtocols.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.btn_white_shadow_top_right));
+		tabInformation.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.btn_grey_tab_1));
+		tabSterilisation.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.btn_grey_tab_2_right_shadow));
+		tabProtocols.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.btn_white_tab_3));
 		hideButtonAdd();
 		hideButtonEdit();
 		actionItemPrint.setVisibility(View.VISIBLE);
@@ -285,9 +272,9 @@ public class CertoclavNavigationbar {
 	}
 	
 	public void setTabSterilisationEnabled() {
-		tabInformation.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.btn_grey_shadow_bottom_right));
-		tabSterilisation.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.btn_white_shadow_top));
-		tabProtocols.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.btn_grey_shadow_bottom_left));
+		tabInformation.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.btn_grey_tab_1_shadow_right));
+		tabSterilisation.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.btn_white_tab_2));
+		tabProtocols.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.btn_grey_tab_3_shadow_left));
 		//showButtonEdit();
 		actionItemPrint.setVisibility(View.INVISIBLE);
 		actionItemScan.setVisibility(View.INVISIBLE);

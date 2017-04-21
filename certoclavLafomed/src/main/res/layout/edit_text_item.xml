@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2009 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2009 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -14,49 +13,29 @@
      limitations under the License.
 -->
 
-<com.certoclav.app.button.EditTextItem
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" xmlns:tools="http://schemas.android.com/tools">
-        
+<com.certoclav.app.button.EditTextItem xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-    
-    
-    <LinearLayout 
-        android:id="@+id/step_by_step_element_content"
-        android:layout_width="400dp"
-        android:layout_height="60dp"
-        android:paddingRight="5dp"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:paddingLeft="5dp"
-        android:layout_margin="20dp"
-        android:background="@android:color/black"
-        >
-        
-       <LinearLayout
-		android:background="@android:color/background_light"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-        
-           <EditText
-               android:id="@+id/step_by_step_element_edit"
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               android:layout_marginLeft="10dp"
-               android:background="@android:color/background_light"
-               android:hint="Vorname"
-               android:singleLine="true"
-               android:textColor="@android:color/black"
-               tools:ignore="HardcodedText" >
-</EditText>
+        android:layout_height="match_parent"
+        android:layout_marginLeft="150dp"
+        android:layout_marginRight="150dp"
+        android:background="@android:color/background_light">
+
+        <EditText
+            android:id="@+id/step_by_step_element_edit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/edittext_selector"
+            android:hint="Vorname"
+            android:singleLine="true"
+            android:textColor="@android:color/black"
+            tools:ignore="HardcodedText"></EditText>
     </LinearLayout>
-         
-    </LinearLayout>
-
-
-
-
 
 
 </com.certoclav.app.button.EditTextItem>

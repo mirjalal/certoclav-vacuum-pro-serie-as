@@ -36,356 +36,315 @@ import com.certoclav.library.certocloud.GetConditionsService;
 import com.certoclav.library.view.ControlPagerAdapter;
 import com.certoclav.library.view.CustomViewPager;
 
-public class MenuMain extends FragmentActivity implements NavigationbarListener, SensorDataListener{
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
-	public static int INDEX_INFORMATION = 0;
-	public static int INDEX_STERILISATION = 1;
-	public static  int INDEX_PROTOCOLS = 2;
-	
-	private CertoclavNavigationbar navigationbar;	
-	private ArrayList<Fragment> fragmentList; 
-	 
-	/**
-	 * The {@link android.support.v4.view.PagerAdapter} that will provide
-	 * fragments for each of the sections. We use a
-	 * {@link android.support.v4.app.FragmentPagerAdapter} derivative, which
-	 * will keep every loaded fragment in memory. If this becomes too memory
-	 * intensive, it may be best to switch to a
-	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-	 */
-	private ControlPagerAdapter mSectionsPagerAdapter;
+public class MenuMain extends FragmentActivity implements NavigationbarListener, SensorDataListener {
 
-	/**
-	 * The {@link ViewPager} that will host the section contents.
-	 */
-	private CustomViewPager mViewPager;
+    public static int INDEX_INFORMATION = 0;
+    public static int INDEX_STERILISATION = 1;
+    public static int INDEX_PROTOCOLS = 2;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		Log.e("MenuMain", "onCreate");
-		setContentView(R.layout.menu_activity);
+    private CertoclavNavigationbar navigationbar;
+    private ArrayList<Fragment> fragmentList;
 
+    /**
+     * The {@link android.support.v4.view.PagerAdapter} that will provide
+     * fragments for each of the sections. We use a
+     * {@link android.support.v4.app.FragmentPagerAdapter} derivative, which
+     * will keep every loaded fragment in memory. If this becomes too memory
+     * intensive, it may be best to switch to a
+     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+     */
+    private ControlPagerAdapter mSectionsPagerAdapter;
 
-		 
+    /**
+     * The {@link ViewPager} that will host the section contents.
+     */
+    private CustomViewPager mViewPager;
 
-		    AutoclaveMonitor.getInstance();
-	        Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);
-	
-
-	    
-		fragmentList = new ArrayList<Fragment>(); //liste von Fragmenten für den ControlPagerAdapter
-		// Create the adapter that will return a fragment for each of the three
-		// primary sections of the app.
-		mSectionsPagerAdapter = new ControlPagerAdapter(getSupportFragmentManager(),fragmentList);
-		mViewPager = (CustomViewPager) findViewById(R.id.pager);
-		
-		navigationbar= new CertoclavNavigationbar(this);
-		
-		navigationbar.showNavigationBar();
-		navigationbar.setTabSterilisationEnabled();
-
-		
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.e("MenuMain", "onCreate");
+        setContentView(R.layout.menu_activity);
 
 
-		
-		
-		fragmentList.add(INDEX_INFORMATION, new InformationFragment() );		
-		fragmentList.add(INDEX_STERILISATION, new SterilisationFragment());
-		fragmentList.add(INDEX_PROTOCOLS, new ProtocolsFragment());
+        AutoclaveMonitor.getInstance();
+        Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);
 
 
+        fragmentList = new ArrayList<Fragment>(); //liste von Fragmenten f?r den ControlPagerAdapter
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the app.
+        mSectionsPagerAdapter = new ControlPagerAdapter(getSupportFragmentManager(), fragmentList);
+        mViewPager = (CustomViewPager) findViewById(R.id.pager);
+
+        navigationbar = new CertoclavNavigationbar(this);
+
+        navigationbar.showNavigationBar();
+        navigationbar.setTabSterilisationEnabled();
 
 
-
-		// Set up the ViewPager with the sections adapter.
-		
-		mViewPager.setAdapter(mSectionsPagerAdapter);
-		mViewPager.setPagingEnabled(true);
-
-		// When swiping between different sections, select the corresponding
-		// tab. We can also use ActionBar.Tab#select() to do this if we have
-		// a reference to the Tab.
-		mViewPager
-				.setOnPageChangeListener(new CustomViewPager.SimpleOnPageChangeListener() {
-					@Override
-					public void onPageSelected(int position) {
-						if(position == INDEX_INFORMATION) navigationbar.setTabInformationEnabled();
-						if(position == INDEX_STERILISATION) navigationbar.setTabSterilisationEnabled();
-						if(position == INDEX_PROTOCOLS) navigationbar.setTabProtocolsEnabled();
-						Log.e("ProgramMenuActivity", "Page changed");
-					}
-				});
-
-		//mViewPager.setCurrentItem(tab.getPosition());
-
-		mViewPager.setCurrentItem(INDEX_STERILISATION);
-		navigationbar.setTabSterilisationEnabled();
-	
-
-	
-	
-	}
+        fragmentList.add(INDEX_INFORMATION, new InformationFragment());
+        fragmentList.add(INDEX_STERILISATION, new SterilisationFragment());
+        fragmentList.add(INDEX_PROTOCOLS, new ProtocolsFragment());
 
 
-	public void setCurrentPagerItem(int item) { 
-		mViewPager.setCurrentItem(item);
-		
-		}
+        // Set up the ViewPager with the sections adapter.
+
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setPagingEnabled(true);
+
+        // When swiping between different sections, select the corresponding
+        // tab. We can also use ActionBar.Tab#select() to do this if we have
+        // a reference to the Tab.
+        mViewPager
+                .setOnPageChangeListener(new CustomViewPager.SimpleOnPageChangeListener() {
+                    @Override
+                    public void onPageSelected(int position) {
+                        if (position == INDEX_INFORMATION) navigationbar.setTabInformationEnabled();
+                        if (position == INDEX_STERILISATION)
+                            navigationbar.setTabSterilisationEnabled();
+                        if (position == INDEX_PROTOCOLS) navigationbar.setTabProtocolsEnabled();
+                        Log.e("ProgramMenuActivity", "Page changed");
+                    }
+                });
+
+        //mViewPager.setCurrentItem(tab.getPosition());
+
+        mViewPager.setCurrentItem(INDEX_STERILISATION);
+        navigationbar.setTabSterilisationEnabled();
 
 
+    }
 
 
+    public void setCurrentPagerItem(int item) {
+        mViewPager.setCurrentItem(item);
 
-	@Override
-	protected void onPause() {
-		Log.e("MenuMain", "remove navigationbarlistener");
-		navigationbar.removeNavigationbarListener(MenuMain.this);
-		Autoclave.getInstance().removeOnSensorDataListener(this);
-		super.onPause();
-	}
+    }
 
 
-	@Override
-	protected void onResume() {
-		
-	    Autoclave.getInstance().setOnSensorDataListener(this);
-		
-	    Intent intent4 = new Intent(this, GetConditionsService.class);
-		startService(intent4); 
-
-		Log.e("MenuMain", "set navigationbarlistener");
-		navigationbar.setNavigationbarListener(MenuMain.this);
-		super.onResume();
-	}
+    @Override
+    protected void onPause() {
+        Log.e("MenuMain", "remove navigationbarlistener");
+        navigationbar.removeNavigationbarListener(MenuMain.this);
+        Autoclave.getInstance().removeOnSensorDataListener(this);
+        super.onPause();
+    }
 
 
-	@Override
-	protected void onDestroy() {
-		Log.e("MenuMain", "onDestroy");
-		Log.e("MenuMain", "fragmentList.clear()");
-		fragmentList.clear();
-		mSectionsPagerAdapter = null;
-		mViewPager = null;
-		Log.e("MenuMain", "size of fragmentlist " + fragmentList.size());
-		super.onDestroy();
-	}
+    @Override
+    protected void onResume() {
+
+        Autoclave.getInstance().setOnSensorDataListener(this);
+
+        Intent intent4 = new Intent(this, GetConditionsService.class);
+        startService(intent4);
+
+        Log.e("MenuMain", "set navigationbarlistener");
+        navigationbar.setNavigationbarListener(MenuMain.this);
+        super.onResume();
+    }
 
 
+    @Override
+    protected void onDestroy() {
+        Log.e("MenuMain", "onDestroy");
+        Log.e("MenuMain", "fragmentList.clear()");
+        fragmentList.clear();
+        mSectionsPagerAdapter = null;
+        mViewPager = null;
+        Log.e("MenuMain", "size of fragmentlist " + fragmentList.size());
+        super.onDestroy();
+    }
 
 
+    @Override
+    public void onBackPressed() {
+        Log.e("CDA", "onBackPressed Called");
+        onClickNavigationbarButton(CertoclavNavigationbar.BUTTON_BACK);
+    }
 
 
+    @Override
+    public void onClickNavigationbarButton(int buttonId) {
+
+        switch (buttonId) {
+            case CertoclavNavigationbar.BUTTON_BACK:
+                try {
+                    SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(MenuMain.this, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText(getString(R.string.logout))
+                            .setContentText(getString(R.string.do_you_really_want_to_logout))
+                            .setConfirmText(getString(R.string.yes))
+                            .setCancelText(getString(R.string.cancel))
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                    Autoclave.getInstance().setState(AutoclaveState.LOCKED);
+                                    Intent intent = new Intent(MenuMain.this, LoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismissWithAnimation();
+                                }
+                            }).setCustomImage(R.drawable.ic_network_connection);
+                    sweetAlertDialog.setCanceledOnTouchOutside(true);
+                    sweetAlertDialog.setCancelable(true);
+                    sweetAlertDialog.show();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case CertoclavNavigationbar.BUTTON_EDIT:
+
+                break;
+
+            case CertoclavNavigationbar.BUTTON_ADD:
+                DatabaseService db = new DatabaseService(MenuMain.this);
+                List<Profile> profiles = db.getProfilesWhereVisible();
+                if (profiles != null) {
+                    if (profiles.size() >= 6) {
+                        Toast.makeText(MenuMain.this, "You can add maximum 7 programs", Toast.LENGTH_LONG);
+                        break;
+                    }
+                }
+                try {
+                    final Dialog dialog = new Dialog(MenuMain.this);
+                    dialog.setContentView(R.layout.dialog_yes_no);
+                    dialog.setTitle("CREATE NEW PROGRAM");
+
+                    // set the custom dialog components - text, image and button
+                    TextView text = (TextView) dialog.findViewById(R.id.text);
+                    text.setText("Do you want add a Program from CertoCloud?");
+                    Button dialogButtonNo = (Button) dialog.findViewById(R.id.dialogButtonNO);
+                    dialogButtonNo.setOnClickListener(new OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+                    // if button is clicked, close the custom dialog
+                    dialogButton.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+
+                        }
+                    });
+
+                    dialog.show();
+                } catch (Exception e) {
+
+                }
 
 
-	
-	@Override
-	public void onBackPressed() {
-	   Log.e("CDA", "onBackPressed Called");
-	   onClickNavigationbarButton(CertoclavNavigationbar.BUTTON_BACK);
-	}
+                break;
+
+            case CertoclavNavigationbar.BUTTON_SETTINGS:
+                Intent intent2 = new Intent(MenuMain.this, SettingsActivity.class);
+                startActivity(intent2);
+                break;
+
+            case CertoclavNavigationbar.TAB_INFORMATION:
+                mViewPager.setCurrentItem(INDEX_INFORMATION);
+                navigationbar.setTabInformationEnabled();
+                break;
+            case CertoclavNavigationbar.TAB_STERILISATION:
+                mViewPager.setCurrentItem(INDEX_STERILISATION);
+                navigationbar.setTabSterilisationEnabled();
+                break;
+            case CertoclavNavigationbar.TAB_PROTOCOLS:
+                mViewPager.setCurrentItem(INDEX_PROTOCOLS);
+                navigationbar.setTabProtocolsEnabled();
+                break;
+            case CertoclavNavigationbar.BUTTON_PRINT:
+                boolean success = ((ProtocolsFragment) fragmentList.get(INDEX_PROTOCOLS)).printSelectedProtocol();
+                if (success == false) {
+                    Toast.makeText(this, getString(R.string.select_protocol_first), Toast.LENGTH_LONG).show();
+                }
+                break;
+
+            case CertoclavNavigationbar.BUTTON_SCAN:
+                try {
 
 
-	@Override
-	public void onClickNavigationbarButton(int buttonId) {
-		
-		switch(buttonId){
-		case CertoclavNavigationbar.BUTTON_BACK:
-			try 
-		    {
+                    final Dialog dialog1 = new Dialog(MenuMain.this);
+                    dialog1.setContentView(R.layout.dialog_scan);
+                    dialog1.setTitle("Please scan item");
 
-		         
-		         
-					final Dialog dialog = new Dialog(MenuMain.this);
-					dialog.setContentView(R.layout.dialog_yes_no);
-					dialog.setTitle("Logout");
-		 
-					// set the custom dialog components - text, image and button
-					TextView text = (TextView) dialog.findViewById(R.id.text);
-					text.setText(R.string.do_you_really_want_to_logout);
-		            Button dialogButtonNo = (Button) dialog.findViewById(R.id.dialogButtonNO);
-		            dialogButtonNo.setOnClickListener(new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							dialog.dismiss();
-						}
-					});
-					Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-					// if button is clicked, close the custom dialog
-					dialogButton.setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							dialog.dismiss();
-							Autoclave.getInstance().setState(AutoclaveState.LOCKED);
-							Intent intent = new Intent(MenuMain.this, LoginActivity.class);
-							startActivity(intent);
-							finish();
-						
-						
-						}
-					});
-		 
-					dialog.show();
-	
-					
-		    } 
-		    catch (Exception e) 
-		    {
-		          e.printStackTrace();
-		    }
-			break;
-			
-		case CertoclavNavigationbar.BUTTON_EDIT:
+                    // set the custom dialog components - text, image and button
+                    final EditText editText = (EditText) dialog1.findViewById(R.id.edittext);
+                    editText.setOnFocusChangeListener(new OnFocusChangeListener() {
 
-			break;
-		
-		case CertoclavNavigationbar.BUTTON_ADD:
-			DatabaseService db = new DatabaseService(MenuMain.this);
-			List<Profile> profiles = db.getProfilesWhereVisible();
-			if(profiles != null){
-				if(profiles.size()>=6){
-					Toast.makeText(MenuMain.this, "You can add maximum 7 programs", Toast.LENGTH_LONG);
-					break;
-				}
-			}
-			try{
-				final Dialog dialog = new Dialog(MenuMain.this);
-				dialog.setContentView(R.layout.dialog_yes_no);
-				dialog.setTitle("CREATE NEW PROGRAM");
-	 
-				// set the custom dialog components - text, image and button
-				TextView text = (TextView) dialog.findViewById(R.id.text);
-				text.setText("Do you want add a Program from CertoCloud?");
-	            Button dialogButtonNo = (Button) dialog.findViewById(R.id.dialogButtonNO);
-	            dialogButtonNo.setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						dialog.dismiss();
-					}
-				});
-				Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-				// if button is clicked, close the custom dialog
-				dialogButton.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						dialog.dismiss();
-						
-					}
-				});
- 
-				dialog.show();
-			}catch(Exception e){
-				
-			}
+                        @Override
+                        public void onFocusChange(View v, boolean hasFocus) {
+                            if (!hasFocus) {
 
-			
-    
-			
-			break;
-		
-		case CertoclavNavigationbar.BUTTON_SETTINGS:
-		    Intent intent2 = new Intent(MenuMain.this,SettingsActivity.class);
-		    startActivity(intent2);
-		    break;
-		
-		case CertoclavNavigationbar.TAB_INFORMATION:
-			mViewPager.setCurrentItem(INDEX_INFORMATION);
-			navigationbar.setTabInformationEnabled();
-			break;
-		case CertoclavNavigationbar.TAB_STERILISATION:
-			mViewPager.setCurrentItem(INDEX_STERILISATION);
-			navigationbar.setTabSterilisationEnabled();
-			break;
-		case CertoclavNavigationbar.TAB_PROTOCOLS:
-			mViewPager.setCurrentItem(INDEX_PROTOCOLS);
-			navigationbar.setTabProtocolsEnabled();
-			break;
-		case CertoclavNavigationbar.BUTTON_PRINT:
-			boolean success = ((ProtocolsFragment)fragmentList.get(INDEX_PROTOCOLS)).printSelectedProtocol();
-			if(success == false){
-				Toast.makeText(this, getString(R.string.select_protocol_first), Toast.LENGTH_LONG).show();
-			}
-			break;
-			
-		case CertoclavNavigationbar.BUTTON_SCAN:
-			try 
-		    {
+                                editText.requestFocus();
 
-		         
-		         
-					final Dialog dialog1 = new Dialog(MenuMain.this);
-					dialog1.setContentView(R.layout.dialog_scan);
-					dialog1.setTitle("Please scan item");
-		 
-					// set the custom dialog components - text, image and button
-					final EditText editText = (EditText) dialog1.findViewById(R.id.edittext);
-					editText.setOnFocusChangeListener(new OnFocusChangeListener() {
+                            }
+                        }
+                    });
+                    editText.setOnEditorActionListener(new OnEditorActionListener() {
 
-				        @Override
-				        public void onFocusChange(View v, boolean hasFocus) {
-				            if (!hasFocus) {
-
-				                editText.requestFocus();
-				                
-				            }
-				        }
-					});
-					editText.setOnEditorActionListener(new OnEditorActionListener() {
-						
-						@Override
-						public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-							
-							
-							String[] barcodeSplitted = editText.getText().toString().split("\\.");
-							Log.e("MenuMain", "length of splitted barcode" + barcodeSplitted.length);
-							if(barcodeSplitted.length == 2){
-								((ProtocolsFragment)fragmentList.get(INDEX_PROTOCOLS)).select(
-										barcodeSplitted[0],
-										barcodeSplitted[1]);
-							}else{
-								Log.e("MenuMain", "invalid barcode" + editText.getText().toString());
-								Toast.makeText(MenuMain.this, "Invalid barcode", Toast.LENGTH_LONG).show();
-							}
-							editText.setText("");
-							dialog1.dismiss();
-							
-							return false;
-						}
-					});
-		            Button dialogButtonNo1 = (Button) dialog1.findViewById(R.id.dialogButtonNO);
-		            dialogButtonNo1.setOnClickListener(new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							dialog1.dismiss();
-						}
-					});
-		 
-					dialog1.show();
-	
-					
-		    } 
-		    catch (Exception e) 
-		    {
-		          e.printStackTrace();
-		    }
-		    
-		    
-			break;
-			
-		}
-		
-		
-		
-	}
+                        @Override
+                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
 
-	@Override
-	public void onSensorDataChange(AutoclaveData data) {
+                            String[] barcodeSplitted = editText.getText().toString().split("\\.");
+                            Log.e("MenuMain", "length of splitted barcode" + barcodeSplitted.length);
+                            if (barcodeSplitted.length == 2) {
+                                ((ProtocolsFragment) fragmentList.get(INDEX_PROTOCOLS)).select(
+                                        barcodeSplitted[0],
+                                        barcodeSplitted[1]);
+                            } else {
+                                Log.e("MenuMain", "invalid barcode" + editText.getText().toString());
+                                Toast.makeText(MenuMain.this, "Invalid barcode", Toast.LENGTH_LONG).show();
+                            }
+                            editText.setText("");
+                            dialog1.dismiss();
+
+                            return false;
+                        }
+                    });
+                    Button dialogButtonNo1 = (Button) dialog1.findViewById(R.id.dialogButtonNO);
+                    dialogButtonNo1.setOnClickListener(new OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            dialog1.dismiss();
+                        }
+                    });
+
+                    dialog1.show();
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+                break;
+
+        }
+
+
+    }
+
+
+    @Override
+    public void onSensorDataChange(AutoclaveData data) {
 /*		if(data.isProgramRunning() == true){
-			if(Autoclave.getInstance().getProfile() == null){
+            if(Autoclave.getInstance().getProfile() == null){
 				DatabaseService db = new DatabaseService(MenuMain.this);
 				Autoclave.getInstance().setProfile(db.getProfiles().get(0));
 			}
@@ -394,10 +353,8 @@ public class MenuMain extends FragmentActivity implements NavigationbarListener,
 			//intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
 			//startActivity(intent);
 		}*/
-		
-	}
-	
 
+    }
 
 
 }

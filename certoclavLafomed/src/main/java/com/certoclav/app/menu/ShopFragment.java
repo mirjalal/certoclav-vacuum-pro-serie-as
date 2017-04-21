@@ -26,7 +26,7 @@ private ListView shopList;
 			View rootView = inflater.inflate(R.layout.menu_fragment_information_shop,container, false); 
 		
 			
-            rootView.setOnClickListener(new OnClickListener() {
+            rootView.findViewById(R.id.card_view).setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {

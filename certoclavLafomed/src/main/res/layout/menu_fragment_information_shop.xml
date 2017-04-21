@@ -1,46 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-		<LinearLayout
-		    xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-		    android:id="@+id/lin2"
-    		android:layout_height="match_parent"
-    		android:layout_width="match_parent"
-    		android:orientation="vertical">
-            
-	
-		    		                        	
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lin2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-       
-        	<RelativeLayout
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:clickable="true"
+        android:foreground="@drawable/card_foreground"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="5dp">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"  	
-            android:background="@drawable/btn_blue_shadow_clickable"    >
-
-        	    
-        	<TextView 
-       			android:id="@+id/text" 
-    			android:layout_height="50dp"
-    			android:layout_width="match_parent"
-    			android:text="@string/shop"
-    			android:textColor="@android:color/white"
-    			android:textSize="30dp"
-    			android:gravity="center_vertical"
-    			android:paddingLeft="10dp"    
-    			android:paddingRight="10dp"          
-            />
-        	            	
+            android:layout_height="match_parent"
+            android:background="@drawable/btn_blue_shadow_clickable">
 
 
-        	<ImageView
-        	    android:id="@+id/information_shop_image"
-        	    android:layout_width="match_parent"
-        	    android:layout_height="match_parent"
-        	    android:layout_below="@+id/text"
-        	    android:layout_margin="50dp"
-        	    android:src="@drawable/shop" />
-        	
-         </RelativeLayout>
-        </LinearLayout>
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/shop"
+                android:textColor="@android:color/white"
+                android:textSize="30dp" />
+
+
+            <ImageView
+                android:id="@+id/information_shop_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/text"
+                android:layout_margin="50dp"
+                android:src="@drawable/shop" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>
 
         
 
