@@ -35,12 +35,6 @@ public class SterilisationFragment extends Fragment  {
 				
 
 			}
-			
-			
-
-
-
-			
 
 			DatabaseService db = new DatabaseService(getActivity());
 			ArrayList<Profile> profiles = (ArrayList<Profile>) db.getProfiles();

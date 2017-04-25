@@ -1,23 +1,16 @@
 package com.certoclav.app.model;
 
 
-import java.util.ArrayList;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.certoclav.app.R;
@@ -25,6 +18,8 @@ import com.certoclav.app.button.QuickActionItem;
 import com.certoclav.app.listener.NavigationbarListener;
 import com.certoclav.app.listener.SensorDataListener;
 import com.certoclav.app.settings.SettingsActivity;
+
+import java.util.ArrayList;
 
 public class CertoclavNavigationbarClean implements SensorDataListener {
 
@@ -99,7 +94,7 @@ public class CertoclavNavigationbarClean implements SensorDataListener {
         LinearLayout linActionContainerLeft = (LinearLayout) mActivity.findViewById(R.id.navigationbarclear_container_quickactionitem_left);
         actionItemBack = (QuickActionItem) mActivity.getLayoutInflater().inflate(R.layout.quickaction_item, linActionContainer, false);
         actionItemBack.setChecked(false);
-        actionItemBack.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.ic_menu_revert));
+        actionItemBack.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.ic_back));
         //actionItemAdd.setText("test");
         linActionContainerLeft.addView(actionItemBack);
         actionItemBack.setOnClickListener(new OnClickListener() {

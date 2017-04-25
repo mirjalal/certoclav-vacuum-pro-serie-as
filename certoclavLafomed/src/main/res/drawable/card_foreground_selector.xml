@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:card_view="http://schemas.android.com/apk/res-auto">
+    <item android:state_pressed="true" card_view:cardElevation="10dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#18000000" />
+            <corners android:radius="4dp" />
+        </shape>
+
+    </item>
+    <item android:state_enabled="true" android:state_focused="true" card_view:cardElevation="5dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#ff000000" />
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+</selector>

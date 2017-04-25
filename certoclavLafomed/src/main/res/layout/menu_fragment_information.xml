@@ -1,53 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
-    <FrameLayout 
+    android:orientation="vertical">
+
+    <FrameLayout
         android:layout_width="15dp"
-        android:layout_height="15dp"
-        ></FrameLayout>
-    
+        android:layout_height="15dp"></FrameLayout>
+
     <LinearLayout
-    android:id="@+id/lin1"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:orientation="horizontal"
-    android:background="@android:color/white">
+        android:id="@+id/lin1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="horizontal">
 
 
-            
-        	<FrameLayout
-            	android:id="@+id/fragment_video_content"
-            	android:name="com.certoclav.app.menu.VideoFragment"
-            	android:layout_width="match_parent"
-            	android:layout_height="match_parent"
-            	android:layout_weight="1" 
- 			/>
-        	
+        <FrameLayout
+            android:id="@+id/fragment_video_content"
+            android:name="com.certoclav.app.menu.VideoFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
-        	<FrameLayout
-            	android:id="@+id/fragment_shop_content"
-            	android:name="com.certoclav.app.menu.ShopFragment"
-            	android:layout_weight="1"
-            	android:layout_width="match_parent"
-            	android:layout_height="match_parent"
-            	
- 			/>
 
-        	<FrameLayout
-            	android:id="@+id/fragment_messages_content"
-            	android:name="com.certoclav.app.menu.MessagesFragment"
-            	android:layout_width="match_parent"
-            	android:layout_height="match_parent"
-            	android:layout_weight="1" 
- 			/>
-            
+        <FrameLayout
+            android:id="@+id/fragment_shop_content"
+            android:name="com.certoclav.app.menu.ShopFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <FrameLayout
+            android:id="@+id/fragment_messages_content"
+            android:name="com.certoclav.app.menu.MessagesFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+    </LinearLayout>
 </LinearLayout>
-        </LinearLayout>
 
 		    
