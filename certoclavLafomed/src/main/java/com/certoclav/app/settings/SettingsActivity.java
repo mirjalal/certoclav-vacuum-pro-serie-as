@@ -24,60 +24,57 @@ import com.certoclav.app.model.CertoclavNavigationbarClean;
  */
 public class SettingsActivity extends FragmentActivity implements ItemListFragment.Callbacks {
 
-	/**
-	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-	 * device.
-	 */
+    /**
+     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
+     * device.
+     */
 
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.settings_activity); //ItemListFragment, sont nix
-CertoclavNavigationbarClean navigationbar = new CertoclavNavigationbarClean(this);
-navigationbar.setHeadText(getString(R.string.settings));
-	
-
-			//((ItemListFragment) getSupportFragmentManager().findFragmentById(R.id.item_list)).setActivateOnItemClick(true);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.settings_activity); //ItemListFragment, sont nix
+        CertoclavNavigationbarClean navigationbar = new CertoclavNavigationbarClean(this);
+        navigationbar.setHeadText(getString(R.string.settings));
 
 
-		// TODO: If exposing deep links into your app, handle intents here.
-	}
-	
-	
+        //((ItemListFragment) getSupportFragmentManager().findFragmentById(R.id.item_list)).setActivateOnItemClick(true);
 
 
-	/**
-	 * Callback method from {@link ItemListFragment.Callbacks} indicating that
-	 * the item with the given ID was selected.
-	 */
-	@Override
-	public void onItemSelected(long id) { //ItemListFragment ruft diese Funktion auf, falls ein Listenelement angeklickt wurde und übergibt die id des Listenelements.
-
-			// In two-pane mode, show the detail view in this activity by
-			// adding or replacing the detail fragment using a
-			// fragment transaction.
-		Log.e("String id:", Integer.toString((int)id));
-		
-		if(id == 0){
-			getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, new UserEditFragment()).commit(); 
-		}else if(id==1){
-	        getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container,new SettingsNetworkFragment()).commit();
-	    }else if(id==2){
-	    	getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container,new SettingsSterilisationFragment()).commit();
-	    }else if (id==3){
-	    	getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container,new SettingsDeviceFragment()).commit();
-	    }else if (id==4){
-	    	getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container,new SettingsLanguageFragment()).commit();
-	    }else if(id==5){
-	    	getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, new SettingsConditionFragment()).commit();
-	    }else if(id==6){
-	    	getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container,new CalibrateFragment()).commit();
-	    }else if(id==7){
-	    	getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container,new SettingsServiceFragment()).commit();
-	    }
+        // TODO: If exposing deep links into your app, handle intents here.
+    }
 
 
-		
-	}
+    /**
+     * Callback method from {@link ItemListFragment.Callbacks} indicating that
+     * the item with the given ID was selected.
+     */
+    @Override
+    public void onItemSelected(long id) { //ItemListFragment ruft diese Funktion auf, falls ein Listenelement angeklickt wurde und ï¿½bergibt die id des Listenelements.
+
+        // In two-pane mode, show the detail view in this activity by
+        // adding or replacing the detail fragment using a
+        // fragment transaction.
+        Log.e("String id:", Integer.toString((int) id));
+
+        if (id == 0) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, new UserEditFragment()).commit();
+        } else if (id == 1) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, new SettingsNetworkFragment()).commit();
+        } else if (id == 2) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, new SettingsSterilisationFragment()).commit();
+        } else if (id == 3) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, new SettingsDeviceFragment()).commit();
+        } else if (id == 4) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, new SettingsLanguageFragment()).commit();
+        } else if (id == 5) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, new SettingsConditionFragment()).commit();
+        } else if (id == 6) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, new CalibrateFragment()).commit();
+        } else if (id == 7) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, new SettingsServiceFragment()).commit();
+        }
+
+
+    }
 }
