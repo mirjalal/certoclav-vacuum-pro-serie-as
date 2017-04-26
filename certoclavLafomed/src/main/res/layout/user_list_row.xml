@@ -9,9 +9,10 @@
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="70dp"
+        android:padding="5dp"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/icon_user">
+        android:src="@drawable/ic_user">
 
     </ImageView>
 

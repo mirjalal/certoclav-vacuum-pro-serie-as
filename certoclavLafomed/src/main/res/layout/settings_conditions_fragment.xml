@@ -1,54 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-		<RelativeLayout
-		    xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-		    android:id="@+id/lin2"
-    		android:layout_height="match_parent"
-    		android:layout_width="match_parent"
-    		android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lin2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
 
-
-				<Button
-				    android:id="@+id/menu_conditions_button_save"
-				    android:layout_width="wrap_content"
-				    android:layout_height="wrap_content"
-				    android:layout_margin="5dp"
-				    android:text="@string/save"
-				    android:background="@drawable/btn_blue_dark"
-				    android:textColor="@android:color/white"
-				    android:textSize="25sp" >
-				</Button>
-		
-		    
-			<GridView
-			    android:id="@+id/video_gridlayout"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:layout_below="@+id/menu_conditions_button_save"
-				android:numColumns="1" >
-        	</GridView>
-		    
+    <Button
+        android:id="@+id/menu_conditions_button_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/button_bg_green_blue"
+        android:text="@string/save"
+        android:textColor="@android:color/white"
+        android:textSize="25sp"
+        android:textStyle="bold"></Button>
 
 
-      <ProgressBar
-          android:id="@+id/menu_conditions_progressbar"
-          style="?android:attr/progressBarStyleLarge"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_centerHorizontal="true"
-          android:layout_centerVertical="true" />
+    <GridView
+        android:id="@+id/video_gridlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/menu_conditions_button_save"
+        android:numColumns="1"></GridView>
 
-      <TextView
-          android:id="@+id/menu_conditions_text"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_centerHorizontal="true"
-          android:layout_centerVertical="true" 
-          android:text="@string/not_able_to_connect_to_certocloud">
-      </TextView>
-             
-        </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/menu_conditions_progressbar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
+
+    <TextView
+        android:id="@+id/menu_conditions_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="@string/not_able_to_connect_to_certocloud"></TextView>
+
+</RelativeLayout>
 
         
 

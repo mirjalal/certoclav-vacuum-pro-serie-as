@@ -511,39 +511,6 @@ public class LoginActivity extends Activity implements NavigationbarListener, Da
 
                 break;
             case CertoclavNavigationbarClean.BUTTON_ADD:
-            /*final Dialog dialog = new Dialog(LoginActivity.this);
-            dialog.setContentView(R.layout.dialog_yes_no);
-			dialog.setTitle(R.string.register_new_user);
-			TextView text = (TextView) dialog.findViewById(R.id.text);
-			ImageView image = (ImageView) dialog
-					.findViewById(R.id.dialog_image);
-			image.setVisibility(View.GONE);
-			// set the custom dialog components - text, image and button
-
-			text.setText(getText(R.string.do_you_really_want_to) + " "
-					+ getString(R.string.create_an_account_) + "\n");
-			Button dialogButton = (Button) dialog
-					.findViewById(R.id.dialogButtonOK);
-			// if button is clicked, close the custom dialog
-			dialogButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					dialog.dismiss();
-					showCreateAccountDialog();
-				}
-			});
-
-			Button dialogButtonNo = (Button) dialog
-					.findViewById(R.id.dialogButtonNO);
-			dialogButtonNo.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					dialog.dismiss();
-				}
-			});
-
-			dialog.show();*/
 
                 SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                         .setTitleText(getString(R.string.register_new_user))
@@ -808,7 +775,7 @@ public class LoginActivity extends Activity implements NavigationbarListener, Da
 
     }
 
-    private void changeApplicationMode(boolean isOnline){
+    private void changeApplicationMode(boolean isOnline) {
         SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(LoginActivity.this);
         Editor editor = prefs.edit();
