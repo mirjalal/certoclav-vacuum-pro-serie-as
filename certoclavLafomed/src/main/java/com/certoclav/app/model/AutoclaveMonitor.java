@@ -1,7 +1,5 @@
 package com.certoclav.app.model;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -18,7 +16,6 @@ import com.certoclav.app.listener.AlertListener;
 import com.certoclav.app.listener.AutoclaveStateListener;
 import com.certoclav.app.listener.ConnectionStatusListener;
 import com.certoclav.app.listener.SensorDataListener;
-import com.certoclav.app.monitor.MonitorActivity;
 import com.certoclav.app.monitor.MonitorNotificationActivity;
 import com.certoclav.app.service.CloudSocketService;
 import com.certoclav.app.service.ReadAndParseSerialService;
@@ -27,6 +24,8 @@ import com.certoclav.library.bcrypt.BCrypt;
 import com.certoclav.library.certocloud.CloudDatabase;
 import com.certoclav.library.certocloud.Condition;
 import com.certoclav.library.certocloud.NotificationService;
+
+import java.util.ArrayList;
 
 
 public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusListener, AutoclaveStateListener {
@@ -228,21 +227,31 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
                         int cycleNumber = Autoclave.getInstance().getController().getCycleNumber();
 
-                        if (AppConstants.isIoSimulated) {
-                            DatabaseService db = new DatabaseService(mContext);
-                            for (Protocol protocol : db.getProtocols()) {
-                                if (cycleNumber < protocol.getZyklusNumber()) {
-                                    cycleNumber = protocol.getZyklusNumber();
+                        try {
+                            if (AppConstants.isIoSimulated) {
+                                DatabaseService db = new DatabaseService(mContext);
+                                for (Protocol protocol : db.getProtocols()) {
+                                    if (cycleNumber < protocol.getZyklusNumber()) {
+                                        cycleNumber = protocol.getZyklusNumber();
+                                    }
                                 }
-                            }
-                            cycleNumber++;
-                        }//end if io simulated
+                                cycleNumber++;
+                            }//end if io simulated
+                        }catch (Exception e){
+                            cycleNumber = 1;
+                        }
 
 
 //set current Profile into Autoclave model
-                        int indexOfRunningProgram = Autoclave.getInstance().getIndexOfRunningProgram();
-                        if (indexOfRunningProgram > 12) indexOfRunningProgram = 12;
-                        if (indexOfRunningProgram < 0) indexOfRunningProgram = 0;
+                        int indexOfRunningProgram = 1;
+                        try {
+                            indexOfRunningProgram = Autoclave.getInstance().getIndexOfRunningProgram();
+                            if (indexOfRunningProgram > 12) indexOfRunningProgram = 12;
+                            if (indexOfRunningProgram < 1) indexOfRunningProgram = 1;
+                        }catch(Exception e){
+                            indexOfRunningProgram = 1;
+                            Autoclave.getInstance().setIndexOfRunningProgram(1);
+                        }
 
                         Profile runningProfile = databaseService.getProfileByIndex(indexOfRunningProgram).get(0);
                         Autoclave.getInstance().setProfile(runningProfile);
