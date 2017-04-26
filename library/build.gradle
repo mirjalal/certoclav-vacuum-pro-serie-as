@@ -26,4 +26,5 @@ dependencies {
     compile files('libs/okio-1.6.0.jar')
     compile files('libs/socket.io-client-0.7.0.jar')
     compile files('libs/zip4j_1.3.2.jar')
+    compile project(path: ':sweetdialog')
 }

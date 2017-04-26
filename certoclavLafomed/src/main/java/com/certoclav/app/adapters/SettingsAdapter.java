@@ -43,11 +43,11 @@ public class SettingsAdapter extends ArrayAdapter<SettingItem> {
         imageViewSelected.setImageResource(mSelectedPos == position ?
                 R.drawable.ic_setting_selected_item : R.drawable.ic_setting_unselected_item);
 
-        textViewText.setTextColor(mSelectedPos == position ? Color.BLUE : Color.BLACK);
+        textViewText.setTextColor(mSelectedPos == position ? Color.parseColor("#1f80ed") : Color.BLACK);
 
         // Populate the data into the template view using the data object
         textViewText.setText(item.getText());
-        imageViewIcon.setImageResource(item.getIcon());
+        imageViewIcon.setImageResource(mSelectedPos == position ? item.getIconSelected() : item.getIcon());
         // Return the completed view to render on screen
         return convertView;
     }

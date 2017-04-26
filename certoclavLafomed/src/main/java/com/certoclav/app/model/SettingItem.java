@@ -7,9 +7,12 @@ package com.certoclav.app.model;
 public class SettingItem {
     private String text;
     private int icon;
-    public SettingItem(String text, int icon){
+    private int iconSelected;
+
+    public SettingItem(String text, int icon, int iconSelected) {
         this.text = text;
         this.icon = icon;
+        this.iconSelected = iconSelected;
     }
 
     public int getIcon() {
@@ -18,5 +21,9 @@ public class SettingItem {
 
     public String getText() {
         return text;
+    }
+
+    public int getIconSelected() {
+        return iconSelected;
     }
 }
