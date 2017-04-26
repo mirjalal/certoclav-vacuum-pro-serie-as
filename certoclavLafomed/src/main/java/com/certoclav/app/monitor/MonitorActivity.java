@@ -237,7 +237,8 @@ public class MonitorActivity extends FragmentActivity implements NavigationbarLi
 			}else{
 				textState.setText(R.string.state_not_running);
 				buttonStop.setVisibility(View.VISIBLE);
-				buttonStop.setBackgroundResource(R.drawable.btn_green);
+				buttonStop.setBackgroundResource(R.drawable.button_bg_green_blue);
+				buttonStop.setPadding(0,0,0,0);
 				buttonStop.setText("START");
 			}
 			navigationbar.showButtonBack();
@@ -248,14 +249,14 @@ public class MonitorActivity extends FragmentActivity implements NavigationbarLi
 			}else{
 				buttonStop.setVisibility(View.VISIBLE);
 			}
-			buttonStop.setBackgroundResource(R.drawable.btn_blue_dark);
+			buttonStop.setBackgroundResource(R.drawable.button_bg_green_blue);
 			buttonStop.setText("STARTING...");
 			textState.setText(R.string.state_prepare_to_run);
 			navigationbar.showButtonBack();
 			break;
 		case PROGRAM_FINISHED:
 			buttonStop.setVisibility(View.VISIBLE);
-			buttonStop.setBackgroundResource(R.drawable.btn_blue_dark);
+			buttonStop.setBackgroundResource(R.drawable.button_bg_green_blue);
 			buttonStop.setText("PLEASE OPEN DOOR");
 			textState.setText(R.string.state_finished);
 			navigationbar.showButtonBack();
@@ -266,7 +267,7 @@ public class MonitorActivity extends FragmentActivity implements NavigationbarLi
 			}else{
 				buttonStop.setVisibility(View.VISIBLE);
 			}
-			buttonStop.setBackgroundResource(R.drawable.btn_red_dark);
+			buttonStop.setBackgroundResource(R.drawable.button_bg_green_blue);
 			buttonStop.setText(R.string.stop);
 			textState.setText(R.string.state_running);
 			navigationbar.hideButtonBack();
@@ -327,7 +328,7 @@ public class MonitorActivity extends FragmentActivity implements NavigationbarLi
 		if(Autoclave.getInstance().getProfile().getSterilisationTemperature() != 0){
 				sbuilder.append("Sterilisation temperature: ")
 						.append(Autoclave.getInstance().getProfile().getSterilisationTemperature())
-						.append(" °C")
+						.append(" ?C")
 						.append("\n");
 		}
 		
@@ -348,7 +349,7 @@ public class MonitorActivity extends FragmentActivity implements NavigationbarLi
 		if(Autoclave.getInstance().getProfile().getVacuumPersistTemperature() != 0){
 				sbuilder.append("Vacuum persist temperature: ")
 				.append(Autoclave.getInstance().getProfile().getVacuumPersistTemperature())
-				.append(" °C")
+				.append(" ?C")
 				.append("\n");
 		}
 		if(Autoclave.getInstance().getProfile().getVacuumPersistTime() != 0){

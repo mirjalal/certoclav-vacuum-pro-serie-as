@@ -389,6 +389,11 @@
     <string name="database_error">Database error, please perform factory reset!</string>
     <string name="start_video_assistant">Start video assistant</string>
     <string name="logout">Logout</string>
+    <string name="please_choose_and_start_the_program">Please choose and start the program</string>
+    <string name="on_the_blue_front_lcd_screen">on the blue front lcd screen</string>
+    <string name="close_door">Please close the door</string>
+    <string name="remove_water">Please empty the water waste container</string>
+    <string name="fill_water">Please fill water container</string>
 
 
 </resources>

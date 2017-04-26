@@ -93,7 +93,7 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
 
         if (getItem(position).getIndex() == 7) { //user defined profile
             getItem(position).setDescription("Vacuum times: " + Autoclave.getInstance().getUserDefinedProgram().getVacuumTimes() + "\n" +
-                    "Sterilization temp.: " + Autoclave.getInstance().getUserDefinedProgram().getSterilisationTemperature() + " °C\n" +
+                    "Sterilization temp.: " + Autoclave.getInstance().getUserDefinedProgram().getSterilisationTemperature() + " ?C\n" +
                     "Sterilization time: " + Autoclave.getInstance().getUserDefinedProgram().getSterilisationTime() + " min\n" +
                     "Drying time: " + Autoclave.getInstance().getUserDefinedProgram().getDryTime() + " min");
         }

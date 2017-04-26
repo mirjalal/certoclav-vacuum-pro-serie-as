@@ -5,28 +5,30 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
-
+import com.certoclav.app.adapters.SettingsAdapter;
+import com.certoclav.app.model.SettingItem;
 
 
 /**
  * A list fragment representing a list of Items. This fragment also supports
  * tablet devices by allowing list items to be given an 'activated' state upon
  * selection. This helps indicate which item is currently being viewed in a
- * {@link ItemDetailFragment}.
+ * {@link }.
  * <p>
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
 public class ItemListFragment extends ListFragment {
 	
-	ArrayList<String> list = new ArrayList<String>();
-	ArrayAdapter<String> adapter;
+	ArrayList<SettingItem> list = new ArrayList<SettingItem>();
+	SettingsAdapter adapter;
 	
 
 	/**
@@ -101,22 +103,24 @@ public class ItemListFragment extends ListFragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		
 		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		getListView().setDivider(null);
+		getListView().setDividerHeight(0);
+	//	getListView().setDivider(ContextCompat.getDrawable(getActivity(),R.drawable.list_divider));
 		// Restore the previously serialized activated item position.
 		
-		adapter = new ArrayAdapter<String>(getActivity(),R.layout.simple_list_item_settings,list);//,android.R.id.text1);
+		adapter = new SettingsAdapter(getActivity(),list);//,android.R.id.text1);
 		setListAdapter(adapter);
         
-		AddItem(getListView(), getActivity().getString(R.string.settings_user_account));
-		AddItem(getListView(), getActivity().getString(R.string.settings_network));
-		AddItem(getListView(), getActivity().getString(R.string.settings_sterilization));
-		AddItem(getListView(), getActivity().getString(R.string.settings_device));
-		AddItem(getListView(), getActivity().getString(R.string.settings_language));
-		AddItem(getListView(), getActivity().getString(R.string.notifications));
-		AddItem(getListView(), getActivity().getString(R.string.calibration));
+		AddItem(getListView(), getActivity().getString(R.string.settings_user_account), R.drawable.ic_account_settings);
+		AddItem(getListView(), getActivity().getString(R.string.settings_network), R.drawable.ic_network_settings);
+		AddItem(getListView(), getActivity().getString(R.string.settings_sterilization), R.drawable.ic_sterilization_settings);
+		AddItem(getListView(), getActivity().getString(R.string.settings_device), R.drawable.ic_device_settings);
+		AddItem(getListView(), getActivity().getString(R.string.settings_language), R.drawable.ic_language_settings);
+		AddItem(getListView(), getActivity().getString(R.string.notifications), R.drawable.ic_notification_settings);
+		AddItem(getListView(), getActivity().getString(R.string.calibration), R.drawable.ic_calibartion_settings);
 		if(AppConstants.APPLICATION_DEBUGGING_MODE){
-			AddItem(getListView(), "Service");
+			AddItem(getListView(), "Service", R.drawable.ic_service_setttings);
 		}
 		
 		
@@ -126,6 +130,8 @@ public class ItemListFragment extends ListFragment {
 				&& savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
 			setActivatedPosition(savedInstanceState
 					.getInt(STATE_ACTIVATED_POSITION));
+		}else {
+			mCallbacks.onItemSelected(0);
 		}
 	}
 
@@ -154,7 +160,8 @@ public class ItemListFragment extends ListFragment {
 	public void onListItemClick(ListView listView, View view, int position,
 			long id) {
 		super.onListItemClick(listView, view, position, id);
-
+		if(adapter!=null)
+			adapter.setSelectedPos(position);
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
 		mCallbacks.onItemSelected(id);
@@ -181,8 +188,8 @@ public class ItemListFragment extends ListFragment {
 		mActivatedPosition = position;
 	}
 
-	public void AddItem(View v, String str){
-		list.add(str);
+	public void AddItem(View v, String str, int icon){
+		list.add(new SettingItem(str,icon));
 		adapter.notifyDataSetChanged();
 }
 }

@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-		<RelativeLayout
-		    xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-		    android:id="@+id/lin2"
-    		android:layout_height="match_parent"
-    		android:layout_width="match_parent"
-    		android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lin2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eeeeee"
+    android:orientation="vertical">
 
-		    
-			<GridView
-			    android:id="@+id/video_gridlayout"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:layout_below="@+id/certoclav_actionbar"
-				android:numColumns="1" >
-        	</GridView>
-		    
-      <include layout="@layout/certoclav_navigationbar_clear"
-        android:id="@+id/certoclav_actionbar"/>
-             
-        </RelativeLayout>
+
+    <GridView
+        android:id="@+id/video_gridlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/certoclav_actionbar"
+        android:numColumns="3"></GridView>
+
+    <include
+        android:id="@+id/certoclav_actionbar"
+        layout="@layout/certoclav_navigationbar_clear" />
+
+</RelativeLayout>
 
         
 

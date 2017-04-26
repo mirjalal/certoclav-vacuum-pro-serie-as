@@ -27,7 +27,7 @@ public class SterilisationFragment extends Fragment  {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			Log.e("SterilisationFragment", "oncreate");
-			View rootView = inflater.inflate(R.layout.menu_fragment_sterilisation,container, false); //je nach mIten könnte man hier anderen Inhalt laden.
+			View rootView = inflater.inflate(R.layout.menu_fragment_sterilisation,container, false); //je nach mIten k?nnte man hier anderen Inhalt laden.
 		    Log.e("SterilsationFragment", "hole programGrid aus xml datei");
 			programGrid = (GridView) rootView.findViewById(R.id.sterilisation_grid);
 			if(programGrid ==  null){

@@ -76,7 +76,7 @@ public class VideoAdapter extends ArrayAdapter<Video> {
 
 
         //on click: play video
-        convertView.setOnClickListener(new OnClickListener() {
+        convertView.findViewById(R.id.card_view).setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
