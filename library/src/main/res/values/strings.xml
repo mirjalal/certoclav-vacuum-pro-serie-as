@@ -330,4 +330,7 @@
     <string name="can_not_read_from_sd_card">Can not read from SD card</string>
     <string name="connected">Connected</string>
     <string name="application_is_up_to_date">Application is up to date</string>
+    <string name="downloading">Downloading...</string>
+    <string name="download_success">Success!</string>
+    <string name="download_failed">Download failed!</string>
 </resources>

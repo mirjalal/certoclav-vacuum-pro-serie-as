@@ -1,14 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frame_user_edit"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".UserEditFragment" >
+    android:layout_height="match_parent">
 
     <ListView
         android:id="@+id/settings_user_edit_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
-
+        android:listSelector="@android:color/transparent"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

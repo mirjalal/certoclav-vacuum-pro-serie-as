@@ -29,14 +29,13 @@ import com.google.zxing.qrcode.QRCodeWriter;
 
 public class MenuLabelPrinterActivity extends Activity {
 
-	private CertoclavNavigationbarClean navigationbar = null;
-
+    private CertoclavNavigationbarClean navigationbar = null;
 
 
     private Button buttonPrint = null;
-    private ImageView Barcode=null;
-    private EditText editText1=null;
-    private EditText editText2=null;
+    private ImageView Barcode = null;
+    private EditText editText1 = null;
+    private EditText editText2 = null;
 
 
     public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
@@ -61,15 +60,15 @@ public class MenuLabelPrinterActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_main_label_editor);
- 
+
 
         navigationbar = new CertoclavNavigationbarClean(this);
         navigationbar.showButtonBack();
         navigationbar.setHeadText(getString(R.string.label_designer));
 
-        Barcode = (ImageView)  findViewById(R.id.imageViewBarcode);
-        editText1 = (EditText)  findViewById(R.id.dialog_label_text_edittext_line1);
-        editText2 = (EditText)  findViewById(R.id.dialog_label_text_edittext_line2);
+        Barcode = (ImageView) findViewById(R.id.imageViewBarcode);
+        editText1 = (EditText) findViewById(R.id.dialog_label_text_edittext_line1);
+        editText2 = (EditText) findViewById(R.id.dialog_label_text_edittext_line2);
 
         //Create an initial Barcode
         com.google.zxing.Writer writer = new QRCodeWriter();
@@ -79,37 +78,31 @@ public class MenuLabelPrinterActivity extends Activity {
             BitMatrix bm = new Code128Writer().encode("123456789", BarcodeFormat.CODE_128, 350, 120, null);
 
 
-
-        Bitmap barcodeBitmap = Bitmap.createBitmap(350, 120, Bitmap.Config.ARGB_8888);
-        for (int i = 0; i < 350; i++) {//width
-            for (int j = 0; j < 120; j++) {//height
-                barcodeBitmap.setPixel(i, j, bm.get(i, j) ? Color.BLACK: Color.WHITE);
+            Bitmap barcodeBitmap = Bitmap.createBitmap(350, 120, Bitmap.Config.ARGB_8888);
+            for (int i = 0; i < 350; i++) {//width
+                for (int j = 0; j < 120; j++) {//height
+                    barcodeBitmap.setPixel(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
+                }
             }
-        }
-        Barcode.setImageBitmap(barcodeBitmap);
-        }catch (Exception e){
+            Barcode.setImageBitmap(barcodeBitmap);
+        } catch (Exception e) {
 
         }
 
 
-
-
-        buttonPrint =  (Button) findViewById(R.id.menu_main_label_button_print);
+        buttonPrint = (Button) findViewById(R.id.menu_main_label_button_print);
         buttonPrint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try{
+                try {
 
-                    LabelPrinterUtils.printCustomLabel(editText1.getText().toString(),editText2.getText().toString(),1);
+                    LabelPrinterUtils.printCustomLabel(editText1.getText().toString(), editText2.getText().toString(), 1);
 
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
-
 
 
         editText1.addTextChangedListener(new TextWatcher() {
@@ -130,7 +123,7 @@ public class MenuLabelPrinterActivity extends Activity {
 
                     for (int i = 0; i < 350; i++) {//width
                         for (int j = 0; j < 120; j++) {//height
-                            barcodeBitmap.setPixel(i, j, bm.get(i, j) ? Color.BLACK: Color.WHITE);
+                            barcodeBitmap.setPixel(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
                         }
                     }
 
@@ -139,7 +132,7 @@ public class MenuLabelPrinterActivity extends Activity {
                     Barcode.setImageBitmap(barcodeBitmap);
 
 
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
 
@@ -158,25 +151,11 @@ public class MenuLabelPrinterActivity extends Activity {
         });
 
 
-
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     }
@@ -188,9 +167,6 @@ public class MenuLabelPrinterActivity extends Activity {
     }
 
 
-
-  
-
     @Override
     public void onStart() {
         super.onStart();
@@ -201,13 +177,8 @@ public class MenuLabelPrinterActivity extends Activity {
     public void onStop() {
         super.onStop();
 
-   
+
     }
-
-
-
-
-  
 
 
 }

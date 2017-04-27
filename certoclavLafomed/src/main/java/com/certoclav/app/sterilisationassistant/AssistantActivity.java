@@ -9,7 +9,6 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -167,7 +166,7 @@ public class AssistantActivity extends Activity implements ProfileListener, Aler
                 textStepDescription.setText(R.string.video_lock_description);
                 buttonNext.setBackgroundResource(R.drawable.btn_start_monitor);
                 if (AppConstants.IS_CERTOASSISTANT) {
-                    buttonNext.setBackgroundResource(R.drawable.btn_next_step);
+                    buttonNext.setBackgroundResource(R.drawable.bg_next_step);
                 }
                 break;
 
@@ -181,7 +180,7 @@ public class AssistantActivity extends Activity implements ProfileListener, Aler
                         + " " + Autoclave.getInstance().getProfile().getName() + " " + getString(R.string.on_the_blue_front_lcd_screen));
                 buttonNext.setBackgroundResource(R.drawable.btn_start_monitor);
                 if (AppConstants.IS_CERTOASSISTANT) {
-                    buttonNext.setBackgroundResource(R.drawable.btn_next_step);
+                    buttonNext.setBackgroundResource(R.drawable.bg_next_step);
                 }
                 break;
         }

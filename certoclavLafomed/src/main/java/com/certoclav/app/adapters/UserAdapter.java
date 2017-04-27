@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -68,35 +69,27 @@ public class UserAdapter extends ArrayAdapter<User> {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		
-		
+		User user = getItem(position);
 		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		convertView = inflater.inflate(R.layout.user_list_row, parent, false);
 		
 
 		TextView firstLine = (TextView) convertView.findViewById(R.id.first_line);
-		firstLine.setText(getItem(position).getEmail());
+		firstLine.setText(user.getEmail());
 
 		final TextView secondLine = (TextView) convertView.findViewById(R.id.second_line);
+		secondLine.setText(user.getFirstName()+" "+user.getLastName());
 	
-		LinearLayout containerUnlink = (LinearLayout) convertView.findViewById(R.id.user_list_element_container_button);
-		
-		actionItemUnlink = (QuickActionItem) inflater.inflate(R.layout.quickaction_item, containerUnlink, false);
-		actionItemUnlink.setChecked(false);
-		actionItemUnlink.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_menu_bin));
-			actionItemUnlink.setText("delete");
-			actionItemUnlink.setOnClickListener(new OnClickListener() {	
-				@Override
-				public void onClick(View v) {
-					for(OnClickButtonListener listener : onClickButtonListeners){
-						listener.onClickButtonDelete(getItem(position));
-					}
+		convertView.findViewById(R.id.buttonDelete).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				for(OnClickButtonListener listener : onClickButtonListeners){
+					listener.onClickButtonDelete(getItem(position));
 				}
-			});
-
+			}
+		});
 		
-		containerUnlink.addView(actionItemUnlink);
 
-		
 		return convertView;
 	}
 }

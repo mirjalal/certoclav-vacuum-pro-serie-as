@@ -64,9 +64,9 @@ public class ProtocolAdapter extends ArrayAdapter<Protocol> {
 		try{
 			ImageView imageCloud = (ImageView) convertView.findViewById(R.id.protocols_element_image_cloud);
 			if(getItem(position).isUploaded() == false){
-				imageCloud.setImageResource(R.drawable.icon_cloud_point);
+				imageCloud.setImageResource(R.drawable.ic_cloud_no_user);
 			}else{
-				imageCloud.setImageResource(R.drawable.icon_cloud_ok);
+				imageCloud.setImageResource(R.drawable.ic_cloud_user);
 			}
 			
 			TextView id = (TextView) convertView.findViewById(R.id.protocols_element_id);

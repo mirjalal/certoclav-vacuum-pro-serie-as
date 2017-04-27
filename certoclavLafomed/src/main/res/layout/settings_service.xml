@@ -3,101 +3,118 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        		<TextView
-    		    android:id="@+id/text_temp"
-    		    android:layout_width="wrap_content"
-    		    android:layout_height="wrap_content"
-    		    android:ems="10"
-    		    android:text="state:\n temp: \n press:\n" >
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:clickable="true"
+        android:foreground="@drawable/card_foreground"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="5dp">
 
-    	
-    		</TextView>
-    		
-    <ScrollView
-        android:id="@+id/scrollView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:layout_below="@+id/text_temp">
- 
-
-    <TableLayout
-        android:id="@+id/parameter_table"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-
-
-
-                 		
-    		
-     
-    <TableRow
-            android:id="@+id/tableRow11"
+        <TextView
+            android:id="@+id/text_temp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-    		
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="state:\ntemp:\n press:\n">
+
+
+        </TextView>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view_checkboxes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:clickable="true"
+        android:foreground="@drawable/card_foreground"
+        card_view:cardCornerRadius="4dp"
+        android:layout_below="@+id/card_view"
+        card_view:cardElevation="5dp">
+
+        <ScrollView
+            android:id="@+id/scrollView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+            <TableLayout
+                android:id="@+id/parameter_table"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+
+                <TableRow
+                    android:id="@+id/tableRow11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
                     <CheckBox
-            android:id="@+id/checkBox_program_finished"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Progr. finished successfully"/>
-           
-                        <CheckBox
-            android:id="@+id/checkBox_program_running"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Progr. is running?"/>
-                        
-                                           <CheckBox
-            android:id="@+id/checkBox_door_closed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Door closed?"/>
-                                           
-    	</TableRow>
-                
-                		
+                        android:id="@+id/checkBox_program_finished"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Finished successfully?" />
 
-       
-       <TableRow
-            android:id="@+id/tableRow13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+                    <CheckBox
+                        android:id="@+id/checkBox_program_running"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Progr. is running?" />
 
-                                                  <CheckBox
-            android:id="@+id/checkBox_door_locked"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Door locked?"/>
+                    <CheckBox
+                        android:id="@+id/checkBox_door_closed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Door closed?" />
 
-           <CheckBox
-               android:id="@+id/checkBox_water_low"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="Waterlvl low?" />
-           
-        <CheckBox
-            android:id="@+id/checkBox_water_full"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Waterlvl full?" />
-           
+                </TableRow>
 
-           
-             
-       </TableRow>
-       <TableRow
-            android:id="@+id/tableRow14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-              
-             <CheckBox
-            android:id="@+id/checkBox_stopped_by_user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Stoped by user?" />
-           
-             
-       </TableRow>           
-    </TableLayout>
-</ScrollView>
+
+                <TableRow
+                    android:id="@+id/tableRow13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <CheckBox
+                        android:id="@+id/checkBox_door_locked"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Door locked?" />
+
+                    <CheckBox
+                        android:id="@+id/checkBox_water_low"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Waterlvl low?" />
+
+                    <CheckBox
+                        android:id="@+id/checkBox_water_full"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Waterlvl full?" />
+
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <CheckBox
+                        android:id="@+id/checkBox_stopped_by_user"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Stoped by user?" />
+
+
+                </TableRow>
+            </TableLayout>
+        </ScrollView>
+    </android.support.v7.widget.CardView>
 </RelativeLayout>

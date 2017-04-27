@@ -224,7 +224,7 @@
     <string name="internet_not_connected">Internet not available</string>
     <string name="you_are_not_registered_at_certocloud_com">You are not registered at www.certocloud.com</string>
     <string name="please_log_in_with_your_certocloud_account_first">Please log in with your CertoCloud Account first</string>
-    <string name="please_connect_to_internet">Please connect to internet</string>
+    <string name="please_connect_to_internet">Please connect to internet!</string>
     <string name="do_you_want_to_switch_to_offline_mode_new_protocols_will_be_uploaded_to_certocloud_after_next_successful_login">Do you want to switch to offline mode? New protocols will be uploaded to CertoCloud after next successful login</string>
     <string name="login_failed">Login failed</string>
     <string name="please_enter_a_valid_name">Please enter a valid name</string>
@@ -394,6 +394,14 @@
     <string name="close_door">Please close the door</string>
     <string name="remove_water">Please empty the water waste container</string>
     <string name="fill_water">Please fill water container</string>
+    <string name="please_enter_a_valid_drying_time">Please enter a valid drying time!</string>
+    <string name="please_enter_a_valid_sterilization_time">Please enter a valid sterilization time!</string>
+    <string name="please_enter_a_valid_sterilization_temperature">Please enter a valid sterilization temperature!</string>
+    <string name="please_enter_a_valid_number_of_vacuum_times">Please enter a valid number of vacuum times!</string>
+    <string name="please_enter_a_valid_data">Please enter a valid data!</string>
+    <string name="edit_custom_program">Edit custom program</string>
+    <string name="updated_successfully">Updated successfully!</string>
+    <string name="update_failed">Update failed! Try again!</string>
 
 
 </resources>

@@ -1,80 +1,87 @@
-<RelativeLayout   xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    >
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
 
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:foreground="@drawable/card_foreground"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="3dp">
+
+        <RelativeLayout
+            android:id="@+id/contentOfActivity"
+            android:layout_width="550dp"
+            android:layout_height="250dp"
+            android:gravity="center_horizontal"
+            android:padding="15dp">
 
 
+            <EditText
+                android:id="@+id/dialog_label_text_edittext_line1"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:background="@drawable/edittext_selector"
+                android:gravity="center_vertical"
+                android:hint="@string/barcode"
+                android:imeOptions="actionDone"
+                android:maxLength="15"
+                android:singleLine="true"
+                android:textScaleX="1.375"
+                android:textSize="25sp" />
 
-	<RelativeLayout
-    	android:id="@+id/contentOfActivity"
-    	android:layout_height="250dp"
-    	android:layout_width="550dp"
-		android:layout_centerInParent="true"
-		android:padding="15dp"
-		android:gravity="center_horizontal"
-		android:background="@drawable/rounded_corner">
+            <EditText
+                android:id="@+id/dialog_label_text_edittext_line2"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_below="@+id/dialog_label_text_edittext_line1"
+                android:background="@drawable/edittext_selector"
+                android:gravity="center_vertical"
+                android:hint="@string/text_line"
+                android:imeOptions="actionDone"
+                android:maxLength="15"
+                android:singleLine="true"
+                android:textScaleX="1.375"
+                android:textSize="25sp" />
 
-
-	<EditText
-		android:id="@+id/dialog_label_text_edittext_line1"
-		android:layout_width="match_parent"
-		android:layout_height="70dp"
-		android:gravity="center_vertical"
-		android:textSize="25sp"
-		android:textScaleX="1.375"
-		android:layout_weight="1"
-		android:hint="@string/barcode"
-		android:maxLength="15"
-		android:imeOptions="actionDone"
-		android:singleLine="true"
-
-		/>    
-
-        <EditText
-            android:layout_below="@+id/dialog_label_text_edittext_line1"
-            android:id="@+id/dialog_label_text_edittext_line2"
-            android:layout_width="match_parent"
-			android:layout_height="70dp"
-			android:gravity="center_vertical"
-			android:textSize="25sp"
-			android:textScaleX="1.375"
-            android:hint="@string/text_line"
-			android:maxLength="15"
-			android:imeOptions="actionDone"
-			android:singleLine="true"
-
-            />
-
-	<ImageView
-        android:layout_below="@+id/dialog_label_text_edittext_line2"
-		android:layout_margin="10dp"
-		android:id="@+id/imageViewBarcode"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentLeft="true"
+            <ImageView
+                android:id="@+id/imageViewBarcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/dialog_label_text_edittext_line2"
+                android:layout_margin="10dp" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
 
 
-		/>
-	</RelativeLayout>
+    <include
+        android:id="@+id/navigationbar"
+        layout="@layout/certoclav_navigationbar_clear"></include>
 
-
-	
-		<include layout="@layout/certoclav_navigationbar_clear"
-		android:id="@+id/navigationbar"></include>
-		
-			<Button
-		android:id="@+id/menu_main_label_button_print"
-		android:layout_width="150dp"
-		android:layout_height="70dp"
-		android:layout_margin="5dp"
-		android:text="@string/print"
-		style="@style/button_default"
-		android:layout_alignParentTop="true"
-		android:layout_alignParentRight="true" />
+    <Button
+        android:id="@+id/menu_main_label_button_print"
+        android:background="@drawable/button_bg_green_blue"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:paddingBottom="0dp"
+        android:gravity="center"
+        android:paddingTop="0dp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:textColor="@android:color/white"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:text="@string/print" />
 
 </RelativeLayout>
 
