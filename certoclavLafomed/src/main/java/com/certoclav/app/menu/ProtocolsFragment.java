@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,7 +43,9 @@ import com.certoclav.app.util.ESCPos;
 import com.certoclav.app.util.LabelPrinterUtils;
 import com.certoclav.library.graph.LineGraph;
 
-public class ProtocolsFragment extends Fragment {
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
+public class ProtocolsFragment extends Fragment implements OnClickListener {
 
 
     private ListView list;
@@ -70,6 +73,9 @@ public class ProtocolsFragment extends Fragment {
         progressBarProtocolList = (ProgressBar) rootView.findViewById(R.id.protocols_progress_bar_list);
         progressBarGraph = (ProgressBar) rootView.findViewById(R.id.protocols_progress_bar_graph);
         databaseService = new DatabaseService(getActivity());
+
+        rootView.findViewById(R.id.imageViewPrint).setOnClickListener(this);
+        rootView.findViewById(R.id.imageViewScan).setOnClickListener(this);
 
 
         List<String> listSortstrings = new ArrayList<String>();
@@ -103,7 +109,7 @@ public class ProtocolsFragment extends Fragment {
         list = (ListView) rootView.findViewById(R.id.protocols_list);
         try {
             list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-            list.setSelector(R.color.orange);
+            //  list.setSelector(R.color.orange);
         } catch (Exception e) {
 
         }
@@ -212,6 +218,82 @@ public class ProtocolsFragment extends Fragment {
 
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.imageViewPrint:
+                if (!printSelectedProtocol()) {
+                    Toast.makeText(getActivity(), getString(R.string.select_protocol_first), Toast.LENGTH_LONG).show();
+                }
+                break;
+            case R.id.imageViewScan:
+
+                askForScan();
+                break;
+        }
+    }
+
+    private void askForScan() {
+        try {
+
+            final SweetAlertDialog dialog = new SweetAlertDialog(getActivity(), R.layout.dialog_scan, SweetAlertDialog.WARNING_TYPE);
+            dialog.setContentView(R.layout.dialog_scan);
+            dialog.setTitle(R.string.scan_item);
+            dialog.setCancelable(true);
+            dialog.setCanceledOnTouchOutside(true);
+
+            // set the custom dialog components - text, image and button
+            final EditText editText = (EditText) dialog.findViewById(R.id.edittext);
+            editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+
+                        editText.requestFocus();
+
+                    }
+                }
+            });
+            editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+
+                    String[] barcodeSplitted = editText.getText().toString().split("\\.");
+                    Log.e("MenuMain", "length of splitted barcode" + barcodeSplitted.length);
+                    if (barcodeSplitted.length == 2) {
+                        select(
+                                barcodeSplitted[0],
+                                barcodeSplitted[1]);
+                    } else {
+                        Log.e("MenuMain", "invalid barcode" + editText.getText().toString());
+                        Toast.makeText(getActivity(), "Invalid barcode", Toast.LENGTH_LONG).show();
+                    }
+                    editText.setText("");
+                    dialog.dismissWithAnimation();
+
+                    return false;
+                }
+            });
+            Button dialogButtonNo1 = (Button) dialog.findViewById(R.id.dialogButtonNO);
+            dialogButtonNo1.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    dialog.dismissWithAnimation();
+                }
+            });
+
+            dialog.show();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     public class QueryProtoolsTask extends AsyncTask<Integer, Integer, List<Protocol>> {
 
@@ -282,16 +364,16 @@ public class ProtocolsFragment extends Fragment {
     public void showLabelPrinterDialog() {
         try {
 
-
-            final Dialog dialog1 = new Dialog(getActivity());
-            dialog1.setContentView(R.layout.dialog_edit_exp_time);
-            dialog1.setTitle("Please enter time until expiration");
-
+            final SweetAlertDialog dialog = new SweetAlertDialog(getActivity(), R.layout.dialog_edit_exp_time, SweetAlertDialog.WARNING_TYPE);
+            dialog.setContentView(R.layout.dialog_edit_exp_time);
+            dialog.setTitle(R.string.enter_time_until_expiration);
+            dialog.setCancelable(true);
+            dialog.setCanceledOnTouchOutside(true);
             // set the custom dialog components - text, image and button
 
-            final EditText editMonths = (EditText) dialog1.findViewById(R.id.dialog_edit_number_months);
+            final EditText editMonths = (EditText) dialog.findViewById(R.id.dialog_edit_number_months);
 
-            Button buttonOk = (Button) dialog1.findViewById(R.id.dialog_edit_number_button_ok);
+            Button buttonOk = (Button) dialog.findViewById(R.id.dialog_edit_number_button_ok);
             buttonOk.setOnClickListener(new OnClickListener() {
 
                 @Override
@@ -325,21 +407,21 @@ public class ProtocolsFragment extends Fragment {
                         Toast.makeText(getActivity(), "Unable to print the label", Toast.LENGTH_LONG).show();
                     }
 
-                    dialog1.dismiss();
+                    dialog.dismissWithAnimation();
                 }
             });
 
 
-            Button buttonCancel = (Button) dialog1.findViewById(R.id.dialog_edit_number_button_cancel);
+            Button buttonCancel = (Button) dialog.findViewById(R.id.dialog_edit_number_button_cancel);
             buttonCancel.setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    dialog1.dismiss();
+                    dialog.dismissWithAnimation();
 
                 }
             });
-            Button buttonSkip = (Button) dialog1.findViewById(R.id.dialog_edit_number_button_skip);
+            Button buttonSkip = (Button) dialog.findViewById(R.id.dialog_edit_number_button_skip);
             buttonSkip.setOnClickListener(new OnClickListener() {
 
                 @Override
@@ -362,12 +444,12 @@ public class ProtocolsFragment extends Fragment {
                     } catch (Exception e) {
                         Toast.makeText(getActivity(), "Unable to print the label", Toast.LENGTH_LONG).show();
                     }
-                    dialog1.dismiss();
+                    dialog.dismissWithAnimation();
 
                 }
             });
 
-            dialog1.show();
+            dialog.show();
 
 
         } catch (Exception e) {
@@ -384,24 +466,26 @@ public class ProtocolsFragment extends Fragment {
         try {
 
 
-            final Dialog dialog1 = new Dialog(getActivity());
-            dialog1.setContentView(R.layout.dialog_protocol_label);
-            dialog1.setTitle(getString(R.string.please_choose_one_of_the_following_options));
+            final SweetAlertDialog dialog = new SweetAlertDialog(getActivity(), R.layout.dialog_protocol_label, SweetAlertDialog.WARNING_TYPE);
+            dialog.setContentView(R.layout.dialog_protocol_label);
+            dialog.setTitle(R.string.please_choose_one_of_the_following_options);
+            dialog.setCancelable(true);
+            dialog.setCanceledOnTouchOutside(true);
 
 
-            Button buttonLabel = (Button) dialog1.findViewById(R.id.dialogButtonLabel);
+            Button buttonLabel = (Button) dialog.findViewById(R.id.dialogButtonLabel);
             buttonLabel.setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
                     showLabelPrinterDialog();
 
-                    dialog1.dismiss();
+                    dialog.dismissWithAnimation();
                 }
             });
 
 
-            Button buttonProtocol = (Button) dialog1.findViewById(R.id.dialogButtonProtocol);
+            Button buttonProtocol = (Button) dialog.findViewById(R.id.dialogButtonProtocol);
             buttonProtocol.setOnClickListener(new OnClickListener() {
 
                 @Override
@@ -409,7 +493,7 @@ public class ProtocolsFragment extends Fragment {
                     try {
                         ESCPos printUtils = new ESCPos();
                         printUtils.printProtocol(protocolAdapter.getItem(aktPosition), getActivity());
-                        dialog1.dismiss();
+                        dialog.dismissWithAnimation();
                         Toast.makeText(getActivity(), getString(R.string.protocol_printed), Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         Toast.makeText(getActivity(), getString(R.string.please_select_a_protocol_first), Toast.LENGTH_LONG).show();
@@ -418,18 +502,18 @@ public class ProtocolsFragment extends Fragment {
                 }
             });
 
-            Button buttonCancel = (Button) dialog1.findViewById(R.id.dialogButtonCancel);
+            Button buttonCancel = (Button) dialog.findViewById(R.id.dialogButtonCancel);
             buttonCancel.setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
 
-                    dialog1.dismiss();
+                    dialog.dismissWithAnimation();
 
                 }
             });
 
-            dialog1.show();
+            dialog.show();
 
 
         } catch (Exception e) {

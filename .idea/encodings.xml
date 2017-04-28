@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/certoclavLafomed/src/main/java/com/certoclav/app/adapters/ProgramAdapter.java" charset="ISO-8859-1" />
     <file url="file://$PROJECT_DIR$/certoclavLafomed/src/main/java/com/certoclav/app/menu/MenuMain.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/certoclavLafomed/src/main/java/com/certoclav/app/menu/ProtocolsFragment.java" charset="ISO-8859-1" />
     <file url="file://$PROJECT_DIR$/certoclavLafomed/src/main/java/com/certoclav/app/menu/SterilisationFragment.java" charset="ISO-8859-1" />
     <file url="file://$PROJECT_DIR$/certoclavLafomed/src/main/java/com/certoclav/app/model/AutoclaveMonitor.java" charset="ISO-8859-1" />
     <file url="file://$PROJECT_DIR$/certoclavLafomed/src/main/java/com/certoclav/app/monitor/MonitorActivity.java" charset="ISO-8859-1" />

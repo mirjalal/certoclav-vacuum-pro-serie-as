@@ -402,6 +402,8 @@
     <string name="edit_custom_program">Edit custom program</string>
     <string name="updated_successfully">Updated successfully!</string>
     <string name="update_failed">Update failed! Try again!</string>
+    <string name="enter_time_until_expiration">Please enter time until expiration</string>
+    <string name="scan_item">Please scan item!</string>
 
 
 </resources>

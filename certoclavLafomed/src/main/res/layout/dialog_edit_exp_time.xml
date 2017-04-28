@@ -3,89 +3,87 @@
     android:id="@+id/dialog_edit_number_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@android:color/black">
+    android:background="@drawable/dialog_background">
 
-<LinearLayout 
-	    android:layout_height="wrap_content"
-    	android:layout_width="match_parent" 	
-    	android:layout_marginLeft="20dp"
-    	android:layout_marginRight="20dp"
-    	android:orientation="vertical" 
-	            >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/enter_time_until_expiration"
+            android:textColor="@android:color/black"
+            android:textSize="30sp" />
 
-	            
-
-	    	<LinearLayout 
-	  	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"  	  
-	        android:orientation="horizontal"
-	        android:layout_marginBottom="10dp">
-	    	
-
-	    	    
-
-	    	
-	    		    	    <EditText 
-	    	android:id="@+id/dialog_edit_number_months"
-	        android:layout_width="match_parent"
-	        android:layout_height="50dp"
-	        android:layout_weight="1"
-	        android:numeric="integer"
-			style="@style/edit_text_default"
-	    	        />
-
-	    	<TextView
-	    	    android:layout_width="match_parent"
-	    	    android:layout_height="30dp"
-	    	    android:layout_marginLeft="20dp"
-	    	    android:layout_weight="1"
-	    	    android:singleLine="true"
-	    	    android:text="@string/months"
-				android:textAllCaps="true"
-				style="@style/text_default_white"/>
-	    	
-  
-	    	</LinearLayout>
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal"
-		android:layout_below="@+id/dialog_container_text"
-		>
-		<Button
-			android:id="@+id/dialog_edit_number_button_cancel"
-			android:layout_width="match_parent"
-			android:layout_height="50dp"
-			android:layout_weight="1"
-			android:text="@string/cancel"
-			android:textAllCaps="true"
-			style="@style/button_default"
-			/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
 
 
-		<Button
-			android:id="@+id/dialog_edit_number_button_ok"
-			android:layout_width="match_parent"
-			android:layout_height="50dp"
-			android:layout_weight="1"
-			android:text="@string/ok"
-			android:textAllCaps="true"
-			style="@style/button_default"
-			/>
+            <EditText
+                android:id="@+id/dialog_edit_number_months"
+                android:layout_width="match_parent"
+                android:layout_height="78dp"
+                android:layout_weight="1"
+                android:background="@drawable/edittext_selector"
+                android:inputType="number" />
+
+            <TextView
+                style="@style/text_default_white"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:lines="1"
+                android:text="@string/months"
+                android:textAllCaps="true"
+                android:textColor="@android:color/black" />
 
 
-		<Button
-			android:id="@+id/dialog_edit_number_button_skip"
-			android:layout_width="match_parent"
-			android:layout_height="50dp"
-			android:layout_weight="1"
-			android:text="@string/skip"
-			android:textAllCaps="true"
-			style="@style/button_default"
-			/>
-				
-	</LinearLayout>
-	        </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dialog_container_text"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/dialog_edit_number_button_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="78dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_login"
+                android:text="@string/cancel"
+                android:textAllCaps="true" />
+
+
+            <Button
+                android:id="@+id/dialog_edit_number_button_ok"
+                android:layout_width="match_parent"
+                android:layout_height="78dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_login"
+                android:text="@string/ok"
+                android:textAllCaps="true" />
+
+
+            <Button
+                android:id="@+id/dialog_edit_number_button_skip"
+                android:layout_width="match_parent"
+                android:layout_height="78dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_login"
+                android:text="@string/skip"
+                android:textAllCaps="true" />
+
+        </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>
