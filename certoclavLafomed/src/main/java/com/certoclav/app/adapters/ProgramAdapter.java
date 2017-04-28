@@ -1,38 +1,30 @@
 package com.certoclav.app.adapters;
 
-import java.util.List;
-
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.Profile;
-import com.certoclav.app.menu.LoginActivity;
 import com.certoclav.app.menu.ScanActivity;
 import com.certoclav.app.model.Autoclave;
-import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.monitor.MonitorActivity;
 import com.certoclav.app.sterilisationassistant.AssistantActivity;
 import com.certoclav.library.application.ApplicationController;
+
+import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -152,7 +144,7 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
                 }
 
                 if (AppConstants.IS_CERTOASSISTANT) {
-                    sweetAlertDialog.setContentText(mContext.getString(R.string.do_you_really_want_to_start) + " " + "the video assistant" + "?");
+                    sweetAlertDialog.setContentText(mContext.getString(R.string.do_you_really_want_to_start) + " " + mContext.getString(R.string.the_video_assistant) + "?");
                 }
                 sweetAlertDialog.show();
 

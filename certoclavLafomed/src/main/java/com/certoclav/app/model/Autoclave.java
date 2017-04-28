@@ -1,12 +1,6 @@
 package com.certoclav.app.model;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Observable;
-
 import android.util.Log;
-import android_serialport_api.SerialService;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.database.Controller;
@@ -24,6 +18,13 @@ import com.certoclav.app.listener.SensorDataListener;
 import com.certoclav.app.listener.UserProgramListener;
 import com.certoclav.app.listener.WifiListener;
 import com.certoclav.library.application.ApplicationController;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Observable;
+
+import android_serialport_api.SerialService;
 
 
 
@@ -643,10 +644,11 @@ public void setCurrentProgramCounter(int currentProgramCounter) {
 	}
 
 
-	public void setAdjustParameters(double offsetTemp1, double offsetTemp2, double offsetTemp3, double offsetPress) {
-		getData().getTemp1().setOffset(offsetTemp1);
-		getData().getTemp2().setOffset(offsetTemp2);
-		getData().getTemp3().setOffset(offsetTemp3);
+	public void setAdjustParameters(double offsetSteamSensor, double offsetMediaSensor, double offsetHeaterSensor, double offsetSteamGeneratorSensor, double offsetPress) {
+		getData().getTemp1().setOffset(offsetSteamSensor); //steam
+		getData().getTemp2().setOffset(offsetMediaSensor); //media
+		getData().getTemp3().setOffset(offsetHeaterSensor); //heating element
+		getData().getTemp4().setOffset(offsetSteamGeneratorSensor); //steam generator sensor
 		getData().getPress().setOffset(offsetPress);
 		
 		for(CalibrationListener listener : calibraionListeners){
