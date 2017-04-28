@@ -224,7 +224,7 @@
     <string name="show_wifi_settings">Öffne WLAN Einstellungen</string>
     <string name="switch_to_offline_mode">Wechsel zum Offline Modus</string>
     <string name="do_not_take_advantage_from_certocloud">Auf die Vorteile der CertoCloud verzichten</string>
-    <string name="add_an_existing_certocloud_account">Ein bereits existierendes CertoCloud Konto hinzufügen</string>
+    <string name="add_an_existing_certocloud_account">Existierendes CertoCloud Konto hinzufügen</string>
     <string name="create_a_new_certocloud_account">Ein neues CertoCloud Konto erstellen</string>
     <string name="create_local">Lokales Konto</string>
     <string name="add_existing">Konto hinzufügen</string>

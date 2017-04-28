@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -379,6 +380,8 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
         mCloseFromCancel = fromCancel;
         if (mConfirmButton != null)
             mConfirmButton.startAnimation(mOverlayOutAnim);
+        else
+            ((ViewGroup)findViewById(android.R.id.content)).getChildAt(0).startAnimation(mOverlayOutAnim);
         mDialogView.startAnimation(mModalOutAnim);
     }
 

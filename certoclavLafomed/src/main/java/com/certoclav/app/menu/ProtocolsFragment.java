@@ -5,7 +5,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +18,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -130,6 +134,7 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
                     protocolAdapter.getItem(i).setSelected(false);
                 }
                 protocolAdapter.getItem(arg2).setSelected(true);
+                protocolAdapter.notifyDataSetChanged();
 
 
                 Log.e("onItemClick arg2", " " + arg2);
@@ -249,10 +254,11 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (!hasFocus) {
-
                         editText.requestFocus();
-
+                    } else {
+                        hideKeyboard(getActivity());
                     }
+
                 }
             });
             editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -269,12 +275,11 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
                                 barcodeSplitted[1]);
                     } else {
                         Log.e("MenuMain", "invalid barcode" + editText.getText().toString());
-                        Toast.makeText(getActivity(), "Invalid barcode", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), getString(R.string.invalid_barcode), Toast.LENGTH_LONG).show();
                     }
-                    editText.setText("");
                     dialog.dismissWithAnimation();
 
-                    return false;
+                    return true;
                 }
             });
             Button dialogButtonNo1 = (Button) dialog.findViewById(R.id.dialogButtonNO);
@@ -287,12 +292,23 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
             });
 
             dialog.show();
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        View view = activity.getCurrentFocus();
+
+        if (view != null) {
+            InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
     public class QueryProtoolsTask extends AsyncTask<Integer, Integer, List<Protocol>> {
@@ -404,7 +420,7 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
                                     protocolAdapter.getItem(aktPosition).getErrorCode() == 0);
                         }
                     } catch (Exception e) {
-                        Toast.makeText(getActivity(), "Unable to print the label", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), getString(R.string.unable_to_print_the_label), Toast.LENGTH_LONG).show();
                     }
 
                     dialog.dismissWithAnimation();

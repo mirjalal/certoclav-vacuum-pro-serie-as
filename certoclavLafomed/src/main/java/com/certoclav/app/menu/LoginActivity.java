@@ -315,8 +315,8 @@ public class LoginActivity extends Activity implements NavigationbarListener, Da
 
                         @Override
                         protected Boolean doInBackground(String... params) {
-                            if (BCrypt.checkpw(params[0], params[1])
-                                    || AppConstants.isIoSimulated
+                            if (AppConstants.isIoSimulated
+                                    || BCrypt.checkpw(params[0], params[1])
                                     || params[0].toString().equals("master@certocloud")) {
 
                                 DatabaseService databaseService = new DatabaseService(

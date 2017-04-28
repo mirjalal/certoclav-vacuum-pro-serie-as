@@ -404,6 +404,8 @@
     <string name="update_failed">Update failed! Try again!</string>
     <string name="enter_time_until_expiration">Please enter time until expiration</string>
     <string name="scan_item">Please scan item!</string>
+    <string name="unable_to_print_the_label">Unable to print the label!</string>
+    <string name="invalid_barcode">Invalid barcode!</string>
 
 
 </resources>

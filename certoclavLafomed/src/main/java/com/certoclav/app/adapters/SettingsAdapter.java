@@ -26,6 +26,7 @@ public class SettingsAdapter extends ArrayAdapter<SettingItem> {
 
     public void setSelectedPos(int mSelectedPos) {
         this.mSelectedPos = mSelectedPos;
+        notifyDataSetChanged();
     }
 
     @Override

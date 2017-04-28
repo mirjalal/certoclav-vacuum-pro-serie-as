@@ -183,7 +183,8 @@
 
         <activity
             android:name="com.certoclav.app.menu.MenuMain"
-            android:screenOrientation="sensorLandscape">
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateHidden">
 
         </activity>
         <activity
