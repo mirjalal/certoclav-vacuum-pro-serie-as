@@ -267,8 +267,8 @@ public class CertoclavNavigationbar {
 		tabProtocols.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.btn_white_tab_3));
 		hideButtonAdd();
 		hideButtonEdit();
-		actionItemPrint.setVisibility(View.VISIBLE);
-		actionItemScan.setVisibility(View.VISIBLE);
+	//	actionItemPrint.setVisibility(View.VISIBLE);
+	//	actionItemScan.setVisibility(View.VISIBLE);
 	}
 	
 	public void setTabSterilisationEnabled() {

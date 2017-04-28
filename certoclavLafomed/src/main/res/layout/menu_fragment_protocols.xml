@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/spinner"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical" />
 
 
         <RelativeLayout
@@ -60,12 +60,37 @@
             android:layout_weight="1">
 
             <LinearLayout
+                android:id="@+id/linearLayoutActions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageViewPrint"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/bg_print" />
+
+                <ImageView
+                    android:id="@+id/imageViewScan"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/bg_scan" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/protocols_container_graph"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="25dp"
                 android:layout_weight="1"
-                android:orientation="horizontal"></LinearLayout>
+                android:orientation="horizontal">
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/protocols_text_error"
