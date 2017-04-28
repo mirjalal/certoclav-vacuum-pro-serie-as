@@ -23,9 +23,9 @@ import com.certoclav.app.service.ReadAndParseSerialService;
 public class CalibrateFragment extends Fragment implements CalibrationListener {
 
 
-    private EditText editOffsetTemp1 = null;
-    private EditText editOffsetTemp2 = null;
-    private EditText editOffsetTemp3 = null;
+    private EditText editOffsetSteamSensor = null;
+    private EditText editOffsetHeaterSensor = null;
+    private EditText editOffsetSteamGeneratorSensor = null;
     private EditText editOffsetMedia = null;
     private EditText editOffsetPress = null;
     private Button buttonApply = null;
@@ -50,15 +50,15 @@ public class CalibrateFragment extends Fragment implements CalibrationListener {
 
 
         View rootView = inflater.inflate(R.layout.settings_calibration, container, false);
-        editOffsetTemp1 = (EditText) rootView.findViewById(R.id.parameter_temp1_coeff1);
-        editOffsetTemp2 = (EditText) rootView.findViewById(R.id.parameter_temp2_coeff1);
-        editOffsetTemp3 = (EditText) rootView.findViewById(R.id.parameter_temp3_coeff1);
+        editOffsetSteamSensor = (EditText) rootView.findViewById(R.id.parameter_temp1_coeff1);
+        editOffsetHeaterSensor = (EditText) rootView.findViewById(R.id.parameter_temp2_coeff1);
+        editOffsetSteamGeneratorSensor = (EditText) rootView.findViewById(R.id.parameter_temp3_coeff1);
         editOffsetPress = (EditText) rootView.findViewById(R.id.parameter_press_coeff1);
         editOffsetMedia = (EditText) rootView.findViewById(R.id.parameter_media_coeff1);
 
-        editOffsetTemp1.setText("");
-        editOffsetTemp2.setText("");
-        editOffsetTemp3.setText("");
+        editOffsetSteamSensor.setText("");
+        editOffsetHeaterSensor.setText("");
+        editOffsetSteamGeneratorSensor.setText("");
         editOffsetPress.setText("");
         editOffsetMedia.setText("");
 
@@ -68,9 +68,9 @@ public class CalibrateFragment extends Fragment implements CalibrationListener {
             @Override
             public void onClick(View v) {
                 try {
-                    Double offsetTemp1 = Double.parseDouble(editOffsetTemp1.getText().toString());
-                    Double offsetTemp2 = Double.parseDouble(editOffsetTemp2.getText().toString());
-                    Double offsetTemp3 = Double.parseDouble(editOffsetTemp3.getText().toString());
+                    Double offsetTemp1 = Double.parseDouble(editOffsetSteamSensor.getText().toString());
+                    Double offsetTemp2 = Double.parseDouble(editOffsetHeaterSensor.getText().toString());
+                    Double offsetTemp3 = Double.parseDouble(editOffsetSteamGeneratorSensor.getText().toString());
                     Double offsetMedia = Double.parseDouble(editOffsetMedia.getText().toString());
                     Integer offsetPress = Integer.parseInt(editOffsetPress.getText().toString());
 
@@ -124,10 +124,11 @@ public class CalibrateFragment extends Fragment implements CalibrationListener {
 
     @Override
     public void onCalibrationParameterReceived() {
-        editOffsetTemp1.setText(Autoclave.getInstance().getData().getTemp1().getOffset().toString());
-        editOffsetTemp2.setText(Autoclave.getInstance().getData().getTemp2().getOffset().toString());
-        editOffsetTemp3.setText(Autoclave.getInstance().getData().getTemp3().getOffset().toString());
+        editOffsetSteamSensor.setText(Autoclave.getInstance().getData().getTemp1().getOffset().toString());
+        editOffsetHeaterSensor.setText(Autoclave.getInstance().getData().getTemp2().getOffset().toString());
+        editOffsetSteamGeneratorSensor.setText(Autoclave.getInstance().getData().getTemp3().getOffset().toString());
         editOffsetPress.setText(Integer.toString(Autoclave.getInstance().getData().getPress().getOffset().intValue()));
+        editOffsetMedia.setText(Autoclave.getInstance().getData().getTemp4().getOffset().toString());
 
     }
 

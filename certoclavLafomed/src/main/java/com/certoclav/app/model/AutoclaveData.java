@@ -7,6 +7,7 @@ public class AutoclaveData {
 		temp1 = new Sensor();
 		temp2 = new Sensor();
 		temp3 = new Sensor();
+		temp4 = new Sensor();
 		press = new Sensor();
 	}
 	
@@ -36,6 +37,17 @@ public class AutoclaveData {
 	private Sensor temp1;
 	private Sensor temp2;
 	private Sensor temp3;
+	private Sensor temp4;
+
+	public Sensor getTemp4() {
+		return temp4;
+	}
+
+	public void setTemp4(Sensor temp4) {
+		this.temp4 = temp4;
+	}
+
+
 	private Sensor press;
 	
 	public int getmCycleCounter() {

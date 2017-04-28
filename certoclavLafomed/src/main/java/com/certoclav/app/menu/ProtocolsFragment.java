@@ -42,10 +42,14 @@ import com.certoclav.app.graph.GraphService;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.service.PostProtocolsService;
-import com.certoclav.app.settings.SettingsEmailActivity;
 import com.certoclav.app.util.ESCPos;
 import com.certoclav.app.util.LabelPrinterUtils;
 import com.certoclav.library.graph.LineGraph;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -70,7 +74,7 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.menu_fragment_protocols, container, false); //je nach mIten könnte man hier anderen Inhalt laden.
+        View rootView = inflater.inflate(R.layout.menu_fragment_protocols, container, false); //je nach mIten kï¿½nnte man hier anderen Inhalt laden.
 
         textError = (TextView) rootView.findViewById(R.id.protocols_text_error);
         textError.setVisibility(View.INVISIBLE);
@@ -475,7 +479,11 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
 
     public boolean printSelectedProtocol() {
 
-        if (protocolAdapter.getItem(aktPosition) == null) {
+        try {
+            if (protocolAdapter.getItem(aktPosition) == null) {
+                return false;
+            }
+        }catch (Exception e){
             return false;
         }
 

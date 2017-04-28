@@ -406,6 +406,7 @@
     <string name="scan_item">Please scan item!</string>
     <string name="unable_to_print_the_label">Unable to print the label!</string>
     <string name="invalid_barcode">Invalid barcode!</string>
+    <string name="the_video_assistant">the video assistant</string>
 
 
 </resources>

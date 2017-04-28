@@ -1,22 +1,20 @@
 package com.certoclav.app.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import android_serialport_api.MessageReceivedListener;
-import android_serialport_api.SerialService;
 
 import com.certoclav.app.AppConstants;
-import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.Profile;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
-import com.certoclav.library.application.ApplicationController;
+
+import java.util.ArrayList;
+
+import android_serialport_api.MessageReceivedListener;
+import android_serialport_api.SerialService;
 
 
 
@@ -42,11 +40,12 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 	public static final int INDEX_GET_DAT_CHECKSUM = 11;
 	public static final int GET_DAT_NUMBER_OF_RESPONSE_PARAMETERS = 12;
 	
-	Double offsetTemp1 = 0d;
-	Double offsetTemp2 = 0d;
-	Double offsetTemp3 = 0d;
+	Double offsetSteam = 0d;
+	Double offsetHeater = 0d;
+	Double offsetSteamGenerator = 0d;
+	Double offsetMedia = 0d;
 	Double offsetPress = 0d;
-	Double offsetPara4 = 0d;
+
 	
 	Profile userDefinedProgram = null;
 	
@@ -104,7 +103,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 	public void sendGetAdjustParameterCommand(){
 		commandQueue.add("GET_ADJU\r\n");
 		if(AppConstants.isIoSimulated == true){
-			Autoclave.getInstance().setAdjustParameters(0.1,-0.1,0.2,-10);
+			Autoclave.getInstance().setAdjustParameters(-1.0, 0.1,0.2,0.3,-10); //steam, heater, steamGenerator, mediasensor
 		}
 	}
 
@@ -159,7 +158,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 		        	
 		        	break;
 		        case HANDLER_MSG_CALIBRATION:
-		       	 Autoclave.getInstance().setAdjustParameters(offsetTemp1, offsetTemp2, offsetTemp3, offsetPress);
+		       	 Autoclave.getInstance().setAdjustParameters(offsetSteam, offsetMedia, offsetHeater, offsetSteamGenerator,offsetPress);
 		       	 
 		            break;
 		 
@@ -274,12 +273,12 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 					Log.e("ReadAndParseSerial", "parameter length wrong " + responseParameters.length);
 					return;
 				}
-				offsetTemp1 = Double.parseDouble(responseParameters[0]);
-				offsetTemp2 = Double.parseDouble(responseParameters[1]);
-				offsetTemp3 = Double.parseDouble(responseParameters[2]);
+				offsetSteam = Double.parseDouble(responseParameters[0]);
+				offsetHeater = Double.parseDouble(responseParameters[1]);
+				offsetSteamGenerator = Double.parseDouble(responseParameters[2]);
 				offsetPress = Double.parseDouble(responseParameters[3]);
-				offsetPara4 = Double.parseDouble(responseParameters[4]);
-				Log.e("ReadAndParseSerial", "parameters: " + offsetTemp1 + " "+ offsetTemp2 + " " + offsetTemp3 + " "+ offsetPress);
+				offsetMedia = Double.parseDouble(responseParameters[4]);
+				Log.e("ReadAndParseSerial", "parameters: " + offsetSteam + " "+ offsetHeater + " " + offsetSteamGenerator + " "+ offsetPress + " "+ offsetMedia);
 				handler.sendEmptyMessage(HANDLER_MSG_CALIBRATION);
 				
 				
@@ -359,7 +358,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 	private void simulateMessage(){
 		
 	
-		Log.e("ReadAndParseSerialService", "simulate serial");
+		Log.e("ReadAndParseSerialSer", "simulate serial");
 
 		cycleNumber = 1;
 
@@ -411,8 +410,15 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 		digitalData[AppConstants.DIGITAL_WATER_LVL_LOW_INDEX] = isWaterLevelSourceLow;
 	    digitalData[AppConstants.DIGITAL_WATER_LVL_FULL_INDEX] = isWaterLevelBinFull;
 	    digitalData[AppConstants.DIGITAL_FAIL_STOPPED_BY_USER] = isStopedByUser;
+		indexOfRunningProgram = 1;
+		try{
+			indexOfRunningProgram = Autoclave.getInstance().getProfile().getIndex();
+		}catch (Exception e){
+			indexOfRunningProgram = 1;
+		}
+		Autoclave.getInstance().setIndexOfRunningProgram(indexOfRunningProgram);
 	    
-	    Log.e("ReadAndParseSerialService", "Handler sending message now:");
+
 	    
 	   handler.sendEmptyMessage(HANDLER_MSG_DATA);
 	   

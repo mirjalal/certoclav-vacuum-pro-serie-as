@@ -357,5 +357,6 @@
     <string name="by_phone">per Telefon</string>
     <string name="email_address">per E-Mail</string>
     <string name="send_mail_to_certosupport">Sende eine E-Mail an CertoSupport</string>
-    
+    <string name="the_video_assistant">the video assistant</string>
+
 </resources>
