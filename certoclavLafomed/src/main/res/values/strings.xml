@@ -407,6 +407,15 @@
     <string name="unable_to_print_the_label">Unable to print the label!</string>
     <string name="invalid_barcode">Invalid barcode!</string>
     <string name="the_video_assistant">the video assistant</string>
+    <string name="mount_usb_stick">Mount USB-Stick</string>
+    <string name="reboot_neccessary">A reboot is neccessary in order to write to USB-Stick. Please insert the USB-Stick and reboot this touch terminal!</string>
+    <string name="reboot">Reboot</string>
+    <string name="no_sdcard">No SD-Card</string>
+    <string name="no_sdcard_detected">No SD-Card detected. Please reboot this touch terminal and try again.</string>
+    <string name="coping_protocols">Coping protocols...</string>
+    <string name="export_success">Exported successfully</string>
+    <string name="export_failed">Export Failed!</string>
+    <string name="material_testing">Material Testing</string>
 
 
 </resources>

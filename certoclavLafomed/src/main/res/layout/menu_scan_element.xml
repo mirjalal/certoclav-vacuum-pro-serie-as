@@ -1,48 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/information_video_list_element"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="false">
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:foreground="@drawable/card_foreground"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="5dp">
+
         <RelativeLayout
-   			xmlns:android="http://schemas.android.com/apk/res/android"
-		    xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/information_video_list_element"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@drawable/btn_white_shadow"   
             android:focusableInTouchMode="false">
-            
-	       <LinearLayout
-	        android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-	           
 
-	            <ImageView
-	                android:id="@+id/scan_element_image"
-	                android:layout_width="80dp"
-	                android:layout_height="80dp"
-	                android:scaleType="centerInside"
-	                android:adjustViewBounds="true"
-	                android:src="@drawable/ic_menu_add" > 
-	            </ImageView>
-			
-	            <TextView
-	                android:id="@+id/scan_element_text"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:text="Bottle 110ml"
-	                android:textSize="20sp"
-	                tools:ignore="HardcodedText" />
-	          
-        
-         </LinearLayout>
-         <LinearLayout 
-             android:id="@+id/scan_element_container_button"
-             android:layout_width="wrap_content"
-             android:layout_height="match_parent"
-             android:layout_alignParentRight="true"
-             android:focusable="false"
-             android:focusableInTouchMode="false"
-             android:layout_marginRight="10dp"
-             android:orientation="horizontal"></LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-	 </RelativeLayout>  
+
+                <ImageView
+                    android:id="@+id/scan_element_image"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_done"></ImageView>
+
+                <TextView
+                    android:id="@+id/scan_element_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:maxEms="20"
+                    android:layout_marginRight="10dp"
+                    android:maxLines="1"
+                    android:text="fdkhfjkdshjfkhdsjfdkjfhjsdhfjdsfhjdhfjkdshfjksdhfk"
+                    android:textSize="20sp"
+                    tools:ignore="HardcodedText" />
+
+
+                <ImageView
+                    android:id="@+id/buttonDelete"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="0"
+                    android:background="@drawable/btn_remove"
+                    android:clickable="true"></ImageView>
+            </LinearLayout>
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

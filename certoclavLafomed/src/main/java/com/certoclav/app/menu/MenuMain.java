@@ -35,8 +35,10 @@ import com.certoclav.app.settings.SettingsActivity;
 import com.certoclav.library.certocloud.GetConditionsService;
 import com.certoclav.library.view.ControlPagerAdapter;
 import com.certoclav.library.view.CustomViewPager;
+import com.crashlytics.android.Crashlytics;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import io.fabric.sdk.android.Fabric;
 
 public class MenuMain extends FragmentActivity implements NavigationbarListener, SensorDataListener {
 
@@ -67,10 +69,16 @@ public class MenuMain extends FragmentActivity implements NavigationbarListener,
         super.onCreate(savedInstanceState);
         Log.e("MenuMain", "onCreate");
         setContentView(R.layout.menu_activity);
-
-
+        Fabric.with(this, new Crashlytics());
         AutoclaveMonitor.getInstance();
         Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);
+
+            // TODO: Use the current user's information
+            // You can call any combination of these three methods
+            Crashlytics.setUserIdentifier("12345");
+            Crashlytics.setUserEmail("user@fabric.io");
+            Crashlytics.setUserName("Test User");
+
 
 
         fragmentList = new ArrayList<Fragment>(); //liste von Fragmenten f?r den ControlPagerAdapter
@@ -114,6 +122,8 @@ public class MenuMain extends FragmentActivity implements NavigationbarListener,
 
         mViewPager.setCurrentItem(INDEX_STERILISATION);
         navigationbar.setTabSterilisationEnabled();
+
+
 
 
     }

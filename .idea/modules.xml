@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CertoclavLafomed1.iml" filepath="$PROJECT_DIR$/CertoclavLafomed1.iml" />
       <module fileurl="file://$PROJECT_DIR$/androidsupportv4preferencefragmentmaster/androidsupportv4preferencefragmentmaster.iml" filepath="$PROJECT_DIR$/androidsupportv4preferencefragmentmaster/androidsupportv4preferencefragmentmaster.iml" />
-      <module fileurl="file://$PROJECT_DIR$/certoclav-vacuum-pro-serie-as.iml" filepath="$PROJECT_DIR$/certoclav-vacuum-pro-serie-as.iml" />
       <module fileurl="file://$PROJECT_DIR$/certoclavLafomed/certoclavLafomed.iml" filepath="$PROJECT_DIR$/certoclavLafomed/certoclavLafomed.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/sweet-alert-dialog/library/sweetdialog.iml" filepath="$PROJECT_DIR$/sweet-alert-dialog/library/sweetdialog.iml" />

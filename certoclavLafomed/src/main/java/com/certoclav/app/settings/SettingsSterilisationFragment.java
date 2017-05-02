@@ -3,12 +3,14 @@ package com.certoclav.app.settings;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -43,7 +45,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class SettingsSterilisationFragment extends PreferenceFragment {
 
-    private ProgressDialog barProgressDialog;
+    private SweetAlertDialog barProgressDialog;
     private static final int EXPORT_TARGET_USB = 1;
     private static final int EXPORT_TARGET_SD = 2;
 
@@ -195,38 +197,20 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
 
                     try {
 
+                        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                                .setTitleText(getString(R.string.mount_usb_stick))
+                                .setContentText(getString(R.string.reboot_neccessary))
+                                .setConfirmText(getString(R.string.ok))
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        sDialog.dismissWithAnimation();
+                                    }
+                                });
+                        sweetAlertDialog.setCanceledOnTouchOutside(true);
+                        sweetAlertDialog.setCancelable(true);
+                        sweetAlertDialog.show();
 
-                        final Dialog dialog = new Dialog(getActivity());
-                        dialog.setContentView(R.layout.dialog_yes_no);
-                        dialog.setTitle("Mount USB-Stick");
-
-
-                        // set the custom dialog components - text, image and button
-                        TextView text = (TextView) dialog.findViewById(R.id.text);
-                        text.setText("A reboot is neccessary in order to write to USB-Stick. Please insert the USB-Stick and reboot this touch terminal.");
-                        ImageView image = (ImageView) dialog.findViewById(R.id.dialog_image);
-                        image.setVisibility(View.GONE);
-                        Button dialogButtonNo = (Button) dialog.findViewById(R.id.dialogButtonNO);
-                        dialogButtonNo.setOnClickListener(new OnClickListener() {
-
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        });
-                        Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-                        // if button is clicked, close the custom dialog
-                        dialogButton.setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                                dialog.dismiss();
-
-
-                            }
-                        });
-
-                        dialog.show();
 
                     } catch (Exception e) {
 
@@ -268,38 +252,20 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
 
                     try {
 
+                        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                                .setTitleText(getString(R.string.no_sdcard))
+                                .setContentText(getString(R.string.no_sdcard_detected))
+                                .setConfirmText(getString(R.string.ok))
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        sDialog.dismissWithAnimation();
+                                    }
+                                });
+                        sweetAlertDialog.setCanceledOnTouchOutside(true);
+                        sweetAlertDialog.setCancelable(true);
+                        sweetAlertDialog.show();
 
-                        final Dialog dialog = new Dialog(getActivity());
-                        dialog.setContentView(R.layout.dialog_yes_no);
-                        dialog.setTitle("No SD-Card");
-
-
-                        // set the custom dialog components - text, image and button
-                        TextView text = (TextView) dialog.findViewById(R.id.text);
-                        text.setText("No SD-Card detected. Please reboot this touch terminal and try again.");
-                        ImageView image = (ImageView) dialog.findViewById(R.id.dialog_image);
-                        image.setVisibility(View.GONE);
-                        Button dialogButtonNo = (Button) dialog.findViewById(R.id.dialogButtonNO);
-                        dialogButtonNo.setOnClickListener(new OnClickListener() {
-
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        });
-                        Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-                        // if button is clicked, close the custom dialog
-                        dialogButton.setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                                dialog.dismiss();
-
-
-                            }
-                        });
-
-                        dialog.show();
 
                     } catch (Exception e) {
 
@@ -325,20 +291,19 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
 
     public void uploadAllProtocolsTo(final int target_id) {
 
-        barProgressDialog = new ProgressDialog(getActivity());
+        barProgressDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+        barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        barProgressDialog.setTitleText(getString(R.string.coping_protocols));
+        barProgressDialog.setCancelable(false);
+        barProgressDialog.show();
+        //  barProgressDialog = new ProgressDialog(getActivity());
 
-        barProgressDialog.setTitle("COPY PROTOTOCOLS");
+        barProgressDialog.setTitle("");
         if (target_id == EXPORT_TARGET_USB) {
-            barProgressDialog.setMessage("copy protocols to USB flash drive");
+            barProgressDialog.setContentText("copy protocols to USB flash drive");
         } else {
-            barProgressDialog.setMessage("copy protocols to SD card");
+            barProgressDialog.setContentText("copy protocols to SD card");
         }
-        barProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        barProgressDialog.setProgress(0);
-        barProgressDialog.setCanceledOnTouchOutside(true);
-        barProgressDialog.setMax(100);
-        barProgressDialog.setCancelable(true);
-        barProgressDialog.setCanceledOnTouchOutside(false);
         barProgressDialog.show();
 
 
@@ -351,7 +316,7 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
             protected Boolean doInBackground(Void... params) {
 
                 try {
-                    int numberOfProtocols = protocols.size();
+                    final int numberOfProtocols = protocols.size();
                     int i = 0;
                     while (i < numberOfProtocols) {
 
@@ -386,24 +351,26 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
                             success = expUtils.writeToExtSDFile("Certoclav protocols", filename, "txt", sb.toString());
                         }
                         if (success == false) {
-                            barProgressDialog.dismiss();
                             return false;
                         }
 
                         i++;
-                        barProgressDialog.setProgress((100 * i) / numberOfProtocols);
+                        final int finalI = i;
+                        getActivity().runOnUiThread(new Runnable() {
+                            public void run() {
+                                barProgressDialog.setTitleText(getActivity().getString(R.string.coping_protocols) + " (" + ((100 * finalI) / numberOfProtocols) + "%)");
+                            }
+                        });
 
 
                     }//end while
                     //all protocols copied sucessfully
-                    barProgressDialog.dismiss();
                     return true;
 
 
                 } catch (Exception e) {
                     Log.e("ExportUtils", "Exception during copying protocols: " + e.toString());
                     e.printStackTrace();
-                    barProgressDialog.dismiss();
                     return false;
                 }
 
@@ -412,15 +379,24 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
             @Override
             protected void onPostExecute(Boolean result) {
                 if (result == false) {
-                    Toast.makeText(getActivity(), "Export failed", Toast.LENGTH_LONG).show();
+                    barProgressDialog
+                            .setContentText(getString(R.string.export_failed))
+                            .setConfirmText("OK")
+                            .changeAlertType(SweetAlertDialog.ERROR_TYPE);
                 } else {
-                    Toast.makeText(getActivity(), "Export successful", Toast.LENGTH_LONG).show();
+                    // Toast.makeText(getActivity(), , Toast.LENGTH_LONG).show();
+                    barProgressDialog
+                            .setConfirmText("OK")
+                            .setContentText(getString(R.string.export_success))
+                            .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                 }
                 super.onPostExecute(result);
             }
 
 
-        }.execute();
+        }.
+
+                execute();
 
 
     }
