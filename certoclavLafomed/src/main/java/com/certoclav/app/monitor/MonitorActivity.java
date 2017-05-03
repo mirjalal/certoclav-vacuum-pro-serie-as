@@ -1,9 +1,6 @@
 package com.certoclav.app.monitor;
 
-import java.util.ArrayList;
-
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -22,22 +19,23 @@ import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
+import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.Profile;
 import com.certoclav.app.listener.AlertListener;
 import com.certoclav.app.listener.AutoclaveStateListener;
 import com.certoclav.app.listener.NavigationbarListener;
 import com.certoclav.app.listener.ProfileListener;
-import com.certoclav.app.menu.ScanActivity;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.app.model.Error;
 import com.certoclav.app.settings.SettingsActivity;
-import com.certoclav.app.sterilisationassistant.AssistantActivity;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.view.ControlPagerAdapter;
 import com.certoclav.library.view.CustomViewPager;
+
+import java.util.ArrayList;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -291,8 +289,15 @@ public class MonitorActivity extends FragmentActivity implements NavigationbarLi
         AutoclaveMonitor.getInstance().setOnAlertListener(this);
         Autoclave.getInstance().setOnAutoclaveStateListener(this);
 
+        if(Autoclave.getInstance().getProfile() == null){
+            DatabaseService databaseService = new DatabaseService(this);
+            Profile runningProfile = databaseService.getProfileByIndex(Autoclave.getInstance().getIndexOfRunningProgram()).get(0);
+            Autoclave.getInstance().setProfile(runningProfile);
+        }
         if (Autoclave.getInstance().getProfile().getIndex() == 7) {
-            Autoclave.getInstance().setProfile(Autoclave.getInstance().getUserDefinedProgram());
+            if(Autoclave.getInstance().getUserDefinedProgram() != null) {
+                Autoclave.getInstance().setProfile(Autoclave.getInstance().getUserDefinedProgram());
+            }
         }
 
         StringBuilder sbuilder = new StringBuilder();
