@@ -166,8 +166,6 @@ public class MonitorActivity extends FragmentActivity implements NavigationbarLi
 
                     }
                 });
-
-
     }
 
 
@@ -402,11 +400,12 @@ public class MonitorActivity extends FragmentActivity implements NavigationbarLi
 
 
     private void showProgramCounterDialog() {
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.dialog_program_counter);
-        dialog.setTitle("Material Testing");
-        dialog.setCancelable(true);
 
+        final SweetAlertDialog dialog = new SweetAlertDialog(this, R.layout.dialog_program_counter, SweetAlertDialog.WARNING_TYPE);
+        dialog.setContentView(R.layout.dialog_program_counter);
+        dialog.setTitleText(getString(R.string.material_testing));
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
 
         Button dialogButtonNo = (Button) dialog.findViewById(R.id.dialogButtonNO);
         dialogButtonNo.setOnClickListener(new OnClickListener() {

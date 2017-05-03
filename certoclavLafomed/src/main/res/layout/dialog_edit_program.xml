@@ -109,7 +109,7 @@
 
         <Button
             android:id="@+id/dialog_program_button_cancel"
-            android:layout_width="match_parent"
+            android:layout_width="400dp"
             android:layout_height="60dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
@@ -119,7 +119,7 @@
 
         <Button
             android:id="@+id/dialog_program_button_apply"
-            android:layout_width="match_parent"
+            android:layout_width="400dp"
             android:layout_height="60dp"
             android:layout_margin="5dp"
             android:layout_weight="1"

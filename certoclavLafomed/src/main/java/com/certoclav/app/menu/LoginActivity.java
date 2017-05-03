@@ -1,5 +1,9 @@
 package com.certoclav.app.menu;
 
+import com.crashlytics.android.Crashlytics;
+
+import io.fabric.sdk.android.Fabric;
+
 import java.util.Date;
 import java.util.List;
 
@@ -176,6 +180,7 @@ public class LoginActivity extends Activity implements NavigationbarListener, Da
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
+        Fabric.with(this, new Crashlytics());
         AutoclaveMonitor.getInstance();
         Autoclave.getInstance().setController(new Controller("Touchscreen not connected",
                 "Touchscreen not connected",
@@ -278,6 +283,8 @@ public class LoginActivity extends Activity implements NavigationbarListener, Da
         buttonLogin.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (currentUser != null)
+                    logUser(currentUser.getEmail_user_id(), currentUser.getEmail(), currentUser.getFirstName() + " " + currentUser.getLastName());
                 Boolean defaultvalue = getResources().getBoolean(
                         R.bool.switch_snchronization_default);
                 if (PreferenceManager.getDefaultSharedPreferences(
@@ -782,6 +789,14 @@ public class LoginActivity extends Activity implements NavigationbarListener, Da
         editor.putBoolean(AppConstants.PREFERENCE_KEY_ONLINE_MODE,
                 isOnline);
         editor.commit();
+    }
+
+    private void logUser(String userID, String email, String username) {
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        Crashlytics.setUserIdentifier(userID);
+        Crashlytics.setUserEmail(email);
+        Crashlytics.setUserName(username);
     }
 
 }
