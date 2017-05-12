@@ -16,6 +16,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="#254061"
+        android:visibility="gone"
 
         ></FrameLayout>
 
@@ -26,6 +27,7 @@
         android:layout_alignLeft="@+id/monitor_countdown_bar_background"
         android:layout_alignParentBottom="true"
         android:background="#4BACC6"
+        android:visibility="gone"
 
         ></FrameLayout>
 
@@ -34,8 +36,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/monitor_countdown_bar"
-        android:layout_alignLeft="@+id/monitor_countdown_bar"
-        android:text="23"
+        android:text="00:00:00"
+        android:layout_centerHorizontal="true"
         android:textSize="60dp"
         android:textStyle="bold"
         tools:ignore="HardcodedText"></TextView>

@@ -1,12 +1,5 @@
 package com.certoclav.app.service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.util.Log;
 
 import com.certoclav.app.AppConstants;
@@ -18,6 +11,13 @@ import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.certocloud.CloudUser;
 import com.certoclav.library.certocloud.PostUtil;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 
 
@@ -161,43 +161,43 @@ public class PostProtocolsThread extends Thread {
 	  try{
 		StringBuilder sbuilder = new StringBuilder();
 		if(protocol.getVacuumTimes() != 0){
-			sbuilder.append("; Vacuum times: ")
+			sbuilder.append("\r\nVacuum times: ")
 					.append(protocol.getVacuumTimes())
-					.append("; ");
+					.append("\r\n");
 		}
 		
 		if(protocol.getSterilisationTemperature() != 0){
 				sbuilder.append("Sterilisation temperature: ")
 						.append(protocol.getSterilisationTemperature())
 						.append(" °C")
-						.append("; ");
+						.append("\r\n");
 		}
 		
 		if(protocol.getSterilisationPressure() != 0){
 				sbuilder.append("Sterilisation pressure: ")
 						.append(String.format("%.2f", ((float)protocol.getSterilisationPressure()*0.01) +1))
 						.append(" bar")
-						.append("; ");
+						.append("\r\n");
 		}
 		
 		if(protocol.getSterilisationTime() != 0){
 				sbuilder.append("Sterilisation holding time: ")
 					.append(protocol.getSterilisationTime())
 					.append(" min")
-					.append("; ");
+					.append("\r\n");
 		}
 		
 		if(protocol.getVacuumPersistTemperature() != 0){
 				sbuilder.append("Vacuum persist temperature: ")
 				.append(protocol.getVacuumPersistTemperature())
 				.append(" °C")
-				.append("; ");
+				.append("\r\n");
 		}
 		if(protocol.getVacuumPersistTime() != 0){
 				sbuilder.append("Vacuum persist time: ")
 				.append(protocol.getVacuumPersistTime())
 				.append(" min")
-				.append("; ");
+				.append("\r\n");
 		}
 		if(protocol.getDryTime() != 0){
 				sbuilder.append("Drying time: ")

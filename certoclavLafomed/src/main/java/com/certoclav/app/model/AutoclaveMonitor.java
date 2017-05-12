@@ -171,7 +171,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                     }
                     prepareToRun(Autoclave.getInstance().getProfile().getIndex());
                 }
-
+/*
                 // IF PROGRAM HAS BEEN STARTED REMOTELY - CHANGE TO PREPARE TO RUN STATE
                 if (Autoclave.getInstance().getData().isDoorLocked()) {
                     Autoclave.getInstance().setProgramsInRowTotal(1);
@@ -179,7 +179,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                     Autoclave.getInstance().setState(AutoclaveState.PREPARE_TO_RUN);
                     startMonitorActivity();
                 }
-
+*/
 
                 if (AppConstants.isIoSimulated) {
                     SimulatedFailStoppedByUser = false;
@@ -243,18 +243,25 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
 
 //set current Profile into Autoclave model
-                        int indexOfRunningProgram = 1;
-                        try {
-                            indexOfRunningProgram = Autoclave.getInstance().getIndexOfRunningProgram();
-                            if (indexOfRunningProgram > 12) indexOfRunningProgram = 12;
-                            if (indexOfRunningProgram < 1) indexOfRunningProgram = 1;
+
+
+                        try{
+                            indexOfProfile = Autoclave.getInstance().getProfile().getIndex();
                         }catch(Exception e){
-                            indexOfRunningProgram = 1;
-                            Autoclave.getInstance().setIndexOfRunningProgram(1);
+                            indexOfProfile = Autoclave.getInstance().getIndexOfRunningProgram();
+                        }
+                        if(indexOfProfile>12) indexOfProfile = 12;
+                        if(indexOfProfile<1) indexOfProfile = 1;
+
+                        if(Autoclave.getInstance().getProfile() == null){
+                            Profile runningProfile = databaseService.getProfileByIndex(indexOfProfile).get(0);
+                            Autoclave.getInstance().setProfile(runningProfile);
                         }
 
-                        Profile runningProfile = databaseService.getProfileByIndex(indexOfRunningProgram).get(0);
-                        Autoclave.getInstance().setProfile(runningProfile);
+
+
+
+
 //set current User into Autoclave model	
                         if (Autoclave.getInstance().getUser() == null) {
                             for (User user : databaseService.getUsers()) {

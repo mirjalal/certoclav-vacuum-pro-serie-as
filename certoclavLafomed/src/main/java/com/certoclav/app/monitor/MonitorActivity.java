@@ -1,9 +1,5 @@
 package com.certoclav.app.monitor;
 
-import java.util.ArrayList;
-
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -22,22 +18,24 @@ import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
+import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.Profile;
 import com.certoclav.app.listener.AlertListener;
 import com.certoclav.app.listener.AutoclaveStateListener;
 import com.certoclav.app.listener.NavigationbarListener;
 import com.certoclav.app.listener.ProfileListener;
-import com.certoclav.app.menu.ScanActivity;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.app.model.Error;
 import com.certoclav.app.settings.SettingsActivity;
-import com.certoclav.app.sterilisationassistant.AssistantActivity;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.view.ControlPagerAdapter;
 import com.certoclav.library.view.CustomViewPager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -113,11 +111,21 @@ public class MonitorActivity extends FragmentActivity implements NavigationbarLi
                     Log.e("MonitorActivity", "sendStopCommand");
                     if (Autoclave.getInstance().getState().equals(AutoclaveState.RUNNING)) {
 
+                        String dialogTitletext = "";
+                        String dialogContentText = "";
+                        if(Autoclave.getInstance().getData().getTemp1().getCurrentValue() < 90 && Autoclave.getInstance().getData().getTemp2().getCurrentValue() <= 90 && Autoclave.getInstance().getSecondsSinceStart() > 2400 && Autoclave.getInstance().getIndexOfRunningProgram() == 12 ){
+                            dialogTitletext = getString(R.string.stop_program_earlier);
+                            dialogContentText = getString(R.string.do_you_want_to_stop_the_program_earlier_sterilization_result_will_be_successfull_);
+                        }else{
+                            dialogTitletext = getString(R.string.stop_program);
+                            dialogContentText = getString(R.string.do_you_really_want_to_stop_the_running_program_);
+                        }
+
 
                         try {
                             SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(MonitorActivity.this, SweetAlertDialog.WARNING_TYPE)
-                                    .setTitleText(getString(R.string.stop_program))
-                                    .setContentText(getString(R.string.do_you_really_want_to_stop_the_running_program_))
+                                    .setTitleText(dialogTitletext)
+                                    .setContentText(dialogContentText)
                                     .setConfirmText(getString(R.string.yes))
                                     .setCancelText(getString(R.string.cancel))
                                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -289,8 +297,23 @@ public class MonitorActivity extends FragmentActivity implements NavigationbarLi
         AutoclaveMonitor.getInstance().setOnAlertListener(this);
         Autoclave.getInstance().setOnAutoclaveStateListener(this);
 
-        if (Autoclave.getInstance().getProfile().getIndex() == 7) {
-            Autoclave.getInstance().setProfile(Autoclave.getInstance().getUserDefinedProgram());
+        DatabaseService db = new DatabaseService(this);
+        List<Profile> profilesFromDb = db.getProfiles();
+        if(Autoclave.getInstance().getProfile() == null){
+            if(Autoclave.getInstance().getIndexOfRunningProgram() == 7){
+                Autoclave.getInstance().setProfile(Autoclave.getInstance().getUserDefinedProgram());
+            }else{
+                for(Profile profile : profilesFromDb){
+                    if(profile.getIndex() == Autoclave.getInstance().getIndexOfRunningProgram()){
+                        Autoclave.getInstance().setProfile(profile);
+                        break;
+                    }
+                }
+            }
+        }else{
+            if(Autoclave.getInstance().getProfile().getIndex() == 7){
+                Autoclave.getInstance().setProfile(Autoclave.getInstance().getUserDefinedProgram());
+            }
         }
 
         StringBuilder sbuilder = new StringBuilder();
