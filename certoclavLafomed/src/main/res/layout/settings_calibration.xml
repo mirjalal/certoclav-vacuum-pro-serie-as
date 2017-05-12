@@ -15,9 +15,9 @@
             android:id="@+id/parameter_table"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_below="@+id/parameter_button_apply"
-            android:layout_centerInParent="true">
+            android:layout_centerInParent="true"
+            android:layout_weight="1">
 
             <TableRow
                 android:id="@+id/tableRow1"

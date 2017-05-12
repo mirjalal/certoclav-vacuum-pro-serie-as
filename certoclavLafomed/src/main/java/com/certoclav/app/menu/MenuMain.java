@@ -73,12 +73,11 @@ public class MenuMain extends FragmentActivity implements NavigationbarListener,
         AutoclaveMonitor.getInstance();
         Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);
 
-            // TODO: Use the current user's information
-            // You can call any combination of these three methods
-            Crashlytics.setUserIdentifier("12345");
-            Crashlytics.setUserEmail("user@fabric.io");
-            Crashlytics.setUserName("Test User");
-
+        // TODO: Use the current user's information
+        // You can call any combination of these three methods
+        Crashlytics.setUserIdentifier("12345");
+        Crashlytics.setUserEmail("user@fabric.io");
+        Crashlytics.setUserName("Test User");
 
 
         fragmentList = new ArrayList<Fragment>(); //liste von Fragmenten f?r den ControlPagerAdapter
@@ -122,8 +121,6 @@ public class MenuMain extends FragmentActivity implements NavigationbarListener,
 
         mViewPager.setCurrentItem(INDEX_STERILISATION);
         navigationbar.setTabSterilisationEnabled();
-
-
 
 
     }

@@ -490,11 +490,11 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
         try {
 
 
-            final SweetAlertDialog dialog = new SweetAlertDialog(getActivity(), R.layout.dialog_protocol_label, SweetAlertDialog.WARNING_TYPE);
-            dialog.setContentView(R.layout.dialog_protocol_label);
-            dialog.setTitle(R.string.please_choose_one_of_the_following_options);
-            dialog.setCancelable(true);
-            dialog.setCanceledOnTouchOutside(true);
+                final SweetAlertDialog dialog = new SweetAlertDialog(getActivity(), R.layout.dialog_protocol_label, SweetAlertDialog.WARNING_TYPE);
+                dialog.setContentView(R.layout.dialog_protocol_label);
+                dialog.setTitle(R.string.please_choose_one_of_the_following_options);
+                dialog.setCancelable(true);
+                dialog.setCanceledOnTouchOutside(true);
 
 
             Button buttonLabel = (Button) dialog.findViewById(R.id.dialogButtonLabel);

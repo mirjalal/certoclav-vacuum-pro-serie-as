@@ -27,7 +27,7 @@ private OnSharedPreferenceChangeListener listener;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e("SettingsLanguageFragment", "oncreate called");
+        Log.e("SettingsLanguage", "oncreate called");
         addPreferencesFromResource(R.xml.preferences_language);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -63,7 +63,7 @@ private OnSharedPreferenceChangeListener listener;
 
     prefs.registerOnSharedPreferenceChangeListener(listener);
        
-    Log.e("SettingsLanguageFragment", "oncreate finished");
+    Log.e("SettingsLanguage", "oncreate finished");
     }
 
     

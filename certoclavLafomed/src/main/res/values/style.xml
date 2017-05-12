@@ -11,7 +11,7 @@
         <item name="android:layout_margin">5dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:padding">5dp</item>
-        
+
     </style>
 
 
@@ -46,14 +46,13 @@
     </style>
 
 
-
     <style name="text_statusbar_default">
         <item name="android:textSize">25sp</item>
         <item name="android:textColor">#ffffff</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
+
     <style name="edit_text_default">
         <item name="android:textSize">25sp</item>
         <item name="android:textColor">#000000</item>
@@ -83,12 +82,12 @@
         <item name="android:layout_margin">5dp</item>
     </style>
 
-        <style name="text_default_white">
+    <style name="text_default_white">
         <item name="android:textSize">25sp</item>
         <item name="android:textColor">#ffffff</item>
         <item name="android:layout_margin">5dp</item>
     </style>
-    
+
     <style name="text_protocol">
         <item name="android:textSize">14sp</item>
         <item name="android:typeface">monospace</item>
@@ -99,13 +98,11 @@
     </style>
 
 
-
     <style name="text_small">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">#000000</item>
         <item name="android:layout_margin">5dp</item>
     </style>
-
 
 
     <style name="text_default_small">
@@ -115,13 +112,11 @@
     </style>
 
 
-
     <style name="text_statistics">
         <item name="android:textSize">25sp</item>
         <item name="android:textColor">#000000</item>
         <item name="android:layout_margin">2dp</item>
     </style>
-
 
 
     <style name="text_inversed">
@@ -137,7 +132,5 @@
     </style>
 
 
-
-
-    </resources>
+</resources>
 

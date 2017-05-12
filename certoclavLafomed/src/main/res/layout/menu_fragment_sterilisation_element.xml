@@ -17,8 +17,7 @@
         card_view:cardCornerRadius="4dp"
         card_view:cardElevation="5dp">
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -51,9 +50,9 @@
                 android:layout_height="match_parent"
                 android:layout_above="@+id/sterilisation_element_container_start"
                 android:layout_below="@+id/sterilisation_element_seperator_firstline"
-                android:background="#ffffff"
                 android:layout_toLeftOf="@+id/sterilisation_element_autoclave"
-                android:layout_toStartOf="@+id/sterilisation_element_autoclave">
+                android:layout_toStartOf="@+id/sterilisation_element_autoclave"
+                android:background="#ffffff">
 
                 <TextView
                     android:id="@+id/sterilisation_element_text_description"
@@ -83,9 +82,9 @@
                 android:id="@+id/sterilisation_element_container_start"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:visibility="gone"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/btn_blue_dark">
+                android:background="@drawable/btn_blue_dark"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/sterilisation_element_text_start"
