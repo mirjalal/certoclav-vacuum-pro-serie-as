@@ -17,7 +17,7 @@ import com.certoclav.app.database.ProtocolEntry;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveMonitor;
 
-
+import static io.fabric.sdk.android.services.network.HttpRequest.append;
 
 
 public class ESCPos {
@@ -72,9 +72,9 @@ public class ESCPos {
 	   StringBuilder sb = new StringBuilder();
 	   sb.append("10 ").append("CertoClav Vacuum Pro").append("\n");
 	   sb.append(SPACING);
-	   sb.append("15 ").append("Program").append(": ").append(protocol.getProfileName().replace("?", " ")).append("\n");
+	   sb.append("15 ").append("Program").append(": ").append(protocol.getProfileName().replace("\u00B0", "")).append("\n");
 	   sb.append("20 ").append("Program load/details").append(":").append("\n");
-	   sb.append("   ").append(protocol.getProfileDescription().replace("?", " ")).append("\n");
+	   sb.append("   ").append(protocol.getProfileDescription().replace("\u00B0", "")).append("\n");
 	   sb.append("25 ").append("Date").append(": ").append(startTimeString).append("\n");
 	   sb.append("30 ").append("Cycle").append(": ").append(protocol.getZyklusNumber()).append("\n");
 	   sb.append(SPACING);
@@ -112,8 +112,8 @@ public class ESCPos {
 			   minutesOnLastPrint = minutes;
 			   	String timeStamp = String.format("%02d:%02d", hours,minutes);
 			   	String pressure = String.format("%03d", Math.round(entry.getPressure()));
-			   	String temperature = String.format("%.1f", entry.getTemperature());
-			   	String mediaTemp = String.format("%.1f", entry.getMediaTemperature());
+			   	String temperature = String.format("%05.1f", entry.getTemperature());
+			   	String mediaTemp = String.format("%05.1f", entry.getMediaTemperature());
 				 
 			   sb.append(String.format("%-8s", timeStamp))
 			     .append(String.format("%-8s", pressure))
