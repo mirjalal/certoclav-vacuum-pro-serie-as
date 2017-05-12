@@ -1,6 +1,5 @@
 package com.certoclav.app.monitor;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -36,6 +35,7 @@ import com.certoclav.library.view.ControlPagerAdapter;
 import com.certoclav.library.view.CustomViewPager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -111,11 +111,21 @@ public class MonitorActivity extends FragmentActivity implements NavigationbarLi
                     Log.e("MonitorActivity", "sendStopCommand");
                     if (Autoclave.getInstance().getState().equals(AutoclaveState.RUNNING)) {
 
+                        String dialogTitletext = "";
+                        String dialogContentText = "";
+                        if(Autoclave.getInstance().getData().getTemp1().getCurrentValue() < 90 && Autoclave.getInstance().getData().getTemp2().getCurrentValue() <= 90 && Autoclave.getInstance().getSecondsSinceStart() > 2400 && Autoclave.getInstance().getIndexOfRunningProgram() == 12 ){
+                            dialogTitletext = getString(R.string.stop_program_earlier);
+                            dialogContentText = getString(R.string.do_you_want_to_stop_the_program_earlier_sterilization_result_will_be_successfull_);
+                        }else{
+                            dialogTitletext = getString(R.string.stop_program);
+                            dialogContentText = getString(R.string.do_you_really_want_to_stop_the_running_program_);
+                        }
+
 
                         try {
                             SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(MonitorActivity.this, SweetAlertDialog.WARNING_TYPE)
-                                    .setTitleText(getString(R.string.stop_program))
-                                    .setContentText(getString(R.string.do_you_really_want_to_stop_the_running_program_))
+                                    .setTitleText(dialogTitletext)
+                                    .setContentText(dialogContentText)
                                     .setConfirmText(getString(R.string.yes))
                                     .setCancelText(getString(R.string.cancel))
                                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -287,13 +297,21 @@ public class MonitorActivity extends FragmentActivity implements NavigationbarLi
         AutoclaveMonitor.getInstance().setOnAlertListener(this);
         Autoclave.getInstance().setOnAutoclaveStateListener(this);
 
+        DatabaseService db = new DatabaseService(this);
+        List<Profile> profilesFromDb = db.getProfiles();
         if(Autoclave.getInstance().getProfile() == null){
-            DatabaseService databaseService = new DatabaseService(this);
-            Profile runningProfile = databaseService.getProfileByIndex(Autoclave.getInstance().getIndexOfRunningProgram()).get(0);
-            Autoclave.getInstance().setProfile(runningProfile);
-        }
-        if (Autoclave.getInstance().getProfile().getIndex() == 7) {
-            if(Autoclave.getInstance().getUserDefinedProgram() != null) {
+            if(Autoclave.getInstance().getIndexOfRunningProgram() == 7){
+                Autoclave.getInstance().setProfile(Autoclave.getInstance().getUserDefinedProgram());
+            }else{
+                for(Profile profile : profilesFromDb){
+                    if(profile.getIndex() == Autoclave.getInstance().getIndexOfRunningProgram()){
+                        Autoclave.getInstance().setProfile(profile);
+                        break;
+                    }
+                }
+            }
+        }else{
+            if(Autoclave.getInstance().getProfile().getIndex() == 7){
                 Autoclave.getInstance().setProfile(Autoclave.getInstance().getUserDefinedProgram());
             }
         }

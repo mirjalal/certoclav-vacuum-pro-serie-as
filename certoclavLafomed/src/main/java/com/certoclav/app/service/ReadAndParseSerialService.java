@@ -130,7 +130,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     private int errorCode = 0;
     private String date = "";
     private String time = "";
-    private int indexOfRunningProgram = 0;
+    private int indexOfRunningProgram = 1;
     private String firmwareVersion = "";
     Float pressureCurrent = (float) 0;
 	float[] temperatures = new float[3];

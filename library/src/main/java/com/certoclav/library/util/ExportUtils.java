@@ -1,13 +1,13 @@
 package com.certoclav.library.util;
 
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Calendar;
-
-import android.util.Log;
 
 
 public class ExportUtils {
@@ -80,9 +80,6 @@ public class ExportUtils {
 		    } catch (Exception e) {
 		        return false;
 		    }
-	  
-	 
-	
 	  return true;
 	 }
 	/** Method to write ascii text characters to file on SD card. Note that you must add a 

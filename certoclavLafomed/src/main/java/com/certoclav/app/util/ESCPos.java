@@ -61,7 +61,7 @@ public class ESCPos {
     String endTimeString = "";
     try{
     	Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    	endTimeString = formatter.format(protocol.getStartTime());
+    	endTimeString = formatter.format(protocol.getEndTime());
     }catch(Exception e){
     	endTimeString = "";
     }
@@ -97,7 +97,7 @@ public class ESCPos {
 	   sb.append("80 ").append("SN:").append(Autoclave.getInstance().getController().getSerialnumber()).append(version).append("\n");
 	   sb.append("85 ").append("User").append(": ").append(protocol.getUserEmail()).append("\n");
 	   sb.append(SPACING);
-	   sb.append(String.format("%-8s", "t[m:s]"))
+	   sb.append(String.format("%-8s", "t[h:m]"))
 	     .append(String.format("%-8s", "P[kPa]"))
 	     .append(String.format("%-8s", "S[C]"))
 	     .append(String.format("%-8s", "M[C]"))

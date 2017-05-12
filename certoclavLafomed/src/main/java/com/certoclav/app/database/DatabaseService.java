@@ -1,8 +1,5 @@
 package com.certoclav.app.database;
 
-import java.util.Date;
-import java.util.List;
-
 import android.content.Context;
 import android.database.SQLException;
 import android.util.Log;
@@ -14,6 +11,9 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * CertoClavDatabase class is responsible for the communication of the
@@ -477,10 +477,10 @@ public class DatabaseService {
 	
 	
 
-	public List<User> getUsers() { // für große Datenmengen ist for (User user :
+	public List<User> getUsers() { // fÂ°r groï¿½e Datenmengen ist for (User user :
 									// userDao) { ... } besser da die objekte
 									// nicht alle auf einmal in eine liste
-									// geladen werden müssen
+									// geladen werden mï¿½ssen
 		try {
 
 			/** query for object in the database with id equal profileId */
@@ -915,29 +915,18 @@ public class DatabaseService {
 		
 			
 				        //Standardprofile
-						Profile profile1 = new Profile("",1,"134°C SOLID",  1, 4,  134, 210, 0, 3, "134 °C   2.1bar   10min\nSolid instruments and textiles\nWrapped or unwrapped",true,true,controller,1);
-			
-						Profile profile2 = new Profile("",1,"134°C POROUS", 3, 4,  134, 210, 0, 7, "134 °C   2.1bar   20min\nPorous instruments and textiles\nWrapped or unwrapped",true,true,controller,2);
-			
-						Profile profile3 = new Profile("",1,"134°C HOLLOW", 3, 4,  134, 210, 0, 10, "134 °C   2.1bar   30min\nHollow instruments\nWrapped or unwrapped",true,true,controller,3);
-			
-						Profile profile4 = new Profile("",1,"121°C SOLID",  1, 20, 121, 110, 0, 3,  "121 °C   1.1bar   30min\nSolid instruments and textiles\nWrapped or unwrapped",true,true,controller,4);
-					
-						Profile profile5 = new Profile("",1,"121°C POROUS", 3, 20, 121, 110, 0, 7,  "121 °C   1.1bar   35min\nPorous instruments and textiles\nWrapped or unwrapped",true,true,controller,5);
-				
-						Profile profile6 = new Profile("",1,"121°C HOLLOW", 3, 20, 121, 110, 0, 10, "121 °C   1.1bar   40min\nHollow instruments\nWrapped or unwrapped",true,true,controller,6);
-
+						Profile profile1 = new Profile("",1,"134 \u00B0C SOLID",  1, 4,  134, 210, 0, 3, "134 \u00B0C   2.1bar   4min\nSolid instruments and textiles\nWrapped or unwrapped",true,true,controller,1);
+						Profile profile2 = new Profile("",1,"134 \u00B0C POROUS", 3, 4,  134, 210, 0, 7, "134 \u00B0C   2.1bar   4min\nPorous instruments and textiles\nWrapped or unwrapped",true,true,controller,2);
+						Profile profile3 = new Profile("",1,"134 \u00B0C HOLLOW", 3, 4,  134, 210, 0, 10, "134 \u00B0C   2.1bar   4min\nHollow instruments\nWrapped or unwrapped",true,true,controller,3);
+						Profile profile4 = new Profile("",1,"121 \u00B0C SOLID",  1, 20, 121, 110, 0, 3,  "121 \u00B0C   1.1bar   20min\nSolid instruments and textiles\nWrapped or unwrapped",true,true,controller,4);
+						Profile profile5 = new Profile("",1,"121 \u00B0C POROUS", 3, 20, 121, 110, 0, 7,  "121 \u00B0C   1.1bar   20min\nPorous instruments and textiles\nWrapped or unwrapped",true,true,controller,5);
+						Profile profile6 = new Profile("",1,"121 \u00B0C HOLLOW", 3, 20, 121, 110, 0, 10, "121 \u00B0C   1.1bar   20min\nHollow instruments\nWrapped or unwrapped",true,true,controller,6);
 						Profile profile7 = new Profile("",1,"USER DEFINED", 3, 5,  134, 210, 0, 10,	"Vacuum times: User defined\nSterilization temperature: User defined\nDry time: User defined",true,true,controller,7);
-
 						Profile profile8 = new Profile("",1,"BD HELIX TEST",3, 4,  134, 210, 0, 7,	"Test to evaluate the capacity\nof penetration of the steam\nin hollow loads",true,true,controller,8);
-
-						Profile profile9 = new Profile("",1,"VACUUM TEST",  0, 0,  0,   -80, 15,0,	"Vacuum Test\nRecommended on maintenance",true,true,controller,9);
-
-						Profile profile10 = new Profile("",1,"CLEAN",    	3, 5,  105, 20,  0, 10,	"Clean and desinfect the chamber", true,true,controller,10);
-
-						Profile profile11 = new Profile("",1,"PRION",    	3, 19, 135, 210, 0, 10,	"Prion sterilization", true,true,controller,11);
-
-						Profile profile12 = new Profile("",1,"LIQUID",    	1, 30, 121, 110, 0, 0,	"Liquid sterilization", true,true,controller,12);
+						Profile profile9 = new Profile("",1,"VACUUM TEST",  0, 0,  0,   -80, 15,0,	"-0.8bar   15min\nVacuum Test\nRecommended on maintenance",true,true,controller,9);
+						Profile profile10 = new Profile("",1,"CLEAN",    	3, 5,  105, 20,  0, 10,	"105 \u00B0C   0.2bar   5min\nClean the autoclave", true,true,controller,10);
+						Profile profile11 = new Profile("",1,"PRION",    	3, 19, 135, 210, 0, 10,	"134 \u00B0C   2.1bar   19min\nPrion sterilization", true,true,controller,11);
+						Profile profile12 = new Profile("",1,"LIQUID",    	1, 20, 121, 110, 0, 0,	"Liquid sterilization\n121 \u00B0C   1.1bar   20min\nWith media sensor", true,true,controller,12);
 
 						int result = 0;
 						result = insertProfile(profile1);
@@ -952,7 +941,6 @@ public class DatabaseService {
 						result = insertProfile(profile10);
 						result = insertProfile(profile11);
 						result = insertProfile(profile12);
-						Log.e("return of insertProfile: ", Integer.toString(result));
 		
 			}catch(Exception e){
 				

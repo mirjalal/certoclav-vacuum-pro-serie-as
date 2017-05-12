@@ -244,12 +244,21 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
 //set current Profile into Autoclave model
 
-                        try {
-                            Autoclave.getInstance().getProfile().getIndex();
+
+                        try{
+                            indexOfProfile = Autoclave.getInstance().getProfile().getIndex();
                         }catch(Exception e){
-                            Profile runningProfile = databaseService.getProfileByIndex(Autoclave.getInstance().getIndexOfRunningProgram()).get(0);
+                            indexOfProfile = Autoclave.getInstance().getIndexOfRunningProgram();
+                        }
+                        if(indexOfProfile>12) indexOfProfile = 12;
+                        if(indexOfProfile<1) indexOfProfile = 1;
+
+                        if(Autoclave.getInstance().getProfile() == null){
+                            Profile runningProfile = databaseService.getProfileByIndex(indexOfProfile).get(0);
                             Autoclave.getInstance().setProfile(runningProfile);
                         }
+
+
 
 
 

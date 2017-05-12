@@ -417,5 +417,15 @@
     <string name="export_failed">Export Failed!</string>
     <string name="material_testing">Material Testing</string>
 
+    <string name="stop_program_earlier">Stop program earlier</string>
+    <string name="do_you_want_to_stop_the_program_earlier_sterilization_result_will_be_successfull_">Do you want to stop the program earlier? Sterilization result will be successful.</string>
+    <string name="stopped_by_user_">Stopped by user?</string>
+    <string name="waterlevel_full_">Waterlevel full?</string>
+    <string name="waterlevel_low_">Waterlevel low?</string>
+    <string name="door_locked_">Door locked?</string>
+    <string name="door_closed_">Door closed?</string>
+    <string name="progr_is_running_">Progr. is running?</string>
+    <string name="progr_finished_successfully">Progr. finished successfully</string>
+    <string name="touchscreen_not_connected">Touchscreen not connected</string>
 
 </resources>

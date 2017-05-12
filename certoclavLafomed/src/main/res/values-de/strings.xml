@@ -216,7 +216,7 @@
     <string name="please_connect_to_a_network_via_lan_or_wifi_">Bitte verbinden Sie den Autoklaven via LAN oder WiFi.\n</string>
     <string name="do_you_want_to_open_wifi_settings_">Wollen Sie die WiFi Einstellungen öffnen?</string>
     <string name="login_failed">Login fehlgeschlagen</string>
-    <string name="do_you_want_to_switch_to_offline_mode_">Do you want to switch to offline mode?</string>
+    <string name="do_you_want_to_switch_to_offline_mode_">Wollen Sie in den Offline Modus wechseln?</string>
     <string name="do_you_want_to_enable_network_communication">Wollen Sie in den Online Modus wechseln? Hierfür wird Internet benötigt.</string>  
     <string name="login_successful">Login erfolgreich</string>
     <string name="enable_network_communication">Kommunikation über Netzwerk zulassen</string>
@@ -358,5 +358,19 @@
     <string name="email_address">per E-Mail</string>
     <string name="send_mail_to_certosupport">Sende eine E-Mail an CertoSupport</string>
     <string name="the_video_assistant">the video assistant</string>
+
+
+    <string name="print_label">Drucke Label</string>
+    <string name="stop_program_earlier">Stoppe Programm vorzeitig</string>
+    <string name="do_you_want_to_stop_the_program_earlier_sterilization_result_will_be_successfull_">Möchsten Sie das Programm vorzeitig beenden? Die Charge wird als positiv abgeschlossen protokolliert.</string>
+    <string name="stopped_by_user_">Manuell abgebrochen?</string>
+    <string name="waterlevel_full_">Wassertank voll?</string>
+    <string name="waterlevel_low_">Wassertank leer?</string>
+    <string name="door_locked_">Tür verriegelt?</string>
+    <string name="door_closed_">Tür geschlossen?</string>
+    <string name="progr_is_running_">Progr. läuft?</string>
+    <string name="progr_finished_successfully">Progr. abgeschlossen</string>
+    <string name="touchscreen_not_connected">Touchscreen nicht verbunden</string>
+
 
 </resources>
