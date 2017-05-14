@@ -10,7 +10,7 @@ package com.certoclav.app;
 public class AppConstants {
 	 
 	public static final Boolean APPLICATION_DEBUGGING_MODE = true	;
-	public static Boolean isIoSimulated = false	;
+	public static Boolean isIoSimulated = true	;
 	public static Boolean TABLET_HAS_ROOT = false;
 	public static final Boolean IS_CERTOASSISTANT = false;
 	public static final String TABLET_TYPE_SAMSUNGT113W = "samsungt113w";
@@ -219,10 +219,7 @@ public class AppConstants {
 	public static final String PREFERENCE_KEY_SERIAL_BAUDRATE = "BAUDRATE";
 
 
-
-
-
-	
-
+	public static final String TVConfigurationID = "pff75tf";
+	public static final String TVCongigurationToken = "4340c134-d721-860b-2432-9d38b8ac7b99";
 
 }
