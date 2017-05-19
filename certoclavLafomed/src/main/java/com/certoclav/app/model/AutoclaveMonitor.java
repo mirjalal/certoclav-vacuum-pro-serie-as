@@ -667,7 +667,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                             if (condition.getEmailAddress().isEmpty() == false) {
                                 Log.e("AutoclaveMonitor", "Tyring to send mail now");
                                 notificationService.executePostEmailTask(condition.getEmailAddress(),
-                                        "", "Automatic generated notification from autoclave SN: " + Autoclave.getInstance().getController().getSerialnumber(),
+                                        Autoclave.getInstance().getUser().getFirstName(), "Automatic generated notification from autoclave SN: " + Autoclave.getInstance().getController().getSerialnumber(),
                                         "The program" + " " +
                                                 Autoclave.getInstance().getProfile().getName() + " " +
                                                 "has been cancelled right now.");
