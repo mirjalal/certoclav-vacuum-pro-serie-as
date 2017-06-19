@@ -1,16 +1,6 @@
 package com.certoclav.app.menu;
 
-import com.crashlytics.android.Crashlytics;
-
-import io.fabric.sdk.android.Fabric;
-
-import java.util.Date;
-import java.util.List;
-
-import org.json.JSONObject;
-
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,7 +21,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -43,13 +32,10 @@ import com.certoclav.app.adapters.UserDropdownAdapter;
 import com.certoclav.app.database.Controller;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.User;
-import com.certoclav.app.database.UserController;
 import com.certoclav.app.listener.ControllerInfoListener;
 import com.certoclav.app.listener.DatabaseRefreshedListener;
 import com.certoclav.app.listener.NavigationbarListener;
-import com.certoclav.app.listener.SensorDataListener;
 import com.certoclav.app.model.Autoclave;
-import com.certoclav.app.model.AutoclaveData;
 import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
@@ -62,9 +48,15 @@ import com.certoclav.library.certocloud.PostUserLoginService;
 import com.certoclav.library.certocloud.PostUserLoginService.PutUserLoginTaskFinishedListener;
 import com.certoclav.library.certocloud.PostUtil;
 import com.certoclav.library.util.SettingsDeviceUtils;
+import com.crashlytics.android.Crashlytics;
+
+import org.json.JSONObject;
+
+import java.util.List;
 
 import cn.pedant.SweetAlert.ProgressHelper;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import io.fabric.sdk.android.Fabric;
 
 public class LoginActivity extends Activity implements NavigationbarListener, DatabaseRefreshedListener, ControllerInfoListener, PutUserLoginTaskFinishedListener {
 
@@ -373,7 +365,7 @@ public class LoginActivity extends Activity implements NavigationbarListener, Da
 
             }
         });
-
+       // throw new RuntimeException();
     }
 
 
