@@ -357,6 +357,17 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                 if (secondsSinceStart > 6) { //errorlist detection timeoffset is 3 seconds. It follows, that detection about the end of zycle must have an offset > 3
 
                     if (errorList.size() > 0) {//Autoclave.getInstance().getData().isFailStoppedByUser() || Autoclave.getInstance().isMicrocontrollerReachable()==false){
+                        //if the error has been detected in the end of the liquid program
+                        if(Autoclave.getInstance().getData().getTemp1().getCurrentValue() <= 90 && Autoclave.getInstance().getData().getTemp2().getCurrentValue() <= 90 && Autoclave.getInstance().getSecondsSinceStart() > 2400 && Autoclave.getInstance().getProfile().getIndex() == 12){
+                            Log.e("AutoclaveMonitor", "IS FAIL STOPPED BY USER " +Autoclave.getInstance().getData().isFailStoppedByUser() +" - PROGRAM CANCELLED EARLIER BUT IS FINISHED SUCESSFULLY");
+                            //if the error is a manual stop by the user, then its only a early stopped program, but not an critical error
+                            if(Autoclave.getInstance().getData().isFailStoppedByUser()){
+                                finishProgram();
+                                Autoclave.getInstance().setState(AutoclaveState.PROGRAM_FINISHED);
+                                break;
+                                //break is very important, else it will change to RUN_CANCELED status
+                            }
+                        }
                         Autoclave.getInstance().setState(AutoclaveState.RUN_CANCELED);
                         cancelProgram(errorList.get(0).getErrorID());
                     } else {
