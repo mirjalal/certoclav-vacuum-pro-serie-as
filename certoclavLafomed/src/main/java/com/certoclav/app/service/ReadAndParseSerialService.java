@@ -400,7 +400,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 		isWaterLevelBinFull = false;
 		
 		temperatures[0] = temperature;
-		temperatures[1] = 0;
+		temperatures[1] = temperature-3;
 		temperatures[2] = 0;
 		firmwareVersion = "SIM V1";
 		digitalData[AppConstants.DIGITAL_DOOR_CLOSED_INDEX] = isDoorClosed;

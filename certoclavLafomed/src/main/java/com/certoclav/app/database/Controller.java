@@ -2,15 +2,16 @@ package com.certoclav.app.database;
 
 
 
+import android.os.Environment;
+
+import com.certoclav.app.AppConstants;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-
-import android.os.Environment;
-
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
 
 /**
  * A simple demonstration object we are creating and persisting to the database.
@@ -80,7 +81,11 @@ public class Controller {
 
 
 	public String getSavetyKey() {
-		
+
+		if(AppConstants.isIoSimulated == true){
+			return "AAAAAAAAAAAAAAAAA";
+		}
+
 	    //Find the directory for the SD Card using the API
 		//*Don't* hardcode "/sdcard"
 		File sdcard = Environment.getExternalStorageDirectory();
@@ -130,6 +135,10 @@ public class Controller {
 
 
 	public String getSerialnumber() {
+
+		if(AppConstants.isIoSimulated == true){
+			return "220000001";
+		}
 		  //Find the directory for the SD Card using the API
 				//*Don't* hardcode "/sdcard"
 				File sdcard = Environment.getExternalStorageDirectory();
