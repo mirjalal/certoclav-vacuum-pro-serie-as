@@ -1,31 +1,26 @@
 package com.certoclav.app.settings;
 
 
-import java.util.List;
-
-import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.adapters.UserAdapter;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.User;
-import com.certoclav.app.listener.DatabaseRefreshedListener;
 import com.certoclav.app.menu.LoginActivity;
+import com.certoclav.app.menu.RegisterActivity;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveState;
 
-import cn.pedant.SweetAlert.ProgressHelper;
+import java.util.List;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
@@ -33,7 +28,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  * A fragment representing a single Item detail screen. This fragment is
  * contained in a {@link SettingsActivity} in two-pane mode (on tablets)
  */
-public class UserEditFragment extends Fragment implements DatabaseRefreshedListener, UserAdapter.OnClickButtonListener {
+public class UserEditFragment extends Fragment implements UserAdapter.OnClickButtonListener {
     private UserAdapter adapter;
     private ListView listview;
 
@@ -54,6 +49,15 @@ public class UserEditFragment extends Fragment implements DatabaseRefreshedListe
     @Override
     public void onResume() {
         adapter.setOnClickButtonListener(this);
+
+        DatabaseService db = new DatabaseService(getActivity());
+        adapter.clear();
+        for (User user : db.getUsers()) {
+            adapter.add(user);
+        }
+        adapter.notifyDataSetChanged();
+
+
         super.onResume();
     }
 
@@ -75,62 +79,58 @@ public class UserEditFragment extends Fragment implements DatabaseRefreshedListe
             listview.setAdapter(adapter);
         }
 
+
         return rootView;
     }
 
 
     @Override
-    public void onRefreshedUsers(boolean success) {//
-        Log.e("UserEditFragment", "onrefreshedusers called");
-        DatabaseService db = new DatabaseService(getActivity());
-        adapter.clear();
-        for (User user : db.getUsers()) {
-            adapter.add(user);
+    public void onClickButtonDelete(final User user) {
+
+        try {
+
+            SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText(getString(R.string.delete_user))
+                    .setContentText(getActivity().getString(R.string.do_you_really_want_to_delete) + " " + user.getEmail())
+                    .setConfirmText(getString(R.string.yes))
+                    .setCancelText(getString(R.string.cancel))
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            sDialog.dismissWithAnimation();
+                            DatabaseService db = new DatabaseService(getActivity());
+                            db.deleteUser(user);
+                            adapter.remove(user);
+                            adapter.notifyDataSetChanged();
+                            Autoclave.getInstance().setState(AutoclaveState.LOCKED);
+                            Intent intent = new Intent(getActivity(), LoginActivity.class);
+                            startActivity(intent);
+                            getActivity().finish();
+                        }
+                    }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
+                        }
+                    });
+            sweetAlertDialog.setCanceledOnTouchOutside(true);
+            sweetAlertDialog.setCancelable(true);
+            sweetAlertDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        adapter.notifyDataSetChanged();
+
 
     }
-
 
     @Override
-    public void onClickButtonDelete(final User user) {
-        if (Autoclave.getInstance().getState() == AutoclaveState.LOCKED) {
-            try {
-
-                SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText(getString(R.string.delete_user))
-                        .setContentText(getString(R.string.do_you_really_want_to_delete_) + user.getEmail())
-                        .setConfirmText(getString(R.string.yes))
-                        .setCancelText(getString(R.string.cancel))
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                sDialog.dismissWithAnimation();
-                                DatabaseService db = new DatabaseService(getActivity());
-                                db.deleteUser(user);
-                                adapter.remove(user);
-                                adapter.notifyDataSetChanged();
-                            }
-                        }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                sweetAlertDialog.dismissWithAnimation();
-                            }
-                        });
-                sweetAlertDialog.setCanceledOnTouchOutside(true);
-                sweetAlertDialog.setCancelable(true);
-                sweetAlertDialog.show();
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        } else {
-            Toast.makeText(getActivity(), getString(R.string.please_log_out_first), Toast.LENGTH_LONG).show();
-        }
-
+    public void onClickButtonEdit(User user) {
+        Intent intent = new Intent(getActivity(), RegisterActivity.class);
+        intent.putExtra(AppConstants.INTENT_EXTRA_USER_ID, user.getUserId());
+        getActivity().startActivity(intent);
     }
+
 
 }
 

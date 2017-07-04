@@ -149,7 +149,7 @@ public class DownloadUtils {
                             if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) == DownloadManager.STATUS_FAILED) {
                                 downloading = false;
                             }
-                            final int dl_progress = (int) ((bytes_downloaded * 100l) / bytes_total);
+                            final long dl_progress = (int) ((bytes_downloaded * 100l) / bytes_total);
 
                             Log.e("DownloadUtils", "progress: " + (int) dl_progress);
                             Log.e("download status message", statusMessage(cursor));

@@ -5,7 +5,7 @@
     <string name="cancel">Cancel</string>
     
     <string-array name="email_subjects_array">
-        <item>Request for custom software</item>
+        <item>Request for screen share appointment</item>
         <item>Protocol Managment</item>
         <item>User Managment</item>
         <item>Program Managment</item>
@@ -437,4 +437,7 @@
     <string name="start_screen_share_problem">Something went wrong. Please try later!</string>
     <string name="please_describe_problem">Please describe your problem</string>
     <string name="description">Description</string>
+    <string name="loading">Loading...</string>
+    <string name="checking">Checking...</string>
+    <string name="adding">Adding...</string>
 </resources>

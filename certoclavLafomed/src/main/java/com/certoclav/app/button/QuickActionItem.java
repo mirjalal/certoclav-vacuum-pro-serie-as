@@ -72,7 +72,15 @@ public class QuickActionItem extends LinearLayout implements Checkable {
     public void setBackgroundRes(int resid) {
     	((QuickActionItem)findViewById(R.id.quickaction_item_base)).setBackgroundResource(resid);
     }
-    
+
+    /**
+     * Sets the icon for the view
+     *
+     * @param drawable The icon for this item
+     */
+    public void setImageResource(int resId) {
+        ((ImageView)findViewById(R.id.quickaction_icon)).setImageResource(resId);
+    }
   
     
     /**

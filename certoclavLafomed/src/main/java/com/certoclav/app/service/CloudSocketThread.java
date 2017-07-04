@@ -1,10 +1,5 @@
 package com.certoclav.app.service;
 
-import io.socket.client.Socket;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.util.Log;
 
 import com.certoclav.app.model.Autoclave;
@@ -12,6 +7,11 @@ import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.library.certocloud.SocketService;
 import com.certoclav.library.certocloud.SocketService.SocketEventListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import io.socket.client.Socket;
 
 
 
@@ -142,9 +142,9 @@ public class CloudSocketThread extends Thread implements SocketEventListener {
 							if(Autoclave.getInstance().getState() != AutoclaveState.NOT_RUNNING && Autoclave.getInstance().getState() != AutoclaveState.LOCKED){
 								jsonLiveMessageDataObj.put("Program", profileName);
 								//if(Autoclave.getInstance().getProfile().getIsMediaSensor()){
-								//	jsonLiveMessageDataObj.put("Media temperature", Autoclave.getInstance().getData().getTemp2().getValueString() + " �C");									
+								//	jsonLiveMessageDataObj.put("Media temperature", Autoclave.getInstance().getData().getTemp2().getValueString() + " ℃");
 								//}else{
-									jsonLiveMessageDataObj.put("Vessel temperature", Autoclave.getInstance().getData().getTemp1().getValueString() + " �C");
+									jsonLiveMessageDataObj.put("Vessel temperature", Autoclave.getInstance().getData().getTemp1().getValueString() + " \u2103");
 								//}
 								jsonLiveMessageDataObj.put("Pressure", Autoclave.getInstance().getData().getPress().getCurrentValue() + " bar");
 								jsonLiveMessageDataObj.put("Time since start", timeSinceStartString);

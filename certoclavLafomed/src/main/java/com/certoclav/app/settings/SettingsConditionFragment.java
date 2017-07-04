@@ -1,8 +1,6 @@
 package com.certoclav.app.settings;
 
 
-import java.util.ArrayList;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,6 +21,8 @@ import com.certoclav.app.listener.NavigationbarListener;
 import com.certoclav.library.certocloud.CloudDatabase;
 import com.certoclav.library.certocloud.CloudUser;
 import com.certoclav.library.certocloud.Condition;
+
+import java.util.ArrayList;
 
 
 public class SettingsConditionFragment extends Fragment implements NavigationbarListener {
@@ -45,6 +45,17 @@ public class SettingsConditionFragment extends Fragment implements Navigationbar
 
             @Override
             public void onClick(View v) {
+
+                Condition con;
+                for (int i = 0; i < conditionAdapter.getCount(); i++) {
+                    con = conditionAdapter.getItem(i);
+                    if ((con.isEnabledEmail() && con.getEmailAddress().isEmpty()) ||
+                            (con.isEnabledSms() && con.getSMSNumber().isEmpty())) {
+                        Toast.makeText(getActivity(), getString(R.string.please_enter_valid_data), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+
                 new AsyncTask<Void, Void, Boolean>() {
 
                     @Override

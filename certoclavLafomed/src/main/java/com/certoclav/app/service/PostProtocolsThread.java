@@ -64,7 +64,8 @@ public class PostProtocolsThread extends Thread {
 											     		entryJSONObject.put("ts", String.format(Locale.US,"%.2f", ((float)(protocolEntry.getTimestamp().getTime()-startTime.getTime())) /(1000.0*60.0)));
 											     		entryJSONObject.put("tmp", String.format(Locale.US,"%.2f", protocolEntry.getTemperature()));
 											     		entryJSONObject.put("prs", String.format(Locale.US,"%.2f", (protocolEntry.getPressure()*0.01)+1));
-											             entryJSONArray.put(entryJSONObject);
+														entryJSONObject.put("mtmp", String.format(Locale.US, "%.2f", protocolEntry.getMediaTemperature()));
+														entryJSONArray.put(entryJSONObject);
 											     	}
 											     	
 											   //PROGRAM OBJECT
@@ -169,7 +170,7 @@ public class PostProtocolsThread extends Thread {
 		if(protocol.getSterilisationTemperature() != 0){
 				sbuilder.append("Sterilisation temperature: ")
 						.append(protocol.getSterilisationTemperature())
-						.append(" °C")
+						.append(" ï¿½C")
 						.append("\r\n");
 		}
 		
@@ -190,7 +191,7 @@ public class PostProtocolsThread extends Thread {
 		if(protocol.getVacuumPersistTemperature() != 0){
 				sbuilder.append("Vacuum persist temperature: ")
 				.append(protocol.getVacuumPersistTemperature())
-				.append(" °C")
+				.append(" ï¿½C")
 				.append("\r\n");
 		}
 		if(protocol.getVacuumPersistTime() != 0){
@@ -213,6 +214,6 @@ public class PostProtocolsThread extends Thread {
 	public void endThread(){
 	//	runFlag = false;
 		Log.e("PostProtocolsThread","close and destroy thread");
-		//wenn runflag false ist, dann läuft die run() Methode zu ende und der Thread wird zerstört.
+		//wenn runflag false ist, dann lï¿½uft die run() Methode zu ende und der Thread wird zerstï¿½rt.
 	}
 }

@@ -5,7 +5,7 @@
     <string name="cancel">Abbrechen</string>
 
     <string-array name="email_subjects_array">
-        <item>Einstellungen</item>
+        <item>Terminanfrage für TeamViewer Support</item>
         <item>Protokollverwaltung</item>
         <item>Benutzerverwaltung</item>
         <item>Programmverwaltung</item>
@@ -331,7 +331,6 @@
     <string name="go_to_main_menu_and_choose_program_first">Navigieren Sie zum Hauptmenü und wählen Sie ein Programm aus</string>
     <string name="wait_until_door_has_been_unlocked">Warten Sie bis die Tür entriegelt wurde</string>
     <string name="textline_1">Textzeile</string>
-    <string name="barcode">Strichcode</string>
     <string name="text_line">Textzeile</string>
     <string name="label_designer">Label Editor</string>
     <string name="select_protocol_first">Wählen Sie zuerst ein Protokoll aus der Liste</string>

@@ -1,9 +1,9 @@
 package com.certoclav.app.menu;
 
-import java.util.Date;
-
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -23,13 +23,15 @@ import com.certoclav.app.R;
 import com.certoclav.app.button.EditTextItem;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.User;
-import com.certoclav.app.database.UserController;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.library.bcrypt.BCrypt;
 import com.certoclav.library.certocloud.PostUserLoginService;
-import com.certoclav.library.certocloud.PostUserLoginService.PutUserLoginTaskFinishedListener;
 import com.certoclav.library.certocloud.PostUtil;
+
+import java.util.Date;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class AddCloudAccountActivity extends Activity {
 
@@ -40,6 +42,8 @@ public class AddCloudAccountActivity extends Activity {
     private EditTextItem editEmailItem;
     private EditTextItem editPasswordItem;
     private ProgressBar progressBar;
+    private DatabaseService databaseService;
+    private SweetAlertDialog pDialog;
 
 
     @Override
@@ -110,7 +114,7 @@ public class AddCloudAccountActivity extends Activity {
         linEditTextItemContainer.addView(editPasswordItem);
 
 
-        final DatabaseService databaseService = new DatabaseService(AddCloudAccountActivity.this);
+        databaseService = new DatabaseService(AddCloudAccountActivity.this);
         buttonRegister = (Button) findViewById(R.id.register_button_ok);
         buttonRegister.setText(getString(R.string.add_account));
 
@@ -118,7 +122,6 @@ public class AddCloudAccountActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-
                 boolean isEmailAlreadyExists = false;
                 for (User user : databaseService.getUsers()) {
                     if (editEmailItem.getText().equals(user.getEmail())) {
@@ -127,59 +130,29 @@ public class AddCloudAccountActivity extends Activity {
                     }
                 }
 
-
                 if (!editEmailItem.hasValidString()) {
                     Toast.makeText(AddCloudAccountActivity.this, getString(R.string.please_enter_a_valid_email_address), Toast.LENGTH_LONG).show();
+
                     return;
                 }
 
                 if (isEmailAlreadyExists) {
                     Toast.makeText(AddCloudAccountActivity.this, getString(R.string.email_already_exists), Toast.LENGTH_LONG).show();
+
                     return;
                 }
 
                 PostUserLoginService userLoginSerice = new PostUserLoginService();
-                userLoginSerice.setOnTaskFinishedListener(new PutUserLoginTaskFinishedListener() {
+                userLoginSerice.setOnTaskFinishedListener(new PostUserLoginService.PutUserLoginTaskFinishedListener() {
 
                     @Override
                     public void onTaskFinished(int responseCode) {
-                        progressBar.setVisibility(View.GONE);
-                        if (responseCode == PostUtil.RETURN_OK) {
-                            Boolean isLocal = false;
-
-                            User user = new User(
-                                    "",
-                                    "",
-                                    "",
-                                    editEmailItem.getText(),
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    BCrypt.hashpw(editPasswordItem.getText(), BCrypt.gensalt()),
-                                    new Date(),
-                                    false,
-                                    isLocal);
-
-                            databaseService.insertUser(user);
-
-
-                            Toast.makeText(getApplicationContext(), getString(R.string.account_added),
-                                    Toast.LENGTH_LONG).show();
-                            finish();
-                        } else {
-                            Toast.makeText(getApplicationContext(), getString(R.string.linking_certocloud_account_failed),
-                                    Toast.LENGTH_LONG).show();
-                        }
-
+                        new AddAccountTask().execute(responseCode + "", editEmailItem.getText(), editPasswordItem.getText());
                     }
                 });
 
                 userLoginSerice.loginUser(editEmailItem.getText(), editPasswordItem.getText(), Autoclave.getInstance().getController().getSavetyKey());
-
-                progressBar.setVisibility(View.VISIBLE);
-
+                showDialog();
 
             }
         });
@@ -209,5 +182,79 @@ public class AddCloudAccountActivity extends Activity {
         }
         return ret;
     }
+
+    private class AddAccountTask extends AsyncTask<String, Void, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            if (pDialog != null && pDialog.isShowing()) {
+                pDialog.setTitleText(getString(R.string.adding));
+            }
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Boolean doInBackground(String[] params) {
+
+            if (Integer.valueOf(params[0]) == PostUtil.RETURN_OK) {
+                Boolean isLocal = false;
+                User user = new User(
+                        "",
+                        "",
+                        "",
+                        params[1]
+                        ,
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        BCrypt.hashpw(params[2], BCrypt.gensalt()),
+                        new Date(),
+                        false,
+                        isLocal);
+                databaseService.insertUser(user);
+                return true;
+            }
+
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean result) {
+            if (pDialog == null) return;
+            pDialog.setTitleText(getString(result ?
+                    R.string.account_added :
+                    R.string.linking_certocloud_account_failed));
+            pDialog.changeAlertType(result ? SweetAlertDialog.SUCCESS_TYPE : SweetAlertDialog.ERROR_TYPE);
+            pDialog.setConfirmText(getString(android.R.string.ok));
+            pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    hideDialog();
+                    if (result)
+                        AddCloudAccountActivity.this.finish();
+                }
+            });
+
+            super.onPostExecute(result);
+        }
+    }
+
+    private void showDialog() {
+        if (pDialog != null && pDialog.isShowing())
+            pDialog.dismiss();
+        pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setCancelable(false);
+        pDialog.setTitleText(getString(R.string.checking));
+        pDialog.show();
+    }
+
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismissWithAnimation();
+    }
+
 
 }
