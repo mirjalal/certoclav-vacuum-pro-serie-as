@@ -3,6 +3,7 @@ package com.certoclav.app.database;
 
 import android.os.Environment;
 
+import com.certoclav.app.AppConstants;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -79,6 +80,10 @@ public class Controller {
 
     public String getSavetyKey() {
 
+        if (AppConstants.isIoSimulated == true) {
+            return "AAAAAAAAAAAAAAAAA";
+        }
+
         //Find the directory for the SD Card using the API
         //*Don't* hardcode "/sdcard"
         File sdcard = Environment.getExternalStorageDirectory();
@@ -126,6 +131,10 @@ public class Controller {
 
 
     public String getSerialnumber() {
+
+        if (AppConstants.isIoSimulated == true) {
+            return "220000001";
+        }
         //Find the directory for the SD Card using the API
         //*Don't* hardcode "/sdcard"
         File sdcard = Environment.getExternalStorageDirectory();
@@ -155,7 +164,6 @@ public class Controller {
 
 
 }
-
 
 
 
