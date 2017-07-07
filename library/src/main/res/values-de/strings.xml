@@ -5,7 +5,7 @@
     <string name="cancel">Abbrechen</string>
 
     <string-array name="email_subjects_array">
-        <item>Anfrage für ein Kundenspezifisches Plugin</item>
+        <item>Terminanfrage für TeamViewer Support</item>
         <item>Protokollverwaltung</item>
         <item>Benutzerverwaltung</item>
         <item>Programmverwwaltung</item>

@@ -5,7 +5,7 @@
     <string name="cancel">Cancel</string>
     
     <string-array name="email_subjects_array">
-        <item>Request for custom software</item>
+        <item>Request for screen share appointment</item>
         <item>Protocol Managment</item>
         <item>User Managment</item>
         <item>Program Managment</item>

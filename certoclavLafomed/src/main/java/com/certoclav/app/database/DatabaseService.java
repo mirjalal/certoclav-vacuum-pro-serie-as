@@ -644,7 +644,7 @@ public class DatabaseService {
 		} catch (Exception e) {
 			Log.e(TAG, "Database exception", e);
 		}
-	
+
 		return null;
 	}
 

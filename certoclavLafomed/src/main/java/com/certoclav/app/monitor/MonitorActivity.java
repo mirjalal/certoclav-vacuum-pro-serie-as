@@ -326,7 +326,7 @@ public class MonitorActivity extends FragmentActivity implements NavigationbarLi
         if (Autoclave.getInstance().getProfile().getSterilisationTemperature() != 0) {
             sbuilder.append("Sterilisation temperature: ")
                     .append(Autoclave.getInstance().getProfile().getSterilisationTemperature())
-                    .append(" ?C")
+                    .append(" \u2103")
                     .append("\n");
         }
 

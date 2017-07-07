@@ -21,27 +21,33 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/sterilisation_element_firstline"
+            <LinearLayout
+                android:id="@+id/linearLayoutTitle"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_alignParentTop="true"
-                android:background="@drawable/sterilisation_element_title2"
-                android:gravity="center_vertical"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:singleLine="true"
-                android:text="FAST PROGRAM"
-                android:textColor="#333366"
-                android:textSize="30sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/sterilisation_element_title_bg"
+                android:layout_alignParentTop="true">
+
+                <TextView
+                    android:id="@+id/sterilisation_element_firstline"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:singleLine="true"
+                    android:text="FAST PROGRAM"
+                    android:textColor="#333366"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
 
             <FrameLayout
                 android:id="@+id/sterilisation_element_seperator_firstline"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_below="@+id/sterilisation_element_firstline"
+                android:layout_below="@+id/linearLayoutTitle"
                 android:background="#aaaaaa"></FrameLayout>
 
             <RelativeLayout

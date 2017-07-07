@@ -1,7 +1,5 @@
 package com.certoclav.app.adapters;
 
-import java.util.List;
-
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,6 +18,8 @@ import com.certoclav.app.R;
 import com.certoclav.app.database.Profile;
 import com.certoclav.library.certocloud.CloudUser;
 import com.certoclav.library.certocloud.Condition;
+
+import java.util.List;
 
 
 /**
@@ -60,7 +60,7 @@ public class ConditionAdapter extends ArrayAdapter<Condition> {
      */
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        Condition wed = getItem(position);
+        final Condition wed = getItem(position);
         if (convertView == null) {
             final LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.settings_condition_element, parent, false);
@@ -77,6 +77,7 @@ public class ConditionAdapter extends ArrayAdapter<Condition> {
                     } else {
                         viewHolder.editTextSms.setEnabled(true);
                     }
+                    wed.setEnabledSms(isChecked);
                 }
             });
 
@@ -92,6 +93,7 @@ public class ConditionAdapter extends ArrayAdapter<Condition> {
                     } else {
                         viewHolder.editTextEmail.setEnabled(true);
                     }
+                    wed.setEnabledEmail(isChecked);
                 }
             });
 
@@ -102,7 +104,6 @@ public class ConditionAdapter extends ArrayAdapter<Condition> {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    getItem(position).setEmail(s.toString());
                 }
 
                 @Override
@@ -115,7 +116,7 @@ public class ConditionAdapter extends ArrayAdapter<Condition> {
                 @Override
                 public void afterTextChanged(Editable s) {
                     // TODO Auto-generated method stub
-
+                    wed.setEmail(s.toString());
                 }
             });
 
@@ -155,16 +156,12 @@ public class ConditionAdapter extends ArrayAdapter<Condition> {
 
 
         ViewHolder holder = (ViewHolder) convertView.getTag();
-        if (holder.editTextEmail.getText().toString().isEmpty()) {
-            holder.cbEmail.setChecked(false);
-        } else {
+        if (!holder.editTextEmail.getText().toString().isEmpty()) {
             holder.cbEmail.setChecked(true);
         }
 
 
-        if (holder.editTextSms.getText().toString().isEmpty()) {
-            holder.cbSms.setChecked(false);
-        } else {
+        if (!holder.editTextSms.getText().toString().isEmpty()) {
             holder.cbSms.setChecked(true);
         }
 

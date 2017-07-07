@@ -44,6 +44,7 @@ import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.bcrypt.BCrypt;
 import com.certoclav.library.certocloud.CertocloudConstants;
+import com.certoclav.library.certocloud.CloudUser;
 import com.certoclav.library.certocloud.PostUserLoginService;
 import com.certoclav.library.certocloud.PostUserLoginService.PutUserLoginTaskFinishedListener;
 import com.certoclav.library.certocloud.PostUtil;
@@ -339,7 +340,6 @@ public class LoginActivity extends Activity implements NavigationbarListener, Da
                             textViewLogin.setVisibility(View.VISIBLE);
                             textViewLogin.setEnabled(true);
 
-
                             if (result) {
                                 Toast.makeText(LoginActivity.this,
                                         getString(R.string.login_successful),
@@ -365,7 +365,7 @@ public class LoginActivity extends Activity implements NavigationbarListener, Da
 
             }
         });
-       // throw new RuntimeException();
+        // throw new RuntimeException();
     }
 
 
@@ -375,6 +375,7 @@ public class LoginActivity extends Activity implements NavigationbarListener, Da
         super.onResume();
         progressBar.setVisibility(View.GONE);
         textViewLogin.setVisibility(View.VISIBLE);
+        CloudUser.getInstance().setLoggedIn(false);
 
         AutoclaveMonitor.getInstance();
         Autoclave.getInstance().setOnControllerInfoListener(this);
