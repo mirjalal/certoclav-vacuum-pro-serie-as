@@ -16,6 +16,7 @@ public class AppConstants {
 	public static final String TABLET_TYPE_SAMSUNGT113W = "samsungt113w";
 	public static final String TABLET_TYPE_LILLIPUT = "lilliput"; //android 2.3.4
 	public static final String TABLET_TYPE_LILLIPUT_2 = "lilliput2"; //android 4.3
+	public static final String TABLET_TYPE_7145 ="7145";
 	//public static final String TABLET_TYPE = TABLET_TYPE_SAMSUNGT113W; 
 	public static final String TABLET_TYPE = TABLET_TYPE_LILLIPUT_2;
 	public static final String MODEL_LAFOMED = "lafomed_v3"; //first autoclave with media sensor
