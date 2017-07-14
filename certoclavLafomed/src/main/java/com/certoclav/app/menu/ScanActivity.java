@@ -1,9 +1,6 @@
 package com.certoclav.app.menu;
 
 
-import java.util.ArrayList;
-
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,17 +20,19 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
+import com.certoclav.app.activities.CertoclavSuperActivity;
 import com.certoclav.app.adapters.ScanAdapter;
 import com.certoclav.app.adapters.ScanAdapter.OnDeleteListener;
 import com.certoclav.app.model.Autoclave;
-import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.app.monitor.MonitorActivity;
 import com.certoclav.app.sterilisationassistant.AssistantActivity;
 import com.certoclav.library.application.ApplicationController;
 
+import java.util.ArrayList;
 
-public class ScanActivity extends Activity {
+
+public class ScanActivity extends CertoclavSuperActivity {
 
     private GridView programGrid;
     private EditText editTextId;

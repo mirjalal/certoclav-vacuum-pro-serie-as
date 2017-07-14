@@ -1,17 +1,13 @@
 package com.certoclav.app.menu;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -25,6 +21,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -41,6 +39,7 @@ import com.certoclav.app.database.Protocol;
 import com.certoclav.app.graph.GraphService;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveMonitor;
+import com.certoclav.app.monitor.MonitorListFragment;
 import com.certoclav.app.service.PostProtocolsService;
 import com.certoclav.app.util.ESCPos;
 import com.certoclav.app.util.LabelPrinterUtils;
@@ -69,8 +68,13 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
     public static final int SPINNER_POSITION_ORDER_BY_START_TIME = 0;
     public static final int SPINNER_POSITION_ORDER_BY_PROGRAM_NAME = 1;
     public static final int SPINNER_POSITION_ORDER_BY_SUCCESS = 2;
+    public static final String LIST_GRAPH_PREF = "islistgrapp";
 
     int aktPosition = 0;
+    private CheckBox checkBoxGpaphList;
+    private SharedPreferences sharedPreferences;
+    private LinearLayout graphContainer;
+    private View viewList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,6 +85,25 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
         progressBarProtocolList = (ProgressBar) rootView.findViewById(R.id.protocols_progress_bar_list);
         progressBarGraph = (ProgressBar) rootView.findViewById(R.id.protocols_progress_bar_graph);
         databaseService = new DatabaseService(getActivity());
+        sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        checkBoxGpaphList = ((CheckBox) rootView.findViewById(R.id.checkboxGraphList));
+        checkBoxGpaphList.setChecked(sharedPreferences.getBoolean(LIST_GRAPH_PREF, true));
+
+        checkBoxGpaphList.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (graphContainer != null)
+                    graphContainer.setVisibility(isChecked ? View.GONE : View.VISIBLE);
+                if (viewList != null)
+                    viewList.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+                sharedPreferences.edit().putBoolean(LIST_GRAPH_PREF, isChecked).commit();
+
+            }
+        });
+
+        graphContainer = (LinearLayout) getActivity().findViewById(R.id.protocols_container_graph);
+        viewList = getActivity().findViewById(R.id.content);
+
 
         rootView.findViewById(R.id.imageViewPrint).setOnClickListener(this);
         rootView.findViewById(R.id.imageViewScan).setOnClickListener(this);
@@ -130,6 +153,10 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
                                     int arg2, long arg3) {
                 aktPosition = arg2;
 
+                graphContainer = (LinearLayout) getActivity().findViewById(R.id.protocols_container_graph);
+                viewList = getActivity().findViewById(R.id.content);
+                graphContainer.removeAllViews();
+
                 final LinearLayout graphContainer = (LinearLayout) getActivity().findViewById(R.id.protocols_container_graph);
                 graphContainer.removeAllViews();
                 progressBarGraph.setVisibility(View.VISIBLE);
@@ -155,6 +182,9 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
                     textError.setVisibility(View.INVISIBLE);
                 }
 
+                final MonitorListFragment fragment = MonitorListFragment.newInstance(1, protocol);
+                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                transaction.replace(R.id.content, fragment).commit();
 
                 LineGraph lineGraph = null;
                 lineGraph = GraphService.getInstance().getProtocolGraphView(protocol);
@@ -165,6 +195,12 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
                 } catch (Exception e) {
                     Log.e("ProtocolsFragment", "exception onPostExecute: " + e.toString());
                 }
+
+
+                if (graphContainer != null)
+                    graphContainer.setVisibility(checkBoxGpaphList.isChecked() ? View.GONE : View.VISIBLE);
+                if (viewList != null)
+                    viewList.setVisibility(checkBoxGpaphList.isChecked() ? View.VISIBLE : View.GONE);
 
             }
         });
@@ -483,18 +519,18 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
             if (protocolAdapter.getItem(aktPosition) == null) {
                 return false;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
 
         try {
 
 
-                final SweetAlertDialog dialog = new SweetAlertDialog(getActivity(), R.layout.dialog_protocol_label, SweetAlertDialog.WARNING_TYPE);
-                dialog.setContentView(R.layout.dialog_protocol_label);
-                dialog.setTitle(R.string.please_choose_one_of_the_following_options);
-                dialog.setCancelable(true);
-                dialog.setCanceledOnTouchOutside(true);
+            final SweetAlertDialog dialog = new SweetAlertDialog(getActivity(), R.layout.dialog_protocol_label, SweetAlertDialog.WARNING_TYPE);
+            dialog.setContentView(R.layout.dialog_protocol_label);
+            dialog.setTitle(R.string.please_choose_one_of_the_following_options);
+            dialog.setCancelable(true);
+            dialog.setCanceledOnTouchOutside(true);
 
 
             Button buttonLabel = (Button) dialog.findViewById(R.id.dialogButtonLabel);

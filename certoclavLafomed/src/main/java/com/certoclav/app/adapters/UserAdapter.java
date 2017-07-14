@@ -28,66 +28,66 @@ import java.util.List;
  */
 public class UserAdapter extends ArrayAdapter<User> {
 
-	public interface OnClickButtonListener {
-		void onClickButtonDelete(User user);
+    public interface OnClickButtonListener {
+        void onClickButtonDelete(User user);
 
-		void onClickButtonEdit(User user);
-	}
+        void onClickButtonEdit(User user);
+    }
 
-	ArrayList<OnClickButtonListener> onClickButtonListeners = new ArrayList<OnClickButtonListener>();
+    ArrayList<OnClickButtonListener> onClickButtonListeners = new ArrayList<OnClickButtonListener>();
 
-	public void setOnClickButtonListener(OnClickButtonListener listener) {
-		onClickButtonListeners.add(listener);
-	}
+    public void setOnClickButtonListener(OnClickButtonListener listener) {
+        onClickButtonListeners.add(listener);
+    }
 
-	public void removeOnClickButtonListener(OnClickButtonListener listener) {
-		onClickButtonListeners.remove(listener);
-	}
+    public void removeOnClickButtonListener(OnClickButtonListener listener) {
+        onClickButtonListeners.remove(listener);
+    }
 
-	private final Context mContext;
-	private QuickActionItem actionItemDelete;
-	private QuickActionItem actionItemEdit;
-
-
-	/**
-	 * Constructor
-	 *
-	 * @param context context of calling activity
-	 * @param values  {@link List}<{@link Profile}> containing the data to populate the list
-	 */
-	public UserAdapter(Context context, List<User> values) {
-		super(context, R.layout.user_list_row, values);
-		this.mContext = context;
+    private final Context mContext;
+    private QuickActionItem actionItemDelete;
+    private QuickActionItem actionItemEdit;
 
 
-	}
+    /**
+     * Constructor
+     *
+     * @param context context of calling activity
+     * @param values  {@link List}<{@link Profile}> containing the data to populate the list
+     */
+    public UserAdapter(Context context, List<User> values) {
+        super(context, R.layout.user_list_row, values);
+        this.mContext = context;
 
 
-	/**
-	 * Gets a View that displays the data at the specified position in the data
-	 * set.The View is inflated it from profile_list_row XML layout file
-	 *
-	 * @see Adapter#getView(int, View, ViewGroup)
-	 */
-	@Override
-	public View getView(final int position, View convertView, ViewGroup parent) {
+    }
 
 
-		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    /**
+     * Gets a View that displays the data at the specified position in the data
+     * set.The View is inflated it from profile_list_row XML layout file
+     *
+     * @see Adapter#getView(int, View, ViewGroup)
+     */
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
-		//	if(convertView == null){
-		convertView = inflater.inflate(R.layout.user_list_row, parent, false);
-		LinearLayout containerItems = (LinearLayout) convertView.findViewById(R.id.user_list_element_container_button);
+
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        //	if(convertView == null){
+        convertView = inflater.inflate(R.layout.user_list_row, parent, false);
+        LinearLayout containerItems = (LinearLayout) convertView.findViewById(R.id.user_list_element_container_button);
 
 
-		actionItemEdit = (QuickActionItem) inflater.inflate(R.layout.quickaction_item, containerItems, false);
-		actionItemDelete = (QuickActionItem) inflater.inflate(R.layout.quickaction_item, containerItems, false);
+        actionItemEdit = (QuickActionItem) inflater.inflate(R.layout.quickaction_item, containerItems, false);
+        actionItemDelete = (QuickActionItem) inflater.inflate(R.layout.quickaction_item, containerItems, false);
 
-		if (Autoclave.getInstance().getUser() != null && Autoclave.getInstance().getState() != AutoclaveState.LOCKED && getItem(position).getEmail().equals(Autoclave.getInstance().getUser().getEmail())) {
-			if (getItem(position).getIsLocal())
-				containerItems.addView(actionItemEdit);
-			containerItems.addView(actionItemDelete);
-		}
+        if (Autoclave.getInstance().getUser() != null && Autoclave.getInstance().getState() != AutoclaveState.LOCKED && getItem(position).getEmail().equals(Autoclave.getInstance().getUser().getEmail())) {
+            if (getItem(position).getIsLocal() || Autoclave.getInstance().isOnlineMode(mContext))
+                containerItems.addView(actionItemEdit);
+            containerItems.addView(actionItemDelete);
+        }
             /*if(Autoclave.getInstance().getUser() != null){
                 if(Autoclave.getInstance().getUser().getEmail().equals(getItem(position).getEmail()) && Autoclave.getInstance().getState() != AutoclaveState.WAITING_FOR_LOGIN){
 					actionItemEdit.setVisibility(View.VISIBLE);
@@ -102,44 +102,44 @@ public class UserAdapter extends ArrayAdapter<User> {
 			}*/
 
 
-		TextView firstLine = (TextView) convertView.findViewById(R.id.first_line);
-		firstLine.setText(getItem(position).getEmail());
+        TextView firstLine = (TextView) convertView.findViewById(R.id.first_line);
+        firstLine.setText(getItem(position).getEmail());
 
-		final TextView secondLine = (TextView) convertView.findViewById(R.id.second_line);
-		secondLine.setText(getItem(position).getIsLocal() ? "Local Account" : "Online Account");
-
-
-		actionItemDelete.setChecked(false);
-		actionItemDelete.setImageResource(R.drawable.btn_remove);
-
-		//actionItemDelete.setText(getContext().getString(R.string.delete));
-		actionItemDelete.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				for (OnClickButtonListener listener : onClickButtonListeners) {
-					listener.onClickButtonDelete(getItem(position));
-				}
+        final TextView secondLine = (TextView) convertView.findViewById(R.id.second_line);
+        secondLine.setText(getItem(position).getIsLocal() ? "Local Account" : "Online Account");
 
 
-			}
-		});
+        actionItemDelete.setChecked(false);
+        actionItemDelete.setImageResource(R.drawable.btn_remove);
+
+        //actionItemDelete.setText(getContext().getString(R.string.delete));
+        actionItemDelete.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (OnClickButtonListener listener : onClickButtonListeners) {
+                    listener.onClickButtonDelete(getItem(position));
+                }
 
 
-		actionItemEdit.setChecked(false);
-		actionItemEdit.setImageResource(R.drawable.ic_menu_edit);
-
-		//actionItemEdit.setText(getContext().getString(R.string.edit));
-		actionItemEdit.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				for (OnClickButtonListener listener : onClickButtonListeners) {
-					listener.onClickButtonEdit(getItem(position));
-				}
+            }
+        });
 
 
-			}
-		});
+        actionItemEdit.setChecked(false);
+        actionItemEdit.setImageResource(R.drawable.ic_menu_edit);
 
-		return convertView;
-	}
+        //actionItemEdit.setText(getContext().getString(R.string.edit));
+        actionItemEdit.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (OnClickButtonListener listener : onClickButtonListeners) {
+                    listener.onClickButtonEdit(getItem(position));
+                }
+
+
+            }
+        });
+
+        return convertView;
+    }
 }

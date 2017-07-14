@@ -1,17 +1,19 @@
 package com.certoclav.library.certocloud;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.certoclav.library.util.Response;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class PostUserLoginService {
 
 
     public interface PutUserLoginTaskFinishedListener {
-        void onTaskFinished(int responseCode);
+        void onTaskFinished(Response response);
     }
 
     private PutUserLoginTaskFinishedListener putUserTaskFinishedListener = null;
@@ -31,9 +33,9 @@ public class PostUserLoginService {
     }
 
 
-    private class PutUserLoginTask extends AsyncTask<String, String, Integer> {
+    private class PutUserLoginTask extends AsyncTask<String, String, Response> {
 
-        protected Integer doInBackground(String... pw) {
+        protected Response doInBackground(String... pw) {
             int responseCode = -1;
             try {
 
@@ -43,27 +45,27 @@ public class PostUserLoginService {
                     object.put("username", email);
                     object.put("password", password);
                 } catch (Exception ex) {
-                    Log.e("RestUserLoginTask Exception", ex.toString());
+                    Log.e("RestUserLoginTask", ex.toString());
                 }
 
                 String body = object.toString();
 
                 //Post login information to CertoCloud
                 postUtil = new PostUtil();
-                responseCode = postUtil.postToCertocloud(body, CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_POST_LOGIN, false);
+                return postUtil.postToCertocloud(body, CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_POST_LOGIN, false);
 
             } catch (Exception e) {
             }
 
 
-            return responseCode;
+            return null;
 
         }
 
 
-        protected void onPostExecute(Integer responseCode) {
+        protected void onPostExecute(Response response) {
 
-            if (responseCode == PostUtil.RETURN_OK) {
+            if (response != null && response.isOK()) {
                 JSONObject loginJSONObject;
                 try {
                     loginJSONObject = new JSONObject(postUtil.getResponseBody());
@@ -80,7 +82,7 @@ public class PostUserLoginService {
             }
 
             if (putUserTaskFinishedListener != null) {
-                putUserTaskFinishedListener.onTaskFinished(responseCode);
+                putUserTaskFinishedListener.onTaskFinished(response);
             }
         }
 

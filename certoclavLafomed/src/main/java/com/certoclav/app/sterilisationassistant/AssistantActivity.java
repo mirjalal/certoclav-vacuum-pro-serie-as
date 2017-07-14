@@ -1,8 +1,5 @@
 package com.certoclav.app.sterilisationassistant;
 
-import java.util.ArrayList;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
@@ -15,6 +12,7 @@ import android.widget.VideoView;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
+import com.certoclav.app.activities.CertoclavSuperActivity;
 import com.certoclav.app.database.Profile;
 import com.certoclav.app.listener.AlertListener;
 import com.certoclav.app.listener.AutoclaveStateListener;
@@ -26,8 +24,10 @@ import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.app.model.Error;
 import com.certoclav.app.monitor.MonitorActivity;
 
+import java.util.ArrayList;
 
-public class AssistantActivity extends Activity implements ProfileListener, AlertListener, AutoclaveStateListener {
+
+public class AssistantActivity extends CertoclavSuperActivity implements ProfileListener, AlertListener, AutoclaveStateListener {
 
     private int currentStep = 1;
 
@@ -45,7 +45,7 @@ public class AssistantActivity extends Activity implements ProfileListener, Aler
 
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         currentStep = 1;
         Autoclave.getInstance().setOnProfileListener(this);
         Autoclave.getInstance().setOnAutoclaveStateListener(this);
@@ -64,7 +64,7 @@ public class AssistantActivity extends Activity implements ProfileListener, Aler
 
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         Autoclave.getInstance().removeOnProfileListener(this);
         Autoclave.getInstance().removeOnAutoclaveStateListener(this);
         AutoclaveMonitor.getInstance().removeOnAlertListener(this);

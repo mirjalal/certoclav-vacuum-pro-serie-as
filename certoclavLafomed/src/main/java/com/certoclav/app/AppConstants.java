@@ -61,6 +61,7 @@ public class AppConstants {
 	public static final String PREFREENCE_KEY_KEEP_TEMP = "switch_keep_temp";
 	public static final String PREFREENCE_KEY_PREHEAT = "switch_preheat";
 	public static final String PREFREENCE_KEY_USER_DEFINED = "preferences_program_user_defined";
+	public static final String PREFERENCE_KEY_DOWNLOAD_PROTOCOLS = "preferences_download_protocols";
 	public static final String PREFERENCE_KEY_ONLINE_MODE = "switch_snchronization";
 	public static final String PREFERENCE_KEY_STEP_BY_STEP = "switch_step_by_step";
 	public static final String PREFERENCE_KEY_MATERIAL_TEST = "switch_material_testing";

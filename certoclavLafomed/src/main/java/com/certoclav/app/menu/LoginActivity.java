@@ -1,6 +1,5 @@
 package com.certoclav.app.menu;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,6 +27,7 @@ import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
+import com.certoclav.app.activities.CertoclavSuperActivity;
 import com.certoclav.app.adapters.UserDropdownAdapter;
 import com.certoclav.app.database.Controller;
 import com.certoclav.app.database.DatabaseService;
@@ -48,6 +48,7 @@ import com.certoclav.library.certocloud.CloudUser;
 import com.certoclav.library.certocloud.PostUserLoginService;
 import com.certoclav.library.certocloud.PostUserLoginService.PutUserLoginTaskFinishedListener;
 import com.certoclav.library.certocloud.PostUtil;
+import com.certoclav.library.util.Response;
 import com.certoclav.library.util.SettingsDeviceUtils;
 import com.crashlytics.android.Crashlytics;
 
@@ -59,7 +60,7 @@ import cn.pedant.SweetAlert.ProgressHelper;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.fabric.sdk.android.Fabric;
 
-public class LoginActivity extends Activity implements NavigationbarListener, DatabaseRefreshedListener, ControllerInfoListener, PutUserLoginTaskFinishedListener {
+public class LoginActivity extends CertoclavSuperActivity implements NavigationbarListener, DatabaseRefreshedListener, ControllerInfoListener, PutUserLoginTaskFinishedListener {
 
 
     private View buttonLogin;
@@ -370,7 +371,7 @@ public class LoginActivity extends Activity implements NavigationbarListener, Da
 
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         Log.e("LoginActivity", "onresume called");
         super.onResume();
         progressBar.setVisibility(View.GONE);
@@ -469,7 +470,7 @@ public class LoginActivity extends Activity implements NavigationbarListener, Da
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         Autoclave.getInstance().removeOnControllerInfoListener(this);
         super.onPause();
     }
@@ -560,15 +561,19 @@ public class LoginActivity extends Activity implements NavigationbarListener, Da
     }
 
     @Override
-    public void onTaskFinished(int responseCode) {
+    public void onTaskFinished(Response response) {
+        if (response == null) {
+            Toast.makeText(LoginActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+            return;
+        }
         progressBar.setVisibility(View.GONE);
         textViewLogin.setVisibility(View.VISIBLE);
 
 
-        Log.e("LoginActivity", "onTaskFinished - statusCode: " + responseCode);
+        Log.e("LoginActivity", "onTaskFinished - statusCode: " + response);
         buttonLogin.setEnabled(true);
         textViewLogin.setEnabled(true);
-        switch (responseCode) {
+        switch (response.getStatus()) {
             case PostUtil.RETURN_OK:
                 Toast.makeText(LoginActivity.this,
                         getResources().getString(R.string.login_successful),

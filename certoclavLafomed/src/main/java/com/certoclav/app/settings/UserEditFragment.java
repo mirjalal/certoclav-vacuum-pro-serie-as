@@ -16,6 +16,7 @@ import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.User;
 import com.certoclav.app.menu.LoginActivity;
 import com.certoclav.app.menu.RegisterActivity;
+import com.certoclav.app.menu.RegisterCloudAccountActivity;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveState;
 
@@ -126,7 +127,9 @@ public class UserEditFragment extends Fragment implements UserAdapter.OnClickBut
 
     @Override
     public void onClickButtonEdit(User user) {
-        Intent intent = new Intent(getActivity(), RegisterActivity.class);
+        Intent intent = new Intent(getActivity(), Autoclave.getInstance().isOnlineMode(getActivity()) ?
+                RegisterCloudAccountActivity.class
+                : RegisterActivity.class);
         intent.putExtra(AppConstants.INTENT_EXTRA_USER_ID, user.getUserId());
         getActivity().startActivity(intent);
     }

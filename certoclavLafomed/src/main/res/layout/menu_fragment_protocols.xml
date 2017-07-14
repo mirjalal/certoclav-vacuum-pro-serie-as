@@ -64,8 +64,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:padding="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <CheckBox
+                    android:id="@+id/checkboxGraphList"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/bg_list"
+                    android:button="@null" />
 
                 <ImageView
                     android:id="@+id/imageViewPrint"
@@ -83,12 +91,27 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/protocols_container_graph"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@+id/linearLayoutActions"
                 android:layout_marginLeft="25dp"
                 android:layout_weight="1"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="10dp">
+
+
+                <LinearLayout
+                    android:id="@+id/protocols_container_graph"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:visibility="gone" />
+
+                <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></FrameLayout>
 
             </LinearLayout>
 

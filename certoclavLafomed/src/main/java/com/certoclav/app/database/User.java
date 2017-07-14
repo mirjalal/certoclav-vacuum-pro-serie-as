@@ -2,11 +2,12 @@ package com.certoclav.app.database;
 
 
 
-import java.util.Date;
-
+import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+
+import java.util.Date;
 
 /**
  * A simple demonstration object we are creating and persisting to the database.
@@ -23,6 +24,7 @@ public class User {
 	private int userId;
 	
 	@DatabaseField(columnName = FIELD_USER_EMAIL)
+	@SerializedName("username")
 	private String email;
 	
 	@DatabaseField(columnName = FIELD_USER_CLOUD_ID)
@@ -32,9 +34,11 @@ public class User {
 	private int version;
 	
 	@DatabaseField(columnName = "firstName")
+	@SerializedName("firstname")
 	private String firstName;
 	
 	@DatabaseField(columnName = "lastName")
+	@SerializedName("lastname")
 	private String lastName;
 
 	@DatabaseField(columnName = "mobile")

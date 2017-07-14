@@ -1,6 +1,7 @@
 package com.certoclav.app.database;
 
 
+import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 
 /**
@@ -25,6 +26,7 @@ public class Profile {
     private int version;
 
     @DatabaseField(columnName = "name")
+    @SerializedName("title")
     private String name;
 
 
@@ -107,6 +109,7 @@ public class Profile {
     }
 
     @DatabaseField(columnName = "description")
+    @SerializedName("note")
     private String description;
 
     @DatabaseField(columnName = FIELD_IS_LOCAL)

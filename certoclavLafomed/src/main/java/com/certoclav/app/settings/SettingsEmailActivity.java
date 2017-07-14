@@ -18,7 +18,6 @@
 package com.certoclav.app.settings;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,6 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.certoclav.app.R;
+import com.certoclav.app.activities.CertoclavSuperActivity;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.library.certocloud.PostMessageService;
@@ -46,7 +46,7 @@ import com.certoclav.library.certocloud.PostUtil;
 /**
  * The configuration screen for the ExampleAppWidgetProvider widget sample.
  */
-public class SettingsEmailActivity extends Activity{
+public class SettingsEmailActivity extends CertoclavSuperActivity {
 	
 	private ArrayAdapter<CharSequence> dataAdapter;
 	private SpinnerAdapter spinnerAdapter;

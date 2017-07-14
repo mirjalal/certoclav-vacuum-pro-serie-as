@@ -1,177 +1,177 @@
 <resources>
 
     <string name="app_name">CertoClav</string>
-    
+
     <string name="cancel">Cancel</string>
-    
+
     <string-array name="email_subjects_array">
         <item>Request for screen share appointment</item>
         <item>Protocol Managment</item>
         <item>User Managment</item>
         <item>Program Managment</item>
-        <item>Software Updates</item>      
+        <item>Software Updates</item>
     </string-array>
-        <string name="do_you_really_want_to_logout">Do you really want to log out?</string>
-        <string name="login">LOGIN</string>
-        <string name="new_program">New Program</string>
-        <string name="not_running">not running</string>
-        <string name="running">"running "</string>
-        <string name="prepare_to_run">prepare to run</string>
-        
-        <string name="path_video_place_item">/sdcard/Download/animation_place_item.mp4</string>
-        <string name="path_video_door_open">/sdcard/Download/animation_lid.mp4</string>
-        <string name="path_video_door_close">/sdcard/Download/animation_close_lid.mp4</string>
-        <string name="path_video_fill_water">/sdcard/Download/animation_fill_water.mp4</string>
-        <string name="path_video_empty_water">/sdcard/Download/animation_remove_water.mp4</string>
-        <string name="path_video_power">/sdcard/Download/animation_power.mp4</string>
-        
-        <string name="video_place_item_descripton">Please place caskets into the autoclave</string>
-        <string name="video_lock_description">Please close the door</string>
-        <string name="video_fill_water_description">Please refill water tank</string>
-        <string name="start_program">Start</string>
-        
-        <string name="title_monitor">MONITOR</string>
-        <string name="state_locked">LOCKED</string>
-        <string name="state_not_running">NOT RUNNING</string>
-        <string name="state_prepare_to_run">PREPARE TO RUN</string>
-        <string name="state_finished">FINISHED</string>
-        <string name="state_running">RUNNING</string>
-        <string name="state_cancelled">CANCELLED</string>
-        <string name="state_wait_for_code">WAIT FOR CODE</string>
-        <string name="state_unknown">UNKNOWN</string>
-        <string name="title_introduction">FIRST STEPS</string>
-        <string name="settings_language">Language</string>
-        <string name="settings_wifi">WIFI</string>
-        <string name="intro_click_to_choose_network">Click to choose Network</string>
-        <string name="intro_step_skipped">Step skipped</string>
-        <string name="intro_trying_to_enable_wifi">Trying to enable WIFI</string>
-        <string name="connected_to">Connected to</string>
-        <string name="date_and_time">Date &amp; Time</string>
-        <string name="certoclav_account">CertoClav account</string>
-        <string name="create_new_account">Create New Account</string>
-        <string name="_accounts_created">" accounts created"</string>
-        <string name="password_not_correct">Password or username wrong</string>
-        <string name="maintenance">Maintenance</string>
-        <string name="please_change_the_seal_of_the_lid">Please change the seal of the lid</string>
-        <string name="please_calibrate_temperature_sensor">Please calibrate temperature sensor</string>
-        <string name="welcome">WELCOME</string>
-        <string name="logging_in">Logging in</string>
-        <string name="_0_new_messages">0 NEW MESSAGES</string>
-        <string name="_1_new_message">1 NEW MESSAGE</string>
-        <string name="new_messages">NEW MESSAGES</string>
-        <string name="protocols_sorted_by">SORTED BY</string>
-        <string name="date">DATE</string>
-        <string name="program">PROGRAM</string>
-        <string name="success">SUCCESS</string>
-        <string name="user">USER</string>
-        <string name="errorcode">Errorcode</string>
-        <string name="register_new_user">REGISTER NEW USER</string>
-        <string name="first_name">First Name</string>
-        <string name="last_name">Last Name</string>
-        <string name="email">Email</string>
-        <string name="password">Password</string>
-        <string name="account_created">Account created</string>
-        <string name="please_enter_valid_data">Please enter valid data</string>
-        <string name="url_shop">http://www.certoclav.com/shop</string>
-        <string name="videos">VIDEOS</string>
-        <string name="video">VIDEO</string>
-        <string name="program_viewer">PROGRAM VIEWER</string>
-        <string name="start">START</string>
-        <string name="finish">FINISH</string>
-        <string name="minutes_at">MINUTES AT</string>
-        <string name="warning">WARNING</string>
-        <string name="title_define_a_new_program">DEFINE A NEW PROGRAM</string>
-        <string name="default_program_name">New Program</string>
-        <string name="step">STEP</string>
-        <string name="add_new_step">ADD NEW STEP</string>
-        <string name="program_saved">Program saved</string>
-        <string name="set_temperature_and_duration">Set Temperature and Duration</string>
-        <string name="settings_user_account">User account</string>
-        <string name="settings_network">Network</string>
-        <string name="settings_sterilization">Sterilization</string>
-        <string name="settings_device">Device</string>
-        <string name="settings_help">Help</string>
-        <string name="wifi_not_connected">WIFI not connected</string>
-        <string name="trying_to_connect_click_to_choose_network">Trying to connect | Click to choose Network</string>
-        <string name="wifi_disabled">WIFI disabled</string>
-        <string name="free_memory">Free Memory</string>
-        <string name="title_contact_support">CONTACT SUPPORT</string>
-        <string name="you_forgot_to_enter_the_email_id">You forgot to enter the email ID</string>
-        <string name="entered_email_id_is_not_valid">Entered email ID is not Valid</string>
-        <string name="you_forgot_to_enter_the_subject">You forgot to enter the subject</string>
-        <string name="you_forgot_to_enter_the_message">You forgot to enter the message</string>
-        <string name="please_enter_your_phone_number">Please enter your phone number</string>
-        <string name="language_not_selected">language not selected</string>
-        <string name="accept">accept</string>
-        <string name="title_choose_language">CHOOSE LANGUAGE</string>
-        <string name="title_change_date_time">CHANGE DATE &amp; TIME</string>
-        <string name="step_by_step_guide">STEP BY STEP GUIDE</string>
-        <string name="settings_storage">Storage</string>
-        <string name="settings_date_and_time">Date and Time</string>
-        <string name="settings_factory_reset">Factory Reset</string>
-        <string name="settings_restore_device_to_its_original_manufacturer_setting">Restore device to its original manufacturer setting</string>
-        <string name="settings_device_key_security_key">Device Key | Security Key</string>
-        <string name="settings_batch_number">Batch Number</string>
-        <string name="settings_software_version">Software Version</string>
-        <string name="settings_contact_via_mail">Contact via mail</string>
-        <string name="settings_contact_certoclav_support_via_mail">Contact CertoClav Support via mail</string>
-        <string name="settings_contact_via_phone">Contact via phone</string>
-        <string name="settings_request_a_callback_from_certoclav_support">Request a callback from CertoClav Support</string>
-        <string name="settings_langauge">Language</string>
-        <string name="messages">MESSAGES</string>
-        <string name="shop">SHOP</string>
-        <string name="language">Language</string>
-        <string name="stop">STOP</string>
-        <string name="minutes_remaining"> </string>
-        <string name="no_notifications">NO NOTIFICATIONS</string>
-        <string name="temperature_in_c">Temperature in °C</string>
-        <string name="sterilisation">STERILISATION</string>
-        <string name="logging">LOGGING</string>
-        <string name="information">INFORMATION</string>
-        <string name="intro_account_created">account created</string>
-        <string name="temperature">Temperature</string>
-        <string name="time_in_minutes">Time in minutes</string>
-        <string name="settings">SETTINGS</string>
-        <string name="do_you_really_want_to_start">Do you really want to start</string>
-        <string name="request_a_call">Request a call</string>
-        <string name="ignore">Ignore</string>
-        <string name="ok">OK</string>
-        <string name="yes">YES</string>
-        <string name="heat_up_to">HEAT UP TO</string>
-        <string name="cool_down_to">COOL DOWN TO</string>
-        <string name="hold">HOLD</string>
-        <string name="program_for">FOR</string>
-        <string name="minutes">MINUTES</string>
-        <string name="program_name">PROGRAM NAME</string>
-        <string name="enter_name_here">ENTER NAME HERE</string>
-        <string name="holding_temperature">HOLDING TEMPERATURE</string>
-        <string name="enter_temperature_here">ENTER TEMPERATURE HERE</string>
-        <string name="enter_duration_here">ENTER DURATION HERE</string>
-        <string name="holding_time">HOLDING TIME</string>
-        <string name="cycle_cancelled_by_user_">Cycle cancelled manually</string>
-        <string name="cycle_cancelled_because_of_error">Cycle cancelled because of error</string>
-        <string name="temperaturband_nicht_eingehalten">Exceeded temperature range</string>
-        <string name="temp3_out_of_range">Temperature 3 out of range</string>
-        <string name="temp2_out_of_range">Temperature 2 out of range</string>
-        <string name="temp1_out_of_range">Temperature 1 out of range</string>
-        <string name="druck_out_of_range">Pressure out of range</string>
-        <string name="maximal_zul_ssige_temperatur_berschritten">Exceeded maximum allowable temperature</string>
-        <string name="maximal_zul_ssiger_druck_berschritten">Exceeded maximum allowable pressure</string>
-        <string name="timeout_heizvorgang">Timeout during heat up</string>
-        <string name="er_06_lid_is_not_locked">ER 06 Lid is not locked</string>
-        <string name="er_05_wasserstand_im_kessel_zu_niedrig">ER 05 Water level to low</string>
-        <string name="er_04_wasserstand_im_kessel_zu_hoch">ER 04 Water level to high</string>
-        <string name="er_03_lid_is_not_closed">ER 03 Lid is not closed</string>
-        <string name="l_fter_ausgefallen">fan failure</string>
-        <string name="bitte_abdampfbeh_lter_einsetzen">Please place condensor</string>
-        <string name="verschlussriegel_ist_nicht_eingerastet">Lid is not locked</string>
-        <string name="deckel_ist_nicht_auf_topf">Lid is not closed</string>
-        <string name="details_of_step_">"DETAILS OF STEP "</string>
-        <string name="unlock_lid">UNLOCK LID</string>
-        <string name="venting_bevore_step_1">Venting bevore STEP 1</string>
-        <string name="edit_step">EDIT STEP</string>
-        <string name="device">device ID</string>
-        
+    <string name="do_you_really_want_to_logout">Do you really want to log out?</string>
+    <string name="login">LOGIN</string>
+    <string name="new_program">New Program</string>
+    <string name="not_running">not running</string>
+    <string name="running">"running "</string>
+    <string name="prepare_to_run">prepare to run</string>
+
+    <string name="path_video_place_item">/sdcard/Download/animation_place_item.mp4</string>
+    <string name="path_video_door_open">/sdcard/Download/animation_lid.mp4</string>
+    <string name="path_video_door_close">/sdcard/Download/animation_close_lid.mp4</string>
+    <string name="path_video_fill_water">/sdcard/Download/animation_fill_water.mp4</string>
+    <string name="path_video_empty_water">/sdcard/Download/animation_remove_water.mp4</string>
+    <string name="path_video_power">/sdcard/Download/animation_power.mp4</string>
+
+    <string name="video_place_item_descripton">Please place caskets into the autoclave</string>
+    <string name="video_lock_description">Please close the door</string>
+    <string name="video_fill_water_description">Please refill water tank</string>
+    <string name="start_program">Start</string>
+
+    <string name="title_monitor">MONITOR</string>
+    <string name="state_locked">LOCKED</string>
+    <string name="state_not_running">NOT RUNNING</string>
+    <string name="state_prepare_to_run">PREPARE TO RUN</string>
+    <string name="state_finished">FINISHED</string>
+    <string name="state_running">RUNNING</string>
+    <string name="state_cancelled">CANCELLED</string>
+    <string name="state_wait_for_code">WAIT FOR CODE</string>
+    <string name="state_unknown">UNKNOWN</string>
+    <string name="title_introduction">FIRST STEPS</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_wifi">WIFI</string>
+    <string name="intro_click_to_choose_network">Click to choose Network</string>
+    <string name="intro_step_skipped">Step skipped</string>
+    <string name="intro_trying_to_enable_wifi">Trying to enable WIFI</string>
+    <string name="connected_to">Connected to</string>
+    <string name="date_and_time">Date &amp; Time</string>
+    <string name="certoclav_account">CertoClav account</string>
+    <string name="create_new_account">Create New Account</string>
+    <string name="_accounts_created">" accounts created"</string>
+    <string name="password_not_correct">Password or username wrong</string>
+    <string name="maintenance">Maintenance</string>
+    <string name="please_change_the_seal_of_the_lid">Please change the seal of the lid</string>
+    <string name="please_calibrate_temperature_sensor">Please calibrate temperature sensor</string>
+    <string name="welcome">WELCOME</string>
+    <string name="logging_in">Logging in</string>
+    <string name="_0_new_messages">0 NEW MESSAGES</string>
+    <string name="_1_new_message">1 NEW MESSAGE</string>
+    <string name="new_messages">NEW MESSAGES</string>
+    <string name="protocols_sorted_by">SORTED BY</string>
+    <string name="date">DATE</string>
+    <string name="program">PROGRAM</string>
+    <string name="success">SUCCESS</string>
+    <string name="user">USER</string>
+    <string name="errorcode">Errorcode</string>
+    <string name="register_new_user">REGISTER NEW USER</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="account_created">Account created</string>
+    <string name="please_enter_valid_data">Please enter valid data</string>
+    <string name="url_shop">http://www.certoclav.com/shop</string>
+    <string name="videos">VIDEOS</string>
+    <string name="video">VIDEO</string>
+    <string name="program_viewer">PROGRAM VIEWER</string>
+    <string name="start">START</string>
+    <string name="finish">FINISH</string>
+    <string name="minutes_at">MINUTES AT</string>
+    <string name="warning">WARNING</string>
+    <string name="title_define_a_new_program">DEFINE A NEW PROGRAM</string>
+    <string name="default_program_name">New Program</string>
+    <string name="step">STEP</string>
+    <string name="add_new_step">ADD NEW STEP</string>
+    <string name="program_saved">Program saved</string>
+    <string name="set_temperature_and_duration">Set Temperature and Duration</string>
+    <string name="settings_user_account">User account</string>
+    <string name="settings_network">Network</string>
+    <string name="settings_sterilization">Sterilization</string>
+    <string name="settings_device">Device</string>
+    <string name="settings_help">Help</string>
+    <string name="wifi_not_connected">WIFI not connected</string>
+    <string name="trying_to_connect_click_to_choose_network">Trying to connect | Click to choose Network</string>
+    <string name="wifi_disabled">WIFI disabled</string>
+    <string name="free_memory">Free Memory</string>
+    <string name="title_contact_support">CONTACT SUPPORT</string>
+    <string name="you_forgot_to_enter_the_email_id">You forgot to enter the email ID</string>
+    <string name="entered_email_id_is_not_valid">Entered email ID is not Valid</string>
+    <string name="you_forgot_to_enter_the_subject">You forgot to enter the subject</string>
+    <string name="you_forgot_to_enter_the_message">You forgot to enter the message</string>
+    <string name="please_enter_your_phone_number">Please enter your phone number</string>
+    <string name="language_not_selected">language not selected</string>
+    <string name="accept">accept</string>
+    <string name="title_choose_language">CHOOSE LANGUAGE</string>
+    <string name="title_change_date_time">CHANGE DATE &amp; TIME</string>
+    <string name="step_by_step_guide">STEP BY STEP GUIDE</string>
+    <string name="settings_storage">Storage</string>
+    <string name="settings_date_and_time">Date and Time</string>
+    <string name="settings_factory_reset">Factory Reset</string>
+    <string name="settings_restore_device_to_its_original_manufacturer_setting">Restore device to its original manufacturer setting</string>
+    <string name="settings_device_key_security_key">Device Key | Security Key</string>
+    <string name="settings_batch_number">Batch Number</string>
+    <string name="settings_software_version">Software Version</string>
+    <string name="settings_contact_via_mail">Contact via mail</string>
+    <string name="settings_contact_certoclav_support_via_mail">Contact CertoClav Support via mail</string>
+    <string name="settings_contact_via_phone">Contact via phone</string>
+    <string name="settings_request_a_callback_from_certoclav_support">Request a callback from CertoClav Support</string>
+    <string name="settings_langauge">Language</string>
+    <string name="messages">MESSAGES</string>
+    <string name="shop">SHOP</string>
+    <string name="language">Language</string>
+    <string name="stop">STOP</string>
+    <string name="minutes_remaining"> </string>
+    <string name="no_notifications">NO NOTIFICATIONS</string>
+    <string name="temperature_in_c">Temperature in °C</string>
+    <string name="sterilisation">STERILISATION</string>
+    <string name="logging">LOGGING</string>
+    <string name="information">INFORMATION</string>
+    <string name="intro_account_created">account created</string>
+    <string name="temperature">Temperature</string>
+    <string name="time_in_minutes">Time in minutes</string>
+    <string name="settings">SETTINGS</string>
+    <string name="do_you_really_want_to_start">Do you really want to start</string>
+    <string name="request_a_call">Request a call</string>
+    <string name="ignore">Ignore</string>
+    <string name="ok">OK</string>
+    <string name="yes">YES</string>
+    <string name="heat_up_to">HEAT UP TO</string>
+    <string name="cool_down_to">COOL DOWN TO</string>
+    <string name="hold">HOLD</string>
+    <string name="program_for">FOR</string>
+    <string name="minutes">MINUTES</string>
+    <string name="program_name">PROGRAM NAME</string>
+    <string name="enter_name_here">ENTER NAME HERE</string>
+    <string name="holding_temperature">HOLDING TEMPERATURE</string>
+    <string name="enter_temperature_here">ENTER TEMPERATURE HERE</string>
+    <string name="enter_duration_here">ENTER DURATION HERE</string>
+    <string name="holding_time">HOLDING TIME</string>
+    <string name="cycle_cancelled_by_user_">Cycle cancelled manually</string>
+    <string name="cycle_cancelled_because_of_error">Cycle cancelled because of error</string>
+    <string name="temperaturband_nicht_eingehalten">Exceeded temperature range</string>
+    <string name="temp3_out_of_range">Temperature 3 out of range</string>
+    <string name="temp2_out_of_range">Temperature 2 out of range</string>
+    <string name="temp1_out_of_range">Temperature 1 out of range</string>
+    <string name="druck_out_of_range">Pressure out of range</string>
+    <string name="maximal_zul_ssige_temperatur_berschritten">Exceeded maximum allowable temperature</string>
+    <string name="maximal_zul_ssiger_druck_berschritten">Exceeded maximum allowable pressure</string>
+    <string name="timeout_heizvorgang">Timeout during heat up</string>
+    <string name="er_06_lid_is_not_locked">ER 06 Lid is not locked</string>
+    <string name="er_05_wasserstand_im_kessel_zu_niedrig">ER 05 Water level to low</string>
+    <string name="er_04_wasserstand_im_kessel_zu_hoch">ER 04 Water level to high</string>
+    <string name="er_03_lid_is_not_closed">ER 03 Lid is not closed</string>
+    <string name="l_fter_ausgefallen">fan failure</string>
+    <string name="bitte_abdampfbeh_lter_einsetzen">Please place condensor</string>
+    <string name="verschlussriegel_ist_nicht_eingerastet">Lid is not locked</string>
+    <string name="deckel_ist_nicht_auf_topf">Lid is not closed</string>
+    <string name="details_of_step_">"DETAILS OF STEP "</string>
+    <string name="unlock_lid">UNLOCK LID</string>
+    <string name="venting_bevore_step_1">Venting bevore STEP 1</string>
+    <string name="edit_step">EDIT STEP</string>
+    <string name="device">device ID</string>
+
     <string name="title_notification">Sample Overlay View</string>
     <string name="message_notification">Press To Hide Overlay</string>
     <string name="scanning_for_devices">Scanning for devices</string>
@@ -212,12 +212,12 @@
     <string name="connection_lost">Connection lost</string>
     <string name="program_successful_finished">program successful finished</string>
     <string name="login_online_mode">LOGIN (ONLINE MODE)</string>
-    <string name="login_offline_mode">LOGIN (OFFLINE MODE)</string>    
+    <string name="login_offline_mode">LOGIN (OFFLINE MODE)</string>
     <string name="local_password">Local Password</string>
-    <string name="certocloud_password">CertoCloud Password</string>   
+    <string name="certocloud_password">CertoCloud Password</string>
     <string name="password_for_offline_mode">Password for offline mode</string>
- 	<string name="export_protocols_to_usb_stick">Export Protocols to USB-Stick</string>
- 	
+    <string name="export_protocols_to_usb_stick">Export Protocols to USB-Stick</string>
+
     <string name="delete_user">Delete user</string>
     <string name="do_you_really_want_to_delete_">"Do you really want to delete "</string>
     <string name="server_not_reachable">Maintanance of CertoCloud server</string>
@@ -236,7 +236,7 @@
     <string name="choose_program_from_template">Choose program from template</string>
     <string name="browse_templates">Browse templates</string>
     <string name="program_templates">Program templates</string>
-    
+
 
     <string name="network_connection_required">Network connection required</string>
     <string name="please_connect_to_a_network_via_lan_or_wifi_">Please connect to a network via LAN or WiFi.\n</string>
@@ -309,9 +309,8 @@
     <string name="please_connect_to_autoclave_first">Please connect to autoclave first</string>
     <string name="cancel_program_definition">Cancel program definition</string>
     <string name="do_you_really_want_to_return_without_saving_the_program_">Do you really want to return without saving the program?</string>
-    
-    
-    
+
+
     <string name="create_a_new_program_manually">Create a new program manually</string>
     <string name="notifications">Notifications</string>
     <string name="not_able_to_connect_to_certocloud">Not able to connect to CertoCloud</string>
@@ -343,7 +342,7 @@
     <string name="material_testing_mode">Material testing mode</string>
     <string name="if_enabled_the_user_can_enter_how_often_to_run_a_program_without_user_interaction">On program start, show a dialog to enter how often to run the program automatically</string>
 
-  	<string name="times">times</string>
+    <string name="times">times</string>
     <string name="how_often_the_program_should_be_executed_one_after_another_">How often the program should be executed one after another?</string>
     <string name="of">of</string>
     <string name="cycle">Cycle</string>
@@ -440,4 +439,26 @@
     <string name="loading">Loading...</string>
     <string name="checking">Checking...</string>
     <string name="adding">Adding...</string>
+
+
+    <string name="bar">bar</string>
+    <string name="_c">°C</string>
+
+    <string name="header_time">TimeStamp [min]</string>
+    <string name="header_temp">Chamber temp. [°C]</string>
+    <string name="header_media_temp">Media temp. [°C]</string>
+    <string name="header_pressure">Pressure [kPa]</string>
+    <string name="download_protocols_from_cloud">Download Protocols from CertoCloud</string>
+    <string name="cur_password">Currrent Password</string>
+    <string name="password_confirm">Confirm Password</string>
+    <string name="edit_user">Edit User</string>
+    <string name="please_enter_paswoord">Please enter your current password!</string>
+    <string name="error">Error</string>
+    <string name="close">Close</string>
+    <string name="try_again">Try Again</string>
+    <string name="sign_up_account_failed">Sign up account failed!</string>
+
+    <string name="account_activation_failed">Account activation failed!</string>
+    <string name="account_activation_success">Account successfully activiated!</string>
+    <string name="something_went_wrong">Something went wrong. Please try later!</string>
 </resources>

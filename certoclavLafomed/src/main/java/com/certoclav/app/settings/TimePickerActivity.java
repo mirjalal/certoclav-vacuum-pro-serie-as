@@ -1,8 +1,5 @@
 package com.certoclav.app.settings;
  
-import java.util.Calendar;
-
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -16,10 +13,13 @@ import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
+import com.certoclav.app.activities.CertoclavSuperActivity;
 import com.certoclav.app.listener.NavigationbarListener;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
+
+import java.util.Calendar;
  
-public class TimePickerActivity extends Activity implements NavigationbarListener {
+public class TimePickerActivity extends CertoclavSuperActivity implements NavigationbarListener {
  
     private TextView mDateDisplay;
     private View mPickDate;

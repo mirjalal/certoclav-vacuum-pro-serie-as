@@ -1,8 +1,5 @@
 package com.certoclav.app.monitor;
 
-import java.util.ArrayList;
-
-import android.app.Activity;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
@@ -14,11 +11,14 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.certoclav.app.R;
+import com.certoclav.app.activities.CertoclavSuperActivity;
 import com.certoclav.app.listener.AlertListener;
 import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.Error;
 
-public class MonitorNotificationActivity extends Activity implements AlertListener {
+import java.util.ArrayList;
+
+public class MonitorNotificationActivity extends CertoclavSuperActivity implements AlertListener {
 
 
 

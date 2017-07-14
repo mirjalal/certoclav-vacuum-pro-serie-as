@@ -1,6 +1,5 @@
 package com.certoclav.app.menu;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -9,13 +8,12 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 
 import com.certoclav.app.R;
+import com.certoclav.app.activities.CertoclavSuperActivity;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.app.util.LabelPrinterUtils;
 import com.google.zxing.BarcodeFormat;
@@ -27,7 +25,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
  * Created by Michael on 12/6/2016.
  */
 
-public class MenuLabelPrinterActivity extends Activity {
+public class MenuLabelPrinterActivity extends CertoclavSuperActivity {
 
     private CertoclavNavigationbarClean navigationbar = null;
 
@@ -154,14 +152,14 @@ public class MenuLabelPrinterActivity extends Activity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
 
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
 
     }

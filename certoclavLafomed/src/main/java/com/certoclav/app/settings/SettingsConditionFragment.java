@@ -21,6 +21,7 @@ import com.certoclav.app.listener.NavigationbarListener;
 import com.certoclav.library.certocloud.CloudDatabase;
 import com.certoclav.library.certocloud.CloudUser;
 import com.certoclav.library.certocloud.Condition;
+import com.certoclav.library.util.Response;
 
 import java.util.ArrayList;
 
@@ -56,7 +57,7 @@ public class SettingsConditionFragment extends Fragment implements Navigationbar
                     }
                 }
 
-                new AsyncTask<Void, Void, Boolean>() {
+                new AsyncTask<Void, Void, Response>() {
 
                     @Override
                     protected void onPreExecute() {
@@ -65,30 +66,29 @@ public class SettingsConditionFragment extends Fragment implements Navigationbar
                     }
 
                     @Override
-                    protected void onPostExecute(Boolean result) {
+                    protected void onPostExecute(Response response) {
                         buttonSave.setEnabled(true);
-                        if (result) {
+                        if (response != null && response.isOK()) {
                             Toast.makeText(getActivity(), getActivity().getString(R.string.changes_successfully_saved), Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(getActivity(), getActivity().getString(R.string.changes_could_not_be_saved), Toast.LENGTH_LONG).show();
                         }
-                        super.onPostExecute(result);
+                        super.onPostExecute(response);
                     }
 
                     @Override
-                    protected Boolean doInBackground(Void... params) {
+                    protected Response doInBackground(Void... params) {
 
                         try {
                             ArrayList<Condition> conditionList = new ArrayList<Condition>();
                             for (int i = 0; i < conditionAdapter.getCount(); i++) {
                                 conditionList.add(conditionAdapter.getItem(i));
                             }
-                            Boolean success = CloudDatabase.getInstance().updateConditions(conditionList);
-                            return success;
+                            return CloudDatabase.getInstance().updateConditions(conditionList);
                         } catch (Exception e) {
-
+                            e.printStackTrace();
                         }
-                        return false;
+                        return null;
                     }
 
                 }.execute();

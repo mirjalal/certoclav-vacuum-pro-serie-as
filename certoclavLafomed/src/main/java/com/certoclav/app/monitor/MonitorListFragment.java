@@ -1,124 +1,90 @@
 package com.certoclav.app.monitor;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.certoclav.app.R;
-import com.certoclav.app.database.Profile;
-import com.certoclav.app.listener.AutoclaveStateListener;
-import com.certoclav.app.listener.ProfileListener;
-import com.certoclav.app.model.Autoclave;
-import com.certoclav.app.model.AutoclaveState;
+import com.certoclav.app.database.Protocol;
 
-public class MonitorListFragment extends Fragment implements ProfileListener,AutoclaveStateListener {
+import java.util.ArrayList;
 
+/**
+ * A fragment representing a list of Items.
+ * <p/>
+ * Activities containing this fragment MUST implement the {@link }
+ * interface.
+ */
+public class MonitorListFragment extends Fragment {
 
-private ListView list;
+    // TODO: Customize parameter argument names
+    private static final String ARG_COLUMN_COUNT = "column-count";
+    // TODO: Customize parameters
+    private int mColumnCount = 1;
+    private Protocol protocol;
 
+    /**
+     * Mandatory empty constructor for the fragment manager to instantiate the
+     * fragment (e.g. upon screen orientation changes).
+     */
+    public MonitorListFragment() {
+    }
 
+    // TODO: Customize parameter initialization
+    @SuppressWarnings("unused")
+    public static MonitorListFragment newInstance(int columnCount, Protocol protocol) {
+        MonitorListFragment fragment = new MonitorListFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_COLUMN_COUNT, columnCount);
+        fragment.setArguments(args);
+        fragment.protocol = protocol;
+        return fragment;
+    }
 
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.monitor_list_fragment,container, false); //je nach mIten könnte man hier anderen Inhalt laden.
-		
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
+        if (getArguments() != null) {
+            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+        }
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_protocolentry_list, container, false);
 
+        // Set the adapter
 
-			return rootView;
-		}	
-		
-		
-		
-	@Override
-		public void onResume() {
-		
+        Context context = view.getContext();
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        if (mColumnCount <= 1) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+        }
+        recyclerView.setAdapter(new MyProtocolEntryRecyclerViewAdapter(new ArrayList<>(protocol.getProtocolEntry())));
 
-		
-
-		Autoclave.getInstance().setOnProfileListener(this);
-		Autoclave.getInstance().setOnAutoclaveStateListener(this);	
-		
-			super.onResume();
-			
-
-		}
-
-
-
-	@Override
-	public void onStop() {
-	
-		Autoclave.getInstance().removeOnProfileListener(this);
-		Autoclave.getInstance().removeOnAutoclaveStateListener(this);
-		super.onStop();
-	}
-
-
-
-	/** Called when the activity is first created. */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-
-
-
-      
-		
-	}
-
-
-
-	@Override
-	public void onAutoclaveStateChange(AutoclaveState state) {
-		switch(state){
-		case PREPARE_TO_RUN:
-			break;
-		case NOT_RUNNING:
-			break;
-		case RUNNING:
-			break;
-		case PROGRAM_FINISHED:
-			break;
-		case RUN_CANCELED:
-			break;
-		case WAITING_FOR_CONFIRMATION:
-			break;
-		case LOCKED:
-			break;
-		default:
-			break;
-		}
-		
-		
-
-		
-	}
+        return view;
+    }
 
 
+    @Override
+    public void onAttach(Activity context) {
+        super.onAttach(context);
+    }
 
-
-
-
-
-	@Override
-	public void onProfileChange(Profile profile) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-
-
-	
-
-
-	
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
 }
 

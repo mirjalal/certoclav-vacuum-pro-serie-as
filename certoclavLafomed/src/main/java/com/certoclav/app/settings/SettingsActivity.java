@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.certoclav.app.R;
+import com.certoclav.app.activities.CertoclavSuperActivity;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 
 /**
@@ -22,7 +23,7 @@ import com.certoclav.app.model.CertoclavNavigationbarClean;
  * This activity also implements the required {@link ItemListFragment.Callbacks}
  * interface to listen for item selections.
  */
-public class SettingsActivity extends FragmentActivity implements ItemListFragment.Callbacks {
+public class SettingsActivity extends CertoclavSuperActivity implements ItemListFragment.Callbacks {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet

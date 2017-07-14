@@ -1,23 +1,23 @@
 package com.certoclav.app.menu;
 
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.GridView;
 
 import com.certoclav.app.R;
+import com.certoclav.app.activities.CertoclavSuperActivity;
 import com.certoclav.app.adapters.VideoAdapter;
 import com.certoclav.app.database.Video;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.library.util.FileUtils;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
-public class VideoActivity extends Activity {
+
+public class VideoActivity extends CertoclavSuperActivity {
 
     private GridView programGrid;
 

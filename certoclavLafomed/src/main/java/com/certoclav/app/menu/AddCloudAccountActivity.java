@@ -27,7 +27,9 @@ import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.library.bcrypt.BCrypt;
 import com.certoclav.library.certocloud.PostUserLoginService;
+import com.certoclav.library.certocloud.PostUserLoginService.PutUserLoginTaskFinishedListener;
 import com.certoclav.library.certocloud.PostUtil;
+import com.certoclav.library.util.Response;
 
 import java.util.Date;
 
@@ -42,8 +44,8 @@ public class AddCloudAccountActivity extends Activity {
     private EditTextItem editEmailItem;
     private EditTextItem editPasswordItem;
     private ProgressBar progressBar;
-    private DatabaseService databaseService;
     private SweetAlertDialog pDialog;
+    private DatabaseService databaseService;
 
 
     @Override
@@ -122,6 +124,7 @@ public class AddCloudAccountActivity extends Activity {
 
             @Override
             public void onClick(View v) {
+
                 boolean isEmailAlreadyExists = false;
                 for (User user : databaseService.getUsers()) {
                     if (editEmailItem.getText().equals(user.getEmail())) {
@@ -130,24 +133,25 @@ public class AddCloudAccountActivity extends Activity {
                     }
                 }
 
+
                 if (!editEmailItem.hasValidString()) {
                     Toast.makeText(AddCloudAccountActivity.this, getString(R.string.please_enter_a_valid_email_address), Toast.LENGTH_LONG).show();
-
                     return;
                 }
 
                 if (isEmailAlreadyExists) {
                     Toast.makeText(AddCloudAccountActivity.this, getString(R.string.email_already_exists), Toast.LENGTH_LONG).show();
-
                     return;
                 }
 
                 PostUserLoginService userLoginSerice = new PostUserLoginService();
-                userLoginSerice.setOnTaskFinishedListener(new PostUserLoginService.PutUserLoginTaskFinishedListener() {
+                userLoginSerice.setOnTaskFinishedListener(new PutUserLoginTaskFinishedListener() {
 
                     @Override
-                    public void onTaskFinished(int responseCode) {
-                        new AddAccountTask().execute(responseCode + "", editEmailItem.getText(), editPasswordItem.getText());
+                    public void onTaskFinished(Response response) {
+                        new AddAccountTask().execute((response != null ?
+                                response.getStatus() :
+                                PostUtil.RETURN_ERROR) + "", editEmailItem.getText(), editPasswordItem.getText());
                     }
                 });
 

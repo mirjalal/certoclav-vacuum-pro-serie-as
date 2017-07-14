@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
+import com.certoclav.app.activities.CertoclavSuperActivity;
 import com.certoclav.app.button.EditTextItem;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.User;
@@ -29,7 +30,7 @@ import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.library.bcrypt.BCrypt;
 
-public class RegisterActivity extends Activity {
+public class RegisterActivity extends CertoclavSuperActivity {
 
 
     private LinearLayout linEditTextItemContainer;

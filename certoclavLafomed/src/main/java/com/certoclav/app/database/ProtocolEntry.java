@@ -1,6 +1,7 @@
 package com.certoclav.app.database;
 
 
+import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -21,11 +22,20 @@ public class ProtocolEntry {
     @DatabaseField(columnName = "timestamp", dataType = DataType.DATE)
     private Date timestamp;
 
+    @SerializedName("ts")
+    private float ts;
+
+    public float getTs() {
+        return ts;
+    }
+
 
     @DatabaseField(columnName = "temperature")
+    @SerializedName("tmp")
     private float temperature;
 
     @DatabaseField(columnName = "media_temp")
+    @SerializedName("mtmp")
     private float mediaTemperature;
 
     public float getMediaTemperature() {
@@ -37,10 +47,13 @@ public class ProtocolEntry {
     }
 
     @DatabaseField(columnName = "pressure")
+    @SerializedName("prs")
     private float pressure;
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "protocol_id")
     private Protocol protocol;
+
+    private String timeStampWithMin;
 
 
     public int getProtocolEntry_id() {
@@ -121,6 +134,13 @@ public class ProtocolEntry {
 
         return new SimpleDateFormat("kk:mm:ss").format(timestamp);
 
+    }
+
+    public String getTimeStampWithMin() {
+        if (timeStampWithMin != null)
+            return timeStampWithMin;
+        return timeStampWithMin = String.format("%.2f", (getTimestamp().getTime() -
+                getProtocol().getStartTime().getTime()) / 60000f);
 
     }
 }

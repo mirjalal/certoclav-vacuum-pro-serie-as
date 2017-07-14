@@ -1,11 +1,7 @@
 package com.certoclav.app.settings;
 
 
-import java.util.List;
-
-import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,7 +19,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,8 +32,15 @@ import com.certoclav.app.listener.UserProgramListener;
 import com.certoclav.app.menu.MenuLabelPrinterActivity;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveMonitor;
+import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.service.ReadAndParseSerialService;
+import com.certoclav.app.util.Helper;
+import com.certoclav.app.util.MyCallback;
+import com.certoclav.library.application.ApplicationController;
+import com.certoclav.library.certocloud.CloudUser;
 import com.certoclav.library.util.ExportUtils;
+
+import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -215,6 +217,64 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
                     } catch (Exception e) {
 
                     }
+                }
+                return false;
+
+            }
+        });
+
+        ((Preference) findPreference(AppConstants.PREFERENCE_KEY_DOWNLOAD_PROTOCOLS)).setEnabled(CloudUser.getInstance().isLoggedIn() && Autoclave.getInstance().isOnlineMode(getActivity()));
+        ((Preference) findPreference(AppConstants.PREFERENCE_KEY_DOWNLOAD_PROTOCOLS)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+
+                if (ApplicationController.getInstance().isNetworkAvailable()) {
+                    barProgressDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+                    barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                    barProgressDialog.setTitleText(getActivity().getString(com.certoclav.library.R.string.downloading));
+                    barProgressDialog.setCancelable(false);
+                    Helper.downloadProtocols(getActivity(), new MyCallback() {
+                        @Override
+                        public void onSuccess(Object response, int requestId) {
+                            if ((Boolean) response)
+                                barProgressDialog.setTitleText(getActivity().getString(R.string.adding));
+                            else {
+                                barProgressDialog.setTitleText(getActivity().getString(R.string.download_success));
+                                barProgressDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(ErrorModel error, int requestId) {
+                            barProgressDialog.setTitleText(error.getMessage() != null ? error.getMessage() : getActivity().getString(R.string.download_failed));
+                            barProgressDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                        }
+
+                        @Override
+                        public void onStart(int requestId) {
+                            barProgressDialog.show();
+                        }
+
+                        public void onProgress(int current, int max) {
+                            barProgressDialog.setTitleText(getActivity().getString(R.string.adding) + " (" + current + " / " + max + ")");
+                        }
+                    });
+                } else {
+
+                    SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                            .setTitleText(getString(R.string.enable_network_communication))
+                            .setConfirmText(getString(R.string.ok))
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                }
+                            }).setCustomImage(R.drawable.ic_network_connection);
+                    sweetAlertDialog.setCanceledOnTouchOutside(true);
+                    sweetAlertDialog.setCancelable(true);
+                    sweetAlertDialog.show();
                 }
                 return false;
 

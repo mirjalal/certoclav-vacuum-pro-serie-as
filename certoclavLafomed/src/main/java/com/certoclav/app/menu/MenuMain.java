@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
@@ -14,12 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.certoclav.app.R;
+import com.certoclav.app.activities.CertoclavSuperActivity;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.Profile;
 import com.certoclav.app.listener.NavigationbarListener;
-import com.certoclav.app.listener.SensorDataListener;
 import com.certoclav.app.model.Autoclave;
-import com.certoclav.app.model.AutoclaveData;
 import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.CertoclavNavigationbar;
@@ -35,7 +33,7 @@ import java.util.List;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.fabric.sdk.android.Fabric;
 
-public class MenuMain extends FragmentActivity implements NavigationbarListener, SensorDataListener {
+public class MenuMain extends CertoclavSuperActivity implements NavigationbarListener {
 
     public static int INDEX_INFORMATION = 0;
     public static int INDEX_STERILISATION = 1;
@@ -274,10 +272,6 @@ public class MenuMain extends FragmentActivity implements NavigationbarListener,
 
     }
 
-
-    @Override
-    public void onSensorDataChange(AutoclaveData data) {
-    }
 
 
 }

@@ -1,7 +1,6 @@
 package com.certoclav.app.menu;
 
 
-import android.app.Activity;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
@@ -11,11 +10,12 @@ import android.widget.VideoView;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
+import com.certoclav.app.activities.CertoclavSuperActivity;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 
 
 
-public class VideoFullscreenActivity extends Activity  {
+public class VideoFullscreenActivity extends CertoclavSuperActivity {
 
 	private GridView programGrid;
 
