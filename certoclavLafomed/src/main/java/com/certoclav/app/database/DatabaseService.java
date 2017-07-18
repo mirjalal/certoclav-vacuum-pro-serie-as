@@ -12,6 +12,7 @@ import com.j256.ormlite.misc.TransactionManager;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.UpdateBuilder;
+import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
@@ -764,8 +765,13 @@ public class DatabaseService {
     public int deleteProtocolEntry(List<Protocol> protocols) {
         try {
             DeleteBuilder db = protocolEntryDao.deleteBuilder();
-            for (Protocol protocol : protocols)
-                db.where().eq("protocol_id", protocol).or();
+
+
+            Where main = db.where();
+            for (Protocol protocol : protocols) {
+                main.eq("protocol_id", protocol);
+            }
+            main.or(protocols.size());
             protocolEntryDao.delete(db.prepare());
             //    TableUtils.clearTable(mDatabaseHelper.getConnectionSource(), ProtocolEntry.class);
             return 1;

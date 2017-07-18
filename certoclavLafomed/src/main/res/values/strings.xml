@@ -461,4 +461,6 @@
     <string name="account_activation_failed">Account activation failed!</string>
     <string name="account_activation_success">Account successfully activiated!</string>
     <string name="something_went_wrong">Something went wrong. Please try later!</string>
+    <string name="sending">Sending...</string>
+    <string name="edit_success">Edited Successfully</string>
 </resources>

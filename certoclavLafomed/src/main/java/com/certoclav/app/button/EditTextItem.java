@@ -98,8 +98,10 @@ private boolean hasValidString = false;
     public void setHint(String hint) {
     	((EditText)findViewById(R.id.step_by_step_element_edit)).setHint(hint);
     }
-    
 
-
-
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        ((EditText)findViewById(R.id.step_by_step_element_edit)).setEnabled(enabled);
+    }
 }

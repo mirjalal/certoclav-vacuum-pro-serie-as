@@ -127,7 +127,7 @@ public class UserEditFragment extends Fragment implements UserAdapter.OnClickBut
 
     @Override
     public void onClickButtonEdit(User user) {
-        Intent intent = new Intent(getActivity(), Autoclave.getInstance().isOnlineMode(getActivity()) ?
+        Intent intent = new Intent(getActivity(), !user.getIsLocal() ?
                 RegisterCloudAccountActivity.class
                 : RegisterActivity.class);
         intent.putExtra(AppConstants.INTENT_EXTRA_USER_ID, user.getUserId());

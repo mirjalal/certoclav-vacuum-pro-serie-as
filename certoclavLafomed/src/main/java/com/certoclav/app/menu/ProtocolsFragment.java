@@ -39,10 +39,12 @@ import com.certoclav.app.database.Protocol;
 import com.certoclav.app.graph.GraphService;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveMonitor;
+import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.monitor.MonitorListFragment;
 import com.certoclav.app.service.PostProtocolsService;
-import com.certoclav.app.util.ESCPos;
+import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.LabelPrinterUtils;
+import com.certoclav.app.util.MyCallback;
 import com.certoclav.library.graph.LineGraph;
 
 import java.util.ArrayList;
@@ -550,14 +552,35 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
 
                 @Override
                 public void onClick(View v) {
-                    try {
-                        ESCPos printUtils = new ESCPos();
-                        printUtils.printProtocol(protocolAdapter.getItem(aktPosition), getActivity());
-                        dialog.dismissWithAnimation();
-                        Toast.makeText(getActivity(), getString(R.string.protocol_printed), Toast.LENGTH_LONG).show();
-                    } catch (Exception e) {
-                        Toast.makeText(getActivity(), getString(R.string.please_select_a_protocol_first), Toast.LENGTH_LONG).show();
-                    }
+                    Helper.printProtocols(getActivity(), protocolAdapter.getItem(aktPosition), new MyCallback() {
+                        SweetAlertDialog dialogLocal;
+
+                        @Override
+                        public void onSuccess(Object response, int requestId) {
+                            dialogLocal.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                            dialogLocal.setTitleText(getString(R.string.protocol_printed));
+                        }
+
+                        @Override
+                        public void onError(ErrorModel error, int requestId) {
+                            dialogLocal.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                            dialogLocal.setTitleText(getString(R.string.please_select_a_protocol_first));
+                        }
+
+                        @Override
+                        public void onStart(int requestId) {
+                            dialog.dismiss();
+                            dialogLocal = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+                            dialogLocal.setCancelable(false);
+                            dialogLocal.setTitleText(getString(R.string.sending));
+                            dialogLocal.show();
+                        }
+
+                        @Override
+                        public void onProgress(int current, int max) {
+
+                        }
+                    });
 
                 }
             });

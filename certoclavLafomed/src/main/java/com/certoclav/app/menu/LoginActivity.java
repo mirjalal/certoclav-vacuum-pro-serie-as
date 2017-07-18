@@ -281,9 +281,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                     logUser(currentUser.getEmail_user_id(), currentUser.getEmail(), currentUser.getFirstName() + " " + currentUser.getLastName());
                 Boolean defaultvalue = getResources().getBoolean(
                         R.bool.switch_snchronization_default);
-                if (PreferenceManager.getDefaultSharedPreferences(
-                        LoginActivity.this).getBoolean(
-                        AppConstants.PREFERENCE_KEY_ONLINE_MODE, defaultvalue) == true) {
+                if (Autoclave.getInstance().isOnlineMode(LoginActivity.this)) {
                     if (ApplicationController.getInstance()
                             .isNetworkAvailable()) {
 
@@ -297,9 +295,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                                 editTextPassword.getText().toString(),
                                 Autoclave.getInstance().getController().getSavetyKey());
                     } else {
-                        Toast.makeText(LoginActivity.this,
-                                getString(R.string.network_not_connected), Toast.LENGTH_LONG)
-                                .show();
+                        showNotificationForNetworkNavigation();
                     }
 
                 } else {
@@ -316,8 +312,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 
                         @Override
                         protected Boolean doInBackground(String... params) {
-                            if (AppConstants.isIoSimulated
-                                    || BCrypt.checkpw(params[0], params[1])
+                            if ( BCrypt.checkpw(params[0], params[1])
                                     || params[0].toString().equals("master@certocloud")) {
 
                                 DatabaseService databaseService = new DatabaseService(

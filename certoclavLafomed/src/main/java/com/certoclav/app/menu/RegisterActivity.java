@@ -1,9 +1,7 @@
 package com.certoclav.app.menu;
 
-import java.util.Date;
-
-import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -25,10 +23,12 @@ import com.certoclav.app.activities.CertoclavSuperActivity;
 import com.certoclav.app.button.EditTextItem;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.User;
-import com.certoclav.app.database.UserController;
-import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.library.bcrypt.BCrypt;
+
+import java.util.Date;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class RegisterActivity extends CertoclavSuperActivity {
 
@@ -42,6 +42,8 @@ public class RegisterActivity extends CertoclavSuperActivity {
     private EditTextItem editMobile;
     private EditTextItem editFirstName;
     private EditTextItem editLastName;
+    private SweetAlertDialog pDialog;
+    private boolean isEdit;
 
 
     @Override
@@ -50,7 +52,8 @@ public class RegisterActivity extends CertoclavSuperActivity {
         Log.e("LoginActivity", "onCreate");
         setContentView(R.layout.login_register);
         CertoclavNavigationbarClean navigationbar = new CertoclavNavigationbarClean(this);
-        navigationbar.setHeadText(getString(R.string.register_new_user));
+        isEdit = getIntent().hasExtra(AppConstants.INTENT_EXTRA_USER_ID);
+        navigationbar.setHeadText(getString(isEdit ? R.string.edit_user : R.string.register_new_user));
 
 
         linEditTextItemContainer = (LinearLayout) findViewById(R.id.register_container_edit_text_items);
@@ -228,12 +231,13 @@ public class RegisterActivity extends CertoclavSuperActivity {
             public void onClick(View v) {
 
                 boolean isEmailAlreadyExists = false;
-                for (User user : databaseService.getUsers()) {
-                    if (editEmailItem.getText().equals(user.getEmail())) {
-                        isEmailAlreadyExists = true;
-                        Toast.makeText(RegisterActivity.this, "Email already exists", Toast.LENGTH_LONG).show();
+                if (!isEdit)
+                    for (User user : databaseService.getUsers()) {
+                        if (editEmailItem.getText().equals(user.getEmail())) {
+                            isEmailAlreadyExists = true;
+                            Toast.makeText(RegisterActivity.this, "Email already exists", Toast.LENGTH_LONG).show();
+                        }
                     }
-                }
 
 
                 Log.e("RegisterActivity", "onclickRegisterButton");
@@ -267,6 +271,11 @@ public class RegisterActivity extends CertoclavSuperActivity {
                 buttonRegister.setEnabled(false);
 
                 new AsyncTask<String, Boolean, Boolean>() {
+                    @Override
+                    protected void onPreExecute() {
+                        showDialog();
+                        super.onPreExecute();
+                    }
 
                     @Override
                     protected Boolean doInBackground(String... params) {
@@ -294,9 +303,10 @@ public class RegisterActivity extends CertoclavSuperActivity {
 
                     @Override
                     protected void onPostExecute(Boolean result) {
+                        hideDialog();
                         buttonRegister.setEnabled(true);
                         if (result == true) {
-                            Toast.makeText(getApplicationContext(), R.string.account_created, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), isEdit ? R.string.edit_success : R.string.account_created, Toast.LENGTH_LONG).show();
                             finish();
                         } else {
                             Toast.makeText(getApplicationContext(), getString(R.string.database_error), Toast.LENGTH_LONG).show();
@@ -361,4 +371,18 @@ public class RegisterActivity extends CertoclavSuperActivity {
         return ret;
     }
 
+    private void showDialog() {
+        if (pDialog != null && pDialog.isShowing())
+            pDialog.dismiss();
+        pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setCancelable(false);
+        pDialog.setTitleText(getString(R.string.adding));
+        pDialog.show();
+    }
+
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismissWithAnimation();
+    }
 }
