@@ -9,7 +9,7 @@ package com.certoclav.app;
  */
 public class AppConstants {
 	 
-	public static final Boolean APPLICATION_DEBUGGING_MODE = true	;
+	public static final Boolean APPLICATION_DEBUGGING_MODE = false	;
 	public static Boolean isIoSimulated = true	;
 	public static Boolean TABLET_HAS_ROOT = false;
 	public static final Boolean IS_CERTOASSISTANT = false;
