@@ -71,17 +71,12 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
             convertView = inflater.inflate(R.layout.menu_fragment_sterilisation_element, parent, false);
             viewHolder = new ViewHolder((TextView) convertView.findViewById(R.id.sterilisation_element_firstline),
                     (TextView) convertView.findViewById(R.id.sterilisation_element_text_description),
-                    (TextView) convertView.findViewById(R.id.sterilisation_element_text_start),
                     (CardView) convertView.findViewById(R.id.card_view));
             convertView.setTag(viewHolder);
         } else
             viewHolder = (ViewHolder) convertView.getTag();
 
         viewHolder.firstLine.setText(getItem(position).getName());
-        if (AppConstants.IS_CERTOASSISTANT) {
-            viewHolder.textButton.setText("Show video assistant");
-        }
-
 
         if (getItem(position).getIndex() == 7) { //user defined profile
             getItem(position).setDescription("Vacuum times: " + Autoclave.getInstance().getUserDefinedProgram().getVacuumTimes() + "\n" +
@@ -160,14 +155,12 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
     static class ViewHolder {
         final TextView firstLine;
         final TextView textDuration;
-        final TextView textButton;
         final CardView cardView;
         Profile item;
 
-        ViewHolder(TextView firstLine, TextView textDuration, TextView textButton, CardView cardView) {
+        ViewHolder(TextView firstLine, TextView textDuration, CardView cardView) {
             this.firstLine = firstLine;
             this.textDuration = textDuration;
-            this.textButton = textButton;
             this.cardView = cardView;
         }
 

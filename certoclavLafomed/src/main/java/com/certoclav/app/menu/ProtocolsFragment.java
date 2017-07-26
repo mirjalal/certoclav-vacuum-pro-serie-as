@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -77,10 +78,12 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
     private SharedPreferences sharedPreferences;
     private LinearLayout graphContainer;
     private View viewList;
+    private View rootView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.menu_fragment_protocols, container, false); //je nach mIten k�nnte man hier anderen Inhalt laden.
+
+        rootView = inflater.inflate(R.layout.menu_fragment_protocols, container, false); //je nach mIten k�nnte man hier anderen Inhalt laden.
 
         textError = (TextView) rootView.findViewById(R.id.protocols_text_error);
         textError.setVisibility(View.INVISIBLE);
@@ -152,57 +155,10 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1,
-                                    int arg2, long arg3) {
-                aktPosition = arg2;
+                                    int pos, long arg3) {
+                aktPosition = pos;
+                selectProtocol(pos);
 
-                graphContainer = (LinearLayout) getActivity().findViewById(R.id.protocols_container_graph);
-                viewList = getActivity().findViewById(R.id.content);
-                graphContainer.removeAllViews();
-
-                final LinearLayout graphContainer = (LinearLayout) getActivity().findViewById(R.id.protocols_container_graph);
-                graphContainer.removeAllViews();
-                progressBarGraph.setVisibility(View.VISIBLE);
-                list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-                for (int i = 0; i < protocolAdapter.getCount(); i++) {
-                    protocolAdapter.getItem(i).setSelected(false);
-                }
-                protocolAdapter.getItem(arg2).setSelected(true);
-                protocolAdapter.notifyDataSetChanged();
-
-
-                Log.e("onItemClick arg2", " " + arg2);
-                Log.e("onItemClick arg3", " " + arg3);
-
-
-                Protocol protocol = (Protocol) arg0.getItemAtPosition(arg2);
-
-                if (protocol.getErrorCode() != 0) {
-                    textError.setText(AutoclaveMonitor.getInstance().getErrorString(protocol.getErrorCode()));
-                    textError.setVisibility(View.VISIBLE);
-                } else {
-                    textError.setText("no error");
-                    textError.setVisibility(View.INVISIBLE);
-                }
-
-                final MonitorListFragment fragment = MonitorListFragment.newInstance(1, protocol);
-                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                transaction.replace(R.id.content, fragment).commit();
-
-                LineGraph lineGraph = null;
-                lineGraph = GraphService.getInstance().getProtocolGraphView(protocol);
-
-                try {
-                    graphContainer.addView(lineGraph.getView(getActivity()));
-                    progressBarGraph.setVisibility(View.GONE);
-                } catch (Exception e) {
-                    Log.e("ProtocolsFragment", "exception onPostExecute: " + e.toString());
-                }
-
-
-                if (graphContainer != null)
-                    graphContainer.setVisibility(checkBoxGpaphList.isChecked() ? View.GONE : View.VISIBLE);
-                if (viewList != null)
-                    viewList.setVisibility(checkBoxGpaphList.isChecked() ? View.VISIBLE : View.GONE);
 
             }
         });
@@ -404,6 +360,11 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
                 }
 
                 protocolAdapter.notifyDataSetChanged();
+                if (protocolAdapter.getCount() > 0)
+                    list.performItemClick(
+                            list.getChildAt(0),//.getView(i, null, null),
+                            0,
+                            list.getAdapter().getItemId(0));
             }
             progressBarProtocolList.setVisibility(View.GONE);
             super.onPostExecute(result);
@@ -460,9 +421,10 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
                                     protocolAdapter.getItem(aktPosition).getZyklusNumber(),
                                     1,
                                     protocolAdapter.getItem(aktPosition).getErrorCode() == 0);
+                            Toast.makeText(getActivity(), getString(R.string.label_printed), Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
-                        Toast.makeText(getActivity(), getString(R.string.unable_to_print_the_label), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), getString(R.string.unable_to_print_the_label), Toast.LENGTH_SHORT).show();
                     }
 
                     dialog.dismissWithAnimation();
@@ -618,10 +580,16 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
                     if (protocolAdapter.getItem(i).getZyklusNumber() == Integer.parseInt(cyclenumber)) {
 
                         list.setSelection(i);
-                        list.performItemClick(
-                                list.getChildAt(i),//.getView(i, null, null),
-                                i,
-                                list.getAdapter().getItemId(i));
+                        final int finalI = i;
+                        list.smoothScrollToPosition(i);
+                        list.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                list.smoothScrollToPosition(finalI);
+                                selectProtocol(finalI);
+                            }
+                        });
+
                         isItemFound = true;
                         break;
                     }
@@ -638,6 +606,58 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
             Toast.makeText(getActivity(), "Item found", Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    private void selectProtocol(int pos) {
+        graphContainer = (LinearLayout) getActivity().findViewById(R.id.protocols_container_graph);
+        viewList = getActivity().findViewById(R.id.content);
+        graphContainer.removeAllViews();
+
+        final LinearLayout graphContainer = (LinearLayout) getActivity().findViewById(R.id.protocols_container_graph);
+        graphContainer.removeAllViews();
+        progressBarGraph.setVisibility(View.VISIBLE);
+        protocolAdapter.setSelection(pos);
+        protocolAdapter.notifyDataSetChanged();
+
+        Protocol protocol = (Protocol) protocolAdapter.getItem(pos);
+
+        if (protocol.getErrorCode() != 0) {
+            textError.setText(AutoclaveMonitor.getInstance().getErrorString(protocol.getErrorCode()));
+            textError.setVisibility(View.VISIBLE);
+        } else {
+            textError.setText("no error");
+            textError.setVisibility(View.INVISIBLE);
+        }
+
+        final MonitorListFragment fragment = MonitorListFragment.newInstance(1, protocol);
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.content, fragment).commit();
+
+        LineGraph lineGraph = null;
+        lineGraph = GraphService.getInstance().getProtocolGraphView(protocol);
+
+        try {
+            graphContainer.addView(lineGraph.getView(getActivity()));
+            progressBarGraph.setVisibility(View.GONE);
+        } catch (Exception e) {
+            Log.e("ProtocolsFragment", "exception onPostExecute: " + e.toString());
+        }
+
+
+        if (graphContainer != null)
+            graphContainer.setVisibility(checkBoxGpaphList.isChecked() ? View.GONE : View.VISIBLE);
+        if (viewList != null)
+            viewList.setVisibility(checkBoxGpaphList.isChecked() ? View.VISIBLE : View.GONE);
     }
 
 }

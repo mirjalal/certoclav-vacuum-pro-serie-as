@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import static com.certoclav.app.database.Profile.FIELD_CLOUD_ID;
+
 /**
  * CertoClavDatabase class is responsible for the communication of the
  * application with the sqlite database.
@@ -443,8 +445,9 @@ public class DatabaseService {
 
     public int insertProtocol(Protocol protocol) {
 
+        if (isProtcolExists(protocol.getCloudId()))
+            return -1;
         try {
-
             int x = protocolDao.create(protocol);
             return x;
 
@@ -452,6 +455,23 @@ public class DatabaseService {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    public boolean isProtcolExists(String cloudId) {
+        if (cloudId.length() <= 0) return false;
+
+        try {
+
+            return protocolDao.queryBuilder().where().eq(FIELD_CLOUD_ID, cloudId).query().size() > 0;
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+
+        } catch (SQLException e2) {
+            e2.printStackTrace();
+        }
+        return false;
+
+
     }
 /*
     public int deleteProtocol(final Protocol protocol) {

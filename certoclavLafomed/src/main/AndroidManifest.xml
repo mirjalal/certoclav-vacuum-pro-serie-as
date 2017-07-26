@@ -148,6 +148,8 @@
 
     <application
         android:name=".util.AppController"
+        android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"
@@ -273,6 +275,11 @@
 
         <activity
             android:name="com.certoclav.app.menu.RegisterCloudAccountActivity"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateAlwaysVisible"></activity>
+
+        <activity
+            android:name="com.certoclav.app.menu.ChangeAdminPasswordAccountActivity"
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateAlwaysVisible"></activity>
 

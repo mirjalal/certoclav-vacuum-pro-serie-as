@@ -81,7 +81,7 @@ public class Controller {
     public String getSavetyKey() {
 
         if (AppConstants.isIoSimulated == true) {
-            return "AAAAAAAAAAAAAAAAA";
+            return AppConstants.SIMULATED_SAVETY_KEY;
         }
 
         //Find the directory for the SD Card using the API

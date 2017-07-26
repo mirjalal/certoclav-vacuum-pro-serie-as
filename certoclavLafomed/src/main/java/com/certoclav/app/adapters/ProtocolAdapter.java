@@ -1,7 +1,5 @@
 package com.certoclav.app.adapters;
 
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
@@ -17,6 +15,8 @@ import com.certoclav.app.R;
 import com.certoclav.app.database.Profile;
 import com.certoclav.app.database.Protocol;
 
+import java.util.List;
+
 
 /**
  * The ProfileAdapter class provides access to the profile data items. <br>
@@ -25,6 +25,7 @@ import com.certoclav.app.database.Protocol;
  */
 public class ProtocolAdapter extends ArrayAdapter<Protocol> {
     private final Context mContext;
+    private int selectedPosition = -1;
 
     /**
      * Constructor
@@ -51,7 +52,7 @@ public class ProtocolAdapter extends ArrayAdapter<Protocol> {
             convertView = inflater.inflate(R.layout.menu_fragment_protocols_element, parent, false);
         }
 
-        if (getItem(position).isSelected()) {
+        if (getSelectedPosition() == position) {
             convertView.setBackgroundResource(R.drawable.background_blue_light);
         } else {
             convertView.setBackgroundColor(Color.TRANSPARENT);
@@ -89,5 +90,13 @@ public class ProtocolAdapter extends ArrayAdapter<Protocol> {
 
 
         return convertView;
+    }
+
+    public void setSelection(int pos) {
+        this.selectedPosition = pos;
+    }
+
+    public int getSelectedPosition() {
+        return selectedPosition;
     }
 }

@@ -59,7 +59,7 @@ public class LabelPrinterUtils {
             sendTextToBuffer("Exp: " + expDate, 40, 9 * 8);
             printBuffer(numSets);
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
 
     }

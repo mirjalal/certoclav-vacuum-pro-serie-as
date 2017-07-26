@@ -128,6 +128,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
 
             }
         });
+        editFirstName.requestFocus();
         linEditTextItemContainer.addView(editFirstName);
 
 
@@ -271,6 +272,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
 
         final DatabaseService databaseService = new DatabaseService(RegisterCloudAccountActivity.this);
         buttonRegister = (Button) findViewById(R.id.register_button_ok);
+        buttonRegister.setText(currentUser != null ? R.string.save : R.string.register);
 
         buttonRegister.setOnClickListener(new OnClickListener() {
 
@@ -286,7 +288,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                     }
 
                 if (currentUser != null && (!editCurPasswordItem.hasValidString() || !editCurPasswordItem.hasValidString())) {
-                    Toast.makeText(RegisterCloudAccountActivity.this, getString(R.string.please_enter_paswoord), Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterCloudAccountActivity.this, getString(R.string.please_enter_password), Toast.LENGTH_LONG).show();
                     return;
                 }
                 Log.e("RegisterActivity", "onclickRegisterButton");
@@ -366,7 +368,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                     protected void onPostExecute(Response response) {
                         hideDialog();
                         if (response != null && response.isOK()) {
-                            Toast.makeText(getApplicationContext(), response.getMessage().isEmpty() ? getString(R.string.account_created) : response.getMessage(),
+                            Toast.makeText(getApplicationContext(), response.getMessage().isEmpty() ? getString(currentUser != null ? R.string.account_created : R.string.updated_successfully) : response.getMessage(),
                                     Toast.LENGTH_SHORT).show();
                             if (response.getStatus() == 200)
                                 finish();

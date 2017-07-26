@@ -5,7 +5,7 @@ package com.certoclav.library.util;
  */
 
 public class Response {
-    private boolean error ;
+    private boolean error;
     private int status;
     private String message;
 
@@ -14,11 +14,11 @@ public class Response {
     }
 
     public String getMessage() {
-        return message!=null?message:"";
+        return message != null ? message : "";
     }
 
     public boolean isOK() {
-        return !error;
+        return status == 200;
     }
 
     public void setError(boolean error) {

@@ -411,7 +411,7 @@
     <string name="reboot">Reboot</string>
     <string name="no_sdcard">No SD-Card</string>
     <string name="no_sdcard_detected">No SD-Card detected. Please reboot this touch terminal and try again.</string>
-    <string name="coping_protocols">Coping protocols...</string>
+    <string name="coping_protocols">Copying protocols...</string>
     <string name="export_success">Exported successfully</string>
     <string name="export_failed">Export Failed!</string>
     <string name="material_testing">Material Testing</string>
@@ -452,7 +452,7 @@
     <string name="cur_password">Currrent Password</string>
     <string name="password_confirm">Confirm Password</string>
     <string name="edit_user">Edit User</string>
-    <string name="please_enter_paswoord">Please enter your current password!</string>
+    <string name="please_enter_password">Please enter your current password!</string>
     <string name="error">Error</string>
     <string name="close">Close</string>
     <string name="try_again">Try Again</string>
@@ -463,4 +463,10 @@
     <string name="something_went_wrong">Something went wrong. Please try later!</string>
     <string name="sending">Sending...</string>
     <string name="edit_success">Edited Successfully</string>
+    <string name="label_printed">The label printed!</string>
+    <string name="print_entities_checkbox_title">Print data points ON/OFF</string>
+    <string name="print_entities_checkbox_summary">Add temperature and pressure history to protocol print out</string>
+    <string name="change_admin_password">Change Admin Password</string>
+    <string name="admin_password_wrong">Admin password is wrong!</string>
+    <string name="admin_password">Admin Password</string>
 </resources>

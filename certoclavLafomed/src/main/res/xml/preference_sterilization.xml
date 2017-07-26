@@ -40,6 +40,12 @@
         android:title="@string/open_label_printer_designer" />
 
     <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="switch_print_entities"
+        android:summary="@string/print_entities_checkbox_summary"
+        android:title="@string/print_entities_checkbox_title" />
+
+    <CheckBoxPreference
         android:key="switch_scan_items"
         android:summary="Enable autoclave load documentation. Barcodescanner and labelprinter required."
         android:title="CertoTrace load documentation"></CheckBoxPreference>

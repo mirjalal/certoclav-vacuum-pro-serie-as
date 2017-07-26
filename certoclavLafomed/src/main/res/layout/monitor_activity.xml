@@ -44,6 +44,7 @@
                         android:layout_marginTop="15dp"
                         android:layout_weight="1"
                         android:gravity="bottom"
+                        android:singleLine="true"
                         android:text="FAST PROGRAM"
                         android:textColor="@android:color/white"
                         android:textSize="25dp"
@@ -97,17 +98,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
+                android:orientation="vertical"
                 android:paddingBottom="15dp"
-                android:orientation="vertical">
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
 
                 <Button
                     android:id="@+id/monitor_button_stop"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/stop"
                     android:background="@drawable/button_bg_green_blue"
+                    android:text="@string/stop"
                     android:textColor="@android:color/white"
                     android:textSize="35dp"
                     android:textStyle="bold" />

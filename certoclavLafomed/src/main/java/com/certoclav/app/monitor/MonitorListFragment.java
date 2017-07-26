@@ -71,7 +71,9 @@ public class MonitorListFragment extends Fragment {
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
-        recyclerView.setAdapter(new MyProtocolEntryRecyclerViewAdapter(new ArrayList<>(protocol.getProtocolEntry())));
+
+        if(protocol!=null)
+        recyclerView.setAdapter(new MyProtocolEntryRecyclerViewAdapter(new ArrayList<>(protocol != null ? protocol.getProtocolEntry() : null)));
 
         return view;
     }

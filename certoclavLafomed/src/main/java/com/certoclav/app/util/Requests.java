@@ -4,12 +4,14 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.responsemodels.UserInfoResponseModel;
 import com.certoclav.app.responsemodels.UserProtocolsResponseModel;
@@ -59,7 +61,7 @@ public class Requests {
     }
 
     public void getUserProtocols(MyCallback myCallback, int requestId) {
-        String url = Uri.parse(CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_GET_PROTOCOLS)
+        String url = Uri.parse(CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_GET_PROTOCOLS + Autoclave.getInstance().getController().getSavetyKey())
                 .buildUpon()
                 .build().toString();
         Map<String, String> headers = new HashMap<>();
@@ -68,8 +70,11 @@ public class Requests {
         headers.put("X-Key", CloudUser.getInstance().getEmail());
         headers.put("Content-Type", "application/json");
 
-
-        sendRequest(url, myCallback, requestId, null, headers, null, UserProtocolsResponseModel.class, null, Request.Method.GET);
+        DefaultRetryPolicy policy = new DefaultRetryPolicy(
+                200000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        sendRequest(url, myCallback, requestId, null, headers, null, UserProtocolsResponseModel.class, policy, Request.Method.GET);
     }
 
 

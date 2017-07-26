@@ -1,10 +1,6 @@
 package com.certoclav.app.settings;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,16 +15,12 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 import android.support.v4.preference.PreferenceFragment;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.listener.SensorDataListener;
+import com.certoclav.app.menu.ChangeAdminPasswordAccountActivity;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveData;
 import com.certoclav.library.application.ApplicationController;
@@ -36,7 +28,9 @@ import com.certoclav.library.util.DownloadUtils;
 import com.certoclav.library.util.ExportUtils;
 import com.certoclav.library.util.UpdateUtils;
 
-import cn.pedant.SweetAlert.ProgressHelper;
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
@@ -75,6 +69,15 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                     Toast.makeText(getActivity(), getString(R.string.please_connect_to_internet), Toast.LENGTH_LONG).show();
                 }
 
+                return false;
+            }
+        });
+
+        ((Preference) findPreference(AppConstants.PREFERENCE_KEY_ADMIN_PASSWORD)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivity(new Intent(getActivity(), ChangeAdminPasswordAccountActivity.class));
                 return false;
             }
         });

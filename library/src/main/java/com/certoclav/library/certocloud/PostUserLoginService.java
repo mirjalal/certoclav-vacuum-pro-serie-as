@@ -72,7 +72,8 @@ public class PostUserLoginService {
 
                     CloudUser.getInstance().setEmail(email);
                     CloudUser.getInstance().setLoggedIn(true);
-                    CloudUser.getInstance().setToken(loginJSONObject.getString("token"));
+                    if (loginJSONObject.has("token"))
+                        CloudUser.getInstance().setToken(loginJSONObject.getString("token"));
                     CloudUser.getInstance().setCurrentDeviceKey(deviceKey);
 
                 } catch (JSONException e) {

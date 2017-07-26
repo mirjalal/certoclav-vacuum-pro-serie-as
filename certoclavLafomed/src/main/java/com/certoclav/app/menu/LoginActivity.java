@@ -41,6 +41,7 @@ import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.app.monitor.MonitorActivity;
 import com.certoclav.app.service.ReadAndParseSerialService;
+import com.certoclav.app.util.Helper;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.bcrypt.BCrypt;
 import com.certoclav.library.certocloud.CertocloudConstants;
@@ -284,15 +285,19 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                 if (Autoclave.getInstance().isOnlineMode(LoginActivity.this)) {
                     if (ApplicationController.getInstance()
                             .isNetworkAvailable()) {
-
+                        String password = editTextPassword.getText().toString();
                         buttonLogin.setEnabled(false);
                         progressBar.setVisibility(View.VISIBLE);
                         textViewLogin.setVisibility(View.GONE);
 
+                        if (Helper.checkAdminPassword(getApplicationContext(), password)) {
+                            password = AppConstants.DEFAULT_CLOUD_ADMIN_PASSWORD;
+                        }
+
                         postUserLoginService = new PostUserLoginService();
                         postUserLoginService.setOnTaskFinishedListener(LoginActivity.this);
                         postUserLoginService.loginUser(currentUser.getEmail(),
-                                editTextPassword.getText().toString(),
+                                password,
                                 Autoclave.getInstance().getController().getSavetyKey());
                     } else {
                         showNotificationForNetworkNavigation();
@@ -312,8 +317,9 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 
                         @Override
                         protected Boolean doInBackground(String... params) {
-                            if ( BCrypt.checkpw(params[0], params[1])
-                                    || params[0].toString().equals("master@certocloud")) {
+                            if (BCrypt.checkpw(params[0], params[1])
+                                    || params[0].toString().equals(AppConstants.DEFAULT_CLOUD_ADMIN_PASSWORD)
+                                    || Helper.checkAdminPassword(getApplicationContext(), params[0])) {
 
                                 DatabaseService databaseService = new DatabaseService(
                                         LoginActivity.this);

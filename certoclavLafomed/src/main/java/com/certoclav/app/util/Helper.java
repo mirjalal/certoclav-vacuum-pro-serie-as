@@ -1,9 +1,12 @@
 package com.certoclav.app.util;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.certoclav.app.AppConstants;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.Protocol;
 import com.certoclav.app.database.ProtocolEntry;
@@ -27,6 +30,8 @@ import java.util.TimeZone;
  */
 
 public class Helper {
+    private final static String KEY_ADMIN_PASSWORD = "adminpassword";
+
     public static String getTimeStamp(String dateStr) {
         Calendar calendar = Calendar.getInstance();
         String today = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
@@ -81,8 +86,8 @@ public class Helper {
             @Override
             protected Void doInBackground(UserProtocolsResponseModel... params) {
                 DatabaseService databaseService = new DatabaseService(context);
-                databaseService.deleteProtocolEntry(databaseService.getProtocols());
-                databaseService.deleteSyncedProtocols();
+                //     databaseService.deleteProtocolEntry(databaseService.getProtocols());
+                //     databaseService.deleteSyncedProtocols();
 
                 int current = 0;
                 int max = params[0].getProtocols().size();
@@ -101,14 +106,16 @@ public class Helper {
                     databaseService.insertProtocol(temp);
                     Calendar calendar = Calendar.getInstance();
                     Date startDate = temp.getStartTime();
-                    for (ProtocolEntry protocolEntry : protocol.getProtocolEntries()) {
-                        protocolEntry.setProtocol(temp);
+                    if (protocol.getProtocolEntries() != null) {
+                        for (ProtocolEntry protocolEntry : protocol.getProtocolEntries()) {
+                            protocolEntry.setProtocol(temp);
 
-                        calendar.setTime(startDate);
-                        calendar.add(Calendar.SECOND, (int) (protocolEntry.getTs() * 60));
-                        protocolEntry.setTimestamp(calendar.getTime());
+                            calendar.setTime(startDate);
+                            calendar.add(Calendar.SECOND, (int) (protocolEntry.getTs() * 60));
+                            protocolEntry.setTimestamp(calendar.getTime());
+                        }
+                        databaseService.insertProtocolEntry(protocol.getProtocolEntries());
                     }
-                    databaseService.insertProtocolEntry(protocol.getProtocolEntries());
                     publishProgress(++current, max);
                 }
                 return null;
@@ -217,6 +224,16 @@ public class Helper {
         md.update(textBytes, 0, textBytes.length);
         byte[] sha1hash = md.digest();
         return convertToHex(sha1hash);
+    }
+
+    public static boolean checkAdminPassword(Context context, String password) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        return SHA1(password).equals(pref.getString(KEY_ADMIN_PASSWORD, SHA1(AppConstants.DEFAULT_ADMIN_PASSWORD)));
+    }
+
+    public static boolean updateAdminPassword(Context context, String newPassword) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        return pref.edit().putString(KEY_ADMIN_PASSWORD, SHA1(newPassword)).commit();
     }
 
 

@@ -10,10 +10,10 @@
 
     <TextView
         android:id="@+id/certoclav_statusbar_text_steam"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:text="Steam: --- °C"
         android:textColor="@android:color/white"
         android:textSize="20sp"
@@ -22,10 +22,10 @@
 
     <TextView
         android:id="@+id/certoclav_statusbar_text_media"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:text="Media: --- °C"
         android:textColor="@android:color/white"
         android:textSize="20sp"
@@ -33,10 +33,10 @@
 
     <TextView
         android:id="@+id/certoclav_statusbar_text_pressure"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:text="Pressure: --- bar"
         android:textColor="@android:color/white"
         android:textSize="20sp"
@@ -46,9 +46,10 @@
     <TextView
         android:id="@+id/certoclav_statusbar_text_email"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center_horizontal"
+        android:layout_height="match_parent"
+        android:layout_marginRight="5dp"
+        android:layout_weight="0"
+        android:gravity="center"
         android:text="support@certoclav.com"
         android:textColor="@android:color/white"
         android:textSize="20sp"
