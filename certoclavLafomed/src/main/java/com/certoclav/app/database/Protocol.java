@@ -68,6 +68,7 @@ public class Protocol {
     private User user;
 
     @DatabaseField(columnName = FIELD_PROTOCOL_CLOUD_ID)
+    @SerializedName("_id")
     private String cloudId;
 
     @DatabaseField(columnName = "version")

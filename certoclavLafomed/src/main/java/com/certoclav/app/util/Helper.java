@@ -92,7 +92,7 @@ public class Helper {
                 int current = 0;
                 int max = params[0].getProtocols().size();
                 for (Protocol protocol : params[0].getProtocols()) {
-                    Protocol temp = new Protocol("",
+                    Protocol temp = new Protocol(protocol.getCloudId(),
                             1,
                             protocol.getStartTime(),
                             protocol.getEndTime(), //init the EndTime, in order to avoid nullpointer exceptions after power loss
