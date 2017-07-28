@@ -19,6 +19,7 @@ import com.certoclav.app.listener.SensorDataListener;
 import com.certoclav.app.monitor.MonitorNotificationActivity;
 import com.certoclav.app.service.CloudSocketService;
 import com.certoclav.app.service.ReadAndParseSerialService;
+import com.certoclav.app.util.Helper;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.bcrypt.BCrypt;
 import com.certoclav.library.certocloud.CloudDatabase;
@@ -26,6 +27,7 @@ import com.certoclav.library.certocloud.Condition;
 import com.certoclav.library.certocloud.NotificationService;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusListener, AutoclaveStateListener {
@@ -56,7 +58,27 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
 
     private Integer indexOfProfile = null;
-
+    private String[] ERROR_STRING_ARRAY = {
+            mContext.getString(R.string.program_finished_successfully),
+            mContext.getString(R.string.l_fter_ausgefallen),
+            mContext.getString(R.string.er_03_lid_is_not_closed), // 2
+            mContext.getString(R.string.er_04_wasserstand_im_kessel_zu_hoch),
+            mContext.getString(R.string.er_05_wasserstand_im_kessel_zu_niedrig),
+            mContext.getString(R.string.er_06_lid_is_not_locked), //5
+            mContext.getString(R.string.timeout_heizvorgang),
+            mContext.getString(R.string.maximal_zul_ssiger_druck_berschritten),
+            mContext.getString(R.string.maximal_zul_ssige_temperatur_berschritten), //8
+            mContext.getString(R.string.druck_out_of_range),
+            mContext.getString(R.string.temp1_out_of_range),
+            mContext.getString(R.string.temp2_out_of_range),
+            mContext.getString(R.string.temp3_out_of_range),
+            mContext.getString(R.string.temperaturband_nicht_eingehalten), //13
+            mContext.getString(R.string.cycle_cancelled_because_of_error),
+            mContext.getString(R.string.cycle_cancelled_by_user_),
+            mContext.getString(R.string.connection_lost_during_record),
+            mContext.getString(R.string.power_loss_during_record)
+    };
+    private Map<String, String> errorCodes;
 
     //IO SIMULATION
     public static boolean SimulatedLockSwitch = true;
@@ -98,7 +120,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
         nanoTimeAtLastMessageReceived = System.nanoTime();
         timerHandler.postDelayed(timerRunnable, 0);
         ReadAndParseSerialService.getInstance();
-
+        errorCodes = Helper.getKeyValueFromStringArray(mContext);
     }
 
     public void setOnAlertListener(AlertListener listener) {
@@ -237,7 +259,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                                 }
                                 cycleNumber++;
                             }//end if io simulated
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             cycleNumber = 1;
                         }
 
@@ -245,24 +267,21 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 //set current Profile into Autoclave model
 
 
-                        try{
+                        try {
                             indexOfProfile = Autoclave.getInstance().getProfile().getIndex();
-                        }catch(Exception e){
+                        } catch (Exception e) {
                             indexOfProfile = Autoclave.getInstance().getIndexOfRunningProgram();
                         }
-                        if(indexOfProfile>12) indexOfProfile = 12;
-                        if(indexOfProfile<1) indexOfProfile = 1;
+                        if (indexOfProfile > 12) indexOfProfile = 12;
+                        if (indexOfProfile < 1) indexOfProfile = 1;
 
-                        if(Autoclave.getInstance().getProfile() == null){
+                        if (Autoclave.getInstance().getProfile() == null) {
                             Profile runningProfile = databaseService.getProfileByIndex(indexOfProfile).get(0);
                             Autoclave.getInstance().setProfile(runningProfile);
                         }
 
 
-
-
-
-//set current User into Autoclave model	
+//set current User into Autoclave model
                         if (Autoclave.getInstance().getUser() == null) {
                             for (User user : databaseService.getUsers()) {
                                 if (user.getEmail().equals("admin")) {
@@ -358,10 +377,10 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
                     if (errorList.size() > 0) {//Autoclave.getInstance().getData().isFailStoppedByUser() || Autoclave.getInstance().isMicrocontrollerReachable()==false){
                         //if the error has been detected in the end of the liquid program
-                        if(Autoclave.getInstance().getData().getTemp1().getCurrentValue() <= 90 && Autoclave.getInstance().getData().getTemp2().getCurrentValue() <= 90 && Autoclave.getInstance().getSecondsSinceStart() > 2400 && Autoclave.getInstance().getProfile().getIndex() == 12){
-                            Log.e("AutoclaveMonitor", "IS FAIL STOPPED BY USER " +Autoclave.getInstance().getData().isFailStoppedByUser() +" - PROGRAM CANCELLED EARLIER BUT IS FINISHED SUCESSFULLY");
+                        if (Autoclave.getInstance().getData().getTemp1().getCurrentValue() <= 90 && Autoclave.getInstance().getData().getTemp2().getCurrentValue() <= 90 && Autoclave.getInstance().getSecondsSinceStart() > 2400 && Autoclave.getInstance().getProfile().getIndex() == 12) {
+                            Log.e("AutoclaveMonitor", "IS FAIL STOPPED BY USER " + Autoclave.getInstance().getData().isFailStoppedByUser() + " - PROGRAM CANCELLED EARLIER BUT IS FINISHED SUCESSFULLY");
                             //if the error is a manual stop by the user, then its only a early stopped program, but not an critical error
-                            if(Autoclave.getInstance().getData().isFailStoppedByUser()){
+                            if (Autoclave.getInstance().getData().isFailStoppedByUser()) {
                                 finishProgram();
                                 Autoclave.getInstance().setState(AutoclaveState.PROGRAM_FINISHED);
                                 break;
@@ -645,12 +664,12 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
     public String getErrorString(int errorCode) {
 
-        try {
-            return "ERROR ID: " + Integer.toString(errorCode);
-        } catch (Exception e) {
 
+        if (errorCodes.containsKey(errorCode + "")) {
+            return errorCodes.get(errorCode + "");
+        } else {
+            return mContext.getString(R.string.something_went_wrong);
         }
-        return "Error: 00";
 
     }
 

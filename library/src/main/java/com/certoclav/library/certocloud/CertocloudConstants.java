@@ -35,6 +35,7 @@ public class CertocloudConstants {
 	public final static String REST_API_POST_PROFILE = "/api/programs/";// programs.create);
 	public final static String REST_API_DELETE_PROFILE = "/api/programs/";// programs.delete);
 	public final static String REST_API_GET_PROTOCOLS = "/api/device-protocols/";
+	public final static String REST_API_GET_PROTOCOL = "/api/protocols/";
 
 	public final static String REST_POST_SUPPORT = "/api/support";// support.send); send email to certosupport
 	public final static String REST_API_POST_EMAIL = "/api/support/email/"; //send notification email to a specific email address

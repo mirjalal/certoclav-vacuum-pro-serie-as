@@ -564,7 +564,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
     @Override
     public void onTaskFinished(Response response) {
         if (response == null) {
-            Toast.makeText(LoginActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, getString(R.string.something_went_wrong_try_again), Toast.LENGTH_SHORT).show();
             return;
         }
         progressBar.setVisibility(View.GONE);

@@ -460,7 +460,8 @@
 
     <string name="account_activation_failed">Account activation failed!</string>
     <string name="account_activation_success">Account successfully activiated!</string>
-    <string name="something_went_wrong">Something went wrong. Please try later!</string>
+    <string name="something_went_wrong_try_again">Something went wrong. Please try later!</string>
+    <string name="something_went_wrong">Something went wrong</string>
     <string name="sending">Sending...</string>
     <string name="edit_success">Edited Successfully</string>
     <string name="label_printed">The label printed!</string>
@@ -469,4 +470,24 @@
     <string name="change_admin_password">Change Admin Password</string>
     <string name="admin_password_wrong">Admin password is wrong!</string>
     <string name="admin_password">Admin Password</string>
+    <string name="power_loss_during_record">Power loss during record</string>
+
+
+    <string-array name="error_codes">
+        <item>0|Successfully completed</item>
+        <item>15|-1|Program cancelled by user</item>
+        <item>16|-2|Connection lost error</item>
+        <item>2|Vacuum pump defect</item>
+        <item>31|32|Steam sensor broken error</item>
+        <item>51|52|63|Steam or temperature sensor broken error</item>
+        <item>61|62|The chamber temperature sensor broken error</item>
+        <item>41|42|Chamber heating damaged</item>
+        <item>5|Output solenoid valve is blocked</item>
+        <item>6|Door damaged</item>
+        <item>7|Wrong air pressure</item>
+        <item>8|9|No water inside the tank</item>
+        <item>10|11|Electronic locker malfunction</item>
+        <item>12|Vacuum pump or fan damaged</item>
+        <item>99|Cable is not connected</item>
+    </string-array>
 </resources>

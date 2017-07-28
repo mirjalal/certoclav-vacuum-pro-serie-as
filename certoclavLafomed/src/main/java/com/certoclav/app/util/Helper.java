@@ -7,11 +7,13 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.certoclav.app.AppConstants;
+import com.certoclav.app.R;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.Protocol;
 import com.certoclav.app.database.ProtocolEntry;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.ErrorModel;
+import com.certoclav.app.responsemodels.UserProtocolResponseModel;
 import com.certoclav.app.responsemodels.UserProtocolsResponseModel;
 
 import java.io.UnsupportedEncodingException;
@@ -22,7 +24,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -160,6 +164,84 @@ public class Helper {
         }, 1);
     }
 
+    public static void downloadProtocol(final Context context, Protocol protocol, final MyCallback myCallback) {
+
+        class SyncPrtocolsAsync extends AsyncTask<UserProtocolResponseModel, Integer, Void> {
+
+            @Override
+            protected Void doInBackground(UserProtocolResponseModel... params) {
+                Protocol protocol = params[0].getProtocol();
+                DatabaseService databaseService = new DatabaseService(context);
+                databaseService.deleteProtocol(protocol);
+
+
+                Protocol temp = new Protocol(protocol.getCloudId(),
+                        1,
+                        protocol.getStartTime(),
+                        protocol.getEndTime(), //init the EndTime, in order to avoid nullpointer exceptions after power loss
+                        protocol.getZyklusNumber(),
+                        Autoclave.getInstance().getController(),
+                        Autoclave.getInstance().getUser(),
+                        protocol.getProgram(),
+                        protocol.getErrorCode(), // power loss
+                        true);
+
+                databaseService.insertProtocol(temp);
+                Calendar calendar = Calendar.getInstance();
+                Date startDate = temp.getStartTime();
+                if (protocol.getProtocolEntries() != null) {
+                    for (ProtocolEntry protocolEntry : protocol.getProtocolEntries()) {
+                        protocolEntry.setProtocol(temp);
+                        calendar.setTime(startDate);
+                        calendar.add(Calendar.SECOND, (int) (protocolEntry.getTs() * 60));
+                        protocolEntry.setTimestamp(calendar.getTime());
+                    }
+                    databaseService.insertProtocolEntry(protocol.getProtocolEntries());
+                }
+
+                return null;
+            }
+
+            @Override
+            protected void onProgressUpdate(Integer... values) {
+                super.onProgressUpdate(values);
+                myCallback.onProgress(values[0], values[1]);
+
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                myCallback.onSuccess(true, 2);
+                super.onPostExecute(aVoid);
+            }
+        }
+        Requests.getInstance().getUserProtocol(new MyCallback() {
+            @Override
+            public void onSuccess(Object response, int requestId) {
+                UserProtocolResponseModel userProtocolsResponseModel = (UserProtocolResponseModel) response;
+                myCallback.onSuccess(userProtocolsResponseModel.getProtocol() != null, 1);
+                if (userProtocolsResponseModel.getProtocol() != null)
+                    new SyncPrtocolsAsync().execute(userProtocolsResponseModel);
+            }
+
+            @Override
+            public void onError(ErrorModel error, int requestId) {
+                myCallback.onError(error, requestId);
+            }
+
+            @Override
+            public void onStart(int requestId) {
+                myCallback.onStart(requestId);
+
+            }
+
+            @Override
+            public void onProgress(int current, int max) {
+
+            }
+        }, protocol.getCloudId(), 1);
+    }
+
     public static void printProtocols(final Context context, final Protocol protocol, final MyCallback myCallback) {
 
         new AsyncTask<Protocol, Void, Boolean>() {
@@ -234,6 +316,18 @@ public class Helper {
     public static boolean updateAdminPassword(Context context, String newPassword) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         return pref.edit().putString(KEY_ADMIN_PASSWORD, SHA1(newPassword)).commit();
+    }
+
+    public static Map<String, String> getKeyValueFromStringArray(Context ctx) {
+        String[] array = ctx.getResources().getStringArray(R.array.error_codes);
+        Map<String, String> result = new HashMap<>();
+        for (String str : array) {
+            String[] splittedItem = str.split("\\|");
+            int len = splittedItem.length;
+            for (int i = 0; i < len - 1; i++)
+                result.put(splittedItem[i], splittedItem[len - 1]);
+        }
+        return result;
     }
 
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -46,6 +47,7 @@ import com.certoclav.app.service.PostProtocolsService;
 import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.LabelPrinterUtils;
 import com.certoclav.app.util.MyCallback;
+import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.graph.LineGraph;
 
 import java.util.ArrayList;
@@ -79,6 +81,7 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
     private LinearLayout graphContainer;
     private View viewList;
     private View rootView;
+    private View buttonDownload;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -111,6 +114,8 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
 
 
         rootView.findViewById(R.id.imageViewPrint).setOnClickListener(this);
+        buttonDownload = rootView.findViewById(R.id.imageViewDownloadProtocol);
+        buttonDownload.setOnClickListener(this);
         rootView.findViewById(R.id.imageViewScan).setOnClickListener(this);
 
 
@@ -158,8 +163,6 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
                                     int pos, long arg3) {
                 aktPosition = pos;
                 selectProtocol(pos);
-
-
             }
         });
 
@@ -207,17 +210,14 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
 
 
     private void updateProtocolAdapter() {
-
         try {
-
             int position = spinner.getSelectedItemPosition();
             QueryProtoolsTask queryProtocolsTask = new QueryProtoolsTask();
             queryProtocolsTask.execute(position);
 
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
-
 
     }
 
@@ -232,6 +232,62 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
             case R.id.imageViewScan:
 
                 askForScan();
+                break;
+            case R.id.imageViewDownloadProtocol:
+                if (ApplicationController.getInstance().isNetworkAvailable() && protocolAdapter.getItem(aktPosition) != null) {
+                    final SweetAlertDialog barProgressDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+                    barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                    barProgressDialog.setTitleText(getActivity().getString(com.certoclav.library.R.string.downloading));
+                    barProgressDialog.setCancelable(false);
+                    Helper.downloadProtocol(getActivity(), protocolAdapter.getItem(aktPosition), new MyCallback() {
+                        @Override
+                        public void onSuccess(Object response, int requestId) {
+                            if ((Boolean) response)
+                                if (requestId == 1)
+                                    barProgressDialog.setTitleText(getActivity().getString(R.string.adding));
+                                else {
+                                    barProgressDialog.setTitleText(getActivity().getString(R.string.download_success));
+                                    barProgressDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                    updateProtocolAdapter();
+                                }
+                            else {
+                                barProgressDialog.setTitleText(getActivity().getString(R.string.something_went_wrong_try_again));
+                                barProgressDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(ErrorModel error, int requestId) {
+                            barProgressDialog.setTitleText(error.getMessage() != null ? error.getMessage() : getActivity().getString(R.string.download_failed));
+                            barProgressDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                        }
+
+                        @Override
+                        public void onStart(int requestId) {
+                            barProgressDialog.show();
+                        }
+
+                        public void onProgress(int current, int max) {
+                            barProgressDialog.setTitleText(getActivity().getString(R.string.adding) + " (" + current + " / " + max + ")");
+                        }
+                    });
+                } else {
+
+                    SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                            .setTitleText(getString(R.string.enable_network_communication))
+                            .setConfirmText(getString(R.string.ok))
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                }
+                            }).setCustomImage(R.drawable.ic_network_connection);
+                    sweetAlertDialog.setCanceledOnTouchOutside(true);
+                    sweetAlertDialog.setCancelable(true);
+                    sweetAlertDialog.show();
+                }
+
                 break;
         }
     }
@@ -362,8 +418,8 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
                 protocolAdapter.notifyDataSetChanged();
                 if (protocolAdapter.getCount() > 0)
                     list.performItemClick(
-                            list.getChildAt(0),//.getView(i, null, null),
-                            0,
+                            list.getChildAt(aktPosition),//.getView(i, null, null),
+                            aktPosition,
                             list.getAdapter().getItemId(0));
             }
             progressBarProtocolList.setVisibility(View.GONE);
@@ -629,15 +685,14 @@ public class ProtocolsFragment extends Fragment implements OnClickListener {
         protocolAdapter.setSelection(pos);
         protocolAdapter.notifyDataSetChanged();
 
-        Protocol protocol = (Protocol) protocolAdapter.getItem(pos);
+        Protocol protocol = protocolAdapter.getItem(pos);
+        buttonDownload.setVisibility(protocol == null || !protocol.isUploaded() || !Autoclave.getInstance().isOnlineMode(getActivity()) ? View.GONE : View.VISIBLE);
 
-        if (protocol.getErrorCode() != 0) {
-            textError.setText(AutoclaveMonitor.getInstance().getErrorString(protocol.getErrorCode()));
-            textError.setVisibility(View.VISIBLE);
-        } else {
-            textError.setText("no error");
-            textError.setVisibility(View.INVISIBLE);
-        }
+        textError.setText(AutoclaveMonitor.getInstance().getErrorString(protocol.getErrorCode()));
+        ((View) textError.getParent()).setVisibility(View.VISIBLE);
+        textError.setTextColor(getResources().getColor(protocol.getErrorCode() == 0 ? R.color.success_color : R.color.error_color));
+        textError.setVisibility(View.VISIBLE);
+
 
         final MonitorListFragment fragment = MonitorListFragment.newInstance(1, protocol);
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();

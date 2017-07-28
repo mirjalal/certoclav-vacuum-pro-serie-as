@@ -164,7 +164,7 @@ public class ChangeAdminPasswordAccountActivity extends Activity {
                         Toast.makeText(ChangeAdminPasswordAccountActivity.this, getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
-                        Toast.makeText(ChangeAdminPasswordAccountActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChangeAdminPasswordAccountActivity.this, getString(R.string.something_went_wrong_try_again), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(ChangeAdminPasswordAccountActivity.this, getString(R.string.admin_password_wrong), Toast.LENGTH_SHORT).show();

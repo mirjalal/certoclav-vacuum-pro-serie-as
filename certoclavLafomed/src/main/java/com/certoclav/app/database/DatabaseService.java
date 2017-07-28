@@ -782,7 +782,7 @@ public class DatabaseService {
         return -1;
     }
 
-    public int deleteProtocolEntry(List<Protocol> protocols) {
+    public int deleteProtocolsEntry(List<Protocol> protocols) {
         try {
             DeleteBuilder db = protocolEntryDao.deleteBuilder();
 
@@ -801,11 +801,41 @@ public class DatabaseService {
         return -1;
     }
 
+    public int deleteProtocolEntry(Protocol protocol) {
+        try {
+            DeleteBuilder db = protocolEntryDao.deleteBuilder();
+
+
+            Where main = db.where();
+            main.eq("protocol_id", protocol);
+            protocolEntryDao.delete(db.prepare());
+            //    TableUtils.clearTable(mDatabaseHelper.getConnectionSource(), ProtocolEntry.class);
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
     public void deleteSyncedProtocols() {
         try {
 
             DeleteBuilder db = protocolDao.deleteBuilder();
             db.where().eq(Protocol.FIELD_PROTOCOL_UPLOADED, true).and().eq(Protocol.FIELD_USER_EMAIL, CloudUser.getInstance().getEmail());
+            protocolDao.delete(db.prepare());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteProtocol(Protocol protocol) {
+        try {
+            deleteProtocolEntry(protocol);
+            DeleteBuilder db = protocolDao.deleteBuilder();
+            db.where().eq(Protocol.FIELD_PROTOCOL_CLOUD_ID, protocol.getCloudId()).and()
+                    .eq(Protocol.FIELD_PROTOCOL_UPLOADED, true).and()
+                    .eq(Protocol.FIELD_USER_EMAIL, CloudUser.getInstance().getEmail());
             protocolDao.delete(db.prepare());
 
         } catch (Exception e) {

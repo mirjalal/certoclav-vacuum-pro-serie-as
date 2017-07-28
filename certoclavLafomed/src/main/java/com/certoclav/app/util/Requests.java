@@ -14,6 +14,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.responsemodels.UserInfoResponseModel;
+import com.certoclav.app.responsemodels.UserProtocolResponseModel;
 import com.certoclav.app.responsemodels.UserProtocolsResponseModel;
 import com.certoclav.library.certocloud.CertocloudConstants;
 import com.certoclav.library.certocloud.CloudUser;
@@ -77,6 +78,23 @@ public class Requests {
         sendRequest(url, myCallback, requestId, null, headers, null, UserProtocolsResponseModel.class, policy, Request.Method.GET);
     }
 
+
+    public void getUserProtocol(MyCallback myCallback, String protocolId, int requestId) {
+        String url = Uri.parse(CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_GET_PROTOCOL + protocolId)
+                .buildUpon()
+                .build().toString();
+        Map<String, String> headers = new HashMap<>();
+
+        headers.put("X-Access-Token", CloudUser.getInstance().getToken());
+        headers.put("X-Key", CloudUser.getInstance().getEmail());
+        headers.put("Content-Type", "application/json");
+
+        DefaultRetryPolicy policy = new DefaultRetryPolicy(
+                200000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        sendRequest(url, myCallback, requestId, null, headers, null, UserProtocolResponseModel.class, policy, Request.Method.GET);
+    }
 
     private void sendRequest(String url, final MyCallback myCallback, final int requestId, final Map<String, String> params, final Map<String, String> headers, final String body, final Class type, RetryPolicy policy, int requestMethod) {
         String tag_json_obj = "json_obj_req";
