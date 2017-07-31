@@ -127,7 +127,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                \android:background="@drawable/edittext_selector"
+                android:background="@drawable/edittext_selector"
                 android:gravity="center"
                 android:visibility="gone">
 

@@ -14,6 +14,7 @@
         android:layout_margin="5dp"
         android:clickable="true"
         android:foreground="@drawable/card_foreground"
+        android:padding="10dp"
         card_view:cardCornerRadius="4dp"
         card_view:cardElevation="5dp">
 
