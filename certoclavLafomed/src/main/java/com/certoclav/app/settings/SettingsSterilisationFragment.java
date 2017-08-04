@@ -353,7 +353,7 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
 
         barProgressDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
         barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-        barProgressDialog.setTitleText(getString(R.string.coping_protocols));
+        barProgressDialog.setTitleText(getString(R.string.getting_protocols));
         barProgressDialog.setCancelable(false);
         barProgressDialog.show();
         //  barProgressDialog = new ProgressDialog(getActivity());
@@ -367,14 +367,13 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
         barProgressDialog.show();
 
 
-        DatabaseService databaseServie = new DatabaseService(getActivity());
-        final List<Protocol> protocols = databaseServie.getProtocols();
+        final DatabaseService databaseServie = new DatabaseService(getActivity());
 
         new AsyncTask<Void, Boolean, Boolean>() {
 
             @Override
             protected Boolean doInBackground(Void... params) {
-
+                List<Protocol> protocols = databaseServie.getProtocols();
                 try {
                     final int numberOfProtocols = protocols.size();
                     int i = 0;

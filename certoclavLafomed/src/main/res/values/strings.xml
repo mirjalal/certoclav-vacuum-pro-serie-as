@@ -471,6 +471,8 @@
     <string name="admin_password_wrong">Admin password is wrong!</string>
     <string name="admin_password">Admin Password</string>
     <string name="power_loss_during_record">Power loss during record</string>
+    <string name="getting_protocols">Getting protocols...</string>
+    <string name="kpa">kPa</string>
 
 
     <string-array name="error_codes">

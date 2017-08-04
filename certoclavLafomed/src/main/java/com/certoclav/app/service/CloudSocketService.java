@@ -3,7 +3,8 @@ package com.certoclav.app.service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
+
+import com.certoclav.app.model.Log;
 
 public class CloudSocketService  extends Service{
 

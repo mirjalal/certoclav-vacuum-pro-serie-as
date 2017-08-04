@@ -2,7 +2,6 @@ package com.certoclav.app.model;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.database.Controller;

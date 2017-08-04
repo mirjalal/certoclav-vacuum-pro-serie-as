@@ -3,7 +3,6 @@ package com.certoclav.app.model;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
-import android.util.Log;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
@@ -186,7 +185,6 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
         switch (Autoclave.getInstance().getState()) {
             case NOT_RUNNING:
                 if (Autoclave.getInstance().getCurrentProgramCounter() < Autoclave.getInstance().getProgramsInRowTotal()) {
-                    Log.e("AutoclaveMonitor", "CALL PREPARE TO RUN AUTOMATICALLY: ");
                     if (Autoclave.getInstance().getCurrentProgramCounter() != 0) {
                         nanoTimeAtLastStartCommand = System.nanoTime(); //60 seconds delay for next start
                         nanoTimeAtLastStopCommand = System.nanoTime();

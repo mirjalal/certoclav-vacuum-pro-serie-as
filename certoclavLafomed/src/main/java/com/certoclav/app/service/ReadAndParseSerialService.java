@@ -3,8 +3,6 @@ package com.certoclav.app.service;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
-
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.database.Profile;
 import com.certoclav.app.model.Autoclave;
@@ -185,11 +183,9 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 					try {
 							if (commandQueue.size() >0) {
 								serialService.sendMessage(commandQueue.get(0));
-								Log.e("Serialservice", "SEND: " + commandQueue.get(0));
 								commandQueue.remove(0);
 							} else {
 								serialService.sendMessage("GET_DAT\n");
-								Log.e("Serialservice", "SEND: GET_DAT");
 							}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -222,7 +218,6 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 	@Override
 	public void onMessageReceived(String message) {
 		
-		Log.e("ReadAndParse", "received: " + message);
 		String[] response = null;
 		String[] responseParameters = null;
 		try{
@@ -231,7 +226,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 				responseParameters = response[1].split(",");
 			}
 		}catch(Exception e){
-			Log.e("ReadAndParseSerial", "exception parsing response");
+			e.printStackTrace();
 			return;
 		}
 		
@@ -266,11 +261,9 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 				//           0   1   2   3   4
 
 				if(responseParameters == null){
-					Log.e("ReadAndParseSerial", "parameters == null");
 					return;
 				}
 				if(responseParameters.length != 5){
-					Log.e("ReadAndParseSerial", "parameter length wrong " + responseParameters.length);
 					return;
 				}
 				offsetSteam = Double.parseDouble(responseParameters[0]);
@@ -278,7 +271,6 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 				offsetSteamGenerator = Double.parseDouble(responseParameters[2]);
 				offsetPress = Double.parseDouble(responseParameters[3]);
 				offsetMedia = Double.parseDouble(responseParameters[4]);
-				Log.e("ReadAndParseSerial", "parameters: " + offsetSteam + " "+ offsetHeater + " " + offsetSteamGenerator + " "+ offsetPress + " "+ offsetMedia);
 				handler.sendEmptyMessage(HANDLER_MSG_CALIBRATION);
 				
 				
@@ -327,26 +319,12 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 				   // digitalData[AppConstants.DIGITAL_FAIL_WATER_QUALITY]
 				    
 				    handler.sendEmptyMessage(HANDLER_MSG_DATA);
-				    Log.e("ReadAndParseService", "temp: " + temperatures[0] + "\n"+
-				    							  "closed: " + isDoorClosed +"\n"+
-				    							  "locked: " + isDoorLocked +"\n"+
-				    							  "finished: " + isProgramFinished+"\n"+
-				    							  "running: " + isProgramRunning +"\n"+
-				    							  "isWaterLevelLow: " + isWaterLevelSourceLow+"\n"+
-				    							  "isBinFull: " + isWaterLevelBinFull +"\n"+
-				    							  "isStopedByUser: " + isStopedByUser +"\n"+
-				    							  "errorCode: " + errorCode +"\n"+
-				    							  "press: " + pressureCurrent +"\n"+
-				    							  "cylce: " + cycleNumber +"\n" +
-				    							  "date: " + date +"\n"+
-				    							  "time: " + time +"\n" +
-				    							  "index of program: " + indexOfRunningProgram + "\n");
 				    
 				break;
 			}
 			}	
 			}catch(Exception e){
-				Log.e("onMessageReceived", e.toString());
+				e.printStackTrace();
 			}
 		
 		
@@ -356,9 +334,6 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 	}
 	
 	private void simulateMessage(){
-		
-	
-		Log.e("ReadAndParseSerialSer", "simulate serial");
 
 		cycleNumber = 1;
 
