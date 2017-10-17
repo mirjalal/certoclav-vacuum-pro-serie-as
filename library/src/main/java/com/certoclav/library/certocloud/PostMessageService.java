@@ -52,7 +52,7 @@ public class PostMessageService {
 
                 //Post login information to CertoCloud
                 postUtil = new PostUtil();
-                return postUtil.postToCertocloud(body, CertocloudConstants.SERVER_URL + CertocloudConstants.REST_POST_SUPPORT, true);
+                return postUtil.postToCertocloud(body, CertocloudConstants.getServerUrl() + CertocloudConstants.REST_POST_SUPPORT, true);
 
             } catch (Exception e) {
             }

@@ -22,6 +22,7 @@ import com.certoclav.app.menu.ScanActivity;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.monitor.MonitorActivity;
 import com.certoclav.app.sterilisationassistant.AssistantActivity;
+import com.certoclav.app.util.Helper;
 import com.certoclav.library.application.ApplicationController;
 
 import java.util.List;
@@ -92,7 +93,6 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
             @Override
             public void onClick(View v) {
                 Log.e("ProgramAdapter", "onclick");
-
 
                 SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
                         .setTitleText(mContext.getString(R.string.start_program))

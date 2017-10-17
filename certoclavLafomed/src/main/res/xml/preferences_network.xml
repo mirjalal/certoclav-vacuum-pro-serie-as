@@ -1,35 +1,25 @@
-<PreferenceScreen
-        xmlns:android="http://schemas.android.com/apk/res/android">
-        
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-		<CheckBoxPreference
-    	android:key="switch_wlan"
-    	android:title="WIFI ON/OFF"
-    	android:defaultValue="true">	    
-		</CheckBoxPreference>
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="switch_wlan"
+        android:title="WIFI ON/OFF" />
 
+    <Preference
+        android:dependency="switch_wlan"
+        android:key="button_wifi"
+        android:title="MANAGE WIFI CONNECTIONS" />
 
-		<Preference 
-        android:key="button_wifi"   
-        android:title="MANAGE WIFI CONNECTIONS"         
-        android:dependency="switch_wlan">
-                 
-    	</Preference>
-    
-	
+    <CheckBoxPreference
+        android:defaultValue="@bool/switch_snchronization_default"
+        android:key="switch_snchronization"
+        android:summary="Synchronize data with www.CertoCloud.com"
+        android:title="ONLINE MODE" />
 
-
-    
-    	<CheckBoxPreference
-    	android:key="switch_snchronization"
-    	android:defaultValue="@bool/switch_snchronization_default"
-    	android:title="ONLINE MODE"
-    	android:summary="Synchronize data with www.CertoCloud.com" >
-    	</CheckBoxPreference>
-    	
-
-
-
+    <Preference
+        android:key="button_choose_server"
+        android:summary=""
+        android:title="@string/choose_server" />
 
 </PreferenceScreen>

@@ -42,6 +42,7 @@ import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.app.monitor.MonitorActivity;
 import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.app.util.Helper;
+import com.certoclav.app.util.ServerConfigs;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.bcrypt.BCrypt;
 import com.certoclav.library.certocloud.CertocloudConstants;
@@ -67,6 +68,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
     private View buttonLogin;
     private View textViewLogin;
     private EditText editTextPassword;
+    private ServerConfigs serverConfigs;
     private Spinner spinner;
     private List<User> listUsers;
     private User currentUser;
@@ -175,6 +177,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
+        serverConfigs = ServerConfigs.getInstance(this);
         Fabric.with(this, new Crashlytics());
         AutoclaveMonitor.getInstance();
         Autoclave.getInstance().setController(new Controller("Touchscreen not connected",
@@ -605,7 +608,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                                     .getController().getSavetyKey());
                             postUtil.postToCertocloud(
                                     jsonDevice.toString(),
-                                    CertocloudConstants.SERVER_URL
+                                    CertocloudConstants.getServerUrl()
                                             + CertocloudConstants.REST_API_POST_DEVICE,
                                     true);
 

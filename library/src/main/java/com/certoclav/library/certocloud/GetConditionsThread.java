@@ -1,10 +1,10 @@
 package com.certoclav.library.certocloud;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.os.Handler;
 import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 
@@ -33,7 +33,7 @@ public class GetConditionsThread extends Thread {
 					
 					
 					GetUtil getUtil = new GetUtil();
-					Integer success = getUtil.getFromCertocloud(CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_GET_CONDITIONS + CloudUser.getInstance().getCurrentDeviceKey());
+					Integer success = getUtil.getFromCertocloud(CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_GET_CONDITIONS + CloudUser.getInstance().getCurrentDeviceKey());
 					
 					if(success == GetUtil.RETURN_OK){
 						
@@ -65,7 +65,7 @@ public class GetConditionsThread extends Thread {
 												// TODO Auto-generated catch block
 												e1.printStackTrace();
 											}
-											postUtil.postToCertocloud(body.toString(), CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_POST_CONDITIONS_CREATE, true);
+											postUtil.postToCertocloud(body.toString(), CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_POST_CONDITIONS_CREATE, true);
 
 						}
 						

@@ -51,7 +51,7 @@ public class Requests {
 
 
     public void getUserInfo(String username, String token, MyCallback myCallback, int requestId) {
-        String url = Uri.parse(CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_GET_USER)
+        String url = Uri.parse(CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_GET_USER)
                 .buildUpon()
                 .build().toString();
         Map<String, String> headers = new HashMap<>();
@@ -62,7 +62,7 @@ public class Requests {
     }
 
     public void getUserProtocols(MyCallback myCallback, int requestId) {
-        String url = Uri.parse(CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_GET_PROTOCOLS + Autoclave.getInstance().getController().getSavetyKey())
+        String url = Uri.parse(CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_GET_PROTOCOLS + Autoclave.getInstance().getController().getSavetyKey())
                 .buildUpon()
                 .build().toString();
         Map<String, String> headers = new HashMap<>();
@@ -80,7 +80,7 @@ public class Requests {
 
 
     public void getUserProtocol(MyCallback myCallback, String protocolId, int requestId) {
-        String url = Uri.parse(CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_GET_PROTOCOL + protocolId)
+        String url = Uri.parse(CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_GET_PROTOCOL + protocolId)
                 .buildUpon()
                 .build().toString();
         Map<String, String> headers = new HashMap<>();

@@ -1,11 +1,11 @@
 package com.certoclav.library.certocloud;
 
-import org.json.JSONObject;
-
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.certoclav.library.util.Response;
+
+import org.json.JSONObject;
 
 
 public class PostUserSignupService {
@@ -33,7 +33,7 @@ public class PostUserSignupService {
         this.mobile = mobile;
         this.firstname = firstname;
         this.lastname = lastname;
-        new PutUserSignupTask().execute(CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_POST_SIGNUP);
+        new PutUserSignupTask().execute(CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_POST_SIGNUP);
     }
 
 
@@ -55,7 +55,7 @@ public class PostUserSignupService {
 
 
                 postUtil = new PostUtil();
-                return postUtil.postToCertocloud(body, CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_POST_SIGNUP, false);
+                return postUtil.postToCertocloud(body, CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_POST_SIGNUP, false);
             } catch (Exception ex) {
                 Log.e("PostUserSignupService", ex.toString());
             }

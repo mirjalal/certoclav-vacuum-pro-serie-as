@@ -9,6 +9,7 @@ import com.certoclav.app.database.ProtocolEntry;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.library.application.ApplicationController;
+import com.certoclav.library.certocloud.CertocloudConstants;
 import com.certoclav.library.certocloud.CloudUser;
 import com.certoclav.library.certocloud.PostUtil;
 import com.certoclav.library.util.Response;
@@ -126,7 +127,7 @@ public class PostProtocolsThread extends Thread {
 
                             //POST the Json object to CertoCloud
                             PostUtil postUtil = new PostUtil();
-                            Response response = postUtil.postToCertocloud(body, AppConstants.SERVER_URL + AppConstants.REST_API_POST_PROTOCOLS, true);
+                            Response response = postUtil.postToCertocloud(body, CertocloudConstants.getServerUrl() + AppConstants.REST_API_POST_PROTOCOLS, true);
                             if (response.getStatus() == PostUtil.RETURN_OK) {
 
                                 JSONObject json = new JSONObject(postUtil.getResponseBody());//in json is saved the result

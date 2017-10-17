@@ -71,7 +71,7 @@ public class NotificationService {
 
         }
 
-        return postUtil.postToCertocloud(body.toString(), CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_POST_SMS, true);
+        return postUtil.postToCertocloud(body.toString(), CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_POST_SMS, true);
     }
 
 
@@ -90,7 +90,7 @@ public class NotificationService {
 
         }
 
-        return postUtil.postToCertocloud(body.toString(), CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_POST_EMAIL, true);
+        return postUtil.postToCertocloud(body.toString(), CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_POST_EMAIL, true);
     }
 
 

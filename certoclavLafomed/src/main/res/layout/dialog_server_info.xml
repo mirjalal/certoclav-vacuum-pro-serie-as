@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dialog_background">
+
+    <LinearLayout
+        android:id="@+id/dialog_container_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/server_info"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editTextHost"
+            android:layout_width="match_parent"
+            android:inputType="text"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_selector"
+            android:lines="1"
+            android:hint="@string/server_host" />
+
+        <EditText
+            android:id="@+id/editTextPort"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLength="5"
+            android:lines="1"
+            android:background="@drawable/edittext_selector"
+            android:hint="@string/server_port" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialog_container_text"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <Button
+            android:id="@+id/dialogButtonNO"
+            style="@style/dialog_blue_button"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/gray_button_background"
+            android:text="@string/cancel" />
+
+        <Button
+            android:id="@+id/dialogButtonOK"
+            style="@style/dialog_blue_button"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:text="@string/save" />
+
+    </LinearLayout>
+</RelativeLayout>

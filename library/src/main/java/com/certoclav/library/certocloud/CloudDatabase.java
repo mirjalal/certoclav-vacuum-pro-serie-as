@@ -65,7 +65,7 @@ public class CloudDatabase {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return postUtil.postToCertocloud(body.toString(), CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_POST_CONDITIONS_UPDATE, true);
+        return postUtil.postToCertocloud(body.toString(), CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_POST_CONDITIONS_UPDATE, true);
     }
 
 

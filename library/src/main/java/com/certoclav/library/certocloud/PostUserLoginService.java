@@ -52,7 +52,7 @@ public class PostUserLoginService {
 
                 //Post login information to CertoCloud
                 postUtil = new PostUtil();
-                return postUtil.postToCertocloud(body, CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_POST_LOGIN, false);
+                return postUtil.postToCertocloud(body, CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_POST_LOGIN, false);
 
             } catch (Exception e) {
             }

@@ -12,6 +12,13 @@ public class AppConstants {
     public static final String DEFAULT_ADMIN_PASSWORD = "admin";
     public static final String DEFAULT_CLOUD_ADMIN_PASSWORD = "master@certocloud";
     public static final boolean SHOW_LOGS = false;
+    public static final String PREFERENCE_KEY_SERVER_TYPE = "servertype";
+    public static final int PREFERENCE_KEY_SERVER_CERTOCLOUD = 1;
+    public static final int PREFERENCE_KEY_SERVER_MANUAL = 2;
+    public static final int PREFERENCE_KEY_SERVER_LOCAL = 3;
+    public static final String PREFERENCE_KEY_SERVER_IP = "serverurl";
+    public static final String PREFERENCE_KEY_SERVER_NAME = "servername";
+    public static final String PREFERENCE_KEY_SERVER_PORT = "serverport";
     public static Boolean isIoSimulated = true;
     public static Boolean TABLET_HAS_ROOT = false;
     public static final Boolean IS_CERTOASSISTANT = false;
@@ -32,7 +39,7 @@ public class AppConstants {
      * CertoCloud REST API
      * Routes that can be accessed by everyone
      */
-    public final static String SERVER_URL = "http://api-certocloud.rhcloud.com";//www.ng-certocloud.rhcloud.com";
+    public final static String SERVER_URL = "https://pure-plains-82009.herokuapp.com";//www.ng-certocloud.rhcloud.com";
     public final static String REST_API_POST_LOGIN = "/login";// auth.login);
     public final static String REST_API_POST_SIGNUP = "/signup";// auth.signup);
     public final static String REST_API_POST_SIGNUP_EXIST = "/signup/exist";// auth.userExist);
@@ -70,6 +77,7 @@ public class AppConstants {
     public static final String PREFERENCE_KEY_SCAN_ITEM_ENABLED = "switch_scan_items";
     public static final String PREFERENCE_KEY_PRINT_ENTITES = "switch_print_entities";
     public static final String PREFERENCE_KEY_WIFI_ENABLED = "switch_wlan";
+    public static final String PREFERENCE_KEY_CHOOSE_SERVER = "button_choose_server";
     public static final String PREFERENCE_KEY_PRINT_LABEL = "preferences_print_labels";
     public static final String PREFERENCE_KEY_BLUETOOTH_ENABLED = "switch_bluetooth";
     public static final String PREFERENCE_KEY_WIFI_MANAGER = "button_wifi";

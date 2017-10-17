@@ -325,7 +325,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
 
                         PostUtil postUtil = new PostUtil();
                         Response response = postUtil.postToCertocloud(jsonObjectRegister.toString(),
-                                CertocloudConstants.SERVER_URL + (currentUser != null ?
+                                CertocloudConstants.getServerUrl() + (currentUser != null ?
                                         CertocloudConstants.REST_API_POST_EDIT_USER :
                                         CertocloudConstants.REST_API_POST_SIGNUP), false);
                         if (postUtil.getResponseBody() != null) {

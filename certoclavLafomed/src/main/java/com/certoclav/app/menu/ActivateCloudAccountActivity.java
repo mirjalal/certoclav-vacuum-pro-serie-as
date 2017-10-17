@@ -21,6 +21,7 @@ import com.certoclav.app.activities.CertoclavSuperActivity;
 import com.certoclav.app.button.EditTextItem;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
+import com.certoclav.app.util.ServerConfigs;
 import com.certoclav.library.certocloud.CertocloudConstants;
 import com.certoclav.library.certocloud.PostUtil;
 import com.certoclav.library.util.Response;
@@ -35,6 +36,7 @@ public class ActivateCloudAccountActivity extends CertoclavSuperActivity {
     private Button buttonActivateAccount;
     private Button buttonResendActivationKey;
     private EditTextItem editActivationKeyItem;
+    private ServerConfigs serverConfigs;
 
 
     @Override
@@ -45,7 +47,7 @@ public class ActivateCloudAccountActivity extends CertoclavSuperActivity {
         CertoclavNavigationbarClean navigationbar = new CertoclavNavigationbarClean(this);
         navigationbar.setHeadText(getString(R.string.activate) + " " + Autoclave.getInstance().getUser().getEmail());
 
-
+        serverConfigs = ServerConfigs.getInstance(this);
         linEditTextItemContainer = (LinearLayout) findViewById(R.id.register_container_edit_text_items);
 
 
@@ -101,7 +103,7 @@ public class ActivateCloudAccountActivity extends CertoclavSuperActivity {
                             e.printStackTrace();
                         }
                         PostUtil postUtil = new PostUtil();
-                        return postUtil.postToCertocloud(jsonEmail.toString(), CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_POST_SIGNUP_RESEND_KEY, false);
+                        return postUtil.postToCertocloud(jsonEmail.toString(), serverConfigs.getServerUrl() + CertocloudConstants.REST_API_POST_SIGNUP_RESEND_KEY, false);
 
                     }
 
@@ -161,7 +163,7 @@ public class ActivateCloudAccountActivity extends CertoclavSuperActivity {
                             return null;
 
                         }
-                        return postUtil.postToCertocloud(jsonActivateObject.toString(), CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_POST_SIGNUP_ACTIVATE, false);
+                        return postUtil.postToCertocloud(jsonActivateObject.toString(), serverConfigs.getServerUrl() + CertocloudConstants.REST_API_POST_SIGNUP_ACTIVATE, false);
 
                     }
 

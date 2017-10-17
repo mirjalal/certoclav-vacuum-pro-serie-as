@@ -473,6 +473,22 @@
     <string name="power_loss_during_record">Power loss during record</string>
     <string name="getting_protocols">Getting protocols...</string>
     <string name="kpa">kPa</string>
+    <string name="choose_server">CHOOSE SERVER</string>
+    <string name="certoclav_server">CertoCloud Server</string>
+    <string name="manual_server">Add a server manually</string>
+    <string name="search_server">Add a server from local network</string>
+    <string name="selected">Selected</string>
+    <string name="select">Select</string>
+    <string name="searching">Searching...</string>
+    <string name="server_not_found_title">Not Found</string>
+    <string name="server_not_found_content">There is not any server in the network. Please change network or try again!</string>
+    <string name="server_found_title">A SERVER FOUND</string>
+    <string name="server_found_content">Server: %s</string>
+    <string name="certocloud_server">CertoCloud</string>
+    <string name="server_host">Host</string>
+    <string name="server_port">Port</string>
+    <string name="server_info">Server Info</string>
+    <string name="server_manual">Manual</string>
 
 
     <string-array name="error_codes">

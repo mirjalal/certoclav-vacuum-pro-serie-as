@@ -37,7 +37,7 @@ public class Items {
 			
 			
 			GetUtil getUtil = new GetUtil();
-			success = getUtil.getFromCertocloud(CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_GET_IEMS + CloudUser.getInstance().getCurrentDeviceKey());
+			success = getUtil.getFromCertocloud(CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_GET_IEMS + CloudUser.getInstance().getCurrentDeviceKey());
 			
 			if(success == GetUtil.RETURN_OK){
 				

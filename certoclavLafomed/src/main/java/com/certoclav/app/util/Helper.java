@@ -2,7 +2,12 @@ package com.certoclav.app.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.DhcpInfo;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -11,12 +16,20 @@ import com.certoclav.app.R;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.Protocol;
 import com.certoclav.app.database.ProtocolEntry;
+import com.certoclav.app.listener.BroadcastListener;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.responsemodels.UserProtocolResponseModel;
 import com.certoclav.app.responsemodels.UserProtocolsResponseModel;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -192,7 +205,7 @@ public class Helper {
                 if (protocol.getProtocolEntries() != null) {
                     for (ProtocolEntry protocolEntry : protocol.getProtocolEntries()) {
                         protocolEntry.setProtocol(temp);
-                        protocolEntry.setPressure(protocolEntry.getPressure()-1);
+                        protocolEntry.setPressure(protocolEntry.getPressure() - 1);
                         calendar.setTime(startDate);
                         calendar.add(Calendar.SECOND, (int) (protocolEntry.getTs() * 60));
                         protocolEntry.setTimestamp(calendar.getTime());
@@ -329,6 +342,81 @@ public class Helper {
                 result.put(splittedItem[i], splittedItem[len - 1]);
         }
         return result;
+    }
+
+
+    public static void sendBroadcast(Context context, String messageStr, final BroadcastListener listener) {
+        // Hack Prevent crash (sending should be done using an async task)
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            //Open a random port to send the package
+            DatagramSocket socket = new DatagramSocket();
+            socket.setBroadcast(true);
+            byte[] sendData = messageStr.getBytes();
+            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, getBroadcastAddress(context), 41234);
+            socket.send(sendPacket);
+            Log.e("Broadcast", "Broadcast packet sent to: " + getBroadcastAddress(context).getHostAddress());
+            socket.close();
+        } catch (IOException e) {
+            Log.e("Broadcast", "IOException: " + e.getMessage());
+        }
+
+        try {
+            //Keep a socket open to listen to all the UDP trafic that is destined for this port
+            final DatagramSocket socket = new DatagramSocket(41234, InetAddress.getByName("0.0.0.0"));
+            socket.setBroadcast(true);
+
+            Handler handler = new Handler(Looper.getMainLooper());
+            Runnable callback;
+            handler.postDelayed(callback = new Runnable() {
+                @Override
+                public void run() {
+                    socket.disconnect();
+                    socket.close();
+                    listener.onFailed();
+                }
+            }, 5000);
+
+
+            Log.i("Broadcast", "Ready to receive broadcast packets!");
+            //Receive a packet
+            byte[] recvBuf = new byte[15000];
+            DatagramPacket packet = new DatagramPacket(recvBuf, recvBuf.length);
+            socket.receive(packet);
+
+            //Packet received
+            Log.i("Broadcast", "Packet received from: " + packet.getAddress().getHostAddress());
+            String data = new String(packet.getData()).trim();
+            Log.i("Broadcast", "Packet received; data: " + data);
+            if (data.length() > 0) {
+                handler.removeCallbacks(callback);
+                JSONObject serverConfig = new JSONObject(data);
+                serverConfig.put("url", "http://"+packet.getAddress().getHostAddress());
+                listener.onReceived(serverConfig);
+            }
+
+            socket.close();
+        } catch (IOException ex) {
+            listener.onFailed();
+            Log.i("Broadcast", "Oops" + ex.getMessage());
+        } catch (JSONException e) {
+            listener.onFailed();
+            e.printStackTrace();
+        }
+    }
+
+    static InetAddress getBroadcastAddress(Context context) throws IOException {
+        WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        DhcpInfo dhcp = wifi.getDhcpInfo();
+        // handle null somehow
+
+        int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
+        byte[] quads = new byte[4];
+        for (int k = 0; k < 4; k++)
+            quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
+        return InetAddress.getByAddress(quads);
     }
 
 
