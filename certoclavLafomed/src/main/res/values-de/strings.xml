@@ -372,6 +372,7 @@
     <string name="touchscreen_not_connected">Touchscreen nicht verbunden</string>
     <string name="power_loss_during_record">Stromausfall während Aufzeichnung</string>
     <string name="kpa">kPa</string>
+    <string name="import_protocols">Import protocols</string>
 
 
 </resources>

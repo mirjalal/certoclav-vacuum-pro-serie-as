@@ -483,6 +483,7 @@
     <string name="admin_password">Admin Password</string>
     <string name="power_loss_during_record">Power loss during record</string>
     <string name="kpa">kPa</string>
+    <string name="import_protocols">Import protocols</string>
 
 
     <string-array name="error_codes">

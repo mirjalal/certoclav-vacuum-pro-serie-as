@@ -364,7 +364,7 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
 
         barProgressDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
         barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-        barProgressDialog.setTitleText(getString(R.string.getting_protocols));
+        barProgressDialog.setTitleText(getString(R.string.import_protocols));
         barProgressDialog.setCancelable(false);
         barProgressDialog.show();
         //  barProgressDialog = new ProgressDialog(getActivity());
