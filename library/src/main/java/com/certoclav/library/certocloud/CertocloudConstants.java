@@ -8,7 +8,7 @@ public class CertocloudConstants {
 	 * CertoCloud REST API
 	 * Routes that can be accessed by everyone
 	 */
-	public final static String SERVER_URL = "https://api-certocloud.rhcloud.com";//www.ng-certocloud.rhcloud.com";
+	public final static String SERVER_URL = "http://api.certocloud.com";//www.ng-certocloud.rhcloud.com";
 	public final static String REST_API_POST_LOGIN = "/login";// auth.login);
 	public final static String REST_API_POST_SIGNUP = "/signup";// auth.signup);
 	public final static String REST_API_POST_SIGNUP_EXIST = "/signup/exist";// auth.userExist);

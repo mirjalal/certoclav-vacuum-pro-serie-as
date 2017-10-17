@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.SQLException;
 import android.util.Log;
 
+import com.certoclav.app.AppConstants;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.library.certocloud.CloudUser;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
@@ -977,8 +978,10 @@ public class DatabaseService {
             Profile profile9 = new Profile("", 1, "VACUUM TEST", 0, 0, 0, -80, 15, 0, "-0.8bar   15min\nVacuum Test\nRecommended on maintenance", true, true, controller, 9);
             Profile profile10 = new Profile("", 1, "CLEAN", 3, 5, 105, 20, 0, 10, "105 \u00B0C   0.2bar   5min\nClean the autoclave", true, true, controller, 10);
             Profile profile11 = new Profile("", 1, "PRION", 3, 19, 135, 210, 0, 10, "134 \u00B0C   2.1bar   19min\nPrion sterilization", true, true, controller, 11);
-            Profile profile12 = new Profile("", 1, "LIQUID", 1, 20, 121, 110, 0, 0, "Liquid sterilization\n121 \u00B0C   1.1bar   20min\nWith media sensor", true, true, controller, 12);
-
+            Profile profile12 = null;
+            if(AppConstants.IS_CERTOASSISTANT == false) {
+                profile12 = new Profile("", 1, "LIQUID", 1, 20, 121, 110, 0, 0, "Liquid sterilization\n121 \u00B0C   1.1bar   20min\nWith media sensor", true, true, controller, 12);
+            }
             int result = 0;
             result = insertProfile(profile1);
             result = insertProfile(profile2);
@@ -991,6 +994,7 @@ public class DatabaseService {
             result = insertProfile(profile9);
             result = insertProfile(profile10);
             result = insertProfile(profile11);
+
             result = insertProfile(profile12);
 
         } catch (Exception e) {

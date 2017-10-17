@@ -366,6 +366,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
 
         //update UI
         onAutoclaveStateChange(Autoclave.getInstance().getState());
+
         super.onResume();
 
     }

@@ -44,9 +44,13 @@ public class GraphService implements SensorDataListener {
 
     private Handler mGuiHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
-            view.invalidate();
-            view.repaint();
-            view.invalidate();
+            try {
+                view.invalidate();
+                view.repaint();
+                view.invalidate();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
         ;

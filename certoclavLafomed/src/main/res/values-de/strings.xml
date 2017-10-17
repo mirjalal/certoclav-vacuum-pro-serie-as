@@ -371,7 +371,7 @@
     <string name="progr_finished_successfully">Progr. abgeschlossen</string>
     <string name="touchscreen_not_connected">Touchscreen nicht verbunden</string>
     <string name="power_loss_during_record">Stromausfall während Aufzeichnung</string>
-
+    <string name="kpa">kPa</string>
 
 
 </resources>

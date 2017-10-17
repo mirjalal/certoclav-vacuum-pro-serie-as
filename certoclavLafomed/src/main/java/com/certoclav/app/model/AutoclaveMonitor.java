@@ -16,6 +16,7 @@ import com.certoclav.app.listener.AlertListener;
 import com.certoclav.app.listener.AutoclaveStateListener;
 import com.certoclav.app.listener.ConnectionStatusListener;
 import com.certoclav.app.listener.SensorDataListener;
+import com.certoclav.app.monitor.MonitorActivity;
 import com.certoclav.app.monitor.MonitorNotificationActivity;
 import com.certoclav.app.service.CloudSocketService;
 import com.certoclav.app.service.ReadAndParseSerialService;
@@ -28,6 +29,8 @@ import com.certoclav.library.certocloud.NotificationService;
 
 import java.util.ArrayList;
 import java.util.Map;
+
+import static com.certoclav.app.model.AutoclaveState.PREPARE_TO_RUN;
 
 
 public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusListener, AutoclaveStateListener {
@@ -147,6 +150,8 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
     public void updateStateMachine() {
 
+        Log.e("AutoclaveMonitor",Autoclave.getInstance().getState().toString());
+
         //check if read services are still running
         if ((System.nanoTime() - nanoTimeAtLastServiceCheck) > (1000000000L * 3)) { //3 seconds past
 
@@ -193,15 +198,19 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                     }
                     prepareToRun(Autoclave.getInstance().getProfile().getIndex());
                 }
-/*
+
+
                 // IF PROGRAM HAS BEEN STARTED REMOTELY - CHANGE TO PREPARE TO RUN STATE
-                if (Autoclave.getInstance().getData().isDoorLocked()) {
-                    Autoclave.getInstance().setProgramsInRowTotal(1);
-                    Autoclave.getInstance().setCurrentProgramCounter(0);
-                    Autoclave.getInstance().setState(AutoclaveState.PREPARE_TO_RUN);
-                    startMonitorActivity();
+                if(AppConstants.IS_CERTOASSISTANT){
+                    if (Autoclave.getInstance().getData().isDoorLocked()) {
+                        Autoclave.getInstance().setProgramsInRowTotal(1);
+                        Autoclave.getInstance().setCurrentProgramCounter(0);
+                        Autoclave.getInstance().setState(PREPARE_TO_RUN);
+                        startMonitorActivity();
+                    }
                 }
-*/
+
+
 
                 if (AppConstants.isIoSimulated) {
                     SimulatedFailStoppedByUser = false;
@@ -212,7 +221,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                         nanoTimeAtLastStartCommand = System.nanoTime(); //60 seconds delay for next start
                         nanoTimeAtLastStopCommand = System.nanoTime();
                     }
-                    Autoclave.getInstance().setState(AutoclaveState.PREPARE_TO_RUN);
+                    Autoclave.getInstance().setState(PREPARE_TO_RUN);
                     startButtonClicked = false;
                 }
 
@@ -220,8 +229,11 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                 break;
             case LOCKED:
                 if (AppConstants.IS_CERTOASSISTANT) {
-                    if (Autoclave.getInstance().getData().isProgramRunning()) {
-                        Autoclave.getInstance().setState(AutoclaveState.PREPARE_TO_RUN);
+                    if (Autoclave.getInstance().getData().isDoorLocked()) {
+                        Autoclave.getInstance().setProgramsInRowTotal(1);
+                        Autoclave.getInstance().setCurrentProgramCounter(0);
+                        Autoclave.getInstance().setState(PREPARE_TO_RUN);
+                        startMonitorActivity();
                     }
                 }
                 break;
@@ -235,6 +247,10 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                 }
 
                 if (errorList.size() == 0) {
+
+                    if(AppConstants.IS_CERTOASSISTANT) {
+                        startMonitorActivity();
+                    }
 
 
                     //check if autoclave is already running
@@ -422,6 +438,8 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
                 break;
             case RUN_CANCELED:
+
+
 
                 //disable automatic program execution
                 Autoclave.getInstance().setProgramsInRowTotal(0);
@@ -611,11 +629,11 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
     }
 
     private void startMonitorActivity() {
-        //Autoclave.getInstance().setProfile(Autoclave.getInstance().getUserDefinedProgram());
-        //Intent intent = new Intent(ApplicationController.getContext(), MonitorActivity.class);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        //ApplicationController.getContext().startActivity(intent);
+        Autoclave.getInstance().setProfile(Autoclave.getInstance().getUserDefinedProgram());
+        Intent intent = new Intent(ApplicationController.getContext(), MonitorActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        ApplicationController.getContext().startActivity(intent);
     }
 
 
@@ -674,7 +692,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
     }
 
     public void cancelPrepareToRun() {
-        if (Autoclave.getInstance().getState() == AutoclaveState.PREPARE_TO_RUN) {
+        if (Autoclave.getInstance().getState() == PREPARE_TO_RUN) {
             Autoclave.getInstance().setProgramsInRowTotal(0);
             Autoclave.getInstance().setCurrentProgramCounter(0);
             Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);

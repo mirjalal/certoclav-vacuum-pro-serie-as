@@ -13,19 +13,19 @@ public class AppConstants {
     public static final String DEFAULT_CLOUD_ADMIN_PASSWORD = "master@certocloud";
     public static Boolean isIoSimulated = true;
     public static Boolean TABLET_HAS_ROOT = false;
-    public static final Boolean IS_CERTOASSISTANT = false;
+    public static final Boolean IS_CERTOASSISTANT = true;
     public static final String TABLET_TYPE_SAMSUNGT113W = "samsungt113w";
     public static final String TABLET_TYPE_LILLIPUT = "lilliput"; //android 2.3.4
     public static final String TABLET_TYPE_LILLIPUT_2 = "lilliput2"; //android 4.3
     //public static final String TABLET_TYPE = TABLET_TYPE_SAMSUNGT113W;
     public static final String TABLET_TYPE = TABLET_TYPE_LILLIPUT_2;
-    public static final String MODEL_LAFOMED = "lafomed_v3"; //first autoclave with media sensor
+    public static final String MODEL_LAFOMED = "lafomed_v2"; //first autoclave with media sensor
     public static final String MODEL_CURRENT = MODEL_LAFOMED;
     public static final String SIMULATED_SAVETY_KEY = "AAAAAAAAAAAAAAAAA";
 
 
     public static final String URL_UPDATE = "http://lvps46-163-113-210.dedicated.hosteurope.de:80/files/public-docs/";
-    public static final String DOWNLOAD_LINK = AppConstants.URL_UPDATE + MODEL_CURRENT + "/" + AppConstants.TABLET_TYPE + "/update.zip";
+    public static final String DOWNLOAD_LINK = AppConstants.URL_UPDATE + MODEL_CURRENT + "/certoassist/" + AppConstants.TABLET_TYPE + "/update.zip";
 
     /**
      * CertoCloud REST API

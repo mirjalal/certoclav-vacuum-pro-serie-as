@@ -173,15 +173,42 @@ public class AssistantActivity extends CertoclavSuperActivity implements Profile
 
             case 4:
 
+                int programIndex = Autoclave.getInstance().getProfile().getIndex();
 
                 videoView.setVisibility(View.GONE);
+                videoView = null;
+                videoView = (VideoView) findViewById(R.id.sterilisation_assistant_videoview);
+                videoView.setVisibility(View.VISIBLE);
+                switch (programIndex){
+                    case 1: videoView.setVideoPath(getString(R.string.path_video_start_program_1)); break;
+                    case 2: videoView.setVideoPath(getString(R.string.path_video_start_program_2)); break;
+                    case 3: videoView.setVideoPath(getString(R.string.path_video_start_program_3)); break;
+                    case 4: videoView.setVideoPath(getString(R.string.path_video_start_program_4)); break;
+                    case 5: videoView.setVideoPath(getString(R.string.path_video_start_program_5)); break;
+                    case 6: videoView.setVideoPath(getString(R.string.path_video_start_program_6)); break;
+                    case 7: videoView.setVideoPath(getString(R.string.path_video_start_program_7)); break;
+                    case 8: videoView.setVideoPath(getString(R.string.path_video_start_program_8)); break;
+                    case 9: videoView.setVideoPath(getString(R.string.path_video_start_program_9)); break;
+                    case 10: videoView.setVideoPath(getString(R.string.path_video_start_program_10)); break;
+                    case 11: videoView.setVideoPath(getString(R.string.path_video_start_program_11)); break;
+                    default: videoView.setVideoPath(getString(R.string.path_video_start_program_1)); break;
+                }
+                videoView.setOnPreparedListener(new OnPreparedListener() {
+
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        mp.setLooping(true);
+
+                    }
+                });
+
+
+                videoView.start();
+
 
                 textStepDescription.setText(getString(R.string.please_choose_and_start_the_program)
-                        + " " + Autoclave.getInstance().getProfile().getName() + " " + getString(R.string.on_the_blue_front_lcd_screen));
-                buttonNext.setBackgroundResource(R.drawable.btn_start_monitor);
-                if (AppConstants.IS_CERTOASSISTANT) {
-                    buttonNext.setBackgroundResource(R.drawable.bg_next_step);
-                }
+                        + " " + Autoclave.getInstance().getProfile().getName() );
+                buttonNext.setVisibility(View.GONE);
                 break;
         }
 
