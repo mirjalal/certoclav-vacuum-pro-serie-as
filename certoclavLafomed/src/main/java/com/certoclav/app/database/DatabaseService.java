@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import static com.certoclav.app.database.Profile.FIELD_CLOUD_ID;
+import static com.certoclav.app.database.Profile.FIELD_LAST_USED_TIME;
 
 /**
  * CertoClavDatabase class is responsible for the communication of the
@@ -113,6 +114,41 @@ public class DatabaseService {
             Log.e(TAG, "Database exception", e);
 
         }
+        return null;
+    }
+
+
+    public Protocol getProtocolByCloudId(String cloudId) {
+        try {
+
+            QueryBuilder<Protocol, Integer> protocolQb = protocolDao.queryBuilder();
+            protocolQb.where().eq(Protocol.FIELD_PROTOCOL_CLOUD_ID, cloudId);
+            return protocolQb.queryForFirst();
+
+        } catch (SQLException e) {
+            Log.e(TAG, "Database exception", e);
+        } catch (Exception e) {
+            Log.e(TAG, "Database exception", e);
+
+        }
+        return null;
+    }
+
+    public List<Protocol> getProtocols(long page, long limit, String orderBY, boolean ascending) {
+
+        try {
+            QueryBuilder<Protocol, Integer> protocolQb = protocolDao.queryBuilder();
+            //QueryBuilder<User, Integer> userQb = userDao.queryBuilder();
+            protocolQb.where().eq(Protocol.FIELD_USER_EMAIL, Autoclave.getInstance().getUser().getEmail());
+            protocolQb.orderBy(orderBY, ascending);
+            protocolQb.offset((page - 1) * limit).limit(limit);
+            return protocolQb.query();
+        } catch (SQLException e) {
+            Log.e(TAG, "Database exception", e);
+        } catch (Exception e) {
+            Log.e(TAG, "Database exception", e);
+        }
+
         return null;
     }
 
@@ -644,8 +680,10 @@ public class DatabaseService {
         try {
             final Dao<Profile, Integer> profileDao = mDatabaseHelper
                     .getProfileDao();
+            QueryBuilder qb = profileDao.queryBuilder();
+            qb.orderBy(FIELD_LAST_USED_TIME, false);
             /** query for object in the database with id equal profileId */
-            return profileDao.queryForAll();
+            return qb.query();
         } catch (SQLException e) {
             Log.e(TAG, "Database exception", e);
         } catch (Exception e) {
@@ -653,6 +691,26 @@ public class DatabaseService {
         }
 
         return null;
+    }
+
+    public int updateProfileRecentUsed(int profile_id) {
+        try {
+            UpdateBuilder<Profile, Integer> updateBuilder = profileDao
+                    .updateBuilder();
+
+            updateBuilder.where().eq("profile_id", profile_id);
+
+            /** query for object in the database with id equal profileId */
+            updateBuilder.updateColumnValue(FIELD_LAST_USED_TIME, new Date().getTime());
+
+            int r = updateBuilder.update();
+            return r;
+        } catch (java.sql.SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return -1;
+
     }
 
 

@@ -1,10 +1,9 @@
 package com.certoclav.app.service;
 
-import android.util.Log;
-
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
+import com.certoclav.app.model.Log;
 import com.certoclav.library.certocloud.SocketService;
 import com.certoclav.library.certocloud.SocketService.SocketEventListener;
 

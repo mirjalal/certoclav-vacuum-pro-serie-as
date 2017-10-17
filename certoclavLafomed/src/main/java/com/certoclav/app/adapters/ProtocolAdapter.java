@@ -26,6 +26,8 @@ import java.util.List;
 public class ProtocolAdapter extends ArrayAdapter<Protocol> {
     private final Context mContext;
     private int selectedPosition = -1;
+    private int currentPage;
+
 
     /**
      * Constructor
@@ -98,5 +100,18 @@ public class ProtocolAdapter extends ArrayAdapter<Protocol> {
 
     public int getSelectedPosition() {
         return selectedPosition;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public void updateProtocol(int aktPosition, Protocol protocol) {
+        getItem(aktPosition).setProtocolEntry(protocol.getProtocolEntry());
+        notifyDataSetChanged();
     }
 }

@@ -107,6 +107,8 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
                                 Autoclave.getInstance().setProfile(getItem(position));
                                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ApplicationController.getContext());
                                 Boolean defaultvalue = mContext.getResources().getBoolean(R.bool.switch_step_by_step_default);
+                                databaseService.updateProfileRecentUsed(getItem(position).getProfile_id());
+
 
                                 if (prefs.getBoolean(AppConstants.PREFERENCE_KEY_SCAN_ITEM_ENABLED, false)) {
                                     Intent intent = new Intent(mContext, ScanActivity.class);

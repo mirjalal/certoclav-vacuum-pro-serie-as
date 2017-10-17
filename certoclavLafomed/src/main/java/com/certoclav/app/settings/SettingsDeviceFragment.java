@@ -92,18 +92,8 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                 if (exportUtils.checkExternalMedia() == false) {
                     Toast.makeText(getActivity(), getActivity().getString(R.string.can_not_read_usb_flash_disk), Toast.LENGTH_LONG).show();
                 } else {
-                    boolean success = false;
-                    try {
-                        UpdateUtils updateUtils = new UpdateUtils(getActivity());
-                        success = updateUtils.installUpdateZip(UpdateUtils.SOURCE_USB);
-                    } catch (Exception e) {
-                        success = false;
-                    }
-                    if (success) {
-                        Toast.makeText(getActivity(), getString(R.string.updated_successfully), Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getActivity(), getString(R.string.update_failed), Toast.LENGTH_LONG).show();
-                    }
+                    UpdateUtils updateUtils = new UpdateUtils(getActivity());
+                    updateUtils.installUpdateZip(UpdateUtils.SOURCE_USB);
                 }
                 preference.setEnabled(true);
                 return false;
@@ -121,18 +111,8 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                 if (exportUtils.checkExternalSDCard() == false) {
                     Toast.makeText(getActivity(), getActivity().getString(R.string.can_not_read_from_sd_card), Toast.LENGTH_LONG).show();
                 } else {
-                    boolean success = false;
-                    try {
-                        UpdateUtils updateUtils = new UpdateUtils(getActivity());
-                        success = updateUtils.installUpdateZip(UpdateUtils.SOURCE_SDCARD);
-                    } catch (Exception e) {
-                        success = false;
-                    }
-                    if (success) {
-                        Toast.makeText(getActivity(), "Update successfull", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getActivity(), "Update failed", Toast.LENGTH_LONG).show();
-                    }
+                    UpdateUtils updateUtils = new UpdateUtils(getActivity());
+                    updateUtils.installUpdateZip(UpdateUtils.SOURCE_SDCARD);
                 }
                 preference.setEnabled(true);
                 return false;
