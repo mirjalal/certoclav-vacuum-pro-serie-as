@@ -30,6 +30,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.adapters.ProtocolAdapter;
 import com.certoclav.app.database.DatabaseService;
@@ -73,7 +74,7 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
     public static final int SPINNER_POSITION_ORDER_BY_START_TIME = 0;
     public static final int SPINNER_POSITION_ORDER_BY_PROGRAM_NAME = 1;
     public static final int SPINNER_POSITION_ORDER_BY_SUCCESS = 2;
-    public static final String LIST_GRAPH_PREF = "islistgrapp";
+
 
     int aktPosition = 0;
     private LinearLayout graphContainer;
@@ -85,16 +86,20 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
         View rootView = inflater.inflate(R.layout.menu_fragment_protocols, container, false); //je nach mIten könnte man hier anderen Inhalt laden.
         sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         checkBoxGpaphList = ((CheckBox) rootView.findViewById(R.id.checkboxGraphList));
-        checkBoxGpaphList.setChecked(sharedPreferences.getBoolean(LIST_GRAPH_PREF, true));
+        checkBoxGpaphList.setChecked(sharedPreferences.getBoolean(AppConstants.PREFERENCE_KEY_LIST_GRAPH, true));
 
         checkBoxGpaphList.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (graphContainer != null)
+                if (graphContainer != null) {
                     graphContainer.setVisibility(isChecked ? View.GONE : View.VISIBLE);
-                if (viewList != null)
+                }
+
+                if (viewList != null) {
                     viewList.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-                sharedPreferences.edit().putBoolean(LIST_GRAPH_PREF, isChecked).commit();
+                }
+
+                sharedPreferences.edit().putBoolean(AppConstants.PREFERENCE_KEY_LIST_GRAPH, isChecked).commit();
 
             }
         });
@@ -674,10 +679,10 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
         textError.setTextColor(getResources().getColor(protocol.getErrorCode() == 0 ? R.color.success_color : R.color.error_color));
         textError.setVisibility(View.VISIBLE);
 
-        final MonitorListFragment fragment = MonitorListFragment.newInstance(1, protocol);
+        final MonitorListFragment monitorListFragment = MonitorListFragment.newInstance(1, protocol);
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         try {
-            transaction.replace(R.id.content, fragment).commit();
+            transaction.replace(R.id.content, monitorListFragment).commit();
         } catch (Exception e) {
             return;
         }

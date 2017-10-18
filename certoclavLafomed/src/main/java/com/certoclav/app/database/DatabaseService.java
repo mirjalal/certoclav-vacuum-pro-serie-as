@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.model.Autoclave;
+import com.certoclav.library.bcrypt.BCrypt;
 import com.certoclav.library.certocloud.CloudUser;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
@@ -200,7 +201,7 @@ public class DatabaseService {
         return -1;
     }
 
-    public int updateProtocolErrorMessage(int protocol_id, int errorMessage) {
+    public int updateProtocolErrorCode(int protocol_id, int errorMessage) {
         try {
             UpdateBuilder<Protocol, Integer> updateBuilder = protocolDao
                     .updateBuilder();
@@ -998,10 +999,30 @@ public class DatabaseService {
 
     }
 
+    public void createAdminAccountIfNotExistantYet(){
+        try {
+            if (getUsers() != null) {
+                boolean adminAccountExists = false;
+                for (User dbUser : getUsers()) {
+                    if (dbUser.getIsAdmin() == true) {
+                        adminAccountExists = true;
+                    }
+                }
+                if (adminAccountExists == false) {
+                    //create admin acccount
+                    User user = new User("Admin", "", "Admin", "Admin", "", "", "", "", "",
+                            BCrypt.hashpw("admin", BCrypt.gensalt()),
+                            Autoclave.getInstance().getDateObject(),  true, true);
+                    insertUser(user);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     public void fillDatabaseWithProgramIfEmpty() {
         try {
-
             if (getProfiles() != null) {
                 if (getProfiles().size() > 0) {
                     return;

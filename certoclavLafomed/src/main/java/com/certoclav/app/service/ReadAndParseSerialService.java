@@ -401,6 +401,11 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 							digitalData[AppConstants.DIGITAL_PREHEAT_ENABLED] = isPreheatOn;
 							// digitalData[AppConstants.DIGITAL_FAIL_WATER_QUALITY]
 
+							try {
+								errorCode = Integer.parseInt(responseParameters[INDEX_GET_DAT_ERRORCODE_V2]);
+							} catch (Exception e) {
+								errorCode = 0;
+							}
 							handler.sendEmptyMessage(HANDLER_MSG_DATA);
 					//		Log.e("ReadAndParseService", "temp: " + temperatures[0] + "\n" +
 					//				"closed: " + isDoorClosed + "\n" +

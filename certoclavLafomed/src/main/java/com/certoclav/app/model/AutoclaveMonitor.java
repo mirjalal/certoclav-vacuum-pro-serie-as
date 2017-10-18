@@ -3,6 +3,7 @@ package com.certoclav.app.model;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.util.SparseArray;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
@@ -19,7 +20,6 @@ import com.certoclav.app.monitor.MonitorActivity;
 import com.certoclav.app.monitor.MonitorNotificationActivity;
 import com.certoclav.app.service.CloudSocketService;
 import com.certoclav.app.service.ReadAndParseSerialService;
-import com.certoclav.app.util.Helper;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.bcrypt.BCrypt;
 import com.certoclav.library.certocloud.CloudDatabase;
@@ -27,7 +27,7 @@ import com.certoclav.library.certocloud.Condition;
 import com.certoclav.library.certocloud.NotificationService;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 
 import static com.certoclav.app.model.AutoclaveState.PREPARE_TO_RUN;
 
@@ -36,11 +36,14 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
     Context mContext = ApplicationController.getContext();
 
+    private SparseArray<String> errorMap = new SparseArray<String>();
 
-    public static final int INDEX_ERROR_SUCCESSFUL = 0;
-    public static final int INDEX_ERROR_STOPPED_BY_ERROR = 1;
-    public static final int INDEX_ERROR_STOPPED_BY_USER = 2;
-    public static final int INDEX_ERROR_CONNECTION_LOST = 3;
+
+    public static final int ERROR_CODE_SUCCESSFULL = 0;
+    public static final int ERROR_CODE_CANCELLED_BY_USER = -1;
+    public static final int ERROR_CODE_CONNECTION_LOST = -2;
+    public static final int ERROR_CODE_CANCELLED_BY_ERROR = -3;
+    public static final int ERROR_CODE_POWER_LOSS = -4;
 
     private long nanoTimeAtLastMessageReceived = 0;
 
@@ -60,34 +63,14 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
 
     private Integer indexOfProfile = null;
-    private String[] ERROR_STRING_ARRAY = {
-            mContext.getString(R.string.program_finished_successfully),
-            mContext.getString(R.string.l_fter_ausgefallen),
-            mContext.getString(R.string.er_03_lid_is_not_closed), // 2
-            mContext.getString(R.string.er_04_wasserstand_im_kessel_zu_hoch),
-            mContext.getString(R.string.er_05_wasserstand_im_kessel_zu_niedrig),
-            mContext.getString(R.string.er_06_lid_is_not_locked), //5
-            mContext.getString(R.string.timeout_heizvorgang),
-            mContext.getString(R.string.maximal_zul_ssiger_druck_berschritten),
-            mContext.getString(R.string.maximal_zul_ssige_temperatur_berschritten), //8
-            mContext.getString(R.string.druck_out_of_range),
-            mContext.getString(R.string.temp1_out_of_range),
-            mContext.getString(R.string.temp2_out_of_range),
-            mContext.getString(R.string.temp3_out_of_range),
-            mContext.getString(R.string.temperaturband_nicht_eingehalten), //13
-            mContext.getString(R.string.cycle_cancelled_because_of_error),
-            mContext.getString(R.string.cycle_cancelled_by_user_),
-            mContext.getString(R.string.connection_lost_during_record),
-            mContext.getString(R.string.power_loss_during_record)
-    };
-    private Map<String, String> errorCodes;
+
+
 
     //IO SIMULATION
-    public static boolean SimulatedLockSwitch = true;
     public static boolean PowerOffDeviceAutomatically = false;
-    public static boolean SimulatedOvertempSwitch = true;
     public static boolean SimulatedFailStoppedByUser = false;
     boolean SIMUTALTE_STATE_RUNNING = false;
+
     private boolean mCodeEntered = false;
 
 
@@ -115,14 +98,45 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
         return instance;
     }
 
+
+
+
     private AutoclaveMonitor() {
+        errorMap.put(ERROR_CODE_SUCCESSFULL,mContext.getString(R.string.progr_finished_successfully));
+        errorMap.put(ERROR_CODE_CANCELLED_BY_USER,mContext.getString(R.string.cycle_cancelled_by_user_));
+        errorMap.put(ERROR_CODE_CONNECTION_LOST,mContext.getString(R.string.connection_lost_during_record));
+        errorMap.put(ERROR_CODE_CANCELLED_BY_ERROR,mContext.getString(R.string.cycle_cancelled_because_of_error));
+        errorMap.put(ERROR_CODE_POWER_LOSS,mContext.getString(R.string.power_loss_during_record));
+        errorMap.put(31,"The temperature of the chamber is higher than 150 °C");
+        errorMap.put(32,"The temperature of the chamber heating is higher than 280 °C");
+        errorMap.put(51,"The temperature of the chamber is lower than 0 °C");
+        errorMap.put(52,"The temperature of the chamber heating is lower than 0 °C");
+        errorMap.put(63,"The temperature of the steam generator is lower than 0 °C. The temperature of the steam generator is higher than 230 °C");
+        errorMap.put(2,"The sterilization pressure is more than 40 kPa higher than planned");
+        errorMap.put(61,"The temperature regulation is instable. The temperature in the chamber is 6 °C higher than the required temperature");
+        errorMap.put(62,"The temperature of the chamber heating is higher than 155 °C. The temperature regulation is instable");
+        errorMap.put(41,"In preheat period, after 8 min warm-up, temperature chamber heater is < 100 °C, chamber heater damaged");
+        errorMap.put(42,"In preheat period, after 8 min warm-up, temperature chamber heater is < 110 °C, chamber heater damaged");
+        errorMap.put(5,"When the period of exhaust, after working 10mins, the pressure in chamber is still over 0.5bar : air relief instability");
+        errorMap.put(6,"The door is opened during working. Door sensor damaged");
+        errorMap.put(7,"The local air pressure is < 70KPa. The local air pressure is too low.");
+        errorMap.put(8,"In pre-vacuum period, every 5 min temperature raise < 3 °C");
+        errorMap.put(9,"In sterilization period, the sterilization pressure is 0.3 bar");
+        errorMap.put(10,"The electronic locker is in wrong condition");
+        errorMap.put(11,"The electronic locker is in wrong condition");
+        errorMap.put(12,"The vacuum not reach -70Kpa during at least 3 vacuum phases");
+
+
+
+
+
         Autoclave.getInstance().setOnSensorDataListener(this);
         Autoclave.getInstance().setOnConnectionStatusListener(this);
         databaseService = new DatabaseService(ApplicationController.getContext());
         nanoTimeAtLastMessageReceived = System.nanoTime();
         timerHandler.postDelayed(timerRunnable, 0);
         ReadAndParseSerialService.getInstance();
-        errorCodes = Helper.getKeyValueFromStringArray(mContext);
+
     }
 
     public void setOnAlertListener(AlertListener listener) {
@@ -230,7 +244,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                     if (Autoclave.getInstance().getData().isDoorLocked()) {
                         Autoclave.getInstance().setProgramsInRowTotal(1);
                         Autoclave.getInstance().setCurrentProgramCounter(0);
-                        Autoclave.getInstance().setState(PREPARE_TO_RUN);
+                        Autoclave.getInstance().setState(PREPARE_TO_RUN); //state machine sets user in the prepareToRun state
                         startMonitorActivity();
                     }
                 }
@@ -305,10 +319,10 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                         }
                         if (Autoclave.getInstance().getUser() == null) {
                             databaseService.insertUser(new User(
+                                    "Admin",
                                     "",
-                                    "",
-                                    "",
-                                    "admin",
+                                    "Admin",
+                                    "Admin",
                                     "",
                                     "",
                                     "",
@@ -316,12 +330,12 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                                     "",
                                     BCrypt.hashpw("1234", BCrypt.gensalt()),
                                     Autoclave.getInstance().getDateObject(),
-                                    false,
+                                    true,
                                     true));
                         }
                         if (Autoclave.getInstance().getUser() == null) {
                             for (User user : databaseService.getUsers()) {
-                                if (user.getEmail().equals("admin")) {
+                                if (user.getIsAdmin() == true) {
                                     Autoclave.getInstance().setUser(user);
                                 }
                             }
@@ -338,12 +352,12 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                                 Autoclave.getInstance().getController(),
                                 Autoclave.getInstance().getUser(),
                                 Autoclave.getInstance().getProfile(),
-                                -2, //error id for connection loss
+                                ERROR_CODE_CONNECTION_LOST,
                                 false);
                         Autoclave.getInstance().setProtocol(protocol);
                         int retval = databaseService.insertProtocol(protocol);
 
-                        nanosAtProgramStart = System.nanoTime();
+                        nanosAtProgramStart = System.nanoTime() - 1000000000L * 4;
 
 
                     } else {//no program is running
@@ -390,18 +404,21 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                 if (secondsSinceStart > 6) { //errorlist detection timeoffset is 3 seconds. It follows, that detection about the end of zycle must have an offset > 3
 
                     if (errorList.size() > 0) {//Autoclave.getInstance().getData().isFailStoppedByUser() || Autoclave.getInstance().isMicrocontrollerReachable()==false){
-                        //if the error has been detected in the end of the liquid program
-                        if (Autoclave.getInstance().getData().getTemp1().getCurrentValue() <= 90 && Autoclave.getInstance().getData().getTemp2().getCurrentValue() <= 90 && Autoclave.getInstance().getSecondsSinceStart() > 2400 && Autoclave.getInstance().getProfile().getIndex() == 12) {
-                            Log.e("AutoclaveMonitor", "IS FAIL STOPPED BY USER " + Autoclave.getInstance().getData().isFailStoppedByUser() + " - PROGRAM CANCELLED EARLIER BUT IS FINISHED SUCESSFULLY");
-                            //if the error is a manual stop by the user, then its only a early stopped program, but not an critical error
-                            if (Autoclave.getInstance().getData().isFailStoppedByUser()) {
-                                finishProgram();
-                                Autoclave.getInstance().setState(AutoclaveState.PROGRAM_FINISHED);
-                                break;
-                                //break is very important, else it will change to RUN_CANCELED status
+                        if(AppConstants.IS_CERTOASSISTANT == false) {
+                            /// /if the error has been detected in the end of the liquid program
+                            if (Autoclave.getInstance().getData().getTemp1().getCurrentValue() <= 90 && Autoclave.getInstance().getData().getTemp2().getCurrentValue() <= 90 && Autoclave.getInstance().getSecondsSinceStart() > 2400 && Autoclave.getInstance().getProfile().getIndex() == 12) {
+                                Log.e("AutoclaveMonitor", "IS FAIL STOPPED BY USER " + Autoclave.getInstance().getData().isFailStoppedByUser() + " - PROGRAM CANCELLED EARLIER BUT IS FINISHED SUCESSFULLY");
+                                //if the error is a manual stop by the user, then its only a early stopped program, but not an critical error
+                                if (Autoclave.getInstance().getData().isFailStoppedByUser()) {
+                                    finishProgram();
+                                    Autoclave.getInstance().setState(AutoclaveState.PROGRAM_FINISHED);
+                                    break;
+                                    //break is very important, else it will change to RUN_CANCELED status
+                                }
                             }
                         }
                         Autoclave.getInstance().setState(AutoclaveState.RUN_CANCELED);
+                        Log.e("AutoclaveMonitor", "ERROR ID STORED INTO PROTOCOL: "+ errorList.get(0).getErrorID());
                         cancelProgram(errorList.get(0).getErrorID());
                     } else {
                         if (Autoclave.getInstance().getData().isDoorLocked() == false) { //Autoclave.getInstance().getData().isProgramRunning() == false &&  program finished and door is ready to open (unlocked)
@@ -482,8 +499,8 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
         Log.e("monitor", "finishprogramcalled");
         Autoclave.getInstance().getProtocol().setEndTime(Autoclave.getInstance().getDateObject());
         databaseService.updateProtocolEndTime(Autoclave.getInstance().getProtocol().getProtocol_id(), Autoclave.getInstance().getDateObject());
-        Autoclave.getInstance().getProtocol().setErrorCode(INDEX_ERROR_SUCCESSFUL);
-        databaseService.updateProtocolErrorMessage(Autoclave.getInstance().getProtocol().getProtocol_id(), INDEX_ERROR_SUCCESSFUL);
+        Autoclave.getInstance().getProtocol().setErrorCode(ERROR_CODE_SUCCESSFULL);
+        databaseService.updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(), ERROR_CODE_SUCCESSFULL);
     }
 
     public ArrayList<Error> getErrorList() {
@@ -510,24 +527,25 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                 errorList.add(new Error("ERROR: " + "-2",
                         mContext.getResources().getString(R.string.path_video_power),
                         Error.TYPE_ERROR,
-                        -2));
+                        ERROR_CODE_CONNECTION_LOST));
             }
         }
 
         switch (Autoclave.getInstance().getState()) {
             case RUNNING:
                 if (secondsSinceStart > 3) { //time delay, because autoclave actualises data slowly
-                    if (Autoclave.getInstance().getData().isFailStoppedByUser()) {
-                        errorList.add(new Error("ERROR: " + "-1 (Program cancelled manually)",
-                                "",
-                                Error.TYPE_ERROR,
-                                -1));
-                    }
+
                     if (Autoclave.getInstance().getErrorCode() != 0) {
-                        errorList.add(new Error("ERROR " + Autoclave.getInstance().getErrorCode(),
+                        errorList.add(new Error("ERROR " + Autoclave.getInstance().getErrorCode() + " - Wait until autoclave is unlocked",
                                 "",
                                 Error.TYPE_ERROR,
                                 Autoclave.getInstance().getErrorCode()));
+                    }
+                    if (Autoclave.getInstance().getData().isFailStoppedByUser()) {
+                        errorList.add(new Error("ERROR: " + ERROR_CODE_CANCELLED_BY_USER,
+                                "",
+                                Error.TYPE_ERROR,
+                                ERROR_CODE_CANCELLED_BY_USER));
                     }
                 }
                 break;
@@ -536,10 +554,10 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
 
                 if (Autoclave.getInstance().getData().isFailStoppedByUser()) {
-                    errorList.add(new Error("ERROR: -1 (Program cancelled by manually)",
+                    errorList.add(new Error("ERROR: " + ERROR_CODE_CANCELLED_BY_USER,
                             "",//mContext.getResources().getString(R.string.path_video_place_item),
                             Error.TYPE_ERROR,
-                            -1));
+                            ERROR_CODE_CANCELLED_BY_USER));
                 }
                 if (Autoclave.getInstance().getErrorCode() != 0) {
                     errorList.add(new Error("ERROR " + Autoclave.getInstance().getErrorCode(),
@@ -572,11 +590,13 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
             case PREPARE_TO_RUN:
                 try {
-                    if (Autoclave.getInstance().getProfile().getIndex() == 9 && Autoclave.getInstance().getData().getTemp1().getCurrentValue() > 50) {
-                        errorList.add(new Error("Unable to start the vacuum test. Please wait until the chamber is cooled down",
-                                "",
-                                Error.TYPE_WARNING,
-                                0));
+                    if(AppConstants.IS_CERTOASSISTANT == false) {
+                        if (Autoclave.getInstance().getProfile().getIndex() == 9 && Autoclave.getInstance().getData().getTemp1().getCurrentValue() > 50) {
+                            errorList.add(new Error("Unable to start the vacuum test. Please wait until the chamber is cooled down",
+                                    "",
+                                    Error.TYPE_WARNING,
+                                    0));
+                        }
                     }
                 } catch (Exception e) {
 
@@ -627,7 +647,12 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
     }
 
     private void startMonitorActivity() {
-        Autoclave.getInstance().setProfile(Autoclave.getInstance().getUserDefinedProgram());
+        List<Profile> profileList = databaseService.getProfiles();
+        for(int i = 0; i< profileList.size();i++){
+            if(Autoclave.getInstance().getIndexOfRunningProgram() == profileList.get(i).getIndex()){
+                Autoclave.getInstance().setProfile(profileList.get(i));
+            }
+        }
         Intent intent = new Intent(ApplicationController.getContext(), MonitorActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -641,17 +666,17 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
      * Finishs the Protocol with errormessage
      * Sets the State of Autoclave to RUN_CANCELED
      *
-     * @param errorMessage Message, which will be added at the end of the protocol
+     * @param errorCode Message, which will be added at the end of the protocol
      */
-    private void cancelProgram(int errorMessage) {
+    private void cancelProgram(int errorCode) {
 
         Log.e("monitor", "cancel program called");
 
 
         Autoclave.getInstance().getProtocol().setEndTime(Autoclave.getInstance().getDateObject());
         databaseService.updateProtocolEndTime(Autoclave.getInstance().getProtocol().getProtocol_id(), Autoclave.getInstance().getDateObject());
-        databaseService.updateProtocolErrorMessage(Autoclave.getInstance().getProtocol().getProtocol_id(), errorMessage);
-        Autoclave.getInstance().getProtocol().setErrorCode(errorMessage);
+        databaseService.updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(), errorCode);
+        Autoclave.getInstance().getProtocol().setErrorCode(errorCode);
     }
 
 
@@ -681,11 +706,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
     public String getErrorString(int errorCode) {
 
 
-        if (errorCodes.containsKey(errorCode + "")) {
-            return errorCodes.get(errorCode + "");
-        } else {
-            return mContext.getString(R.string.something_went_wrong);
-        }
+        return errorMap.get(errorCode,mContext.getString(R.string.cycle_cancelled_because_of_error));
 
     }
 

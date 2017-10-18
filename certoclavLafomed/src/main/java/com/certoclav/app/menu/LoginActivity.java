@@ -61,6 +61,8 @@ import cn.pedant.SweetAlert.ProgressHelper;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.fabric.sdk.android.Fabric;
 
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+
 public class LoginActivity extends CertoclavSuperActivity implements NavigationbarListener, DatabaseRefreshedListener, ControllerInfoListener, PutUserLoginTaskFinishedListener {
 
 
@@ -280,6 +282,14 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
             public void onClick(View v) {
                 if (currentUser != null)
                     logUser(currentUser.getEmail_user_id(), currentUser.getEmail(), currentUser.getFirstName() + " " + currentUser.getLastName());
+
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+                Editor editor = prefs.edit();
+                editor.putInt(AppConstants.PREFERENCE_KEY_ID_OF_LAST_USER,
+                        currentUser.getUserId());
+                editor.commit();
+
+
                 Boolean defaultvalue = getResources().getBoolean(
                         R.bool.switch_snchronization_default);
                 if (Autoclave.getInstance().isOnlineMode(LoginActivity.this)) {
@@ -375,9 +385,12 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
     public void onResume() {
         Log.e("LoginActivity", "onresume called");
         super.onResume();
+        DatabaseService db = new DatabaseService(this);
+        db.createAdminAccountIfNotExistantYet();
         progressBar.setVisibility(View.GONE);
         textViewLogin.setVisibility(View.VISIBLE);
         CloudUser.getInstance().setLoggedIn(false);
+
 
         AutoclaveMonitor.getInstance();
         Autoclave.getInstance().setOnControllerInfoListener(this);
@@ -399,7 +412,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 
         listUsers = databaseService.getUsers();
 
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
+        if (getDefaultSharedPreferences(this).getBoolean(
                 AppConstants.PREFERENCE_KEY_ONLINE_MODE, false) == true) {
             textViewNotification.setVisibility(View.GONE);
         } else {
@@ -456,6 +469,22 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
             }
         } else {
             Log.e("LoginActivity", "Autoclave.getcontroller == null");
+        }
+
+
+        int idOfLastUser = PreferenceManager.getDefaultSharedPreferences(this).getInt(AppConstants.PREFERENCE_KEY_ID_OF_LAST_USER, 0);
+        if (idOfLastUser != 0) {
+            User user = databaseService.getUserById(idOfLastUser);
+            if (user != null) {
+                if (listUsers.size() > 0) {
+                    for(int i = 0; i< listUsers.size();i++){
+                        if(user.getUserId() == listUsers.get(i).getUserId()){
+                            spinner.setSelection(i);
+                            Autoclave.getInstance().setUser(user);
+                        }
+                    }
+                }
+            }
         }
 
         adapterUserDropdown.notifyDataSetChanged();
@@ -782,8 +811,8 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
     }
 
     private void changeApplicationMode(boolean isOnline) {
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(LoginActivity.this);
+        SharedPreferences prefs =
+                getDefaultSharedPreferences(LoginActivity.this);
         Editor editor = prefs.edit();
         editor.putBoolean(AppConstants.PREFERENCE_KEY_ONLINE_MODE,
                 isOnline);

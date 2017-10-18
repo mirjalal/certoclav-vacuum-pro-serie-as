@@ -36,7 +36,7 @@ public class MyProtocolEntryRecyclerViewAdapter extends RecyclerView.Adapter<MyP
         holder.time.setText(holder.mItem.getTimeStampWithMin());
         holder.temperature.setText(mValues.get(position).getTemperature() + "");
         holder.mediaTemperature.setText(mValues.get(position).getMediaTemperature() + "");
-        holder.pressure.setText(String.format("%.2f", mValues.get(position).getPressureKPa()));
+        holder.pressure.setText(String.format("%.2f", mValues.get(position).getPressure()));
 
     }
 

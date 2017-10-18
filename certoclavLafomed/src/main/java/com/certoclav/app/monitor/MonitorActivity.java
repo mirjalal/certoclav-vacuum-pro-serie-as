@@ -42,9 +42,8 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MonitorActivity extends CertoclavSuperActivity implements NavigationbarListener, ProfileListener, AlertListener, AutoclaveStateListener {
 
-
-    private static final int INDEX_FRAGMENT_AUTOCLAVE = 0;
-    private static final int INDEX_FRAGMANT_GRAPH = 1;
+    private static final int INDEX_FRAGMANT_GRAPH = 0;
+    private static final int INDEX_FRAGMENT_AUTOCLAVE = 1;
     private ArrayList<Fragment> fragmentList = new ArrayList<Fragment>();
     private CertoclavNavigationbarClean navigationbar;
 
@@ -157,9 +156,9 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
         });
 
 
-        fragmentList.add(INDEX_FRAGMENT_AUTOCLAVE, new MonitorAutoclaveFragment());
-        fragmentList.add(INDEX_FRAGMANT_GRAPH, new MonitorGraphFragment());
 
+        fragmentList.add(INDEX_FRAGMANT_GRAPH, new MonitorGraphFragment());
+        fragmentList.add(INDEX_FRAGMENT_AUTOCLAVE, new MonitorAutoclaveFragment());
 
         mSectionsPagerAdapter = new ControlPagerAdapter(getSupportFragmentManager(), fragmentList);
 
@@ -284,7 +283,9 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 break;
 
         }
-
+        if(AppConstants.IS_CERTOASSISTANT){
+            buttonStop.setVisibility(View.GONE);
+        }
 
     }
 
@@ -367,6 +368,9 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
         //update UI
         onAutoclaveStateChange(Autoclave.getInstance().getState());
 
+        if(AppConstants.IS_CERTOASSISTANT){
+            buttonStop.setVisibility(View.GONE);
+        }
         super.onResume();
 
     }

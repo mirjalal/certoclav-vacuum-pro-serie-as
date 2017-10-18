@@ -22,10 +22,6 @@ public class Sensor {
         return currentValue;
     }
 
-    public float getCurrentValueInKPa() {
-        return currentValue * 100;
-    }
-
     public void setCurrentValue(float currentValue) {
         this.currentValue = currentValue;
     }

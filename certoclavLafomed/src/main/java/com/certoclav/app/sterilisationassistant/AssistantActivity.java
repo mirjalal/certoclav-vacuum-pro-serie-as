@@ -41,6 +41,7 @@ public class AssistantActivity extends CertoclavSuperActivity implements Profile
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sterilisation_assistant_activity);
+        navigationbar = new CertoclavNavigationbarClean(this);
     }
 
 
@@ -50,7 +51,6 @@ public class AssistantActivity extends CertoclavSuperActivity implements Profile
         Autoclave.getInstance().setOnProfileListener(this);
         Autoclave.getInstance().setOnAutoclaveStateListener(this);
         AutoclaveMonitor.getInstance().setOnAlertListener(this);
-        navigationbar = new CertoclavNavigationbarClean(this);
         if (Autoclave.getInstance().getProfile() != null) {
             navigationbar.setHeadText(Autoclave.getInstance().getProfile().getName());
         }

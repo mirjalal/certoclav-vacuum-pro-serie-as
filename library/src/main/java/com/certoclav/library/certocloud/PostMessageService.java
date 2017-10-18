@@ -55,6 +55,7 @@ public class PostMessageService {
                 return postUtil.postToCertocloud(body, CertocloudConstants.SERVER_URL + CertocloudConstants.REST_POST_SUPPORT, true);
 
             } catch (Exception e) {
+                e.printStackTrace();
             }
             return null;
 
@@ -65,9 +66,10 @@ public class PostMessageService {
          * parameter responseCode == RETURN_OK if message has been successfully sent
          *
          */
-        protected void onPostExecute(Integer responseCode) {
+        protected void onPostExecute(Response response) {
+            //Log.e("PostMessageService", "responseCode: " + response.getStatus());
             if (postMessageFinishedListener != null) {
-                postMessageFinishedListener.onTaskFinished(responseCode);
+                postMessageFinishedListener.onTaskFinished(response.getStatus());
             }
         }
 

@@ -66,8 +66,8 @@ public class MonitorNotificationActivity extends CertoclavSuperActivity implemen
 		buttonOk.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-					AutoclaveMonitor.getInstance().codeEnterded();
-					AutoclaveMonitor.getInstance().cancelPrepareToRun();
+					//AutoclaveMonitor.getInstance().codeEnterded();
+					//AutoclaveMonitor.getInstance().cancelPrepareToRun();
 					finish();
 	}
 	

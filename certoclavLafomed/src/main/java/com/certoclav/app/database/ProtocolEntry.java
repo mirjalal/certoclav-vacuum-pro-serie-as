@@ -126,9 +126,6 @@ public class ProtocolEntry {
 
     }
 
-    public float getPressureKPa() {
-        return pressure * 100;
-    }
 
     public String getFormatedTimeStampShort() {
 
