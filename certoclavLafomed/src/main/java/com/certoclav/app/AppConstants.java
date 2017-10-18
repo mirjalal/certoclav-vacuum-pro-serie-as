@@ -8,7 +8,7 @@ package com.certoclav.app;
  */
 public class AppConstants {
 
-    public static final Boolean APPLICATION_DEBUGGING_MODE = true;
+    public static final Boolean APPLICATION_DEBUGGING_MODE = false;
     public static final String DEFAULT_ADMIN_PASSWORD = "admin";
     public static final String DEFAULT_CLOUD_ADMIN_PASSWORD = "master@certocloud";
     public static final boolean SHOW_LOGS = false;
@@ -17,10 +17,9 @@ public class AppConstants {
     public static final Boolean IS_CERTOASSISTANT = true;
     public static final String TABLET_TYPE_SAMSUNGT113W = "samsungt113w";
     public static final String TABLET_TYPE_LILLIPUT = "lilliput"; //android 2.3.4
-    public static final String TABLET_TYPE_LILLIPUT_2 = "lilliput2"; //android 4.3
     //public static final String TABLET_TYPE = TABLET_TYPE_SAMSUNGT113W;
-    public static final String TABLET_TYPE = TABLET_TYPE_LILLIPUT_2;
-    public static final String MODEL_LAFOMED = "lafomed_v2"; //first autoclave with media sensor
+    public static final String TABLET_TYPE = TABLET_TYPE_LILLIPUT;
+    public static final String MODEL_LAFOMED = "lafomed22"; //first autoclave with media sensor
     public static final String MODEL_CURRENT = MODEL_LAFOMED;
     public static final String SIMULATED_SAVETY_KEY = "63FBE2987481D9B6A";
 
