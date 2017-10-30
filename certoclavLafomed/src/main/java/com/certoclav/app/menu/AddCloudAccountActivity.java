@@ -229,7 +229,7 @@ public class AddCloudAccountActivity extends Activity {
             if (pDialog == null) return;
             pDialog.setTitleText(getString(result ?
                     R.string.account_added :
-                    R.string.linking_certocloud_account_failed));
+                    R.string.username_or_password_is_wrong));
             pDialog.changeAlertType(result ? SweetAlertDialog.SUCCESS_TYPE : SweetAlertDialog.ERROR_TYPE);
             pDialog.setConfirmText(getString(android.R.string.ok));
             pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {

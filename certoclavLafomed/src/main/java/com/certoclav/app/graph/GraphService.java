@@ -81,8 +81,8 @@ public class GraphService implements SensorDataListener {
                                         Point p = new Point(roundFloat((float) (secondsSinceStart / 60.0)), roundFloat((float) (Autoclave.getInstance().getData().getTemp1().getCurrentValue())));
                                         runningGraph.addNewPoints(p, LineGraph.TYPE_STEAM);
                                         if(AppConstants.IS_CERTOASSISTANT == false) {
-                                            //Point p2 = new Point(roundFloat((float) (secondsSinceStart / 60.0)), roundFloat((float) (Autoclave.getInstance().getData().getTemp2().getCurrentValue())));
-                                            //runningGraph.addNewPoints(p2, LineGraph.TYPE_MEDIA);
+                                            Point p2 = new Point(roundFloat((float) (secondsSinceStart / 60.0)), roundFloat((float) (Autoclave.getInstance().getData().getTemp2().getCurrentValue())));
+                                            runningGraph.addNewPoints(p2, LineGraph.TYPE_MEDIA);
                                         }
                                         Point p3 = new Point(roundFloat((float) (secondsSinceStart / 60.0)), roundFloat((float) (Autoclave.getInstance().getData().getPress().getCurrentValue())));
                                         runningGraph.addNewPoints(p3, LineGraph.TYPE_PRESS);
@@ -177,8 +177,8 @@ public class GraphService implements SensorDataListener {
                     Point p2 = new Point(roundFloat((float) (pastSeconds / 60.0)), roundFloat((float) (entry.getPressure())));
                     protocolGraph.addNewPoints(p2, LineGraph.TYPE_PRESS);
                    if(AppConstants.IS_CERTOASSISTANT == false){
-                        //Point p3 = new Point(roundFloat((float) (pastSeconds / 60.0)), roundFloat(entry.getMediaTemperature()));
-                        //protocolGraph.addNewPoints(p3, LineGraph.TYPE_MEDIA);
+                        Point p3 = new Point(roundFloat((float) (pastSeconds / 60.0)), roundFloat(entry.getMediaTemperature()));
+                        protocolGraph.addNewPoints(p3, LineGraph.TYPE_MEDIA);
                     }
 
                     timeLastPoint = pastSeconds;
