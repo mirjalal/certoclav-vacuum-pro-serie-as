@@ -106,7 +106,7 @@ public class UserAdapter extends ArrayAdapter<User> {
         firstLine.setText(getItem(position).getEmail());
 
         final TextView secondLine = (TextView) convertView.findViewById(R.id.second_line);
-        secondLine.setText(getItem(position).getIsLocal() ? "Local Account" : "Online Account");
+        secondLine.setText(getItem(position).getIsLocal() ? mContext.getString(R.string.local_account) : mContext.getString(R.string.online_account));
 
 
         actionItemDelete.setChecked(false);

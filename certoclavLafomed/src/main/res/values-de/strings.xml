@@ -32,10 +32,10 @@
         <string name="state_unknown">UNBEKANNT</string>
         <string name="title_introduction">AUTOKLAV EINRICHTEN</string>
         <string name="settings_language">Sprache</string>
-        <string name="settings_wifi">WIFI</string>
+        <string name="settings_wifi">WLAN</string>
         <string name="intro_click_to_choose_network">Hier klicken um ein Netzwerk auszuwählen</string>
         <string name="intro_step_skipped">Schritt übersprungen</string>
-        <string name="intro_trying_to_enable_wifi" tools:ignore="TypographyEllipsis">Aktiviere Wifi...</string>
+        <string name="intro_trying_to_enable_wifi" tools:ignore="TypographyEllipsis">Aktiviere WLAN...</string>
         <string name="connected_to">Verbunden mit</string>
         <string name="date_and_time">Datum &amp; Uhrzeit</string>
         <string name="certoclav_account">CertoClav Benutzerkonto</string>
@@ -82,9 +82,9 @@
         <string name="settings_sterilization">Sterilisation</string>
         <string name="settings_device">Gerät</string>
         <string name="settings_help">Hilfe</string>
-        <string name="wifi_not_connected">WIFI nicht verbunden</string>
-        <string name="trying_to_connect_click_to_choose_network">Versuche Verbindung herzustellen | Hier Klicken um ein Netzwerk auszuwählen</string>
-        <string name="wifi_disabled">WIFI ausgeschaltet</string>
+        <string name="wifi_not_connected">WLAN nicht verbunden</string>
+        <string name="trying_to_connect_click_to_choose_network">WLAN aktiviert</string>
+        <string name="wifi_disabled">WLAN ausgeschaltet</string>
         <string name="free_memory">Freier Speicher</string>
         <string name="title_contact_support">KONTAKT</string>
         <string name="you_forgot_to_enter_the_email_id">Bitte Email eingeben</string>
@@ -96,8 +96,8 @@
         <string name="accept">OK</string>
         <string name="title_choose_language">SPACHE WÄHLEN</string>
         <string name="title_change_date_time">DATUM &amp; UHRZEIT ÄNDERN</string>
-        <string name="step_by_step_guide">SCHRITT FÜR SCHRITT ASSISTENT</string>
-        <string name="settings_storage">SPEICHER</string>
+        <string name="step_by_step_guide">Schritt für Schritt Assistent</string>
+        <string name="settings_storage">Speicher</string>
         <string name="settings_date_and_time">Datum &amp; Uhrzeit</string>
         <string name="settings_factory_reset">Werkszustand wiederherstellen</string>
         <string name="settings_restore_device_to_its_original_manufacturer_setting">Setze das Gerät in seinen ursprünglichen Werkszustand zurück</string>
@@ -197,7 +197,7 @@
     <string name="local_password">Lokales Passwort</string>
     <string name="certocloud_password">CertoCloud Passwort</string> 
     <string name="password_for_offline_mode">Password für den Offline Modus</string>
-    <string name="export_protocols_to_usb_stick">Export Protocols to USB-Stick</string>
+    <string name="export_protocols_to_usb_stick">Protokollexport auf USB Stick</string>
     
     
     <string name="delete_user">Benutzer löschen</string>
@@ -213,8 +213,8 @@
     <string name="please_log_in_with_your_certocloud_account_first">Bitte loggen Sie sich zuerst mit Ihrem CertoCloud Konto ein</string>
     <string name="login_notification_offline">Der Autoklav befindet sich im Offline Modus\nCertoCloud, automatische Updates, automatische Backups, Fernsteuerung, Direktsupport und Updates sind nicht verfügbar</string>
     <string name="network_connection_required">Eine Netzwerkverbindung wird benötigt.</string>
-    <string name="please_connect_to_a_network_via_lan_or_wifi_">Bitte verbinden Sie den Autoklaven via LAN oder WiFi.\n</string>
-    <string name="do_you_want_to_open_wifi_settings_">Wollen Sie die WiFi Einstellungen öffnen?</string>
+    <string name="please_connect_to_a_network_via_lan_or_wifi_">Bitte verbinden Sie den Autoklaven via LAN oder WLAN.\n</string>
+    <string name="do_you_want_to_open_wifi_settings_">Wollen Sie die WLAN Einstellungen öffnen?</string>
     <string name="login_failed">Login fehlgeschlagen</string>
     <string name="do_you_want_to_switch_to_offline_mode_">Wollen Sie in den Offline Modus wechseln?</string>
     <string name="do_you_want_to_enable_network_communication">Wollen Sie in den Online Modus wechseln? Hierfür wird Internet benötigt.</string>  
@@ -232,16 +232,16 @@
     <string name="connection_lost_to_controller">Verbindung zur Steuerung unerbrochen</string>
     <string name="trying_to_connect_">Verbindungsaufbau...</string>
     <string name="autoclave_serial_number">Autoklav Seriennummer</string>
-    <string name="an_error_occured_during_login_please_try_again_later_">Ein fehler ist während des Logins aufgetreten. Bitte versuchen Sie es später erneut.\nn</string>
+    <string name="an_error_occured_during_login_please_try_again_later_">Ein fehler ist während des Logins aufgetreten. Bitte versuchen Sie es später erneut.\n</string>
     <string name="timout_during_login_please_check_internet_availability_">Timeout während des Logins. Bitte überprüfen Sie Ihre Internetverbindung.\n</string>
     <string name="password_not_correct_">Passwort nicht korrekt.\n</string>
     <string name="email_does_not_exist_please_create_a_certocloud_account_with_this_email_first_">Email existiert nicht. Bitte erstellen Sie ein CertoCloud Konto.\n</string>
     <string name="not_able_to_connect_to_certocloud_">Verbindung zur CertoCloud fehlgeschlagen.\n</string>
     <string name="please_log_out_first">Bitte zuerst ausloggen</string>   
-    <string name="manage_wifi_connections">WIFI-Verbindungen verwalten</string>
-    <string name="wifi_on_off">WIFI AN/AUS</string>
+    <string name="manage_wifi_connections">WLAN-Verbindungen verwalten</string>
+    <string name="wifi_on_off">WLAN</string>
     <string name="online_mode">Online Modus</string>
-    <string name="bluetooth_on_off">Bluetooth AN/AUS</string>
+    <string name="bluetooth_on_off">Bluetooth</string>
     <string name="add_account">Konto hinzufügen</string>
     <string name="account_added">Konto hinzugefügt</string>
     <string name="linking_certocloud_account_failed">Hinzufügung von CertoCloud Konto fehlgeschlagen</string>
@@ -273,9 +273,9 @@
     <string name="stopping_">STOPPE...</string>
     <string name="connection_lost_during_record">Verbindungsabbruch während der Aufzeichnung</string>
     <string name="program_finished_successfully">Programm erfolgreich abgeschlossen</string>
-    <string name="steam">DAMPF</string>
-    <string name="media">MEDIUM</string>
-    <string name="press">DRUCK</string>
+    <string name="steam">Dampf</string>
+    <string name="media">Medium</string>
+    <string name="press">Druck</string>
     <string name="vent">ENTLÜFTE</string>
     <string name="media_temperature">Mediumtemperatur</string>
     <string name="pressure">Druck</string> 
@@ -311,14 +311,14 @@
     <string name="edit_user_defined_program">Benutzerdefinierbares Programm editieren</string>
     <string name="vacuum_times_">Vakuumschritte</string>
     <string name="please_use_secondary_lcd_screen_to_change_the_time">Benutzen Sie das Frontdisplay zur Änderung von Datum und Uhrzeit</string>
-    <string name="preheat_chamber_on_off">Vorheizphase EIN/AUS</string>
-    <string name="keep_temperature_on_off">Betriebstemperatur halten EIN/AUS</string>
+    <string name="preheat_chamber_on_off">Vorheizphase</string>
+    <string name="keep_temperature_on_off">Betriebstemperatur halten</string>
     <string name="if_on_the_sterilizer_will_warm_up_the_chamber_and_steam_generator_permanently">Dampfgenerator und Kammer im Stand-by auf Betriebtemperatur halten</string>
     <string name="if_on_the_sterilizer_will_heat_up_to_50_c_before_program_execution">Vor jedem Programmstart die Kammer auf 50°C vorheizen</string>
     <string name="material_testing_mode">Materialtest Modus</string>
     <string name="if_enabled_the_user_can_enter_how_often_to_run_a_program_without_user_interaction">Ermöglicht die Ausführung von mehreren Programmdurchläufen am Stück ohne Benutzerinteraktion</string>
 
-  	<string name="times">Schritte</string>
+  	<string name="times">mal hintereinander</string>
     <string name="how_often_the_program_should_be_executed_one_after_another_">Wie oft soll das Programm automatisch hintereinander ausgeführt werden?</string>
     <string name="of">von</string>
     <string name="cycle">Zyklus</string>
@@ -372,7 +372,133 @@
     <string name="touchscreen_not_connected">Touchscreen nicht verbunden</string>
     <string name="power_loss_during_record">Stromausfall während Aufzeichnung</string>
     <string name="kpa">kPa</string>
-    <string name="import_protocols">Import protocols</string>
+    <string name="import_protocols">Importiere Protokolle</string>
+    <string name="local_account">Lokaler Account</string>
+    <string name="online_account">Online Account</string>
+    <string name="certotrace_load_documentation">CertoTrace Beladungsmanagement</string>
+    <string name="enable_autoclave_load_docmentation">Aktivierung des CertoTrace Beladungsmanagement. Strichcodescanner und Labeldrucker benötigt.</string>
+    <string name="header_time">Zeit [min]</string>
+    <string name="header_temp">Kammer [°C]</string>
+    <string name="header_media_temp">Medium [°C]</string>
+    <string name="header_pressure">Druck [kPa]</string>
+    <string name="download_protocols_from_cloud">Lade Protokolle von CertoCloud</string>
+    <string name="cur_password">Aktuelles Passwort</string>
+    <string name="password_confirm">Wiederhole Passwort</string>
+    <string name="edit_user">Konto editieren</string>
+    <string name="please_enter_password">Geben Sie Ihr aktuelles Passwort ein</string>
+    <string name="error">Error</string>
+    <string name="close">Schließen</string>
+    <string name="try_again">Wiederholen</string>
+    <string name="sign_up_account_failed">Registrierung fehlgeschlagen!</string>
 
+    <string name="account_activation_failed">Konto Aktivierung fehlgeschlagen!</string>
+    <string name="account_activation_success">Konto erfolgreich aktiviert!</string>
+    <string name="something_went_wrong_try_again">Unbekannter Fehler. Versuchen Sie es später noch einmal.</string>
+    <string name="something_went_wrong">Unbekannter Fehler</string>
+    <string name="sending">Sende...</string>
+    <string name="edit_success">Änderung erfolgreich</string>
+    <string name="label_printed">Das Label wurde gedruckt.</string>
+    <string name="print_entities_checkbox_title">Temperatur- und Druckwerte drucken</string>
+    <string name="print_entities_checkbox_summary">Füge Temperatur- und Druckwerte dem Protokollausdruck hinzu</string>
+    <string name="change_admin_password">Administratorpasswort ändern</string>
+    <string name="admin_password_wrong">Passwort falsch.</string>
+    <string name="admin_password">Administrator Passwort</string>
+
+    <string-array name="error_codes">
+        <item>0|Erfolgreich abgeschlossen</item>
+        <item>15|-1|Programm manuell abgebrochen</item>
+        <item>16|-2|Verbindung abgebrochen</item>
+        <item>2|Vakuumpumpe defekt</item>
+        <item>31|32|Kammerfühler defekt</item>
+        <item>51|52|63|Dampftemperaturfühler defekt</item>
+        <item>61|62|Kammerfühler defekt</item>
+        <item>41|42|Kammerheizung defekt</item>
+        <item>5|Hubmagnet defekt</item>
+        <item>6|Tür defekt</item>
+        <item>7|Falscher Druckwert</item>
+        <item>8|9|Frischwassertank leer</item>
+        <item>10|11|Elektronische Verriegelung defekt</item>
+        <item>12|Lüfter der Vakuumpumpe defekt</item>
+        <item>99|Kabel ist nicht verbunden</item>
+    </string-array>
+
+
+
+
+    <string name="login_failed_title">Login fehlgeschlagen</string>
+    <string name="new_password">Neues Passwort</string>
+    <string name="confirm_password">Bestätige Passwort</string>
+    <string name="database_error">Datenbankfehler, Setzen Sie das Gerät in den Werkszustand zurück.</string>
+    <string name="start_video_assistant">Videoassistent starten</string>
+    <string name="logout">Ausloggen</string>
+    <string name="please_choose_and_start_the_program">Starte Programm</string>
+    <string name="on_the_blue_front_lcd_screen">mit den vorderen Tasten</string>
+    <string name="close_door">Schließen Sie die Tür</string>
+    <string name="remove_water">Entleeren Sie den Abwasserbehälter</string>
+    <string name="fill_water">Füllen Sie den Frischwasserbehälter</string>
+    <string name="please_enter_a_valid_drying_time">Geben Sie eine zulässige Trocknungszeit an.</string>
+    <string name="please_enter_a_valid_sterilization_time">Geben Sie eine zulässige Sterilisationszeit an.</string>
+    <string name="please_enter_a_valid_sterilization_temperature">Geben Sie eine zulässige Sterilisationstemperatur an.</string>
+    <string name="please_enter_a_valid_number_of_vacuum_times">Geben Sie eine zulässige Anzahl an Vakuumphasen an.</string>
+    <string name="please_enter_a_valid_data">Geben Sie zulässige Daten ein.</string>
+    <string name="edit_custom_program">Benutzerdefinierbares Programm editieren</string>
+    <string name="updated_successfully">Update erfolgreich.</string>
+    <string name="update_failed">Zodate fehlgeschlagen. Versuchen Sie es erneut.</string>
+    <string name="enter_time_until_expiration">Geben Sie die Haltbarkeitszeit ein.</string>
+    <string name="scan_item">Scannen Sie das Produkt.</string>
+    <string name="unable_to_print_the_label">Labeldruck fehlgeschlagen.</string>
+    <string name="invalid_barcode">Ungültiger Tracing Code.</string>
+    <string name="mount_usb_stick">Verbinde zu USB-Stick</string>
+    <string name="reboot_neccessary">Ein Neustart is notwendig um den USB-Stick zu erkennen. Lassen Sie den USB-Stick stecken und starten Sie diesen Touchbildschirm neu.</string>
+    <string name="reboot">Neustart</string>
+    <string name="no_sdcard">Keine SD-Karte</string>
+    <string name="no_sdcard_detected">Keine SD-Karte gefunden. Lassen Sie die Karte stecken und starten Sie diesen Touchbildschirm neu.</string>
+    <string name="coping_protocols">Kopiere Protokolle...</string>
+    <string name="export_success">Export erfolgreich</string>
+    <string name="export_failed">Export fehlgeschlagen.</string>
+    <string name="material_testing">Materialtest</string>
+
+
+
+
+    <string name="dialog_send_email">Sende eine Email an CertoSupport</string>
+    <string name="dialog_share_screen">Bildschirm mit CertoSupport teilen</string>
+    <string name="share_screen">Bildschirm teilen</string>
+    <string name="send_email">Sende Email</string>
+    <string name="no_user_info">Keine Kontoinformationen</string>
+    <string name="start_screen_share_problem">Unbekannter Fehler. Versuchen Sie es später erneut.</string>
+    <string name="please_describe_problem">Beschreiben Sie das Problem</string>
+    <string name="description">Beschreibung</string>
+    <string name="loading">Lade...</string>
+    <string name="checking">Überprüfung...</string>
+    <string name="adding">Hinzufügen...</string>
+
+
+    <string name="bar">bar</string>
+    <string name="_c">°C</string>
+
+
+
+    <string name="title_notification">Overlay</string>
+    <string name="you_can_add_maximum_6_programs">Sie können maximal 6 Programme hinzufügen</string>
+    <string name="choose_a_program_from">Wähle ein Programm von</string>
+    <string name="define_a_new_program">Erstelle ein neues Programm</string>
+    <string name="create_new_program">Erstelle ein neues Programm</string>
+    <string name="delete_this_account_">dieses Konto löschen?</string>
+    <string name="connection_lost">Verbindungsabbruch</string>
+    <string name="program_successful_finished">Programm erfolgreich abgeschlossen</string>
+
+    <string name="internet_not_connected">Internet nicht verfügbar</string>
+    <string name="you_are_not_registered_at_certocloud_com">Sie sind nicht auf www.certocloud.com registriert</string>
+    <string name="do_you_want_to_switch_to_offline_mode_new_protocols_will_be_uploaded_to_certocloud_after_next_successful_login">Möchten Sie in den Offline Modus wechseln? Alle Dateien werden nach dem nächsten erfolgreichen Login hochgeladen</string>
+    <string name="please_enter_a_valid_name">Please enter a valid name</string>
+    <string name="please_enter_a_valid_phone_number">Geben Sie eine gültige Telefonnummer ein</string>
+    <string name="phone_number">Telefonnummer</string>
+    <string name="this_could_have_following_reasons_">Dies könnte folgende Gründe haben:</string>
+    <string name="offline_password">Lokales Passwort</string>
+    <string name="repeat_offline_password">Wiederhole lokales Passwort</string>
+    <string name="choose_program_from_template">Wähle Programm aus einer Vorlage</string>
+    <string name="browse_templates">Vorlagen</string>
+    <string name="program_templates">Vorlagen</string>
 
 </resources>

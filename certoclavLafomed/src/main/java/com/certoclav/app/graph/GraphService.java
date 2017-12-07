@@ -226,9 +226,10 @@ public class GraphService implements SensorDataListener {
     }
 
 
-    private Double roundFloat(float f) {
-        return Double.parseDouble(String.format("%.2f", f));
+    private Double roundFloat(float f){
+        int tempnumber = (int) (f*100);
+        Double roundedfloat = (double) ((double)tempnumber/100.0);
+        return roundedfloat;
     }
-
 
 }

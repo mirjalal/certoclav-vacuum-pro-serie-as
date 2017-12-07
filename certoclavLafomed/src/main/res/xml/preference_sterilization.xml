@@ -47,6 +47,6 @@
 
     <CheckBoxPreference
         android:key="switch_scan_items"
-        android:summary="Enable autoclave load documentation. Barcodescanner and labelprinter required."
-        android:title="CertoTrace load documentation"></CheckBoxPreference>
+        android:summary="@string/enable_autoclave_load_docmentation"
+        android:title="@string/certotrace_load_documentation"></CheckBoxPreference>
 </PreferenceScreen>

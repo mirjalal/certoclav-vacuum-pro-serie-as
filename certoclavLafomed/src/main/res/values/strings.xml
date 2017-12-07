@@ -52,10 +52,10 @@
     <string name="state_unknown">UNKNOWN</string>
     <string name="title_introduction">FIRST STEPS</string>
     <string name="settings_language">Language</string>
-    <string name="settings_wifi">WIFI</string>
+    <string name="settings_wifi">WLAN</string>
     <string name="intro_click_to_choose_network">Click to choose Network</string>
     <string name="intro_step_skipped">Step skipped</string>
-    <string name="intro_trying_to_enable_wifi">Trying to enable WIFI</string>
+    <string name="intro_trying_to_enable_wifi">Trying to enable WLAN</string>
     <string name="connected_to">Connected to</string>
     <string name="date_and_time">Date &amp; Time</string>
     <string name="certoclav_account">CertoClav account</string>
@@ -102,9 +102,9 @@
     <string name="settings_sterilization">Sterilization</string>
     <string name="settings_device">Device</string>
     <string name="settings_help">Help</string>
-    <string name="wifi_not_connected">WIFI not connected</string>
-    <string name="trying_to_connect_click_to_choose_network">Trying to connect | Click to choose Network</string>
-    <string name="wifi_disabled">WIFI disabled</string>
+    <string name="wifi_not_connected">WLAN not connected</string>
+    <string name="trying_to_connect_click_to_choose_network">WLAN enabled</string>
+    <string name="wifi_disabled">WLAN disabled</string>
     <string name="free_memory">Free Memory</string>
     <string name="title_contact_support">CONTACT SUPPORT</string>
     <string name="you_forgot_to_enter_the_email_id">You forgot to enter the email ID</string>
@@ -250,12 +250,12 @@
 
 
     <string name="network_connection_required">Network connection required</string>
-    <string name="please_connect_to_a_network_via_lan_or_wifi_">Please connect to a network via LAN or WiFi.\n</string>
-    <string name="do_you_want_to_open_wifi_settings_">Do you want to open WiFi settings?</string>
+    <string name="please_connect_to_a_network_via_lan_or_wifi_">Please connect to a network via LAN or WLAN.\n</string>
+    <string name="do_you_want_to_open_wifi_settings_">Do you want to open WLAN settings?</string>
     <string name="do_you_want_to_switch_to_offline_mode_">Do you want to switch to offline mode?</string>
     <string name="enable_network_communication">Enable network communication</string>
     <string name="do_you_want_to_enable_online_mode_">Do you want to enable online mode?</string>
-    <string name="show_wifi_settings">Open WiFi settings</string>
+    <string name="show_wifi_settings">Open WLAN settings</string>
     <string name="switch_to_offline_mode">Switch to offline mode</string>
     <string name="do_not_take_advantage_from_certocloud">Do not take advantage from CertoCloud</string>
     <string name="add_an_existing_certocloud_account">Add an existing CertoCloud account</string>
@@ -274,8 +274,8 @@
     <string name="login_notification_offline">Autoclave is in offline mode\nNo CertoCloud, automatic backups, remote control, support and software updates available</string>
     <string name="do_you_want_to_enable_network_communication">Do you want to enable network communication</string>
     <string name="network_not_connected">Network not connected</string>
-    <string name="manage_wifi_connections">Manage WIFI connections</string>
-    <string name="wifi_on_off">WIFI ON/OFF</string>
+    <string name="manage_wifi_connections">Manage WLAN connections</string>
+    <string name="wifi_on_off">WLAN ON/OFF</string>
     <string name="online_mode">Online mode</string>
     <string name="bluetooth_on_off">Bluetooth ON/OFF</string>
     <string name="add_account">Add account</string>
@@ -484,6 +484,10 @@
     <string name="power_loss_during_record">Power loss during record</string>
     <string name="kpa">kPa</string>
     <string name="import_protocols">Import protocols</string>
+    <string name="local_account">Local Account</string>
+    <string name="online_account">Online Account</string>
+    <string name="certotrace_load_documentation">CertoTrace load documentation</string>
+    <string name="enable_autoclave_load_docmentation">Enable autoclave load documentation. Barcodescanner and labelprinter required.</string>
 
 
     <string-array name="error_codes">

@@ -333,7 +333,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
 
         if (Autoclave.getInstance().getProfile().getSterilisationPressure() != 0) {
             sbuilder.append("Sterilisation pressure: ")
-                    .append(String.format("%.2f", ((float) Autoclave.getInstance().getProfile().getSterilisationPressure() * 0.01) + 1))
+                    .append(roundFloat(  (Autoclave.getInstance().getProfile().getSterilisationPressure() * 0.01f) + 1f).toString())
                     .append(" bar")
                     .append("\n");
         }
@@ -470,6 +470,12 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
         });
 
         dialog.show();
+    }
+
+    private Double roundFloat(float f){
+        int tempnumber = (int) (f*100);
+        Double roundedfloat = (double) ((double)tempnumber/100.0);
+        return roundedfloat;
     }
 
 }

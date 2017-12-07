@@ -164,13 +164,13 @@ public class PostProtocolsThread extends Thread {
             if (protocol.getSterilisationTemperature() != 0) {
                 sbuilder.append("Sterilisation temperature: ")
                         .append(protocol.getSterilisationTemperature())
-                        .append(" �C")
+                        .append(" °C")
                         .append("\r\n");
             }
 
             if (protocol.getSterilisationPressure() != 0) {
                 sbuilder.append("Sterilisation pressure: ")
-                        .append(String.format("%.2f", ((float) protocol.getSterilisationPressure() * 0.01) + 1))
+                        .append(roundFloat( (protocol.getSterilisationPressure() * 0.01f) + 1f).toString())
                         .append(" bar")
                         .append("\r\n");
             }
@@ -185,7 +185,7 @@ public class PostProtocolsThread extends Thread {
             if (protocol.getVacuumPersistTemperature() != 0) {
                 sbuilder.append("Vacuum persist temperature: ")
                         .append(protocol.getVacuumPersistTemperature())
-                        .append(" �C")
+                        .append(" °C")
                         .append("\r\n");
             }
             if (protocol.getVacuumPersistTime() != 0) {
@@ -209,5 +209,11 @@ public class PostProtocolsThread extends Thread {
         //	runFlag = false;
         Log.e("PostProtocolsThread", "close and destroy thread");
         //wenn runflag false ist, dann l�uft die run() Methode zu ende und der Thread wird zerst�rt.
+    }
+
+    private Double roundFloat(float f){
+        int tempnumber = (int) (f*100);
+        Double roundedfloat = (double) ((double)tempnumber/100.0);
+        return roundedfloat;
     }
 }
