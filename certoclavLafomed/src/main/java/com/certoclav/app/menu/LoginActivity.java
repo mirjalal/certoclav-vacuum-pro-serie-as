@@ -98,43 +98,9 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         public void run() {
             buttonLogin.setEnabled(true);
             textViewLogin.setEnabled(true);
-        /*    final Dialog dialog = new Dialog(LoginActivity.this);
-            dialog.setContentView(R.layout.dialog_yes_no);
-            dialog.setTitle();
-            TextView text = (TextView) dialog.findViewById(R.id.text);
-            text.setText(loginFailedMessage);
-            text.append(getString(R.string.do_you_want_to_switch_to_offline_mode_));
-            Button dialogButton = (Button) dialog
-                    .findViewById(R.id.dialogButtonOK);
-            // if button is clicked, close the custom dialog
-            dialogButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                    SharedPreferences prefs = PreferenceManager
-                            .getDefaultSharedPreferences(LoginActivity.this);
-                    Editor editor = prefs.edit();
-                    editor.putBoolean(AppConstants.PREFERENCE_KEY_ONLINE_MODE,
-                            false);
-                    editor.commit();
-                    dialog.dismiss();
-                    onResume();
-                }
-            });
-
-            Button dialogButtonNo = (Button) dialog
-                    .findViewById(R.id.dialogButtonNO);
-            dialogButtonNo.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-
-            dialog.show();*/
             SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE)
-                    .setTitleText(getString(R.string.login_failed_title))
+                    .setTitleText(loginFailedMessage)
                     .setContentText(getString(R.string.do_you_want_to_switch_to_offline_mode_))
                     .setConfirmText(getString(R.string.ok))
                     .setCancelText(getString(R.string.cancel))
@@ -477,8 +443,8 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
             User user = databaseService.getUserById(idOfLastUser);
             if (user != null) {
                 if (listUsers.size() > 0) {
-                    for(int i = 0; i< listUsers.size();i++){
-                        if(user.getUserId() == listUsers.get(i).getUserId()){
+                    for (int i = 0; i < listUsers.size(); i++) {
+                        if (user.getUserId() == listUsers.get(i).getUserId()) {
                             spinner.setSelection(i);
                             Autoclave.getInstance().setUser(user);
                         }
@@ -603,6 +569,8 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         Log.e("LoginActivity", "onTaskFinished - statusCode: " + response);
         buttonLogin.setEnabled(true);
         textViewLogin.setEnabled(true);
+        if (response.getMessage() != null)
+            loginFailedMessage = response.getMessage();
         switch (response.getStatus()) {
             case PostUtil.RETURN_OK:
                 Toast.makeText(LoginActivity.this,

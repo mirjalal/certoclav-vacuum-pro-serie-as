@@ -262,6 +262,7 @@ public class DownloadUtils {
                         barProgressDialog
                                 .setConfirmText("OK")
                                 .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                        barProgressDialog.dismiss();
                        // Toast.makeText(mContext, "all downloads done", Toast.LENGTH_SHORT).show();
 
                     }

@@ -215,7 +215,7 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(final View view) {
         switch (view.getId()) {
             case R.id.imageViewPrint:
                 if (!printSelectedProtocol()) {
@@ -226,7 +226,8 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
                 askForScan();
                 break;
             case R.id.imageViewDownloadProtocol:
-                if (ApplicationController.getInstance().isNetworkAvailable() && protocolAdapter.getItem(aktPosition) != null) {
+                if (ApplicationController.getInstance().isNetworkAvailable() && protocolAdapter.getCount() > aktPosition && protocolAdapter.getItem(aktPosition) != null) {
+                    view.setEnabled(false);
                     final SweetAlertDialog barProgressDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
                     barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
                     barProgressDialog.setTitleText(getActivity().getString(com.certoclav.library.R.string.downloading));
@@ -238,11 +239,11 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
                                 if (requestId == 1)
                                     barProgressDialog.setTitleText(getActivity().getString(R.string.adding));
                                 else {
-                                    barProgressDialog.setTitleText(getActivity().getString(R.string.download_success));
-                                    barProgressDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-
                                     protocolAdapter.updateProtocol(aktPosition, databaseService.getProtocolByCloudId(protocolAdapter.getItem(aktPosition).getCloudId()));
                                     selectProtocol(aktPosition);
+                                    barProgressDialog.setTitleText(getActivity().getString(R.string.download_success));
+                                    barProgressDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                    view.setEnabled(true);
                                     //  updateProtocolAdapter();
                                 }
                             else {
@@ -256,6 +257,7 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
                         public void onError(ErrorModel error, int requestId) {
                             barProgressDialog.setTitleText(error.getMessage() != null ? error.getMessage() : getActivity().getString(R.string.download_failed));
                             barProgressDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                            view.setEnabled(true);
                         }
 
                         @Override
