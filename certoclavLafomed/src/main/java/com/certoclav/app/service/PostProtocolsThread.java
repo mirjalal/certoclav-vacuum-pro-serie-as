@@ -102,20 +102,25 @@ public class PostProtocolsThread extends Thread {
 															 *	16 Connection lost error
 												        	 */
                             int errorCodeCloud = 0;
-                            switch (protocol.getErrorCode()) {
-                                case 1:
-                                    errorCodeCloud = 14;
-                                    break;
-                                case 2:
-                                    errorCodeCloud = 15;
-                                    break;
-                                case 3:
-                                    errorCodeCloud = 16;
-                                    break;
-                                case -1:
-                                    errorCodeCloud = 15;
-                                    break;
+                            try{
+                                errorCodeCloud = protocol.getErrorCode();
+                            }catch (Exception e){
+                                errorCodeCloud = 15;
                             }
+                            //switch (protocol.getErrorCode()) {
+                            //    case 1:
+                            //        errorCodeCloud = 14;
+                            //        break;
+                            //    case 2:
+                            //        errorCodeCloud = 15;
+                            //        break;
+                            //    case 3:
+                            //        errorCodeCloud = 16;
+                            //        break;
+                            //    case -1:
+                            //        errorCodeCloud = 15;
+                            //        break;
+                            //}
                             jsonProtocolObject.put("errcode", errorCodeCloud);
                             jsonProtocolObject.put("entries", entryJSONArray);
 

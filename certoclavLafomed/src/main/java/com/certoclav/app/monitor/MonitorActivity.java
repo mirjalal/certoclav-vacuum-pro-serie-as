@@ -319,48 +319,48 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
 
         StringBuilder sbuilder = new StringBuilder();
         if (Autoclave.getInstance().getProfile().getVacuumTimes() != 0) {
-            sbuilder.append("Vacuum times: ")
+            sbuilder.append(getString(R.string.vacuum_times)+" ")
                     .append(Autoclave.getInstance().getProfile().getVacuumTimes())
                     .append("\n");
         }
 
         if (Autoclave.getInstance().getProfile().getSterilisationTemperature() != 0) {
-            sbuilder.append("Sterilisation temperature: ")
+            sbuilder.append(getString(R.string.sterilization_temperature)+" ")
                     .append(Autoclave.getInstance().getProfile().getSterilisationTemperature())
-                    .append(" \u2103")
+                    .append(" "+"\u2103")
                     .append("\n");
         }
 
         if (Autoclave.getInstance().getProfile().getSterilisationPressure() != 0) {
-            sbuilder.append("Sterilisation pressure: ")
+            sbuilder.append(getString(R.string.sterilization_pressure)+" ")
                     .append(roundFloat(  (Autoclave.getInstance().getProfile().getSterilisationPressure() * 0.01f) + 1f).toString())
-                    .append(" bar")
+                    .append(" "+getString(R.string.bar))
                     .append("\n");
         }
 
         if (Autoclave.getInstance().getProfile().getSterilisationTime() != 0) {
-            sbuilder.append("Sterilisation holding time: ")
+            sbuilder.append(getString(R.string.sterilization_holding_time)+" ")
                     .append(Autoclave.getInstance().getProfile().getSterilisationTime())
-                    .append(" min")
+                    .append(" "+getString(R.string.min))
                     .append("\n");
         }
 
         if (Autoclave.getInstance().getProfile().getVacuumPersistTemperature() != 0) {
-            sbuilder.append("Vacuum persist temperature: ")
+            sbuilder.append(getString(R.string.vacuum_persist_temperature)+" ")
                     .append(Autoclave.getInstance().getProfile().getVacuumPersistTemperature())
-                    .append(" ?C")
+                    .append(" "+"\u2103")
                     .append("\n");
         }
         if (Autoclave.getInstance().getProfile().getVacuumPersistTime() != 0) {
-            sbuilder.append("Vacuum persist time: ")
+            sbuilder.append(getString(R.string.vacuum_persist_time)+" ")
                     .append(Autoclave.getInstance().getProfile().getVacuumPersistTime())
-                    .append(" min")
+                    .append(" "+getString(R.string.min))
                     .append("\n");
         }
         if (Autoclave.getInstance().getProfile().getDryTime() != 0) {
-            sbuilder.append("Drying time: ")
+            sbuilder.append(getString(R.string.drying_time)+" ")
                     .append(Autoclave.getInstance().getProfile().getDryTime())
-                    .append(" min");
+                    .append(" "+getString(R.string.min));
         }
 
         textSteps.setText(sbuilder.toString());

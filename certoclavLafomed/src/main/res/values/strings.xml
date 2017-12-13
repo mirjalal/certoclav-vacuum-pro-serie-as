@@ -402,7 +402,7 @@
     <string name="please_choose_and_start_the_program">Start program</string>
     <string name="on_the_blue_front_lcd_screen">with the front buttons</string>
     <string name="close_door">Please close the door</string>
-    <string name="remove_water">Please empty the water waste container</string>
+    <string name="remove_water">Please empty the waste water container</string>
     <string name="fill_water">Please fill water container</string>
     <string name="please_enter_a_valid_drying_time">Please enter a valid drying time!</string>
     <string name="please_enter_a_valid_sterilization_time">Please enter a valid sterilization time!</string>
@@ -535,6 +535,15 @@
     <string name="program_12_name">LIQUID</string>
     <string name="program_12_description">Liquid sterilization\n121 \u00B0C   1.1bar   20min\nWith media sensor"</string>
     <string name="open_the_door">Open the door</string>
+    <string name="unable_to_start_vacuum_test">Unable to start the vacuum test. Please wait until the chamber is cooled down.</string>
+    <string name="vacuum_times">Vacuum times:</string>
+    <string name="sterilization_temperature">Sterilization temperature:</string>
+    <string name="sterilization_pressure">Sterilization pressure:</string>
+    <string name="sterilization_holding_time">Sterilization holding time:</string>
+    <string name="vacuum_persist_temperature">Vacuum persist temperature:</string>
+    <string name="vacuum_persist_time">Vacuum persist time:</string>
+    <string name="drying_time">Drying time:</string>
+    <string name="min">min</string>
 
 
 </resources>

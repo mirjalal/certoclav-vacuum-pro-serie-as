@@ -78,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/btn_blue_shadow_clickable"
-            android:text="Next"
+            android:text="@string/next_step"
             android:textColor="@android:color/white"
             android:textSize="24sp"
             android:onClick="onClickNextStep" />

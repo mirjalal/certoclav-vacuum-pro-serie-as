@@ -288,7 +288,7 @@
     
     
       <string name="create_a_new_program_manually">Ein neues Programm manuell erstellen</string>
-    <string name="notifications">Benachrichtigungen</string>
+    <string name="notifications">E-Mail und SMS</string>
     <string name="not_able_to_connect_to_certocloud">Es konnte keine Verbindung zur CertoCloud hergestellt werden</string>
     <string name="by_email">per E-Mail</string>
     <string name="by_sms">per SMS</string>
@@ -355,7 +355,7 @@
     <string name="if_maintenance_is_required_please_notify_me">Falls Wartung nötig ist, benachrichtigen Sie mich</string>
     <string name="by_phone">per Telefon</string>
     <string name="email_address">per E-Mail</string>
-    <string name="send_mail_to_certosupport">Sende eine E-Mail an CertoSupport</string>
+    <string name="send_mail_to_certosupport">Sende eine E-Mail an CertoClav</string>
     <string name="the_video_assistant">the video assistant</string>
 
 
@@ -372,7 +372,7 @@
     <string name="touchscreen_not_connected">Touchscreen nicht verbunden</string>
     <string name="power_loss_during_record">Stromausfall während Aufzeichnung</string>
     <string name="kpa">kPa</string>
-    <string name="import_protocols">Importiere Protokolle</string>
+    <string name="import_protocols">Kopiere Protokolle</string>
     <string name="local_account">Lokaler Account</string>
     <string name="online_account">Online Account</string>
     <string name="certotrace_load_documentation">CertoTrace Beladungsmanagement</string>
@@ -444,7 +444,7 @@
     <string name="edit_custom_program">Benutzerdefinierbares Programm editieren</string>
     <string name="updated_successfully">Update erfolgreich.</string>
     <string name="update_failed">Zodate fehlgeschlagen. Versuchen Sie es erneut.</string>
-    <string name="enter_time_until_expiration">Geben Sie die Haltbarkeitszeit ein.</string>
+    <string name="enter_time_until_expiration">Mindesthaltbarkeit: </string>
     <string name="scan_item">Scannen Sie das Produkt.</string>
     <string name="unable_to_print_the_label">Labeldruck fehlgeschlagen.</string>
     <string name="invalid_barcode">Ungültiger Tracing Code.</string>
@@ -461,7 +461,7 @@
 
 
 
-    <string name="dialog_send_email">Sende eine Email an CertoSupport</string>
+    <string name="dialog_send_email">Sende eine Email an CertoClav</string>
     <string name="dialog_share_screen">Bildschirm mit CertoSupport teilen</string>
     <string name="share_screen">Bildschirm teilen</string>
     <string name="send_email">Sende Email</string>
@@ -510,7 +510,7 @@
     <string name="program_3_name">134 \u00B0C HOHLKÖRPER</string>
     <string name="program_3_description">134 \u00B0C   2.1bar   4min\nHohlkörper\nVerpackt oder unverpackt"</string>
     <string name="program_4_name">121 \u00B0C SOLIDE</string>
-    <string name="program_4_description">121 \u00B0C   1.1bar   20min\nFestekörper und Textilien\nVerpackt oder unverpackt"</string>
+    <string name="program_4_description">121 \u00B0C   1.1bar   20min\nFestkörper und Textilien\nVerpackt oder unverpackt"</string>
     <string name="program_5_name">121 \u00B0C PORÖS</string>
     <string name="program_5_description">121 \u00B0C   1.1bar   20min\nPoröse Materialien und dicht gebündelte Textilien\nVerpackt oder unverpackt"</string>
     <string name="program_6_name">121 \u00B0C HOHLKÖRPER</string>
@@ -528,6 +528,15 @@
     <string name="program_12_name">FLÜSSIG</string>
     <string name="program_12_description">Sterilisation von FLüssigkeiten\n121 \u00B0C   1.1bar   20min\nMit Mediensensor"</string>
     <string name="open_the_door">Öffnen Sie die Tür</string>
+    <string name="unable_to_start_vacuum_test">Vakuumtest kann noch nicht gestartet werden. Warten Sie bis die Kammer etwas heruntergekühlt ist.</string>
+    <string name="vacuum_times">Vakuumschritte:</string>
+    <string name="sterilization_temperature">Sterilisationstemperatur:</string>
+    <string name="sterilization_pressure">Sterilisationsdruck:</string>
+    <string name="sterilization_holding_time">Sterilisationszeit:</string>
+    <string name="vacuum_persist_temperature">Vakuum Temperatur:</string>
+    <string name="vacuum_persist_time">Vakuum Haltezeit:</string>
+    <string name="drying_time">Trocknungszeit:</string>
+    <string name="min">min</string>
 
 
 </resources>

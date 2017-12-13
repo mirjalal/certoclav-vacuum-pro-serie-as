@@ -524,7 +524,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
         //Connection loss is always an error.
         if (AppConstants.isIoSimulated == false) {
             if (Autoclave.getInstance().isMicrocontrollerReachable() == false) {
-                errorList.add(new Error("ERROR: " + "-2",
+                errorList.add(new Error("ERROR: " + getErrorString(ERROR_CODE_CONNECTION_LOST),
                         mContext.getResources().getString(R.string.path_video_power),
                         Error.TYPE_ERROR,
                         ERROR_CODE_CONNECTION_LOST));
@@ -536,13 +536,13 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                 if (secondsSinceStart > 3) { //time delay, because autoclave actualises data slowly
 
                     if (Autoclave.getInstance().getErrorCode() != 0) {
-                        errorList.add(new Error("ERROR " + Autoclave.getInstance().getErrorCode() + " - Wait until autoclave is unlocked",
+                        errorList.add(new Error("ERROR: " + getErrorString(Autoclave.getInstance().getErrorCode()) + " - Wait until autoclave is unlocked",
                                 "",
                                 Error.TYPE_ERROR,
                                 Autoclave.getInstance().getErrorCode()));
                     }
                     if (Autoclave.getInstance().getData().isFailStoppedByUser()) {
-                        errorList.add(new Error("ERROR: " + ERROR_CODE_CANCELLED_BY_USER,
+                        errorList.add(new Error("ERROR: " + getErrorString(ERROR_CODE_CANCELLED_BY_USER),
                                 "",
                                 Error.TYPE_ERROR,
                                 ERROR_CODE_CANCELLED_BY_USER));
@@ -554,13 +554,13 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
 
                 if (Autoclave.getInstance().getData().isFailStoppedByUser()) {
-                    errorList.add(new Error("ERROR: " + ERROR_CODE_CANCELLED_BY_USER,
+                    errorList.add(new Error("ERROR: " + getErrorString(ERROR_CODE_CANCELLED_BY_USER),
                             "",//mContext.getResources().getString(R.string.path_video_place_item),
                             Error.TYPE_ERROR,
                             ERROR_CODE_CANCELLED_BY_USER));
                 }
                 if (Autoclave.getInstance().getErrorCode() != 0) {
-                    errorList.add(new Error("ERROR " + Autoclave.getInstance().getErrorCode(),
+                    errorList.add(new Error("ERROR " + getErrorString(Autoclave.getInstance().getErrorCode()),
                             "",//mContext.getResources().getString(R.string.path_video_place_item),
                             Error.TYPE_ERROR,
                             Autoclave.getInstance().getErrorCode()));
@@ -572,13 +572,13 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
             case NOT_RUNNING:
             case LOCKED:
                 if (Autoclave.getInstance().getData().isWaterLvlLow()) {
-                    errorList.add(new Error("Please fill water container",
+                    errorList.add(new Error(mContext.getString(R.string.fill_water),
                             mContext.getString(R.string.path_video_fill_water),
                             Error.TYPE_WARNING,
                             0));
                 }
                 if (Autoclave.getInstance().getData().isWaterLvlFull()) {
-                    errorList.add(new Error("Please empty the water waste container",
+                    errorList.add(new Error(mContext.getString(R.string.remove_water),
                             mContext.getString(R.string.path_video_empty_water),
                             Error.TYPE_WARNING,
                             0));
@@ -592,7 +592,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                 try {
                     if(AppConstants.IS_CERTOASSISTANT == false) {
                         if (Autoclave.getInstance().getProfile().getIndex() == 9 && Autoclave.getInstance().getData().getTemp1().getCurrentValue() > 50) {
-                            errorList.add(new Error("Unable to start the vacuum test. Please wait until the chamber is cooled down",
+                            errorList.add(new Error(mContext.getString(R.string.unable_to_start_vacuum_test),
                                     "",
                                     Error.TYPE_WARNING,
                                     0));
