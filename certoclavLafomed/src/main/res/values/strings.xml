@@ -36,9 +36,9 @@
     <string name="path_video_start_program_10">/sdcard/Download/animation_start_program_10.mp4</string>
     <string name="path_video_start_program_11">/sdcard/Download/animation_start_program_11.mp4</string>
 
-    <string name="video_place_item_descripton">Please place caskets into the autoclave</string>
-    <string name="video_lock_description">Please close the door</string>
-    <string name="video_fill_water_description">Please refill water tank</string>
+    <string name="video_place_item_descripton">Place items into the autoclave</string>
+    <string name="video_lock_description">Close the door</string>
+    <string name="video_fill_water_description">Refill water tank</string>
     <string name="start_program">Start</string>
 
     <string name="title_monitor">MONITOR</string>
@@ -488,6 +488,7 @@
     <string name="online_account">Online Account</string>
     <string name="certotrace_load_documentation">CertoTrace load documentation</string>
     <string name="enable_autoclave_load_docmentation">Enable autoclave load documentation. Barcodescanner and labelprinter required.</string>
+    <string name="username_or_password_is_wrong">Wrong username or password</string>
 
 
     <string-array name="error_codes">
@@ -507,4 +508,33 @@
         <item>12|Vacuum pump or fan damaged</item>
         <item>99|Cable is not connected</item>
     </string-array>
+
+
+    <string name="program_1_name">134 \u00B0C SOLID</string>
+    <string name="program_1_description">134 \u00B0C   2.1bar   4min\nSolid instruments and textiles\nWrapped or unwrapped"</string>
+    <string name="program_2_name">134 \u00B0C POROUS</string>
+    <string name="program_2_description">134 \u00B0C   2.1bar   4min\nPorous instruments and textiles\nWrapped or unwrapped"</string>
+    <string name="program_3_name">134 \u00B0C HOLLOW</string>
+    <string name="program_3_description">134 \u00B0C   2.1bar   4min\nHollow instruments\nWrapped or unwrapped"</string>
+    <string name="program_4_name">121 \u00B0C SOLID</string>
+    <string name="program_4_description">121 \u00B0C   1.1bar   20min\nSolid instruments and textiles\nWrapped or unwrapped"</string>
+    <string name="program_5_name">121 \u00B0C POROUS</string>
+    <string name="program_5_description">121 \u00B0C   1.1bar   20min\nPorous instruments and textiles\nWrapped or unwrapped"</string>
+    <string name="program_6_name">121 \u00B0C HOLLOW</string>
+    <string name="program_6_description">121 \u00B0C   1.1bar   20min\nHollow instruments\nWrapped or unwrapped"</string>
+    <string name="program_7_name">USER DEFINED</string>
+    <string name="program_7_description">Vacuum times: User defined\nSterilization temperature: User defined\nDry time: User defined"</string>
+    <string name="program_8_name">BD HELIX TEST</string>
+    <string name="program_8_description">Test to evaluate the capacity\nof penetration of the steam\nin hollow loads"</string>
+    <string name="program_9_name">VACUUM TEST</string>
+    <string name="program_9_description">-0.8bar   15min\nVacuum Test\nRecommended on maintenance"</string>
+    <string name="program_10_name">CLEAN</string>
+    <string name="program_10_description">105 \u00B0C   0.2bar   5min\nClean the autoclave"</string>
+    <string name="program_11_name">PRION</string>
+    <string name="program_11_description">134 \u00B0C   2.1bar   19min\nPrion sterilization"</string>
+    <string name="program_12_name">LIQUID</string>
+    <string name="program_12_description">Liquid sterilization\n121 \u00B0C   1.1bar   20min\nWith media sensor"</string>
+    <string name="open_the_door">Open the door</string>
+
+
 </resources>

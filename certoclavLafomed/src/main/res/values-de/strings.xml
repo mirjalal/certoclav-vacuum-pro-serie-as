@@ -181,7 +181,7 @@
     
     <string name="login_to">ANMELDEN</string>
     <string name="do_you_really_want_to">Möchten Sie</string>
-    <string name="create_an_account_">einen neuen Account erstellen?</string>
+    <string name="create_an_account_">einen neuen Account hinzufügen?</string>
     <string name="connectivity_manager">VERBINDUNGS MANAGER</string>
     <string name="factory_reset">WERKSZUSTAND WIEDERHERSTELLEN</string>
     <string name="delete_all_data_">alle daten löschen?</string>
@@ -211,7 +211,7 @@
      
     <string name="please_connect_to_internet">Bitte stellen Sie eine Verbindung mit dem Inernet her</string>
     <string name="please_log_in_with_your_certocloud_account_first">Bitte loggen Sie sich zuerst mit Ihrem CertoCloud Konto ein</string>
-    <string name="login_notification_offline">Der Autoklav befindet sich im Offline Modus\nCertoCloud, automatische Updates, automatische Backups, Fernsteuerung, Direktsupport und Updates sind nicht verfügbar</string>
+    <string name="login_notification_offline">Der Autoklav befindet sich im Offline Modus\nCertoCloud, automatische Updates, automatische Backups, Fernsteuerung und Direktsupport sind nicht verfügbar</string>
     <string name="network_connection_required">Eine Netzwerkverbindung wird benötigt.</string>
     <string name="please_connect_to_a_network_via_lan_or_wifi_">Bitte verbinden Sie den Autoklaven via LAN oder WLAN.\n</string>
     <string name="do_you_want_to_open_wifi_settings_">Wollen Sie die WLAN Einstellungen öffnen?</string>
@@ -500,5 +500,34 @@
     <string name="choose_program_from_template">Wähle Programm aus einer Vorlage</string>
     <string name="browse_templates">Vorlagen</string>
     <string name="program_templates">Vorlagen</string>
+    <string name="username_or_password_is_wrong">Falscher Benutzername oder Passwort</string>
+
+
+    <string name="program_1_name">134 \u00B0C SOLIDE</string>
+    <string name="program_1_description">134 \u00B0C   2.1bar   4min\nFestkörper und Textilien\nVerpackt oder unverpackt"</string>
+    <string name="program_2_name">134 \u00B0C PORÖS</string>
+    <string name="program_2_description">134 \u00B0C   2.1bar   4min\nPoröse Materialien und dicht gebündelte Textilien\nVerpackt oder unverpackt"</string>
+    <string name="program_3_name">134 \u00B0C HOHLKÖRPER</string>
+    <string name="program_3_description">134 \u00B0C   2.1bar   4min\nHohlkörper\nVerpackt oder unverpackt"</string>
+    <string name="program_4_name">121 \u00B0C SOLIDE</string>
+    <string name="program_4_description">121 \u00B0C   1.1bar   20min\nFestekörper und Textilien\nVerpackt oder unverpackt"</string>
+    <string name="program_5_name">121 \u00B0C PORÖS</string>
+    <string name="program_5_description">121 \u00B0C   1.1bar   20min\nPoröse Materialien und dicht gebündelte Textilien\nVerpackt oder unverpackt"</string>
+    <string name="program_6_name">121 \u00B0C HOHLKÖRPER</string>
+    <string name="program_6_description">121 \u00B0C   1.1bar   20min\nHohlkörper\nVerpackt oder unverpackt"</string>
+    <string name="program_7_name">BENUTZERDEFINIERT</string>
+    <string name="program_7_description">Vakuumschritte: Benutzerdefiniert\nSterilisationstemperatur: Benutzerdefiniert\nTrocknungszeit: Benutzerdefiniert"</string>
+    <string name="program_8_name">BD HELIX TEST</string>
+    <string name="program_8_description">Dampfdurchdringungstest für Hohlkörper gemäß der Norm DIN EN 13060"</string>
+    <string name="program_9_name">VAKUUM TEST</string>
+    <string name="program_9_description">-0.8bar   15min\nVakuum Test\nMonatliche Ausführung empfehlenswert"</string>
+    <string name="program_10_name">REINIGUNG</string>
+    <string name="program_10_description">105 \u00B0C   0.2bar   5min\nReinigung des Autoklaven"</string>
+    <string name="program_11_name">PRIONEN</string>
+    <string name="program_11_description">134 \u00B0C   2.1bar   19min\nSterilisation von Prionen"</string>
+    <string name="program_12_name">FLÜSSIG</string>
+    <string name="program_12_description">Sterilisation von FLüssigkeiten\n121 \u00B0C   1.1bar   20min\nMit Mediensensor"</string>
+    <string name="open_the_door">Öffnen Sie die Tür</string>
+
 
 </resources>

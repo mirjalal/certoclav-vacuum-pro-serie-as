@@ -1,6 +1,8 @@
 package com.certoclav.app.database;
 
 
+import com.certoclav.app.R;
+import com.certoclav.library.application.ApplicationController;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 
@@ -183,6 +185,38 @@ public class Profile {
     }
 
     public String getName() {
+        try {
+            switch (getIndex()) {
+                case 1:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_1_name);
+                case 2:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_2_name);
+                case 3:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_3_name);
+                case 4:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_4_name);
+                case 5:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_5_name);
+                case 6:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_6_name);
+                case 7:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_7_name);
+                case 8:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_8_name);
+                case 9:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_9_name);
+                case 10:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_10_name);
+                case 11:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_11_name);
+                case 12:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_12_name);
+                default:
+                    return name;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return name;
     }
 
@@ -223,6 +257,38 @@ public class Profile {
 
 
     public String getDescription() {
+        try {
+            switch (getIndex()) {
+                case 1:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_1_description);
+                case 2:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_2_description);
+                case 3:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_3_description);
+                case 4:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_4_description);
+                case 5:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_5_description);
+                case 6:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_6_description);
+                case 7:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_7_description);
+                case 8:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_8_description);
+                case 9:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_9_description);
+                case 10:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_10_description);
+                case 11:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_11_description);
+                case 12:
+                    return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_12_description);
+                default:
+                    return description;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return description;
     }
 

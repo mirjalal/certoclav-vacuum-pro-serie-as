@@ -6,7 +6,7 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -33,7 +33,7 @@ public class AssistantActivity extends CertoclavSuperActivity implements Profile
 
     private VideoView videoView;
     private TextView textStepDescription;
-    private ImageView buttonNext;
+    private Button buttonNext;
 
     CertoclavNavigationbarClean navigationbar;
 
@@ -56,7 +56,7 @@ public class AssistantActivity extends CertoclavSuperActivity implements Profile
         }
         videoView = (VideoView) findViewById(R.id.sterilisation_assistant_videoview);
         textStepDescription = (TextView) findViewById(R.id.sterilisation_assistant_text_description);
-        buttonNext = (ImageView) findViewById(R.id.sterilisation_assistant_button_next);
+        buttonNext = (Button) findViewById(R.id.sterilisation_assistant_button_next);
 
         updateUI();
         super.onResume();
@@ -118,6 +118,9 @@ public class AssistantActivity extends CertoclavSuperActivity implements Profile
                     }
                 });
                 videoView.start();
+                textStepDescription.setText(R.string.open_the_door);
+                buttonNext.setBackgroundResource(R.drawable.btn_blue_shadow_clickable);
+
 
                 break;
 
@@ -164,10 +167,8 @@ public class AssistantActivity extends CertoclavSuperActivity implements Profile
 
                 videoView.start();
                 textStepDescription.setText(R.string.video_lock_description);
-                buttonNext.setBackgroundResource(R.drawable.btn_start_monitor);
-                if (AppConstants.IS_CERTOASSISTANT) {
-                    buttonNext.setBackgroundResource(R.drawable.bg_next_step);
-                }
+                buttonNext.setBackgroundResource(R.drawable.btn_blue_shadow_clickable);
+
                 break;
 
 
