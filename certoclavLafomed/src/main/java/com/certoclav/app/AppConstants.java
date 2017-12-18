@@ -30,6 +30,8 @@ public class AppConstants {
     public static final String MODEL_LAFOMED = "lafomed_v3"; //first autoclave with media sensor
     public static final String MODEL_CURRENT = MODEL_LAFOMED;
     public static final String SIMULATED_SAVETY_KEY = "63FBE2987481D9B6A";
+    public final static String MODEL = "Certoclav 18 Vac Pro";
+
 
 
     public static final String URL_UPDATE = "http://lvps46-163-113-210.dedicated.hosteurope.de:80/files/public-docs/";

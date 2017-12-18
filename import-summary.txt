@@ -1,6 +1,13 @@
 ECLIPSE ANDROID PROJECT IMPORT SUMMARY
 ======================================
 
+ * Project
+   MainActivity:C:\Users\musaq\Documents\CertoClav\Projects\Ethernet\.classpath:
+   
+   Could not resolve source path src in project MainActivity: ignored. The
+   project may not compile if the given source path provided source code.
+
+
 Risky Project Location:
 -----------------------
 The tools *should* handle project locations in any directory. However,
@@ -11,120 +18,32 @@ move your project to a location where this is not a problem.
 C:\Users\musaq\Documents\worspaces\Profile Downloader\CertoclavLafomed1
                                           -                            
 
-Manifest Merging:
------------------
-Your project uses libraries that provide manifests, and your Eclipse
-project did not explicitly turn on manifest merging. In Android Gradle
-projects, manifests are always merged (meaning that contents from your
-libraries' manifests will be merged into the app manifest. If you had
-manually copied contents from library manifests into your app manifest
-you may need to remove these for the app to build correctly.
-
 Ignored Files:
 --------------
 The following files were *not* copied into the new Gradle project; you
 should evaluate whether these are still needed in your project and if
 so manually move them:
 
-From CertoclavLafomed:
-* .gitignore
-* RemoteSystemsTempFiles\
-* RemoteSystemsTempFiles\.project
-* proguard-project.txt
-From Library:
-* .gitignore
+* Android.mk
+* com\
+* com\fsl\
+* com\fsl\ethernet\
+* com\fsl\ethernet\EthernetAdvDialog.java
+* com\fsl\ethernet\EthernetConfigDialog.java
+* com\fsl\ethernet\EthernetDevInfo.java
+* com\fsl\ethernet\EthernetEnabler.java
+* com\fsl\ethernet\EthernetManager.java
+* com\fsl\ethernet\MainActivity.java
 * ic_launcher-web.png
-* proguard-project.txt
-From SerialLib:
-* .gitignore
-* README.md
-* run_emulator.sh
-From android-support-v4-preferencefragment-master:
-* .gitignore
-* LICENSE
-* README.md
-* android-support-v4-preferencefragment-master.iml
-* build.gradle
-* gradle.properties
-* gradle\
-* gradle\wrapper\
-* gradle\wrapper\gradle-wrapper.jar
-* gradle\wrapper\gradle-wrapper.properties
-* gradlew
-* gradlew.bat
-* maven-repository\
-* maven-repository\com\
-* maven-repository\com\android\
-* maven-repository\com\android\support\
-* maven-repository\com\android\support\support-v4-preferencefragment\
-* maven-repository\com\android\support\support-v4-preferencefragment\1.0.0\
-* maven-repository\com\android\support\support-v4-preferencefragment\1.0.0\support-v4-preferencefragment-1.0.0.aar
-* maven-repository\com\android\support\support-v4-preferencefragment\1.0.0\support-v4-preferencefragment-1.0.0.aar.md5
-* maven-repository\com\android\support\support-v4-preferencefragment\1.0.0\support-v4-preferencefragment-1.0.0.aar.sha1
-* maven-repository\com\android\support\support-v4-preferencefragment\1.0.0\support-v4-preferencefragment-1.0.0.pom
-* maven-repository\com\android\support\support-v4-preferencefragment\1.0.0\support-v4-preferencefragment-1.0.0.pom.md5
-* maven-repository\com\android\support\support-v4-preferencefragment\1.0.0\support-v4-preferencefragment-1.0.0.pom.sha1
-* maven-repository\com\android\support\support-v4-preferencefragment\maven-metadata.xml
-* maven-repository\com\android\support\support-v4-preferencefragment\maven-metadata.xml.md5
-* maven-repository\com\android\support\support-v4-preferencefragment\maven-metadata.xml.sha1
-
-Replaced Jars with Dependencies:
---------------------------------
-The importer recognized the following .jar files as third party
-libraries and replaced them with Gradle dependencies instead. This has
-the advantage that more explicit version information is known, and the
-libraries can be updated automatically. However, it is possible that
-the .jar file in your project was of an older version than the
-dependency we picked, which could render the project not compileable.
-You can disable the jar replacement in the import wizard and try again:
-
-android-support-v4.jar => com.android.support:support-v4:22.2.1
 
 Moved Files:
 ------------
 Android Gradle projects use a different directory structure than ADT
 Eclipse projects. Here's how the projects were restructured:
 
-In Library:
-* AndroidManifest.xml => library\src\main\AndroidManifest.xml
-* assets\ => library\src\main\assets
-* libs\achartengine-1.1.0.jar => library\libs\achartengine-1.1.0.jar
-* libs\engine.io-client-0.7.0.jar => library\libs\engine.io-client-0.7.0.jar
-* libs\okhttp-3.0.1.jar => library\libs\okhttp-3.0.1.jar
-* libs\okhttp-ws-3.0.1.jar => library\libs\okhttp-ws-3.0.1.jar
-* libs\okio-1.6.0.jar => library\libs\okio-1.6.0.jar
-* libs\socket.io-client-0.7.0.jar => library\libs\socket.io-client-0.7.0.jar
-* libs\zip4j_1.3.2.jar => library\libs\zip4j_1.3.2.jar
-* lint.xml => library\lint.xml
-* res\ => library\src\main\res\
-* src\ => library\src\main\java\
-In SerialLib:
-* AndroidManifest.xml => serialLib\src\main\AndroidManifest.xml
-* assets\ => serialLib\src\main\assets
-* jni\ => serialLib\src\main\jni\
-* lint.xml => serialLib\lint.xml
-* res\ => serialLib\src\main\res\
-* src\ => serialLib\src\main\java\
-In android-support-v4-preferencefragment-master:
-* AndroidManifest.xml => androidsupportv4preferencefragmentmaster\src\main\AndroidManifest.xml
-* assets\ => androidsupportv4preferencefragmentmaster\src\main\assets
-* lint.xml => androidsupportv4preferencefragmentmaster\lint.xml
-* res\ => androidsupportv4preferencefragmentmaster\src\main\res\
-* src\ => androidsupportv4preferencefragmentmaster\src\main\java\
-* src\.readme => androidsupportv4preferencefragmentmaster\src\main\resources\.readme
-In CertoclavLafomed:
-* AndroidManifest.xml => certoclavLafomed\src\main\AndroidManifest.xml
-* assets\ => certoclavLafomed\src\main\assets
-* libs\apache-commons-net.jar => certoclavLafomed\libs\apache-commons-net.jar
-* libs\armeabi\libDropboxSync.so => certoclavLafomed\src\main\jniLibs\armeabi\libDropboxSync.so
-* libs\core-3.2.1.jar => certoclavLafomed\libs\core-3.2.1.jar
-* libs\mips\libDropboxSync.so => certoclavLafomed\src\main\jniLibs\mips\libDropboxSync.so
-* libs\ormlite-android-4.48.jar => certoclavLafomed\libs\ormlite-android-4.48.jar
-* libs\ormlite-core-4.48.jar => certoclavLafomed\libs\ormlite-core-4.48.jar
-* libs\x86\libDropboxSync.so => certoclavLafomed\src\main\jniLibs\x86\libDropboxSync.so
-* lint.xml => certoclavLafomed\lint.xml
-* res\ => certoclavLafomed\src\main\res\
-* src\ => certoclavLafomed\src\main\java\
+* AndroidManifest.xml => ethernet\src\main\AndroidManifest.xml
+* lint.xml => ethernet\lint.xml
+* res\ => ethernet\src\main\res\
 
 Next Steps:
 -----------

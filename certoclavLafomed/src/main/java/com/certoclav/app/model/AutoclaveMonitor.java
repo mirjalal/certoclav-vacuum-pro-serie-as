@@ -144,6 +144,11 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
     }
 
+    public void stopSocketService(){
+        Intent intent2 = new Intent(ApplicationController.getContext(), CloudSocketService.class);
+        ApplicationController.getContext().stopService(intent2);
+    }
+
     public void updateStateMachine() {
 
         //check if read services are still running

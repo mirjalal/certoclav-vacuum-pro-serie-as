@@ -230,6 +230,7 @@ public class CloudSocketThread extends Thread implements SocketEventListener {
  
 	public void endThread(){
 		runFlag = false;
+		SocketService.getInstance().endService();
 		Log.e("SocketThread","close and destroy thread");
 		//wenn runflag false ist, dann l�uft die run() Methode zu ende und der Thread wird zerst�rt.
 	}

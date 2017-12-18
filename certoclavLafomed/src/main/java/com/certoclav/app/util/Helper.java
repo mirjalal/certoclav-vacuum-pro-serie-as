@@ -2,9 +2,11 @@ package com.certoclav.app.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.StrictMode;
@@ -25,7 +27,11 @@ import com.certoclav.app.responsemodels.UserProtocolsResponseModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -375,9 +381,9 @@ public class Helper {
                 public void run() {
                     socket.disconnect();
                     socket.close();
-                    listener.onFailed();
+                    listener.onTimeout();
                 }
-            }, 5000);
+            }, 2000);
 
 
             Log.i("Broadcast", "Ready to receive broadcast packets!");
@@ -393,13 +399,13 @@ public class Helper {
             if (data.length() > 0) {
                 handler.removeCallbacks(callback);
                 JSONObject serverConfig = new JSONObject(data);
-                serverConfig.put("url", "http://"+packet.getAddress().getHostAddress());
+                serverConfig.put("url", "http://" + packet.getAddress().getHostAddress());
                 listener.onReceived(serverConfig);
             }
 
             socket.close();
         } catch (IOException ex) {
-            listener.onFailed();
+            //  listener.onFailed();
             Log.i("Broadcast", "Oops" + ex.getMessage());
         } catch (JSONException e) {
             listener.onFailed();
@@ -419,5 +425,57 @@ public class Helper {
         return InetAddress.getByAddress(quads);
     }
 
+    public static boolean installEnthernet(Context context) {
+        AssetManager assetManager = context.getAssets();
+    /*    PackageManager pm = context.getPackageManager();
+        try {
+            PackageInfo info = pm.getPackageInfo("com.fsl.ethernet", PackageManager.GET_META_DATA);
+        } catch (PackageManager.NameNotFoundException e) {
+            return true;
+        }*/
+
+        InputStream in = null;
+        OutputStream out = null;
+        String filename = Environment.getExternalStorageDirectory() + "/ethernet.apk";
+
+        try {
+            in = assetManager.open("ethernet.apk");
+            out = new FileOutputStream(filename);
+
+            byte[] buffer = new byte[1024];
+
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+
+                out.write(buffer, 0, read);
+
+            }
+
+            in.close();
+            in = null;
+
+            out.flush();
+            out.close();
+            out = null;
+
+            File file = new File(filename);
+            if (file.exists()) {
+                try {
+                    String command;
+                    command = "adb install -r " + filename;
+                    Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", command});
+                    proc.waitFor();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 
 }

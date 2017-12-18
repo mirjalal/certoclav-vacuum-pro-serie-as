@@ -15,13 +15,15 @@ public class SocketService {
     public static final String EVENT_REGISTER = "register";
     public static final String EVENT_START_SEND = "server:get";
 
-    private static SocketService instance = new SocketService();
+    private static SocketService instance;
 
     private String deviceKey = "";
 
 
     public static synchronized SocketService getInstance() {
-        return instance;
+        if(instance!=null)
+            return instance;
+        return instance = new SocketService();
     }
 
     public interface SocketEventListener {
@@ -127,6 +129,11 @@ public class SocketService {
 
     public void setDeviceKey(String deviceKey) {
         this.deviceKey = deviceKey;
+    }
+
+    public void endService(){
+        socket.close();
+        instance = null;
     }
 
 

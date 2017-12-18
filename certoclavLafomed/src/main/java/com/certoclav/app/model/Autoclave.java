@@ -19,6 +19,7 @@ import com.certoclav.app.listener.SensorDataListener;
 import com.certoclav.app.listener.UserProgramListener;
 import com.certoclav.app.listener.WifiListener;
 import com.certoclav.library.application.ApplicationController;
+import com.certoclav.library.models.DeviceModel;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -547,6 +548,14 @@ public class Autoclave extends Observable {
     public Controller getController() {
 
         return controller;
+    }
+
+    public DeviceModel getDevice(){
+        DeviceModel deviceModel = new DeviceModel();
+        deviceModel.setDeviceKey(controller.getSavetyKey());
+        deviceModel.setSerial(controller.getSerialnumber());
+        deviceModel.setModel(AppConstants.MODEL);
+        return deviceModel;
     }
 
 

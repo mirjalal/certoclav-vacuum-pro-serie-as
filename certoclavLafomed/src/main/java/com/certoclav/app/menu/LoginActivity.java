@@ -301,7 +301,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                         postUserLoginService.setOnTaskFinishedListener(LoginActivity.this);
                         postUserLoginService.loginUser(currentUser.getEmail(),
                                 password,
-                                Autoclave.getInstance().getController().getSavetyKey());
+                                Autoclave.getInstance().getDevice());
                     } else {
                         showNotificationForNetworkNavigation();
                     }

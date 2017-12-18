@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
@@ -30,6 +31,7 @@ import com.certoclav.app.R;
 import com.certoclav.app.listener.BroadcastListener;
 import com.certoclav.app.listener.WifiListener;
 import com.certoclav.app.model.Autoclave;
+import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.ServerConfigs;
 import com.certoclav.library.certocloud.CertocloudConstants;
@@ -95,6 +97,9 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
      * Starts an Activity for Picking and Connecting to Wifi
      */
     private void startWifiPicker() {
+        PackageManager pm = getActivity().getPackageManager();
+        Intent launchIntent = pm.getLaunchIntentForPackage("com.fsl.ethernet");
+        getActivity().startActivity(launchIntent);
         startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK));
     }
 
@@ -220,7 +225,10 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
         dialog.show();
     }
 
+    int MAX_TRY_COUNT = 5;
+
     private void searchForServer() {
+        MAX_TRY_COUNT = 5;
         final SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE)
                 .setTitleText(getString(R.string.searching))
                 .setConfirmText(getString(R.string.yes))
@@ -259,7 +267,17 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
                     }
 
                     @Override
+                    public void onTimeout() {
+                        if (MAX_TRY_COUNT-- > 0) {
+                            new Thread(runnable).start();
+                            return;
+                        }
+                        onFailed();
+                    }
+
+                    @Override
                     public void onFailed() {
+
                         final SweetAlertDialog.OnSweetClickListener listener = new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(final SweetAlertDialog sweetAlertDialog) {
@@ -279,6 +297,7 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
                                 sweetAlertDialog.setTitleText(getString(R.string.server_not_found_title));
                                 sweetAlertDialog.setContentText(getString(R.string.server_not_found_content));
                                 sweetAlertDialog.setConfirmText(getString(R.string.try_again));
+                                MAX_TRY_COUNT=5;
                             }
                         });
                         sweetAlertDialog.setConfirmClickListener(listener);
@@ -305,6 +324,7 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
                 serverConfigs.setUrl(CertocloudConstants.SERVER_URL);
                 serverConfigs.setPort("");
                 serverConfigs.saveServerConfig(serverType, serverConfigs);
+                updateServerSummary();
                 break;
             case R.id.dialogAddManually:
                 askForServerInfoManually();
@@ -313,7 +333,6 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
                 searchForServer();
                 break;
         }
-        updateServerSummary();
     }
 
     @Override
@@ -382,6 +401,7 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
 
 
     private void updateServerSummary() {
+        AutoclaveMonitor.getInstance().stopSocketService();
         findPreference(AppConstants.PREFERENCE_KEY_CHOOSE_SERVER).setSummary(
                 getPreferenceManager().getSharedPreferences().getString(AppConstants.PREFERENCE_KEY_SERVER_NAME,
                         getString(R.string.certocloud_server)));

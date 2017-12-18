@@ -3,7 +3,9 @@ package com.certoclav.library.certocloud;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.certoclav.library.models.DeviceModel;
 import com.certoclav.library.util.Response;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,15 +22,15 @@ public class PostUserLoginService {
 
     private String email;
     private String password;
-    private String deviceKey;
+    private DeviceModel device;
     private PostUtil postUtil;
 
 
     // Get profiles from the server
-    public void loginUser(String email, String password, String deviceKey) {
+    public void loginUser(String email, String password, DeviceModel device) {
         this.email = email;
         this.password = password;
-        this.deviceKey = deviceKey;
+        this.device = device;
         new PutUserLoginTask().execute();
     }
 
@@ -44,6 +46,8 @@ public class PostUserLoginService {
                 try {
                     object.put("username", email);
                     object.put("password", password);
+                    object.put("devices",new Gson().toJson(device));
+
                 } catch (Exception ex) {
                     Log.e("RestUserLoginTask", ex.toString());
                 }
@@ -74,7 +78,7 @@ public class PostUserLoginService {
                     CloudUser.getInstance().setLoggedIn(true);
                     if (loginJSONObject.has("token"))
                         CloudUser.getInstance().setToken(loginJSONObject.getString("token"));
-                    CloudUser.getInstance().setCurrentDeviceKey(deviceKey);
+                    CloudUser.getInstance().setCurrentDeviceKey(device.getDeviceKey());
 
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block

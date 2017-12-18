@@ -155,7 +155,7 @@ public class AddCloudAccountActivity extends Activity {
                     }
                 });
 
-                userLoginSerice.loginUser(editEmailItem.getText(), editPasswordItem.getText(), Autoclave.getInstance().getController().getSavetyKey());
+                userLoginSerice.loginUser(editEmailItem.getText(), editPasswordItem.getText(), Autoclave.getInstance().getDevice());
                 showDialog();
 
             }

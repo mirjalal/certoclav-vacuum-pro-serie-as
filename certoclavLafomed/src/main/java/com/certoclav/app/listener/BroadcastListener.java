@@ -9,4 +9,5 @@ import org.json.JSONObject;
 public interface BroadcastListener {
     void onReceived(JSONObject data);
     void onFailed();
+    void onTimeout();
 }
