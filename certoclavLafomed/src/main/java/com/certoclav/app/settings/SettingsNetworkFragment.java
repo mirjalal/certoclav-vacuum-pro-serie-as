@@ -97,9 +97,6 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
      * Starts an Activity for Picking and Connecting to Wifi
      */
     private void startWifiPicker() {
-        PackageManager pm = getActivity().getPackageManager();
-        Intent launchIntent = pm.getLaunchIntentForPackage("com.fsl.ethernet");
-        getActivity().startActivity(launchIntent);
         startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK));
     }
 
@@ -115,10 +112,18 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
         if (preference.hasKey()) {
             if (preference.getKey().equals(AppConstants.PREFERENCE_KEY_WIFI_MANAGER)) {
                 startWifiPicker();
+            }else if (preference.getKey().equals(AppConstants.PREFERENCE_KEY_LAN_MANAGER)){
+                configureLan();
             }
 
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
+    }
+
+    private void configureLan() {
+        PackageManager pm = getActivity().getPackageManager();
+        Intent launchIntent = pm.getLaunchIntentForPackage("com.fsl.ethernet");
+        getActivity().startActivity(launchIntent);
     }
 
     @Override

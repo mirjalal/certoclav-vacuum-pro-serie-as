@@ -20,7 +20,7 @@ public class PostUtil {
 	private String responseMessage = "";
 	private String responseBody = "";
 	private int responseCode = -1;
-	
+
 	public static final int RETURN_OK = 200;
 	public static final int RETURN_OK_200 = 200;
 	public static final int RETURN_ERROR_TIMEOUT = 1;
@@ -30,7 +30,7 @@ public class PostUtil {
 	public static final int RETURN_ERROR_ACCOUNT_NOT_ACTIVATED = 403;//equals returned responsecode
 	public static final int RETURN_ERROR = 4;
 	public static final int RETURN_UNKNOWN = 5;
-	
+
 
 
 
@@ -38,8 +38,8 @@ public class PostUtil {
 	/*
 	 * Posts the given JSON body to CertoCloud
 	 * returns status flags see constants RETURN_XXX
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	public Response postToCertocloud(String body, String urlpath, boolean auth){
 		Log.e("PostUtil", "send to Server: " + body);
@@ -82,6 +82,12 @@ public class PostUtil {
 				response.setStatus(responseCode);
 			} catch (Exception e) {
 				e.printStackTrace();
+				try {
+					responseCode = conn.getResponseCode();
+					response.setStatus(responseCode);
+				}catch (Exception e1){
+
+				}
 			}
 			if (conn.getResponseCode() != -1 && conn.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
 				in = conn.getInputStream();

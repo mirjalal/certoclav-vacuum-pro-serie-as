@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
+import com.certoclav.app.AppConstants;
 import com.certoclav.app.database.Protocol;
 import com.certoclav.app.database.ProtocolEntry;
 import com.certoclav.app.listener.SensorDataListener;
@@ -44,9 +45,13 @@ public class GraphService implements SensorDataListener {
 
     private Handler mGuiHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
-            view.invalidate();
-            view.repaint();
-            view.invalidate();
+            try {
+                view.invalidate();
+                view.repaint();
+                view.invalidate();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
         ;
@@ -75,8 +80,10 @@ public class GraphService implements SensorDataListener {
 
                                         Point p = new Point(roundFloat((float) (secondsSinceStart / 60.0)), roundFloat((float) (Autoclave.getInstance().getData().getTemp1().getCurrentValue())));
                                         runningGraph.addNewPoints(p, LineGraph.TYPE_STEAM);
-                                      /*  Point p2 = new Point(roundFloat((float) (secondsSinceStart / 60.0)), roundFloat((float) (Autoclave.getInstance().getData().getTemp2().getCurrentValue())));
-                                        runningGraph.addNewPoints(p2, LineGraph.TYPE_MEDIA);*/
+                                        if(AppConstants.IS_CERTOASSISTANT == false) {
+                                            Point p2 = new Point(roundFloat((float) (secondsSinceStart / 60.0)), roundFloat((float) (Autoclave.getInstance().getData().getTemp2().getCurrentValue())));
+                                            runningGraph.addNewPoints(p2, LineGraph.TYPE_MEDIA);
+                                        }
                                         Point p3 = new Point(roundFloat((float) (secondsSinceStart / 60.0)), roundFloat((float) (Autoclave.getInstance().getData().getPress().getCurrentValue())));
                                         runningGraph.addNewPoints(p3, LineGraph.TYPE_PRESS);
                                         double[] range = new double[4];
@@ -167,12 +174,12 @@ public class GraphService implements SensorDataListener {
                     Point p = new Point(roundFloat((float) (pastSeconds / 60.0)), roundFloat(entry.getTemperature()));
                     Log.e("seconds gettemperature", roundFloat((float) (pastSeconds / 60.0)) + " " + roundFloat(entry.getTemperature()));
                     protocolGraph.addNewPoints(p, LineGraph.TYPE_STEAM);
-                    Point p2 = new Point(roundFloat((float) (pastSeconds / 60.0)), roundFloat((float) (entry.getPressureKPa())));
+                    Point p2 = new Point(roundFloat((float) (pastSeconds / 60.0)), roundFloat((float) (entry.getPressure())));
                     protocolGraph.addNewPoints(p2, LineGraph.TYPE_PRESS);
-                   /* if (protocol.getDryTime() == 0) { //=> liquid program
+                   if(AppConstants.IS_CERTOASSISTANT == false){
                         Point p3 = new Point(roundFloat((float) (pastSeconds / 60.0)), roundFloat(entry.getMediaTemperature()));
                         protocolGraph.addNewPoints(p3, LineGraph.TYPE_MEDIA);
-                    }*/
+                    }
 
                     timeLastPoint = pastSeconds;
                 }
@@ -219,9 +226,10 @@ public class GraphService implements SensorDataListener {
     }
 
 
-    private Double roundFloat(float f) {
-        return Double.parseDouble(String.format("%.2f", f));
+    private Double roundFloat(float f){
+        int tempnumber = (int) (f*100);
+        Double roundedfloat = (double) ((double)tempnumber/100.0);
+        return roundedfloat;
     }
-
 
 }

@@ -34,9 +34,9 @@ public class MyProtocolEntryRecyclerViewAdapter extends RecyclerView.Adapter<MyP
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.time.setText(holder.mItem.getTimeStampWithMin());
-        holder.temperature.setText(mValues.get(position).getTemperature() + "");
-        holder.mediaTemperature.setText(mValues.get(position).getMediaTemperature() + "");
-        holder.pressure.setText(String.format("%.2f", mValues.get(position).getPressureKPa()));
+        holder.temperature.setText(roundFloat(mValues.get(position).getTemperature()) + "");
+        holder.mediaTemperature.setText(roundFloat(mValues.get(position).getMediaTemperature()) + "");
+        holder.pressure.setText(roundFloat(mValues.get(position).getPressure()).toString());
 
     }
 
@@ -67,4 +67,14 @@ public class MyProtocolEntryRecyclerViewAdapter extends RecyclerView.Adapter<MyP
             return super.toString() + " '" + temperature.getText() + "'";
         }
     }
+
+
+    private Double roundFloat(float f){
+        int tempnumber = (int) (f*100);
+        Double roundedfloat = (double) ((double)tempnumber/100.0);
+        return roundedfloat;
+    }
+
+
+
 }

@@ -206,7 +206,9 @@ public class UpdateUtils {
                             return RESULT_SOMETHING_WENT_WRONG;
                         }
                     }
-
+                    if(source == SOURCE_FOLDER_DOWNLOAD){
+                        copied = true;
+                    }
                     if (!copied)
                         return RESULT_FAILED_NO_FILE;
 
@@ -274,9 +276,10 @@ public class UpdateUtils {
                     }//end for(installing files)
 
                 } catch (Exception e) {
+                    e.printStackTrace();
                     return RESULT_SOMETHING_WENT_WRONG;
                 }
-                return RESULT_SOMETHING_WENT_WRONG;
+                return RESULT_UP_TO_DATE;
             }
         }.execute(source);
 

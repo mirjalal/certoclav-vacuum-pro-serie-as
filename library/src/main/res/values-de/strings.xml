@@ -230,6 +230,8 @@
     <string name="please_log_out_first">Bitte zuerst ausloggen</string>
     
     <string name="manage_wifi_connections">WIFI-Verbindungen verwalten</string>
+        <string name="manage_lan_connections">LAN-Verbindungen verwalten</string>
+
     <string name="wifi_on_off">WIFI AN/AUS</string>
     <string name="online_mode">Online Modus</string>
     <string name="bluetooth_on_off">Bluetooth AN/AUS</string>

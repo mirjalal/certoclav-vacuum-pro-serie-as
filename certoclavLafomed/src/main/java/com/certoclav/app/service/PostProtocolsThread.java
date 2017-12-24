@@ -2,7 +2,6 @@ package com.certoclav.app.service;
 
 import android.util.Log;
 
-import com.certoclav.app.AppConstants;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.Protocol;
 import com.certoclav.app.database.ProtocolEntry;
@@ -103,20 +102,25 @@ public class PostProtocolsThread extends Thread {
 															 *	16 Connection lost error
 												        	 */
                             int errorCodeCloud = 0;
-                            switch (protocol.getErrorCode()) {
-                                case 1:
-                                    errorCodeCloud = 14;
-                                    break;
-                                case 2:
-                                    errorCodeCloud = 15;
-                                    break;
-                                case 3:
-                                    errorCodeCloud = 16;
-                                    break;
-                                case -1:
-                                    errorCodeCloud = 15;
-                                    break;
+                            try{
+                                errorCodeCloud = protocol.getErrorCode();
+                            }catch (Exception e){
+                                errorCodeCloud = 15;
                             }
+                            //switch (protocol.getErrorCode()) {
+                            //    case 1:
+                            //        errorCodeCloud = 14;
+                            //        break;
+                            //    case 2:
+                            //        errorCodeCloud = 15;
+                            //        break;
+                            //    case 3:
+                            //        errorCodeCloud = 16;
+                            //        break;
+                            //    case -1:
+                            //        errorCodeCloud = 15;
+                            //        break;
+                            //}
                             jsonProtocolObject.put("errcode", errorCodeCloud);
                             jsonProtocolObject.put("entries", entryJSONArray);
 
@@ -127,7 +131,8 @@ public class PostProtocolsThread extends Thread {
 
                             //POST the Json object to CertoCloud
                             PostUtil postUtil = new PostUtil();
-                            Response response = postUtil.postToCertocloud(body, CertocloudConstants.getServerUrl() + AppConstants.REST_API_POST_PROTOCOLS, true);
+                            Response response = postUtil.postToCertocloud(body, CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_POST_PROTOCOLS, true);
+
                             if (response.getStatus() == PostUtil.RETURN_OK) {
 
                                 JSONObject json = new JSONObject(postUtil.getResponseBody());//in json is saved the result
@@ -165,13 +170,13 @@ public class PostProtocolsThread extends Thread {
             if (protocol.getSterilisationTemperature() != 0) {
                 sbuilder.append("Sterilisation temperature: ")
                         .append(protocol.getSterilisationTemperature())
-                        .append(" �C")
+                        .append(" °C")
                         .append("\r\n");
             }
 
             if (protocol.getSterilisationPressure() != 0) {
                 sbuilder.append("Sterilisation pressure: ")
-                        .append(String.format("%.2f", ((float) protocol.getSterilisationPressure() * 0.01) + 1))
+                        .append(roundFloat( (protocol.getSterilisationPressure() * 0.01f) + 1f).toString())
                         .append(" bar")
                         .append("\r\n");
             }
@@ -186,7 +191,7 @@ public class PostProtocolsThread extends Thread {
             if (protocol.getVacuumPersistTemperature() != 0) {
                 sbuilder.append("Vacuum persist temperature: ")
                         .append(protocol.getVacuumPersistTemperature())
-                        .append(" �C")
+                        .append(" °C")
                         .append("\r\n");
             }
             if (protocol.getVacuumPersistTime() != 0) {
@@ -210,5 +215,11 @@ public class PostProtocolsThread extends Thread {
         //	runFlag = false;
         Log.e("PostProtocolsThread", "close and destroy thread");
         //wenn runflag false ist, dann l�uft die run() Methode zu ende und der Thread wird zerst�rt.
+    }
+
+    private Double roundFloat(float f){
+        int tempnumber = (int) (f*100);
+        Double roundedfloat = (double) ((double)tempnumber/100.0);
+        return roundedfloat;
     }
 }

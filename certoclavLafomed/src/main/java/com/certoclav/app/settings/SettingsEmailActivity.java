@@ -147,19 +147,21 @@ public class SettingsEmailActivity extends CertoclavSuperActivity {
 							R.string.you_forgot_to_enter_the_message,
 							Toast.LENGTH_SHORT).show();
 				} else if (to != null && subject != null && message != null) {
-					Toast.makeText(SettingsEmailActivity.this,
-							"try to send mail",
-							Toast.LENGTH_SHORT).show();
+					//try to send email
 					PostMessageService postMessageService = new PostMessageService();
 					postMessageService.setOnTaskFinishedListener(new PostMessageFinishedListener() {
 						
 						@Override
 						public void onTaskFinished(int responseCode) {
-							if(responseCode == PostUtil.RETURN_OK){
-								Toast.makeText(SettingsEmailActivity.this, "Message has been sent", Toast.LENGTH_LONG).show();
-								finish();
-							}else{
-								Toast.makeText(SettingsEmailActivity.this, "Message could not be send", Toast.LENGTH_LONG).show();
+							try {
+								if (responseCode == PostUtil.RETURN_OK) {
+									Toast.makeText(SettingsEmailActivity.this, "Message has been sent", Toast.LENGTH_LONG).show();
+									finish();
+								} else {
+									Toast.makeText(SettingsEmailActivity.this, "Message could not be send", Toast.LENGTH_LONG).show();
+								}
+							}catch (Exception e){
+								e.printStackTrace();
 							}
 						}
 					});

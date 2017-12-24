@@ -73,11 +73,16 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true">
 
-        <ImageView
+        <Button
             android:id="@+id/sterilisation_assistant_button_next"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_next_step"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/button_bg_green_blue"
+            android:text="@string/next_step"
+            android:layout_margin="10dp"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
             android:onClick="onClickNextStep" />
     </FrameLayout>
 

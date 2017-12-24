@@ -251,6 +251,7 @@
     <string name="network_not_connected">Network not connected</string>
 
     <string name="manage_wifi_connections">Manage WIFI connections</string>
+    <string name="manage_lan_connections">Manage LAN connections</string>
     <string name="wifi_on_off">WIFI ON/OFF</string>
     <string name="online_mode">Online mode</string>
     <string name="bluetooth_on_off">Bluetooth ON/OFF</string>

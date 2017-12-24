@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@drawable/dialog_background"
+    android:background="@drawable/d_background"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="10dp">

@@ -8,7 +8,7 @@ package com.certoclav.app;
  */
 public class AppConstants {
 
-    public static final Boolean APPLICATION_DEBUGGING_MODE = true;
+    public static final Boolean APPLICATION_DEBUGGING_MODE = false;
     public static final String DEFAULT_ADMIN_PASSWORD = "admin";
     public static final String DEFAULT_CLOUD_ADMIN_PASSWORD = "master@certocloud";
     public static final boolean SHOW_LOGS = false;
@@ -23,17 +23,13 @@ public class AppConstants {
     public static Boolean TABLET_HAS_ROOT = false;
     public static final Boolean IS_CERTOASSISTANT = false;
     public static final String TABLET_TYPE_SAMSUNGT113W = "samsungt113w";
-    public static final String TABLET_TYPE_LILLIPUT = "lilliput"; //android 2.3.4
-    public static final String TABLET_TYPE_LILLIPUT_2 = "lilliput2"; //android 4.3
+    public static final String TABLET_TYPE_LILLIPUT = "lilliput2"; //android 4.3
     //public static final String TABLET_TYPE = TABLET_TYPE_SAMSUNGT113W;
-    public static final String TABLET_TYPE = TABLET_TYPE_LILLIPUT_2;
+    public static final String TABLET_TYPE = TABLET_TYPE_LILLIPUT;
     public static final String MODEL_LAFOMED = "lafomed_v3"; //first autoclave with media sensor
     public static final String MODEL_CURRENT = MODEL_LAFOMED;
-    public static final String SIMULATED_SAVETY_KEY = "63FBE2987481D9B6A";
     public final static String MODEL = "Certoclav 18 Vac Pro";
-
-
-
+    public static final String SIMULATED_SAVETY_KEY = "AAAAAAAAAAAAAAAAA";//63FBE2987481D9B6A";
     public static final String URL_UPDATE = "http://lvps46-163-113-210.dedicated.hosteurope.de:80/files/public-docs/";
     public static final String DOWNLOAD_LINK = AppConstants.URL_UPDATE + MODEL_CURRENT + "/" + AppConstants.TABLET_TYPE + "/update.zip";
 
@@ -65,7 +61,6 @@ public class AppConstants {
      */
     public final static String REST_POST_CREATE_DEVICE = "/api/admin/devices/";// devices.createAdmin);
 
-
     public static final String SYSTEM_APP_FOLDER = "priv-app";
 
 
@@ -83,6 +78,7 @@ public class AppConstants {
     public static final String PREFERENCE_KEY_PRINT_LABEL = "preferences_print_labels";
     public static final String PREFERENCE_KEY_BLUETOOTH_ENABLED = "switch_bluetooth";
     public static final String PREFERENCE_KEY_WIFI_MANAGER = "button_wifi";
+    public static final String PREFERENCE_KEY_LAN_MANAGER = "button_lan";
     public static final String PREFERENCE_KEY_BLUETOOTH_MANAGER = "button_bluetooth";
     public static final String PREFERENCE_KEY_PROGRAMOPTIONS_VISIBLE = "options_programs_visible";
     public static final String PREFERENCE_KEY_STORAGE = "preferences_storage";
@@ -106,6 +102,8 @@ public class AppConstants {
     public static final String PREFERENCE_KEY_SERIAL_NUMBER = "preferences_autoclave_serial_number";
     public static final String PREFERENCE_KEY_FIRMWARE_VERSION = "preferences_autoclave_firmware_version";
     public static final String PREFERENCE_KEY_CYCLE_NUMBER = "preferences_cycle_number";
+    public static final String PREFERENCE_KEY_LIST_GRAPH = "islistgrapp";
+    public static final String PREFERENCE_KEY_ID_OF_LAST_USER = "idoflastuser";
 
 
     public static final String TERMINATOR_COMMAND_EEPROM = ":00000001FF\n\r";

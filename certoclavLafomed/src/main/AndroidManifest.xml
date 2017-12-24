@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.certoclav.app"
-    android:versionCode="24"
-    android:versionName="24">
+    android:versionCode="30"
+    android:versionName="30">
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -149,11 +149,9 @@
     <application
         android:name=".util.AppController"
         android:allowBackup="true"
-        android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"
-        tools:replace="android:theme">
+        android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen">
 
 
         <!--<activity

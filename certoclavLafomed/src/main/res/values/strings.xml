@@ -24,10 +24,21 @@
     <string name="path_video_fill_water">/sdcard/Download/animation_fill_water.mp4</string>
     <string name="path_video_empty_water">/sdcard/Download/animation_remove_water.mp4</string>
     <string name="path_video_power">/sdcard/Download/animation_power.mp4</string>
+    <string name="path_video_start_program_1">/sdcard/Download/animation_start_program_1.mp4</string>
+    <string name="path_video_start_program_2">/sdcard/Download/animation_start_program_2.mp4</string>
+    <string name="path_video_start_program_3">/sdcard/Download/animation_start_program_3.mp4</string>
+    <string name="path_video_start_program_4">/sdcard/Download/animation_start_program_4.mp4</string>
+    <string name="path_video_start_program_5">/sdcard/Download/animation_start_program_5.mp4</string>
+    <string name="path_video_start_program_6">/sdcard/Download/animation_start_program_6.mp4</string>
+    <string name="path_video_start_program_7">/sdcard/Download/animation_start_program_7.mp4</string>
+    <string name="path_video_start_program_8">/sdcard/Download/animation_start_program_8.mp4</string>
+    <string name="path_video_start_program_9">/sdcard/Download/animation_start_program_9.mp4</string>
+    <string name="path_video_start_program_10">/sdcard/Download/animation_start_program_10.mp4</string>
+    <string name="path_video_start_program_11">/sdcard/Download/animation_start_program_11.mp4</string>
 
-    <string name="video_place_item_descripton">Please place caskets into the autoclave</string>
-    <string name="video_lock_description">Please close the door</string>
-    <string name="video_fill_water_description">Please refill water tank</string>
+    <string name="video_place_item_descripton">Place items into the autoclave</string>
+    <string name="video_lock_description">Close the door</string>
+    <string name="video_fill_water_description">Refill water tank</string>
     <string name="start_program">Start</string>
 
     <string name="title_monitor">MONITOR</string>
@@ -41,10 +52,10 @@
     <string name="state_unknown">UNKNOWN</string>
     <string name="title_introduction">FIRST STEPS</string>
     <string name="settings_language">Language</string>
-    <string name="settings_wifi">WIFI</string>
+    <string name="settings_wifi">WLAN</string>
     <string name="intro_click_to_choose_network">Click to choose Network</string>
     <string name="intro_step_skipped">Step skipped</string>
-    <string name="intro_trying_to_enable_wifi">Trying to enable WIFI</string>
+    <string name="intro_trying_to_enable_wifi">Trying to enable WLAN</string>
     <string name="connected_to">Connected to</string>
     <string name="date_and_time">Date &amp; Time</string>
     <string name="certoclav_account">CertoClav account</string>
@@ -91,9 +102,9 @@
     <string name="settings_sterilization">Sterilization</string>
     <string name="settings_device">Device</string>
     <string name="settings_help">Help</string>
-    <string name="wifi_not_connected">WIFI not connected</string>
-    <string name="trying_to_connect_click_to_choose_network">Trying to connect | Click to choose Network</string>
-    <string name="wifi_disabled">WIFI disabled</string>
+    <string name="wifi_not_connected">WLAN not connected</string>
+    <string name="trying_to_connect_click_to_choose_network">WLAN enabled</string>
+    <string name="wifi_disabled">WLAN disabled</string>
     <string name="free_memory">Free Memory</string>
     <string name="title_contact_support">CONTACT SUPPORT</string>
     <string name="you_forgot_to_enter_the_email_id">You forgot to enter the email ID</string>
@@ -239,12 +250,12 @@
 
 
     <string name="network_connection_required">Network connection required</string>
-    <string name="please_connect_to_a_network_via_lan_or_wifi_">Please connect to a network via LAN or WiFi.\n</string>
-    <string name="do_you_want_to_open_wifi_settings_">Do you want to open WiFi settings?</string>
+    <string name="please_connect_to_a_network_via_lan_or_wifi_">Please connect to a network via LAN or WLAN.\n</string>
+    <string name="do_you_want_to_open_wifi_settings_">Do you want to open WLAN settings?</string>
     <string name="do_you_want_to_switch_to_offline_mode_">Do you want to switch to offline mode?</string>
     <string name="enable_network_communication">Enable network communication</string>
     <string name="do_you_want_to_enable_online_mode_">Do you want to enable online mode?</string>
-    <string name="show_wifi_settings">Open WiFi settings</string>
+    <string name="show_wifi_settings">Open WLAN settings</string>
     <string name="switch_to_offline_mode">Switch to offline mode</string>
     <string name="do_not_take_advantage_from_certocloud">Do not take advantage from CertoCloud</string>
     <string name="add_an_existing_certocloud_account">Add an existing CertoCloud account</string>
@@ -263,8 +274,9 @@
     <string name="login_notification_offline">Autoclave is in offline mode\nNo CertoCloud, automatic backups, remote control, support and software updates available</string>
     <string name="do_you_want_to_enable_network_communication">Do you want to enable network communication</string>
     <string name="network_not_connected">Network not connected</string>
-    <string name="manage_wifi_connections">Manage WIFI connections</string>
-    <string name="wifi_on_off">WIFI ON/OFF</string>
+    <string name="manage_wifi_connections">Manage WLAN connections</string>
+    <string name="manage_lan_connections">Manage LAN connections</string>
+    <string name="wifi_on_off">WLAN ON/OFF</string>
     <string name="online_mode">Online mode</string>
     <string name="bluetooth_on_off">Bluetooth ON/OFF</string>
     <string name="add_account">Add account</string>
@@ -388,10 +400,10 @@
     <string name="database_error">Database error, please perform factory reset!</string>
     <string name="start_video_assistant">Start video assistant</string>
     <string name="logout">Logout</string>
-    <string name="please_choose_and_start_the_program">Please choose and start the program</string>
-    <string name="on_the_blue_front_lcd_screen">on the blue front lcd screen</string>
+    <string name="please_choose_and_start_the_program">Start program</string>
+    <string name="on_the_blue_front_lcd_screen">with the front buttons</string>
     <string name="close_door">Please close the door</string>
-    <string name="remove_water">Please empty the water waste container</string>
+    <string name="remove_water">Please empty the waste water container</string>
     <string name="fill_water">Please fill water container</string>
     <string name="please_enter_a_valid_drying_time">Please enter a valid drying time!</string>
     <string name="please_enter_a_valid_sterilization_time">Please enter a valid sterilization time!</string>
@@ -471,7 +483,6 @@
     <string name="admin_password_wrong">Admin password is wrong!</string>
     <string name="admin_password">Admin Password</string>
     <string name="power_loss_during_record">Power loss during record</string>
-    <string name="getting_protocols">Getting protocols...</string>
     <string name="kpa">kPa</string>
     <string name="choose_server">CHOOSE SERVER</string>
     <string name="certoclav_server">CertoCloud Server</string>
@@ -489,6 +500,14 @@
     <string name="server_port">Port</string>
     <string name="server_info">Server Info</string>
     <string name="server_manual">Manual</string>
+
+    <string name="import_protocols">Import protocols</string>
+    <string name="local_account">Local Account</string>
+    <string name="online_account">Online Account</string>
+    <string name="certotrace_load_documentation">CertoTrace load documentation</string>
+    <string name="enable_autoclave_load_docmentation">Enable autoclave load documentation. Barcodescanner and labelprinter required.</string>
+    <string name="username_or_password_is_wrong">Wrong username or password</string>
+
 
 
     <string-array name="error_codes">
@@ -508,4 +527,42 @@
         <item>12|Vacuum pump or fan damaged</item>
         <item>99|Cable is not connected</item>
     </string-array>
+
+
+    <string name="program_1_name">134 \u00B0C SOLID</string>
+    <string name="program_1_description">134 \u00B0C   2.1bar   4min\nSolid instruments and textiles\nWrapped or unwrapped"</string>
+    <string name="program_2_name">134 \u00B0C POROUS</string>
+    <string name="program_2_description">134 \u00B0C   2.1bar   4min\nPorous instruments and textiles\nWrapped or unwrapped"</string>
+    <string name="program_3_name">134 \u00B0C HOLLOW</string>
+    <string name="program_3_description">134 \u00B0C   2.1bar   4min\nHollow instruments\nWrapped or unwrapped"</string>
+    <string name="program_4_name">121 \u00B0C SOLID</string>
+    <string name="program_4_description">121 \u00B0C   1.1bar   20min\nSolid instruments and textiles\nWrapped or unwrapped"</string>
+    <string name="program_5_name">121 \u00B0C POROUS</string>
+    <string name="program_5_description">121 \u00B0C   1.1bar   20min\nPorous instruments and textiles\nWrapped or unwrapped"</string>
+    <string name="program_6_name">121 \u00B0C HOLLOW</string>
+    <string name="program_6_description">121 \u00B0C   1.1bar   20min\nHollow instruments\nWrapped or unwrapped"</string>
+    <string name="program_7_name">USER DEFINED</string>
+    <string name="program_7_description">Vacuum times: User defined\nSterilization temperature: User defined\nDry time: User defined"</string>
+    <string name="program_8_name">BD HELIX TEST</string>
+    <string name="program_8_description">Test to evaluate the capacity\nof penetration of the steam\nin hollow loads"</string>
+    <string name="program_9_name">VACUUM TEST</string>
+    <string name="program_9_description">-0.8bar   15min\nVacuum Test\nRecommended on maintenance"</string>
+    <string name="program_10_name">CLEAN</string>
+    <string name="program_10_description">105 \u00B0C   0.2bar   5min\nClean the autoclave"</string>
+    <string name="program_11_name">PRION</string>
+    <string name="program_11_description">134 \u00B0C   2.1bar   19min\nPrion sterilization"</string>
+    <string name="program_12_name">LIQUID</string>
+    <string name="program_12_description">Liquid sterilization\n121 \u00B0C   1.1bar   20min\nWith media sensor"</string>
+    <string name="open_the_door">Open the door</string>
+    <string name="unable_to_start_vacuum_test">Unable to start the vacuum test. Please wait until the chamber is cooled down.</string>
+    <string name="vacuum_times">Vacuum times:</string>
+    <string name="sterilization_temperature">Sterilization temperature:</string>
+    <string name="sterilization_pressure">Sterilization pressure:</string>
+    <string name="sterilization_holding_time">Sterilization holding time:</string>
+    <string name="vacuum_persist_temperature">Vacuum persist temperature:</string>
+    <string name="vacuum_persist_time">Vacuum persist time:</string>
+    <string name="drying_time">Drying time:</string>
+    <string name="min">min</string>
+
+
 </resources>

@@ -4,18 +4,22 @@
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="switch_wlan"
-        android:title="WIFI ON/OFF" />
+        android:title="@string/wifi_on_off"></CheckBoxPreference>
 
     <Preference
         android:dependency="switch_wlan"
         android:key="button_wifi"
-        android:title="MANAGE WIFI CONNECTIONS" />
+        android:title="@string/manage_wifi_connections"></Preference>
+
+    <Preference
+        android:key="button_lan"
+        android:title="@string/manage_lan_connections"></Preference>
 
     <CheckBoxPreference
         android:defaultValue="@bool/switch_snchronization_default"
         android:key="switch_snchronization"
-        android:summary="Synchronize data with www.CertoCloud.com"
-        android:title="ONLINE MODE" />
+        android:summary="@string/synchronize_data_with_www_certocloud_com"
+        android:title="@string/online_mode"></CheckBoxPreference>
 
     <Preference
         android:key="button_choose_server"

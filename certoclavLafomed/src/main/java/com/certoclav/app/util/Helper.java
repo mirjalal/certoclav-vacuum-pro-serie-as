@@ -211,7 +211,8 @@ public class Helper {
                 if (protocol.getProtocolEntries() != null) {
                     for (ProtocolEntry protocolEntry : protocol.getProtocolEntries()) {
                         protocolEntry.setProtocol(temp);
-                        protocolEntry.setPressure(protocolEntry.getPressure() - 1);
+                        protocolEntry.setPressure((float) ((protocolEntry.getPressure()-1.0) * 100.0));
+
                         calendar.setTime(startDate);
                         calendar.add(Calendar.SECOND, (int) (protocolEntry.getTs() * 60));
                         protocolEntry.setTimestamp(calendar.getTime());

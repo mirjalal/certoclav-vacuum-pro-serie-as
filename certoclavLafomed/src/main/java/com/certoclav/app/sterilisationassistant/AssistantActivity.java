@@ -6,7 +6,7 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -33,7 +33,7 @@ public class AssistantActivity extends CertoclavSuperActivity implements Profile
 
     private VideoView videoView;
     private TextView textStepDescription;
-    private ImageView buttonNext;
+    private Button buttonNext;
 
     CertoclavNavigationbarClean navigationbar;
 
@@ -41,6 +41,7 @@ public class AssistantActivity extends CertoclavSuperActivity implements Profile
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sterilisation_assistant_activity);
+        navigationbar = new CertoclavNavigationbarClean(this);
     }
 
 
@@ -50,13 +51,12 @@ public class AssistantActivity extends CertoclavSuperActivity implements Profile
         Autoclave.getInstance().setOnProfileListener(this);
         Autoclave.getInstance().setOnAutoclaveStateListener(this);
         AutoclaveMonitor.getInstance().setOnAlertListener(this);
-        navigationbar = new CertoclavNavigationbarClean(this);
         if (Autoclave.getInstance().getProfile() != null) {
             navigationbar.setHeadText(Autoclave.getInstance().getProfile().getName());
         }
         videoView = (VideoView) findViewById(R.id.sterilisation_assistant_videoview);
         textStepDescription = (TextView) findViewById(R.id.sterilisation_assistant_text_description);
-        buttonNext = (ImageView) findViewById(R.id.sterilisation_assistant_button_next);
+        buttonNext = (Button) findViewById(R.id.sterilisation_assistant_button_next);
 
         updateUI();
         super.onResume();
@@ -118,6 +118,9 @@ public class AssistantActivity extends CertoclavSuperActivity implements Profile
                     }
                 });
                 videoView.start();
+                textStepDescription.setText(R.string.open_the_door);
+                buttonNext.setBackgroundResource(R.drawable.button_bg_green_blue);
+
 
                 break;
 
@@ -164,24 +167,49 @@ public class AssistantActivity extends CertoclavSuperActivity implements Profile
 
                 videoView.start();
                 textStepDescription.setText(R.string.video_lock_description);
-                buttonNext.setBackgroundResource(R.drawable.btn_start_monitor);
-                if (AppConstants.IS_CERTOASSISTANT) {
-                    buttonNext.setBackgroundResource(R.drawable.bg_next_step);
-                }
+                buttonNext.setBackgroundResource(R.drawable.button_bg_green_blue);
+
                 break;
 
 
             case 4:
 
+                int programIndex = Autoclave.getInstance().getProfile().getIndex();
 
                 videoView.setVisibility(View.GONE);
+                videoView = null;
+                videoView = (VideoView) findViewById(R.id.sterilisation_assistant_videoview);
+                videoView.setVisibility(View.VISIBLE);
+                switch (programIndex){
+                    case 1: videoView.setVideoPath(getString(R.string.path_video_start_program_1)); break;
+                    case 2: videoView.setVideoPath(getString(R.string.path_video_start_program_2)); break;
+                    case 3: videoView.setVideoPath(getString(R.string.path_video_start_program_3)); break;
+                    case 4: videoView.setVideoPath(getString(R.string.path_video_start_program_4)); break;
+                    case 5: videoView.setVideoPath(getString(R.string.path_video_start_program_5)); break;
+                    case 6: videoView.setVideoPath(getString(R.string.path_video_start_program_6)); break;
+                    case 7: videoView.setVideoPath(getString(R.string.path_video_start_program_7)); break;
+                    case 8: videoView.setVideoPath(getString(R.string.path_video_start_program_8)); break;
+                    case 9: videoView.setVideoPath(getString(R.string.path_video_start_program_9)); break;
+                    case 10: videoView.setVideoPath(getString(R.string.path_video_start_program_10)); break;
+                    case 11: videoView.setVideoPath(getString(R.string.path_video_start_program_11)); break;
+                    default: videoView.setVideoPath(getString(R.string.path_video_start_program_1)); break;
+                }
+                videoView.setOnPreparedListener(new OnPreparedListener() {
+
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        mp.setLooping(true);
+
+                    }
+                });
+
+
+                videoView.start();
+
 
                 textStepDescription.setText(getString(R.string.please_choose_and_start_the_program)
-                        + " " + Autoclave.getInstance().getProfile().getName() + " " + getString(R.string.on_the_blue_front_lcd_screen));
-                buttonNext.setBackgroundResource(R.drawable.btn_start_monitor);
-                if (AppConstants.IS_CERTOASSISTANT) {
-                    buttonNext.setBackgroundResource(R.drawable.bg_next_step);
-                }
+                        + " " + Autoclave.getInstance().getProfile().getName() );
+                buttonNext.setVisibility(View.GONE);
                 break;
         }
 

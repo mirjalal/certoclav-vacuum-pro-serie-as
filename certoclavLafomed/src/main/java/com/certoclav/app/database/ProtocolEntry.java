@@ -126,9 +126,6 @@ public class ProtocolEntry {
 
     }
 
-    public float getPressureKPa() {
-        return pressure * 100;
-    }
 
     public String getFormatedTimeStampShort() {
 
@@ -139,9 +136,17 @@ public class ProtocolEntry {
     public String getTimeStampWithMin() {
         if (timeStampWithMin != null)
             return timeStampWithMin;
-        return timeStampWithMin = String.format("%.2f", (getTimestamp().getTime() -
-                getProtocol().getStartTime().getTime()) / 60000f);
+        return timeStampWithMin = Double.toString(roundFloat(
+                (getTimestamp().getTime() -
+                getProtocol().getStartTime().getTime()) / 60000f
+        ));
 
+    }
+
+    private Double roundFloat(float f){
+        int tempnumber = (int) (f*100);
+        Double roundedfloat = (double) ((double)tempnumber/100.0);
+        return roundedfloat;
     }
 }
 
