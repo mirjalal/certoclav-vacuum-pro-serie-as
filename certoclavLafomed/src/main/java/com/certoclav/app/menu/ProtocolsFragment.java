@@ -319,7 +319,7 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
 
-                    String[] barcodeSplitted = editText.getText().toString().split(".");
+                    String[] barcodeSplitted = editText.getText().toString().split("\\.");
                     Log.e("MenuMain", "length of splitted barcode" + barcodeSplitted.length);
                     if (barcodeSplitted.length == 2) {
                         select(
