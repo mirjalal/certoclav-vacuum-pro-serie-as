@@ -44,6 +44,7 @@ import com.certoclav.app.service.PostProtocolsService;
 import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.LabelPrinterUtils;
 import com.certoclav.app.util.MyCallback;
+import com.certoclav.app.util.ServerConfigs;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.graph.LineGraph;
 import com.paging.listview.PagingListView;
@@ -226,7 +227,7 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
                 askForScan();
                 break;
             case R.id.imageViewDownloadProtocol:
-                if (ApplicationController.getInstance().isNetworkAvailable() && protocolAdapter.getCount() > aktPosition && protocolAdapter.getItem(aktPosition) != null) {
+                if ((ApplicationController.getInstance().isNetworkAvailable() || ServerConfigs.getInstance(getActivity()).getUrl() != null)&& protocolAdapter.getCount() > aktPosition && protocolAdapter.getItem(aktPosition) != null) {
                     view.setEnabled(false);
                     final SweetAlertDialog barProgressDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
                     barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
@@ -318,7 +319,7 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
 
-                    String[] barcodeSplitted = editText.getText().toString().split(":");
+                    String[] barcodeSplitted = editText.getText().toString().split(".");
                     Log.e("MenuMain", "length of splitted barcode" + barcodeSplitted.length);
                     if (barcodeSplitted.length == 2) {
                         select(

@@ -36,6 +36,7 @@ import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.MyCallback;
+import com.certoclav.app.util.ServerConfigs;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.certocloud.CloudUser;
 import com.certoclav.library.util.ExportUtils;
@@ -229,7 +230,7 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceClick(Preference preference) {
 
-                if (ApplicationController.getInstance().isNetworkAvailable()) {
+                if (ApplicationController.getInstance().isNetworkAvailable()|| ServerConfigs.getInstance(getActivity()).getUrl() != null) {
                     barProgressDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
                     barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
                     barProgressDialog.setTitleText(getActivity().getString(com.certoclav.library.R.string.downloading));

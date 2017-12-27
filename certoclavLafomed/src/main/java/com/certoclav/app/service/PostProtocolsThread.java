@@ -7,6 +7,7 @@ import com.certoclav.app.database.Protocol;
 import com.certoclav.app.database.ProtocolEntry;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveState;
+import com.certoclav.app.util.ServerConfigs;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.certocloud.CertocloudConstants;
 import com.certoclav.library.certocloud.CloudUser;
@@ -44,7 +45,7 @@ public class PostProtocolsThread extends Thread {
         try {
             //upload new protocols to certocloud every 60 seconds
             if (Autoclave.getInstance().getState() == AutoclaveState.NOT_RUNNING) {
-                if (ApplicationController.getInstance().isNetworkAvailable() && !CloudUser.getInstance().getToken().isEmpty()) {
+                if ((ApplicationController.getInstance().isNetworkAvailable()|| ServerConfigs.getInstance(ApplicationController.getContext()).getUrl() != null) && !CloudUser.getInstance().getToken().isEmpty()) {
                     List<Protocol> protocols = databaseService.getProtocolsWhereNotUploaded();
                     if (protocols != null) {
                         for (Protocol protocol : protocols) {
@@ -131,7 +132,7 @@ public class PostProtocolsThread extends Thread {
 
                             //POST the Json object to CertoCloud
                             PostUtil postUtil = new PostUtil();
-                            Response response = postUtil.postToCertocloud(body, CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_POST_PROTOCOLS, true);
+                            Response response = postUtil.postToCertocloud(body, CertocloudConstants.getServerUrl()+ CertocloudConstants.REST_API_POST_PROTOCOLS, true);
 
                             if (response.getStatus() == PostUtil.RETURN_OK) {
 

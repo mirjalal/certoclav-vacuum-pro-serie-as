@@ -263,7 +263,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                         R.bool.switch_snchronization_default);
                 if (Autoclave.getInstance().isOnlineMode(LoginActivity.this)) {
                     if (ApplicationController.getInstance()
-                            .isNetworkAvailable()) {
+                            .isNetworkAvailable()|| ServerConfigs.getInstance(LoginActivity.this).getUrl() != null) {
                         String password = editTextPassword.getText().toString();
                         buttonLogin.setEnabled(false);
                         progressBar.setVisibility(View.VISIBLE);
@@ -673,7 +673,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         buttonAddExisting.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ApplicationController.getInstance().isNetworkAvailable()) {
+                if (ApplicationController.getInstance().isNetworkAvailable()|| ServerConfigs.getInstance(LoginActivity.this).getUrl() != null) {
                     changeApplicationMode(true);
                     Intent intent = new Intent(LoginActivity.this,
                             AddCloudAccountActivity.class);
@@ -688,7 +688,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         buttonCreateCloud.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ApplicationController.getInstance().isNetworkAvailable()) {
+                if (ApplicationController.getInstance().isNetworkAvailable()|| ServerConfigs.getInstance(LoginActivity.this).getUrl() != null) {
 
                     Intent i = new Intent(LoginActivity.this,
                             RegisterCloudAccountActivity.class);
