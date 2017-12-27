@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.certoclav.app.R;
 import com.certoclav.app.activities.CertoclavSuperActivity;
@@ -95,6 +96,7 @@ public class MenuLabelPrinterActivity extends CertoclavSuperActivity {
                 try {
 
                     LabelPrinterUtils.printCustomLabel(editText1.getText().toString(), editText2.getText().toString(), 1);
+                    Toast.makeText(MenuLabelPrinterActivity.this, R.string.label_printed_com2,Toast.LENGTH_LONG);
 
                 } catch (Exception e) {
                     e.printStackTrace();

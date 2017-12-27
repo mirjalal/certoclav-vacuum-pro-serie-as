@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/scan_item"
+            android:layout_margin="20dp"
             android:textColor="@android:color/black"
             android:textSize="30sp" />
 

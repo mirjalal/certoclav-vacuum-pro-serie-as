@@ -504,17 +504,17 @@
 
 
     <string name="program_1_name">134 \u00B0C SOLIDE</string>
-    <string name="program_1_description">134 \u00B0C   2.1bar   4min\nFestkörper und Textilien\nVerpackt oder unverpackt"</string>
+    <string name="program_1_description">134\u00B0C   210 kPa   4min\nFestkörper und Textilien\nVerpackt oder unverpackt"</string>
     <string name="program_2_name">134 \u00B0C PORÖS</string>
-    <string name="program_2_description">134 \u00B0C   2.1bar   4min\nPoröse Materialien und dicht gebündelte Textilien\nVerpackt oder unverpackt"</string>
+    <string name="program_2_description">134\u00B0C   210 kPa   4min\nPoröse Materialien und dicht gebündelte Textilien\nVerpackt oder unverpackt"</string>
     <string name="program_3_name">134 \u00B0C HOHLKÖRPER</string>
-    <string name="program_3_description">134 \u00B0C   2.1bar   4min\nHohlkörper\nVerpackt oder unverpackt"</string>
+    <string name="program_3_description">134\u00B0C   210 kPa   4min\nHohlkörper\nVerpackt oder unverpackt"</string>
     <string name="program_4_name">121 \u00B0C SOLIDE</string>
-    <string name="program_4_description">121 \u00B0C   1.1bar   20min\nFestkörper und Textilien\nVerpackt oder unverpackt"</string>
+    <string name="program_4_description">121\u00B0C   110 kPa   20min\nFestkörper und Textilien\nVerpackt oder unverpackt"</string>
     <string name="program_5_name">121 \u00B0C PORÖS</string>
-    <string name="program_5_description">121 \u00B0C   1.1bar   20min\nPoröse Materialien und dicht gebündelte Textilien\nVerpackt oder unverpackt"</string>
+    <string name="program_5_description">121\u00B0C   110 kPa   20min\nPoröse Materialien und dicht gebündelte Textilien\nVerpackt oder unverpackt"</string>
     <string name="program_6_name">121 \u00B0C HOHLKÖRPER</string>
-    <string name="program_6_description">121 \u00B0C   1.1bar   20min\nHohlkörper\nVerpackt oder unverpackt"</string>
+    <string name="program_6_description">121\u00B0C   110 kPa   20min\nHohlkörper\nVerpackt oder unverpackt"</string>
     <string name="program_7_name">BENUTZERDEFINIERT</string>
     <string name="program_7_description">Vakuumschritte: Benutzerdefiniert\nSterilisationstemperatur: Benutzerdefiniert\nTrocknungszeit: Benutzerdefiniert"</string>
     <string name="program_8_name">BD HELIX TEST</string>
@@ -522,11 +522,11 @@
     <string name="program_9_name">VAKUUM TEST</string>
     <string name="program_9_description">-0.8bar   15min\nVakuum Test\nMonatliche Ausführung empfehlenswert"</string>
     <string name="program_10_name">REINIGUNG</string>
-    <string name="program_10_description">105 \u00B0C   0.2bar   5min\nReinigung des Autoklaven"</string>
+    <string name="program_10_description">105\u00B0C   -80 kPa   5min\nReinigung des Autoklaven"</string>
     <string name="program_11_name">PRIONEN</string>
-    <string name="program_11_description">134 \u00B0C   2.1bar   19min\nSterilisation von Prionen"</string>
+    <string name="program_11_description">134\u00B0C   210 kPa   19min\nSterilisation von Prionen"</string>
     <string name="program_12_name">FLÜSSIG</string>
-    <string name="program_12_description">Sterilisation von FLüssigkeiten\n121 \u00B0C   1.1bar   20min\nMit Mediensensor"</string>
+    <string name="program_12_description">Sterilisation von FLüssigkeiten\n121\u00B0C   110 kPa   20min\nMit Mediensensor"</string>
     <string name="open_the_door">Öffnen Sie die Tür</string>
     <string name="unable_to_start_vacuum_test">Vakuumtest kann noch nicht gestartet werden. Warten Sie bis die Kammer etwas heruntergekühlt ist.</string>
     <string name="vacuum_times">Vakuumschritte:</string>
@@ -537,6 +537,7 @@
     <string name="vacuum_persist_time">Vakuum Haltezeit:</string>
     <string name="drying_time">Trocknungszeit:</string>
     <string name="min">min</string>
+    <string name="label_printed_com2">Etikett wurde gedruckt (COM 2)</string>
 
 
 </resources>

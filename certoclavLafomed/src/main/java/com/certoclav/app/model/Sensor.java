@@ -26,13 +26,10 @@ public class Sensor {
         this.currentValue = currentValue;
     }
 
-    public String getValueIntString() {
-        Double value = (double) currentValue;
-        return Integer.toString(value.intValue()); //runden auf eine Nachkommastelle
-    }
 
     public String getValueString() {
-        return Float.toString((float) (((float) ((int) (currentValue * 100))) / 100.0)); //runden auf eine Nachkommastelle
+        Double value = (double) currentValue;
+        return Integer.toString(value.intValue());
     }
 
 

@@ -140,8 +140,8 @@
     <string name="logging">LOGGING</string>
     <string name="information">INFORMATION</string>
     <string name="intro_account_created">account created</string>
-    <string name="temperature">Temperature</string>
-    <string name="time_in_minutes">Time in minutes</string>
+    <string name="temperature">Steam [℃]</string>
+    <string name="time_in_minutes">Time [min]</string>
     <string name="settings">SETTINGS</string>
     <string name="do_you_really_want_to_start">Do you really want to start</string>
     <string name="request_a_call">Request a call</string>
@@ -313,7 +313,7 @@
     <string name="media">MEDIA</string>
     <string name="press">PRESS</string>
     <string name="vent">VENT</string>
-    <string name="media_temperature">Media temperature</string>
+    <string name="media_temperature">Media [℃]</string>
     <string name="pressure">Pressure</string>
     <string name="total_cycles_of_the_autoclave">Total cycles of the autoclave</string>
     <string name="total_cycles_">Total cycles:</string>
@@ -445,7 +445,7 @@
     <string name="send_email">Send Email</string>
     <string name="no_user_info">No User Info</string>
     <string name="start_screen_share_problem">Something went wrong. Please try later!</string>
-    <string name="please_describe_problem">Please describe your problem</string>
+    <string name="please_describe_problem">Describe your problem</string>
     <string name="description">Description</string>
     <string name="loading">Loading...</string>
     <string name="checking">Checking...</string>
@@ -510,40 +510,43 @@
     </string-array>
 
 
-    <string name="program_1_name">134 \u00B0C SOLID</string>
-    <string name="program_1_description">134 \u00B0C   2.1bar   4min\nSolid instruments and textiles\nWrapped or unwrapped"</string>
-    <string name="program_2_name">134 \u00B0C POROUS</string>
-    <string name="program_2_description">134 \u00B0C   2.1bar   4min\nPorous instruments and textiles\nWrapped or unwrapped"</string>
-    <string name="program_3_name">134 \u00B0C HOLLOW</string>
-    <string name="program_3_description">134 \u00B0C   2.1bar   4min\nHollow instruments\nWrapped or unwrapped"</string>
-    <string name="program_4_name">121 \u00B0C SOLID</string>
-    <string name="program_4_description">121 \u00B0C   1.1bar   20min\nSolid instruments and textiles\nWrapped or unwrapped"</string>
-    <string name="program_5_name">121 \u00B0C POROUS</string>
-    <string name="program_5_description">121 \u00B0C   1.1bar   20min\nPorous instruments and textiles\nWrapped or unwrapped"</string>
-    <string name="program_6_name">121 \u00B0C HOLLOW</string>
-    <string name="program_6_description">121 \u00B0C   1.1bar   20min\nHollow instruments\nWrapped or unwrapped"</string>
+    <string name="program_1_name">134\u00B0C SOLID</string>
+    <string name="program_1_description">134\u00B0C   210 kPa   4min\nSolids instruments and textiles, wrapped or unwrapped"</string>
+    <string name="program_2_name">134\u00B0C POROUS</string>
+    <string name="program_2_description">134\u00B0C   210 kPa   4min\nPorous instruments and textiles, wrapped or unwrapped"</string>
+    <string name="program_3_name">134\u00B0C HOLLOW</string>
+    <string name="program_3_description">134\u00B0C   210 kPa   4min\nHollow instruments, wrapped or unwrapped"</string>
+    <string name="program_4_name">121\u00B0C SOLID</string>
+    <string name="program_4_description">121\u00B0C   110 kPa   20min\nSolid instruments and textiles, wrapped or unwrapped"</string>
+    <string name="program_5_name">121\u00B0C POROUS</string>
+    <string name="program_5_description">121\u00B0C   110 kPa   20min\nPorous instruments and textiles, wrapped or unwrapped"</string>
+    <string name="program_6_name">121\u00B0C HOLLOW</string>
+    <string name="program_6_description">121\u00B0C   110 kPa   20min\nHollow instruments, wrapped or unwrapped"</string>
     <string name="program_7_name">USER DEFINED</string>
     <string name="program_7_description">Vacuum times: User defined\nSterilization temperature: User defined\nDry time: User defined"</string>
     <string name="program_8_name">BD HELIX TEST</string>
     <string name="program_8_description">Test to evaluate the capacity\nof penetration of the steam\nin hollow loads"</string>
     <string name="program_9_name">VACUUM TEST</string>
-    <string name="program_9_description">-0.8bar   15min\nVacuum Test\nRecommended on maintenance"</string>
+    <string name="program_9_description">-80 kPa   15min\nVacuum Test, recommended for maintenance"</string>
     <string name="program_10_name">CLEAN</string>
-    <string name="program_10_description">105 \u00B0C   0.2bar   5min\nClean the autoclave"</string>
+    <string name="program_10_description">105\u00B0C   0.2bar   5min\nClean the autoclave"</string>
     <string name="program_11_name">PRION</string>
-    <string name="program_11_description">134 \u00B0C   2.1bar   19min\nPrion sterilization"</string>
+    <string name="program_11_description">134\u00B0C   2.1bar   19min\nPrion sterilization"</string>
     <string name="program_12_name">LIQUID</string>
-    <string name="program_12_description">Liquid sterilization\n121 \u00B0C   1.1bar   20min\nWith media sensor"</string>
+    <string name="program_12_description">121\u00B0C   1.1bar   20min\nLiquid sterilization with media sensor"</string>
     <string name="open_the_door">Open the door</string>
     <string name="unable_to_start_vacuum_test">Unable to start the vacuum test. Please wait until the chamber is cooled down.</string>
     <string name="vacuum_times">Vacuum times:</string>
     <string name="sterilization_temperature">Sterilization temperature:</string>
+    <string name="sterilization_temp_">Sterilization temp.:</string>
     <string name="sterilization_pressure">Sterilization pressure:</string>
     <string name="sterilization_holding_time">Sterilization holding time:</string>
+    <string name="sterilization_time_">Sterilization time:</string>
     <string name="vacuum_persist_temperature">Vacuum persist temperature:</string>
     <string name="vacuum_persist_time">Vacuum persist time:</string>
     <string name="drying_time">Drying time:</string>
     <string name="min">min</string>
+    <string name="label_printed_com2">Label printed (COM 2)</string>
 
 
 </resources>

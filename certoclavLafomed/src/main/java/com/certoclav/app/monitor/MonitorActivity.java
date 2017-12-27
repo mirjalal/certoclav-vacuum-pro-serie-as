@@ -222,7 +222,6 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 } else {
                     textState.setText(R.string.state_not_running);
                     buttonStop.setVisibility(View.VISIBLE);
-                    buttonStop.setBackgroundResource(R.drawable.button_bg_green_blue);
                     buttonStop.setPadding(0, 0, 0, 0);
                     buttonStop.setText("START");
                 }
@@ -234,14 +233,12 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 } else {
                     buttonStop.setVisibility(View.VISIBLE);
                 }
-                buttonStop.setBackgroundResource(R.drawable.button_bg_green_blue);
                 buttonStop.setText("STARTING...");
                 textState.setText(R.string.state_prepare_to_run);
                 navigationbar.showButtonBack();
                 break;
             case PROGRAM_FINISHED:
                 buttonStop.setVisibility(View.VISIBLE);
-                buttonStop.setBackgroundResource(R.drawable.button_bg_green_blue);
                 buttonStop.setText("PLEASE OPEN DOOR");
                 textState.setText(R.string.state_finished);
                 navigationbar.showButtonBack();
@@ -252,7 +249,6 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 } else {
                     buttonStop.setVisibility(View.VISIBLE);
                 }
-                buttonStop.setBackgroundResource(R.drawable.button_bg_green_blue);
                 buttonStop.setText(R.string.stop);
                 textState.setText(R.string.state_running);
                 navigationbar.hideButtonBack();
@@ -333,8 +329,8 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
 
         if (Autoclave.getInstance().getProfile().getSterilisationPressure() != 0) {
             sbuilder.append(getString(R.string.sterilization_pressure)+" ")
-                    .append(roundFloat(  (Autoclave.getInstance().getProfile().getSterilisationPressure() * 0.01f) + 1f).toString())
-                    .append(" "+getString(R.string.bar))
+                    .append( Integer.toString(Autoclave.getInstance().getProfile().getSterilisationPressure()))
+                    .append(" "+getString(R.string.kpa))
                     .append("\n");
         }
 

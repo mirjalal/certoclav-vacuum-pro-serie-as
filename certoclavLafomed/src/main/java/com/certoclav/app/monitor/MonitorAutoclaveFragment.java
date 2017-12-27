@@ -23,7 +23,7 @@ private TextView textMedia;
 		
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.monitor_autoclave_fragment,container, false); //je nach mIten könnte man hier anderen Inhalt laden.
+			View rootView = inflater.inflate(R.layout.monitor_autoclave_fragment,container, false); //je nach mIten kï¿½nnte man hier anderen Inhalt laden.
 		
 			textTemp = (TextView) rootView.findViewById(R.id.monitor_text_temp);
 			textPress = (TextView) rootView.findViewById(R.id.monitor_text_press);
@@ -65,9 +65,9 @@ private TextView textMedia;
 	@Override
 	public void onSensorDataChange(AutoclaveData data) {
 		try {
-			textTemp.setText(ApplicationController.getContext().getString(R.string.steam) +" " + data.getTemp1().getValueString() + " °C");
-			textPress.setText(ApplicationController.getContext().getString(R.string.press) + " " + data.getPress().getValueIntString() + " kPa");
-			textMedia.setText(ApplicationController.getContext().getString(R.string.media)+" " + data.getTemp2().getValueString() + " °C");
+			textTemp.setText(ApplicationController.getContext().getString(R.string.steam) +" " + data.getTemp1().getValueString() + " \u2103");
+			textPress.setText(ApplicationController.getContext().getString(R.string.press) + " " + data.getPress().getValueString() + " kPa");
+			textMedia.setText(ApplicationController.getContext().getString(R.string.media)+" " + data.getTemp2().getValueString() + " \u2103");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

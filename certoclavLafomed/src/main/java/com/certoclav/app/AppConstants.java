@@ -12,7 +12,7 @@ public class AppConstants {
     public static final String DEFAULT_ADMIN_PASSWORD = "admin";
     public static final String DEFAULT_CLOUD_ADMIN_PASSWORD = "master@certocloud";
     public static final boolean SHOW_LOGS = false;
-    public static Boolean isIoSimulated = true;
+    public static Boolean isIoSimulated = false;
     public static Boolean TABLET_HAS_ROOT = false;
     public static final Boolean IS_CERTOASSISTANT = false;
     public static final String TABLET_TYPE_SAMSUNGT113W = "samsungt113w";
