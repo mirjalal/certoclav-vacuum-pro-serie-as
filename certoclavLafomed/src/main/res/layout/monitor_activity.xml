@@ -107,7 +107,7 @@
                     android:id="@+id/monitor_button_stop"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/button_bg_green_blue"
+                    android:background="@drawable/btn_blue_shadow_clickable"
                     android:text="@string/stop"
                     android:textColor="@android:color/white"
                     android:textSize="35dp"

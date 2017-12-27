@@ -27,7 +27,9 @@ import com.certoclav.library.certocloud.Condition;
 import com.certoclav.library.certocloud.NotificationService;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static com.certoclav.app.model.AutoclaveState.PREPARE_TO_RUN;
 
@@ -55,7 +57,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
     private long nanoTimeAtLastStopCommand = 0;
 
     private long nanoTimeAtLastServiceCheck = 0;
-    private long nanosAtProgramStart = 0;
+    private Date dateAtProgramStart = Autoclave.getInstance().getDateObject();
     private long nanoTimeAtLastStartCommand = 0;
     long secondsSinceStart = 0;
     private long secondsOnLastRecord = 5; //init not to 0
@@ -198,8 +200,8 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
         //count how long a program is running since start. (In seconds) And store it into Autoclave model
         if (Autoclave.getInstance().getState() == AutoclaveState.RUNNING) {
-            long nanos = System.nanoTime() - nanosAtProgramStart;
-            secondsSinceStart = ((long) (nanos / 1000000000));
+            long diffInMs = Autoclave.getInstance().getDateObject().getTime() - dateAtProgramStart.getTime();
+            secondsSinceStart = TimeUnit.MILLISECONDS.toSeconds(diffInMs);
         } else {
             secondsSinceStart = 0;
         }
@@ -362,7 +364,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                         Autoclave.getInstance().setProtocol(protocol);
                         int retval = databaseService.insertProtocol(protocol);
 
-                        nanosAtProgramStart = System.nanoTime() - 1000000000L * 4;
+                        dateAtProgramStart = new Date(Autoclave.getInstance().getDateObject().getTime()-2000);
 
 
                     } else {//no program is running

@@ -79,13 +79,15 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
 
         viewHolder.firstLine.setText(getItem(position).getName());
 
-        if (getItem(position).getIndex() == 7) { //user defined profile
-            getItem(position).setDescription("Vacuum times: " + Autoclave.getInstance().getUserDefinedProgram().getVacuumTimes() + "\n" +
-                    "Sterilization temp.: " + Autoclave.getInstance().getUserDefinedProgram().getSterilisationTemperature() + " ?C\n" +
-                    "Sterilization time: " + Autoclave.getInstance().getUserDefinedProgram().getSterilisationTime() + " min\n" +
-                    "Drying time: " + Autoclave.getInstance().getUserDefinedProgram().getDryTime() + " min");
-        }
+
         viewHolder.textDuration.setText(getItem(position).getDescription());
+
+        if (getItem(position).getIndex() == 7) { //user defined profile
+            viewHolder.textDuration.setText(mContext.getString(R.string.vacuum_times) + " " + Autoclave.getInstance().getUserDefinedProgram().getVacuumTimes() + "\n" +
+                    mContext.getString(R.string.sterilization_temp_)+ " " + Autoclave.getInstance().getUserDefinedProgram().getSterilisationTemperature() + "\u2103\n" +
+                    mContext.getString(R.string.sterilization_time_)+" " + Autoclave.getInstance().getUserDefinedProgram().getSterilisationTime() + "min\n" +
+                    mContext.getString(R.string.drying_time)+" " + Autoclave.getInstance().getUserDefinedProgram().getDryTime() + "min");
+        }
 
         viewHolder.item = getItem(position);
         viewHolder.cardView.setOnClickListener(new OnClickListener() {

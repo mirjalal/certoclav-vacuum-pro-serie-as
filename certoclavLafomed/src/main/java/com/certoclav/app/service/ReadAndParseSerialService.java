@@ -12,6 +12,7 @@ import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android_serialport_api.MessageReceivedListener;
 import android_serialport_api.SerialService;
@@ -121,7 +122,8 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 	}
 
 	public void sendPutAdjustParameterCommand(Double offsetTemp1, Double offsetTemp2, Double offsetTemp3, Integer offsetPress, Double offsetMedia){
-		commandQueue.add(String.format("CMD_ADJU %.1f,%.1f,%.1f,%02d,%.1f\r\n", offsetTemp1,offsetTemp2,offsetTemp3,offsetPress,offsetMedia));
+		commandQueue.add(String.format(Locale.ENGLISH,"CMD_ADJU %.1f,%.1f,%.1f,%02d,%.1f\r\n", offsetTemp1,offsetTemp2,offsetTemp3,offsetPress,offsetMedia));
+		//if locale is not Locale.ENGLISH there can be comma instad of point!
 	}
 	
 	public ArrayList<String> getCommandQueue() {
