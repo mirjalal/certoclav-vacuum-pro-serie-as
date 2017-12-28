@@ -521,9 +521,9 @@
     <string name="program_8_name">BD HELIX TEST</string>
     <string name="program_8_description">Dampfdurchdringungstest für Hohlkörper gemäß der Norm DIN EN 13060"</string>
     <string name="program_9_name">VAKUUM TEST</string>
-    <string name="program_9_description">-0.8bar   15min\nVakuum Test\nMonatliche Ausführung empfehlenswert"</string>
+    <string name="program_9_description">-80 kPa   15min\nVakuum Test\nMonatliche Ausführung empfehlenswert"</string>
     <string name="program_10_name">REINIGUNG</string>
-    <string name="program_10_description">105\u00B0C   -80 kPa   5min\nReinigung des Autoklaven"</string>
+    <string name="program_10_description">105\u00B0C   20 kPa   5min\nReinigung des Autoklaven"</string>
     <string name="program_11_name">PRIONEN</string>
     <string name="program_11_description">134\u00B0C   210 kPa   19min\nSterilisation von Prionen"</string>
     <string name="program_12_name">FLÜSSIG</string>

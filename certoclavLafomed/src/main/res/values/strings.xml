@@ -548,11 +548,11 @@
     <string name="program_9_name">VACUUM TEST</string>
     <string name="program_9_description">-80 kPa   15min\nVacuum Test, recommended for maintenance"</string>
     <string name="program_10_name">CLEAN</string>
-    <string name="program_10_description">105\u00B0C   0.2bar   5min\nClean the autoclave"</string>
+    <string name="program_10_description">105\u00B0C   20 kPa   5min\nClean the autoclave"</string>
     <string name="program_11_name">PRION</string>
-    <string name="program_11_description">134\u00B0C   2.1bar   19min\nPrion sterilization"</string>
+    <string name="program_11_description">134\u00B0C   210 kPa   19min\nPrion sterilization"</string>
     <string name="program_12_name">LIQUID</string>
-    <string name="program_12_description">121\u00B0C   1.1bar   20min\nLiquid sterilization with media sensor"</string>
+    <string name="program_12_description">121\u00B0C   110 kPa   20min\nLiquid sterilization with media sensor"</string>
     <string name="open_the_door">Open the door</string>
     <string name="unable_to_start_vacuum_test">Unable to start the vacuum test. Please wait until the chamber is cooled down.</string>
     <string name="vacuum_times">Vacuum times:</string>

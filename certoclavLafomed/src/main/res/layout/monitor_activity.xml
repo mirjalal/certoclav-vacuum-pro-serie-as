@@ -99,7 +99,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="4"
                 android:orientation="vertical"
-                android:paddingBottom="15dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp">
 

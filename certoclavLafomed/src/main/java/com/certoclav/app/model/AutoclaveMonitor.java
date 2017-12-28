@@ -134,6 +134,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
         Autoclave.getInstance().setOnSensorDataListener(this);
         Autoclave.getInstance().setOnConnectionStatusListener(this);
+        Autoclave.getInstance().setOnAutoclaveStateListener(this);
         databaseService = new DatabaseService(ApplicationController.getContext());
         nanoTimeAtLastMessageReceived = System.nanoTime();
         timerHandler.postDelayed(timerRunnable, 0);
@@ -744,7 +745,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                                         Autoclave.getInstance().getUser().getFirstName(), "Automatic generated notification from autoclave SN: " + Autoclave.getInstance().getController().getSerialnumber(),
                                         "The program" + " " +
                                                 Autoclave.getInstance().getProfile().getName() + " " +
-                                                "has been cancelled right now.");
+                                                "has been cancelled.");
                             }
                             if (condition.getSMSNumber().isEmpty() == false) {
                                 Log.e("AutoclaveMonitor", "Tyring to send sms now");
@@ -756,7 +757,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                                                 " " +
                                                 Autoclave.getInstance().getProfile().getName() +
                                                 " " +
-                                                "has been cancelled just now.");
+                                                "has been cancelled.");
                             }
                         } catch (Exception e) {
                             Log.e("AutoclaveMonitor", "Exception during senden sms or mail: " + e.toString());
@@ -781,7 +782,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                                                 " " +
                                                 Autoclave.getInstance().getProfile().getName() +
                                                 " " +
-                                                "finished successfully just now.");
+                                                "finished successfully.");
                             }
                             if (condition.getSMSNumber().isEmpty() == false) {
                                 Log.e("AutoclaveMonitor", "Tyring to send sms now");
@@ -793,7 +794,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                                                 " " +
                                                 Autoclave.getInstance().getProfile().getName() +
                                                 " " +
-                                                "finished successfully just now."
+                                                "finished successfully."
                                 );
                             }
                         } catch (Exception e) {
