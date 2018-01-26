@@ -227,7 +227,7 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
                 askForScan();
                 break;
             case R.id.imageViewDownloadProtocol:
-                if ((ApplicationController.getInstance().isNetworkAvailable() || ServerConfigs.getInstance(getActivity()).getUrl() != null)&& protocolAdapter.getCount() > aktPosition && protocolAdapter.getItem(aktPosition) != null) {
+                if ((ApplicationController.getInstance().isNetworkAvailable() || ServerConfigs.getInstance(getActivity()).getUrl() != null) && protocolAdapter.getCount() > aktPosition && protocolAdapter.getItem(aktPosition) != null) {
                     view.setEnabled(false);
                     final SweetAlertDialog barProgressDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
                     barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
@@ -675,7 +675,10 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
         protocolAdapter.notifyDataSetChanged();
 
         Protocol protocol = protocolAdapter.getItem(pos);
-        buttonDownload.setVisibility(protocol == null || !protocol.isUploaded() || !Autoclave.getInstance().isOnlineMode(getActivity()) ? View.GONE : View.VISIBLE);
+        buttonDownload.setVisibility(protocol == null || !protocol.isUploaded()
+                || (protocol.getProtocolEntry() != null && protocol.getProtocolEntry().size() > 0)
+                || !Autoclave.getInstance().isOnlineMode(getActivity())
+                ? View.GONE : View.VISIBLE);
 
         textError.setText(AutoclaveMonitor.getInstance().getErrorString(protocol.getErrorCode()));
         ((View) textError.getParent()).setVisibility(View.VISIBLE);
