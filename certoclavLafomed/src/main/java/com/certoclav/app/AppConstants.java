@@ -102,7 +102,7 @@ public class AppConstants {
     public static final String PREFERENCE_KEY_SERIAL_NUMBER = "preferences_autoclave_serial_number";
     public static final String PREFERENCE_KEY_FIRMWARE_VERSION = "preferences_autoclave_firmware_version";
     public static final String PREFERENCE_KEY_CYCLE_NUMBER = "preferences_cycle_number";
-    public static final String PREFERENCE_KEY_LIST_GRAPH = "islistgrapp";
+    public static final String PREFERENCE_KEY_LIST_GRAPH = "islistgrapportrace";
     public static final String PREFERENCE_KEY_ID_OF_LAST_USER = "idoflastuser";
 
 

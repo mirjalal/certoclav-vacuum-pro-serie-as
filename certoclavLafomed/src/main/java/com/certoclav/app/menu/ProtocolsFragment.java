@@ -21,9 +21,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -39,6 +38,7 @@ import com.certoclav.app.graph.GraphService;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.ErrorModel;
+import com.certoclav.app.monitor.CertoTraceListFragment;
 import com.certoclav.app.monitor.MonitorListFragment;
 import com.certoclav.app.service.PostProtocolsService;
 import com.certoclav.app.util.Helper;
@@ -68,40 +68,36 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
     private ArrayAdapter<String> dataAdapter;
     private ProgressBar progressBarProtocolList;
     private ProgressBar progressBarGraph;
-    private CheckBox checkBoxGpaphList;
+    private ImageView checkBoxGpaphList;
+    private View viewListTrace;
     private View viewList;
-    private SharedPreferences sharedPreferences;
 
+    private SharedPreferences sharedPreferences;
     public static final int SPINNER_POSITION_ORDER_BY_START_TIME = 0;
     public static final int SPINNER_POSITION_ORDER_BY_PROGRAM_NAME = 1;
+
+
     public static final int SPINNER_POSITION_ORDER_BY_SUCCESS = 2;
-
-
     int aktPosition = 0;
     private LinearLayout graphContainer;
     private SweetAlertDialog pDialog;
     private View buttonDownload;
+    private int graphListTraceButtonState = 0;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.menu_fragment_protocols, container, false); //je nach mIten könnte man hier anderen Inhalt laden.
         sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        checkBoxGpaphList = ((CheckBox) rootView.findViewById(R.id.checkboxGraphList));
-        checkBoxGpaphList.setChecked(sharedPreferences.getBoolean(AppConstants.PREFERENCE_KEY_LIST_GRAPH, true));
-
-        checkBoxGpaphList.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        checkBoxGpaphList = (ImageView) rootView.findViewById(R.id.checkboxGraphListTrace);
+        updateGraphListTraceButton();
+        checkBoxGpaphList.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (graphContainer != null) {
-                    graphContainer.setVisibility(isChecked ? View.GONE : View.VISIBLE);
-                }
-
-                if (viewList != null) {
-                    viewList.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-                }
-
-                sharedPreferences.edit().putBoolean(AppConstants.PREFERENCE_KEY_LIST_GRAPH, isChecked).commit();
-
+            public void onClick(View v) {
+                graphListTraceButtonState++;
+                graphListTraceButtonState %= 3;
+                sharedPreferences.edit().putInt(AppConstants.PREFERENCE_KEY_LIST_GRAPH, graphListTraceButtonState).commit();
+                updateGraphListTraceButton();
             }
         });
 
@@ -666,6 +662,7 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
     private void selectProtocol(int pos) {
         graphContainer = (LinearLayout) getActivity().findViewById(R.id.protocols_container_graph);
         viewList = getActivity().findViewById(R.id.content);
+        viewListTrace = getActivity().findViewById(R.id.certoclavTrace);
         graphContainer.removeAllViews();
 
         final LinearLayout graphContainer = (LinearLayout) getActivity().findViewById(R.id.protocols_container_graph);
@@ -685,12 +682,13 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
         textError.setTextColor(getResources().getColor(protocol.getErrorCode() == 0 ? R.color.success_color : R.color.error_color));
         textError.setVisibility(View.VISIBLE);
 
-        final MonitorListFragment monitorListFragment = MonitorListFragment.newInstance(1, protocol);
+
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         try {
-            transaction.replace(R.id.content, monitorListFragment).commit();
+            transaction.replace(R.id.content, MonitorListFragment.newInstance(1, protocol));
+            transaction.replace(R.id.certoclavTrace, CertoTraceListFragment.newInstance(1, protocol)).commit();
         } catch (Exception e) {
-            return;
+            e.printStackTrace();
         }
 
         LineGraph lineGraph = null;
@@ -702,12 +700,31 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
         } catch (Exception e) {
             Log.e("ProtocolsFragment", "exception onPostExecute: " + e.toString());
         }
+        updateGraphListTraceButton();
+    }
 
+    private void updateGraphListTraceButton() {
+        switch (graphListTraceButtonState = sharedPreferences.getInt(AppConstants.PREFERENCE_KEY_LIST_GRAPH, 0)) {
+            case 0:
+                checkBoxGpaphList.setImageResource(R.drawable.bg_list);
+                break;
+            case 1:
+                checkBoxGpaphList.setImageResource(R.drawable.bg_trace);
+                break;
+            case 2:
+                checkBoxGpaphList.setImageResource(R.drawable.bg_graph);
+                break;
+        }
 
-        if (graphContainer != null)
-            graphContainer.setVisibility(checkBoxGpaphList.isChecked() ? View.GONE : View.VISIBLE);
-        if (viewList != null)
-            viewList.setVisibility(checkBoxGpaphList.isChecked() ? View.VISIBLE : View.GONE);
+        if (graphContainer != null) {
+            graphContainer.setVisibility(graphListTraceButtonState == 0 ? View.VISIBLE : View.GONE);
+        }
+        if (viewList != null) {
+            viewList.setVisibility(graphListTraceButtonState == 1 ? View.VISIBLE : View.GONE);
+        }
+        if (viewListTrace != null) {
+            viewListTrace.setVisibility(graphListTraceButtonState == 2 ? View.VISIBLE : View.GONE);
+        }
     }
 
 }

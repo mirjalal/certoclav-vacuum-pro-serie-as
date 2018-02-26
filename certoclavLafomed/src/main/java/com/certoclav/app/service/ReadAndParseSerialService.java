@@ -447,7 +447,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 	private void simulateMessage(){
 		
 	
-		Log.e("ReadAndParseSerialSer", "simulate serial");
+	//	Log.e("ReadAndParseSerialSer", "simulate serial");
 
 		cycleNumber = 1;
 

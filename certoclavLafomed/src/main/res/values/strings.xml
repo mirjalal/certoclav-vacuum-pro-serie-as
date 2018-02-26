@@ -566,6 +566,7 @@
     <string name="drying_time">Drying time:</string>
     <string name="min">min</string>
     <string name="label_printed_com2">Label printed (COM 2)</string>
+    <string name="count">Count</string>
 
 
 </resources>
