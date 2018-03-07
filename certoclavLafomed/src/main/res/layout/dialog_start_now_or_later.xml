@@ -1,0 +1,139 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:wheel="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/loading"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_dialog"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:id="@+id/dialog_container_text"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_cloud_no_user" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|bottom"
+                android:text="@string/do_not_take_advantage_from_certocloud"
+                android:textColor="@android:color/black"
+                android:textSize="23sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_cloud_user" />
+
+            <TextView
+                android:id="@+id/dialog_add_create_local"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|bottom"
+                android:text="@string/add_an_existing_certocloud_account"
+                android:textColor="@android:color/black"
+                android:textSize="23sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_cloud_user_new" />
+
+            <TextView
+                android:id="@+id/dialog_add_create_cloud"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|bottom"
+                android:text="@string/create_a_new_certocloud_account"
+                android:textColor="@android:color/black"
+                android:textSize="23sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialog_container_text"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/dialogButtonCreateLocal"
+            android:layout_width="match_parent"
+            android:layout_height="78dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_login"
+            android:text="@string/create_local"
+            android:textColor="@android:color/black" />
+
+        <Button
+            android:id="@+id/dialogButtonAddExisting"
+            android:layout_width="match_parent"
+            android:layout_height="78dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_login"
+            android:text="@string/add_existing"
+            android:textColor="@android:color/black"
+
+            />
+
+        <Button
+            android:id="@+id/dialogButtonCreateNew"
+            android:layout_width="match_parent"
+            android:layout_height="78dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_login"
+            android:text="@string/create_new"
+            android:textColor="@android:color/black"
+
+            />
+
+
+    </LinearLayout>
+</LinearLayout>
