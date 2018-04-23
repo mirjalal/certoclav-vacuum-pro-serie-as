@@ -19,6 +19,7 @@ public class AppConstants {
     public static final String PREFERENCE_KEY_SERVER_IP = "serverurl";
     public static final String PREFERENCE_KEY_SERVER_NAME = "servername";
     public static final String PREFERENCE_KEY_SERVER_PORT = "serverport";
+    public static final String PREFERENCE_KEY_INDICATOR_TEST = "switch_indicator_check";
     public static Boolean isIoSimulated = true;
     public static Boolean TABLET_HAS_ROOT = false;
     public static final Boolean IS_CERTOASSISTANT = false;

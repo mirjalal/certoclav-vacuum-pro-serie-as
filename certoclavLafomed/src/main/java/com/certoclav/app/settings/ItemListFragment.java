@@ -1,19 +1,20 @@
 package com.certoclav.app.settings;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.adapters.SettingsAdapter;
+import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.SettingItem;
+import com.certoclav.library.certocloud.CloudUser;
+
+import java.util.ArrayList;
 
 
 /**
@@ -57,7 +58,7 @@ public class ItemListFragment extends ListFragment {
         /**
          * Callback for when an item has been selected.
          */
-        public void onItemSelected(long id);
+        public void onItemSelected(long id, Fragment fragment);
     }
 
     /**
@@ -66,7 +67,7 @@ public class ItemListFragment extends ListFragment {
      */
     private static Callbacks sDummyCallbacks = new Callbacks() {
         @Override
-        public void onItemSelected(long id) {
+        public void onItemSelected(long id, Fragment fragment) {
         }
     };
 
@@ -77,19 +78,6 @@ public class ItemListFragment extends ListFragment {
     public ItemListFragment() {
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
-        //	setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-        //		android.R.layout.simple_list_item_activated_1,
-        //		android.R.id.text1, DummyContent.ITEMS));
-
-
-        // TODO: replace with a real list adapter.
-
-    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -104,17 +92,27 @@ public class ItemListFragment extends ListFragment {
         setListAdapter(adapter);
 
         AddItem(getListView(), getActivity().getString(R.string.settings_user_account),
-                R.drawable.ic_account_settings, R.drawable.ic_account_settings_selected);
+                R.drawable.ic_account_settings, R.drawable.ic_account_settings_selected, new UserEditFragment());
 
-        AddItem(getListView(), getActivity().getString(R.string.settings_network), R.drawable.ic_network_settings, R.drawable.ic_network_settings_selected);
-        AddItem(getListView(), getActivity().getString(R.string.settings_sterilization), R.drawable.ic_sterilization_settings, R.drawable.ic_sterilization_settings_selceted);
-        AddItem(getListView(), getActivity().getString(R.string.settings_device), R.drawable.ic_device_settings, R.drawable.ic_device_settings_selected);
+        AddItem(getListView(), getActivity().getString(R.string.settings_network), R.drawable.ic_network_settings, R.drawable.ic_network_settings_selected, new SettingsNetworkFragment());
+
+        if (CloudUser.getInstance().isLoggedIn())
+            AddItem(getListView(), getActivity().getString(R.string.settings_sterilization), R.drawable.ic_sterilization_settings, R.drawable.ic_sterilization_settings_selceted, new SettingsSterilisationFragment());
+
+        if (CloudUser.getInstance().isLoggedIn())
+            AddItem(getListView(), getActivity().getString(R.string.settings_device), R.drawable.ic_device_settings, R.drawable.ic_device_settings_selected, new SettingsDeviceFragment());
+
         AddItem(getListView(), getActivity().getString(R.string.settings_language),
-                R.drawable.ic_language_settings, R.drawable.ic_language_settings_selected);
-        AddItem(getListView(), getActivity().getString(R.string.notifications), R.drawable.ic_notification_settings, R.drawable.ic_notification_settings_selected);
-        AddItem(getListView(), getActivity().getString(R.string.calibration), R.drawable.ic_calibartion_settings, R.drawable.ic_calibartion_settings_selected);
+                R.drawable.ic_language_settings, R.drawable.ic_language_settings_selected, new SettingsLanguageFragment());
+        if (CloudUser.getInstance().isLoggedIn())
+            AddItem(getListView(), getActivity().getString(R.string.notifications), R.drawable.ic_notification_settings, R.drawable.ic_notification_settings_selected, new SettingsConditionFragment());
+        if (CloudUser.getInstance().isLoggedIn())
+            if (Autoclave.getInstance().getUser().isAdmin()) {
+                AddItem(getListView(), getActivity().getString(R.string.calibration), R.drawable.ic_calibartion_settings, R.drawable.ic_calibartion_settings_selected, new CalibrateFragment());
+                AddItem(getListView(), getActivity().getString(R.string.lockout), R.drawable.ic_lock, R.drawable.ic_lock_selected, new SettingsGlpFragment());
+            }
         if (AppConstants.APPLICATION_DEBUGGING_MODE) {
-            AddItem(getListView(), "Service", R.drawable.ic_service_setttings, R.drawable.ic_service_setttings_selected);
+            AddItem(getListView(), "Service", R.drawable.ic_service_setttings, R.drawable.ic_service_setttings_selected, new SettingsServiceFragment());
         }
 
 
@@ -123,7 +121,7 @@ public class ItemListFragment extends ListFragment {
             setActivatedPosition(savedInstanceState
                     .getInt(STATE_ACTIVATED_POSITION));
         } else {
-            mCallbacks.onItemSelected(0);
+            mCallbacks.onItemSelected(0, list.get(0).getFragment());
         }
     }
 
@@ -156,7 +154,7 @@ public class ItemListFragment extends ListFragment {
             adapter.setSelectedPos(position);
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(id);
+        mCallbacks.onItemSelected(id, list.get(position).getFragment());
     }
 
     @Override
@@ -179,8 +177,8 @@ public class ItemListFragment extends ListFragment {
         mActivatedPosition = position;
     }
 
-    public void AddItem(View v, String str, int icon, int iconSelected) {
-        list.add(new SettingItem(str, icon, iconSelected));
+    public void AddItem(View v, String str, int icon, int iconSelected, Fragment fragment) {
+        list.add(new SettingItem(str, icon, iconSelected, fragment));
         adapter.notifyDataSetChanged();
     }
 }

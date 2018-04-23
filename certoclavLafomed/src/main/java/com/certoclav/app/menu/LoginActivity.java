@@ -263,7 +263,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                         R.bool.switch_snchronization_default);
                 if (Autoclave.getInstance().isOnlineMode(LoginActivity.this)) {
                     if (ApplicationController.getInstance()
-                            .isNetworkAvailable()|| ServerConfigs.getInstance(LoginActivity.this).getUrl() != null) {
+                            .isNetworkAvailable() || ServerConfigs.getInstance(LoginActivity.this).getUrl() != null) {
                         String password = editTextPassword.getText().toString();
                         buttonLogin.setEnabled(false);
                         progressBar.setVisibility(View.VISIBLE);
@@ -673,7 +673,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         buttonAddExisting.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ApplicationController.getInstance().isNetworkAvailable()|| ServerConfigs.getInstance(LoginActivity.this).getUrl() != null) {
+                if (ApplicationController.getInstance().isNetworkAvailable() || ServerConfigs.getInstance(LoginActivity.this).getUrl() != null) {
                     changeApplicationMode(true);
                     Intent intent = new Intent(LoginActivity.this,
                             AddCloudAccountActivity.class);
@@ -688,7 +688,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         buttonCreateCloud.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ApplicationController.getInstance().isNetworkAvailable()|| ServerConfigs.getInstance(LoginActivity.this).getUrl() != null) {
+                if (ApplicationController.getInstance().isNetworkAvailable() || ServerConfigs.getInstance(LoginActivity.this).getUrl() != null) {
 
                     Intent i = new Intent(LoginActivity.this,
                             RegisterCloudAccountActivity.class);
@@ -710,45 +710,6 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 
     private void showNotificationForNetworkNavigation() {
         try {
-          /*  final Dialog dialog = new Dialog(LoginActivity.this);
-            dialog.setContentView(R.layout.dialog_yes_no);
-            dialog.setTitle(getString(R.string.network_connection_required));
-            TextView text = (TextView) dialog.findViewById(R.id.text);
-            text.setText(getString(R.string.please_connect_to_a_network_via_lan_or_wifi_));
-            text.append(getString(R.string.do_you_want_to_open_wifi_settings_));
-            Button dialogButton = (Button) dialog
-                    .findViewById(R.id.dialogButtonOK);
-            dialogButton.setText(getString(R.string.show_wifi_settings));
-            // if button is clicked, close the custom dialog
-            dialogButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(
-                            WifiManager.ACTION_PICK_WIFI_NETWORK));
-                    dialog.dismiss();
-                }
-            });
-
-            Button dialogButtonNo = (Button) dialog
-                    .findViewById(R.id.dialogButtonNO);
-            dialogButtonNo.setText(getString(R.string.switch_to_offline_mode));
-            dialogButtonNo.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    SharedPreferences prefs = PreferenceManager
-                            .getDefaultSharedPreferences(LoginActivity.this);
-                    Editor editor = prefs.edit();
-                    editor.putBoolean(AppConstants.PREFERENCE_KEY_ONLINE_MODE,
-                            false);
-                    editor.commit();
-                    dialog.dismiss();
-                    refreshUI();
-                }
-            });
-
-            dialog.show();
-*/
 
             SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
                     .setTitleText(getString(R.string.network_connection_required))

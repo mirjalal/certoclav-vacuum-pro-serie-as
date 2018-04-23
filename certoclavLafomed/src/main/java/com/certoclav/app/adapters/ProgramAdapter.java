@@ -22,7 +22,6 @@ import com.certoclav.app.menu.ScanActivity;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.monitor.MonitorActivity;
 import com.certoclav.app.sterilisationassistant.AssistantActivity;
-import com.certoclav.app.util.Helper;
 import com.certoclav.library.application.ApplicationController;
 
 import java.util.List;
@@ -84,9 +83,9 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
 
         if (getItem(position).getIndex() == 7) { //user defined profile
             viewHolder.textDuration.setText(mContext.getString(R.string.vacuum_times) + " " + Autoclave.getInstance().getUserDefinedProgram().getVacuumTimes() + "\n" +
-                    mContext.getString(R.string.sterilization_temp_)+ " " + Autoclave.getInstance().getUserDefinedProgram().getSterilisationTemperature() + "\u2103\n" +
-                    mContext.getString(R.string.sterilization_time_)+" " + Autoclave.getInstance().getUserDefinedProgram().getSterilisationTime() + "min\n" +
-                    mContext.getString(R.string.drying_time)+" " + Autoclave.getInstance().getUserDefinedProgram().getDryTime() + "min");
+                    mContext.getString(R.string.sterilization_temp_) + " " + Autoclave.getInstance().getUserDefinedProgram().getSterilisationTemperature() + "\u2103\n" +
+                    mContext.getString(R.string.sterilization_time_) + " " + Autoclave.getInstance().getUserDefinedProgram().getSterilisationTime() + "min\n" +
+                    mContext.getString(R.string.drying_time) + " " + Autoclave.getInstance().getUserDefinedProgram().getDryTime() + "min");
         }
 
         viewHolder.item = getItem(position);
@@ -95,6 +94,14 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
             @Override
             public void onClick(View v) {
                 Log.e("ProgramAdapter", "onclick");
+                if (Autoclave.getInstance().getUser().isAdmin()) {
+                    SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText(mContext.getString(R.string.permission_denied))
+                            .setContentText(mContext.getString(R.string.admin_user_cant_start_a_program_and_info))
+                            .setConfirmText(mContext.getString(R.string.ok));
+                    sweetAlertDialog.show();
+                    return;
+                }
 
                 SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
                         .setTitleText(mContext.getString(R.string.start_program))
@@ -105,12 +112,10 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
                                 sDialog.dismissWithAnimation();
-
                                 Autoclave.getInstance().setProfile(getItem(position));
                                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ApplicationController.getContext());
                                 Boolean defaultvalue = mContext.getResources().getBoolean(R.bool.switch_step_by_step_default);
                                 databaseService.updateProfileRecentUsed(getItem(position).getProfile_id());
-
 
                                 if (prefs.getBoolean(AppConstants.PREFERENCE_KEY_SCAN_ITEM_ENABLED, false)) {
                                     Intent intent = new Intent(mContext, ScanActivity.class);

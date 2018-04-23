@@ -1004,7 +1004,7 @@ public class DatabaseService {
             if (getUsers() != null) {
                 boolean adminAccountExists = false;
                 for (User dbUser : getUsers()) {
-                    if (dbUser.getIsAdmin() == true) {
+                    if (dbUser.isAdmin() == true) {
                         adminAccountExists = true;
                     }
                 }

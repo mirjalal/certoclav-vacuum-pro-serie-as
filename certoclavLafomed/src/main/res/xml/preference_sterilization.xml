@@ -49,4 +49,9 @@
         android:key="switch_scan_items"
         android:summary="@string/enable_autoclave_load_docmentation"
         android:title="@string/certotrace_load_documentation"></CheckBoxPreference>
+
+    <CheckBoxPreference
+        android:key="switch_indicator_check"
+        android:summary="@string/enable_autoclave_indicator_check"
+        android:title="@string/title_indicator_test"></CheckBoxPreference>
 </PreferenceScreen>

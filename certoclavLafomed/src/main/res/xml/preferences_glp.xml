@@ -1,0 +1,85 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/preferences_print_header"
+        android:key="@string/preferences_print_header"
+        android:summary="@string/print_header_on_off"
+        android:title="@string/print_header" />
+    <EditTextPreference
+        android:defaultValue=" "
+        android:dependency="@string/preferences_print_header"
+        android:key="@string/preferences_glp_header"
+        android:summary="@string/glp_header"
+        android:title="@string/header" />
+
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/preferences_print_date"
+        android:key="@string/preferences_print_date"
+        android:summary="@string/print_data_on_off"
+        android:title="@string/print_date">
+
+    </CheckBoxPreference>
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/preferences_print_balance_id"
+        android:key="@string/preferences_print_autoclave_id"
+        android:summary="@string/print_autoclave_id_on_off"
+        android:title="@string/print_autoclave_id">
+
+    </CheckBoxPreference>
+
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/preferences_print_autoclave_name"
+        android:key="@string/preferences_print_autoclave_name"
+        android:summary="@string/print_the_autoclave_name_on_off"
+        android:title="@string/print_autoclave_name" />
+
+    <EditTextPreference
+        android:defaultValue=" "
+        android:dependency="@string/preferences_print_autoclave_name"
+        android:key="@string/preferences_glp_autoclave_name"
+        android:summary="@string/set_the_autoclave_identification"
+        android:title="@string/autoclave_name" />
+
+
+    <!--
+    <CheckBoxPreference
+        android:key="preferences_print_user_name"
+        android:defaultValue="@bool/preferences_print_user_name"
+        android:title="@string/print_user_name"
+        android:summary="@string/print_the_user_name_on_off"
+       />
+    -->
+
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/preferences_print_project_name"
+        android:key="@string/preferences_print_project_name"
+        android:summary="@string/print_the_project_name_on_off"
+        android:title="@string/print_project_name" />
+
+    <EditTextPreference
+        android:dependency="@string/preferences_print_project_name"
+        android:key="@string/preferences_glp_project_name"
+        android:summary="@string/set_the_project_name"
+        android:title="@string/project_name" />
+
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/preferences_print_application_name"
+        android:key="@string/preferences_print_program_name"
+        android:summary="@string/print_the_program_name_on_off"
+        android:title="@string/print_program_name" />
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/preferences_print_signature"
+        android:key="@string/preferences_print_signature"
+        android:summary="@string/print_signature_line_on_off"
+        android:title="@string/print_signature_line" />
+</PreferenceScreen>
+
+
+

@@ -539,6 +539,14 @@
     <string name="drying_time">Trocknungszeit:</string>
     <string name="min">min</string>
     <string name="label_printed_com2">Etikett wurde gedruckt (COM 2)</string>
+    <string name="is_starting_in">beginnt in</string>
+    <string name="count">Anzahl</string>
+    <string name="enable_autoclave_indicator_check">Nach der Sterilisation wird der Status des Dampfindikators abgefragt</string>
+    <string name="title_indicator_test">Chargenkontrolle mit Dampfindikator</string>
+    <string name="is_indicator_passed">Ist der Sterilisationsindikator bestanden?</string>
+    <string name="failed">Gescheitert</string>
+    <string name="passed">Bestanden</string>
+    <string name="indicator_failed">Chargenkontrolle negativ</string>
 
 
 </resources>

@@ -160,7 +160,7 @@ public class User {
 		this.isVisible = isVisible;
 	}
 
-	public Boolean getIsAdmin() {
+	public Boolean isAdmin() {
 		return isAdmin;
 	}
 

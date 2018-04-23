@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/ic_list_pressed" android:state_pressed="true" />
-    <item android:drawable="@drawable/ic_list_pressed" android:state_focused="true" />
-    <item android:drawable="@drawable/ic_list_pressed" android:state_checked="true" />
-    <item android:drawable="@drawable/ic_account_settings" />
+    <item android:drawable="@drawable/ic_trace_pressed" android:state_pressed="true" />
+    <item android:drawable="@drawable/ic_trace_pressed" android:state_focused="true" />
+    <item android:drawable="@drawable/ic_trace_pressed" android:state_checked="true" />
+    <item android:drawable="@drawable/ic_trace" />
 </selector>

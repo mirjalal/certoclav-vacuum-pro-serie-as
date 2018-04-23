@@ -37,12 +37,13 @@ import static com.certoclav.app.model.AutoclaveState.PREPARE_TO_RUN;
 public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusListener, AutoclaveStateListener {
 
     Context mContext = ApplicationController.getContext();
-
     private SparseArray<String> errorMap = new SparseArray<String>();
 
-
     public static final int ERROR_CODE_SUCCESSFULL = 0;
+
+
     public static final int ERROR_CODE_CANCELLED_BY_USER = -1;
+    public static final int ERROR_CODE_INDICATOR_FAILED = 50;
     public static final int ERROR_CODE_CONNECTION_LOST = -2;
     public static final int ERROR_CODE_CANCELLED_BY_ERROR = -3;
     public static final int ERROR_CODE_POWER_LOSS = -4;
@@ -109,6 +110,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
         errorMap.put(ERROR_CODE_CONNECTION_LOST,mContext.getString(R.string.connection_lost_during_record));
         errorMap.put(ERROR_CODE_CANCELLED_BY_ERROR,mContext.getString(R.string.cycle_cancelled_because_of_error));
         errorMap.put(ERROR_CODE_POWER_LOSS,mContext.getString(R.string.power_loss_during_record));
+        errorMap.put(ERROR_CODE_INDICATOR_FAILED, mContext.getString(R.string.indicator_failed));
         errorMap.put(31,"The temperature of the chamber is higher than 150 °C");
         errorMap.put(32,"The temperature of the chamber heating is higher than 280 °C");
         errorMap.put(51,"The temperature of the chamber is lower than 0 °C");
@@ -343,7 +345,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                         }
                         if (Autoclave.getInstance().getUser() == null) {
                             for (User user : databaseService.getUsers()) {
-                                if (user.getIsAdmin() == true) {
+                                if (user.isAdmin() == true) {
                                     Autoclave.getInstance().setUser(user);
                                 }
                             }

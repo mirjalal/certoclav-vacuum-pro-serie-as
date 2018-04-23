@@ -18,4 +18,5 @@
     <color name="login_page_notification_text_color">#929ba0</color>
     <color name="login_button_text_color_disabled">#adacac</color>
     <color name="login_button_text_color">#555555</color>
+    <color name="settings_item_bg">#E1E5E7</color>
 </resources>

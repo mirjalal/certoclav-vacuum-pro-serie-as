@@ -1,8 +1,11 @@
 package com.certoclav.app.monitor;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -11,15 +14,20 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.activities.CertoclavSuperActivity;
+import com.certoclav.app.activities.ProgramTimerActivity;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.Profile;
+import com.certoclav.app.fragments.DatePickerFragment;
+import com.certoclav.app.fragments.TimePickerFragment;
 import com.certoclav.app.listener.AlertListener;
 import com.certoclav.app.listener.AutoclaveStateListener;
 import com.certoclav.app.listener.NavigationbarListener;
@@ -35,6 +43,7 @@ import com.certoclav.library.view.ControlPagerAdapter;
 import com.certoclav.library.view.CustomViewPager;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -46,6 +55,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
     private static final int INDEX_FRAGMENT_AUTOCLAVE = 1;
     private ArrayList<Fragment> fragmentList = new ArrayList<Fragment>();
     private CertoclavNavigationbarClean navigationbar;
+    private Calendar dateTime;
 
     ControlPagerAdapter mSectionsPagerAdapter;
 
@@ -92,18 +102,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
             public void onClick(View v) {
 
                 if (Autoclave.getInstance().getState().equals(AutoclaveState.NOT_RUNNING)) {
-                    if (Autoclave.getInstance().getProfile() != null) {
-                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ApplicationController.getContext());
-
-                        if (prefs.getBoolean(AppConstants.PREFERENCE_KEY_MATERIAL_TEST, false)) {
-                            showProgramCounterDialog();
-                        } else {
-                            Autoclave.getInstance().setProgramsInRowTotal(1);
-                            Autoclave.getInstance().setCurrentProgramCounter(0);
-                        }
-                    } else {
-                        Toast.makeText(MonitorActivity.this, getString(R.string.go_to_main_menu_and_choose_program_first), Toast.LENGTH_LONG).show();
-                    }
+                    showStartNowOrLaterProgramDialog();
                 } else if (Autoclave.getInstance().getState().equals(AutoclaveState.PROGRAM_FINISHED)) {
                     //do nothing
                 } else {
@@ -112,10 +111,10 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
 
                         String dialogTitletext = "";
                         String dialogContentText = "";
-                        if(Autoclave.getInstance().getData().getTemp1().getCurrentValue() < 90 && Autoclave.getInstance().getData().getTemp2().getCurrentValue() <= 90 && Autoclave.getInstance().getSecondsSinceStart() > 2400 && Autoclave.getInstance().getIndexOfRunningProgram() == 12 ){
+                        if (Autoclave.getInstance().getData().getTemp1().getCurrentValue() < 90 && Autoclave.getInstance().getData().getTemp2().getCurrentValue() <= 90 && Autoclave.getInstance().getSecondsSinceStart() > 2400 && Autoclave.getInstance().getIndexOfRunningProgram() == 12) {
                             dialogTitletext = getString(R.string.stop_program_earlier);
                             dialogContentText = getString(R.string.do_you_want_to_stop_the_program_earlier_sterilization_result_will_be_successfull_);
-                        }else{
+                        } else {
                             dialogTitletext = getString(R.string.stop_program);
                             dialogContentText = getString(R.string.do_you_really_want_to_stop_the_running_program_);
                         }
@@ -156,7 +155,6 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
         });
 
 
-
         fragmentList.add(INDEX_FRAGMANT_GRAPH, new MonitorGraphFragment());
         fragmentList.add(INDEX_FRAGMENT_AUTOCLAVE, new MonitorAutoclaveFragment());
 
@@ -175,6 +173,21 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
 
                     }
                 });
+    }
+
+    private void startProgram() {
+        if (Autoclave.getInstance().getProfile() != null) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ApplicationController.getContext());
+
+            if (prefs.getBoolean(AppConstants.PREFERENCE_KEY_MATERIAL_TEST, false)) {
+                showProgramCounterDialog();
+            } else {
+                Autoclave.getInstance().setProgramsInRowTotal(1);
+                Autoclave.getInstance().setCurrentProgramCounter(0);
+            }
+        } else {
+            Toast.makeText(MonitorActivity.this, getString(R.string.go_to_main_menu_and_choose_program_first), Toast.LENGTH_LONG).show();
+        }
     }
 
 
@@ -242,6 +255,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 buttonStop.setText("PLEASE OPEN DOOR");
                 textState.setText(R.string.state_finished);
                 navigationbar.showButtonBack();
+                askForIndicator();
                 break;
             case RUNNING:
                 if (AppConstants.IS_CERTOASSISTANT) {
@@ -279,7 +293,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 break;
 
         }
-        if(AppConstants.IS_CERTOASSISTANT){
+        if (AppConstants.IS_CERTOASSISTANT) {
             buttonStop.setVisibility(View.GONE);
         }
 
@@ -296,67 +310,67 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
 
         DatabaseService db = new DatabaseService(this);
         List<Profile> profilesFromDb = db.getProfiles();
-        if(Autoclave.getInstance().getProfile() == null){
-            if(Autoclave.getInstance().getIndexOfRunningProgram() == 7){
+        if (Autoclave.getInstance().getProfile() == null) {
+            if (Autoclave.getInstance().getIndexOfRunningProgram() == 7) {
                 Autoclave.getInstance().setProfile(Autoclave.getInstance().getUserDefinedProgram());
-            }else{
-                for(Profile profile : profilesFromDb){
-                    if(profile.getIndex() == Autoclave.getInstance().getIndexOfRunningProgram()){
+            } else {
+                for (Profile profile : profilesFromDb) {
+                    if (profile.getIndex() == Autoclave.getInstance().getIndexOfRunningProgram()) {
                         Autoclave.getInstance().setProfile(profile);
                         break;
                     }
                 }
             }
-        }else{
-            if(Autoclave.getInstance().getProfile().getIndex() == 7){
+        } else {
+            if (Autoclave.getInstance().getProfile().getIndex() == 7) {
                 Autoclave.getInstance().setProfile(Autoclave.getInstance().getUserDefinedProgram());
             }
         }
 
         StringBuilder sbuilder = new StringBuilder();
         if (Autoclave.getInstance().getProfile().getVacuumTimes() != 0) {
-            sbuilder.append(getString(R.string.vacuum_times)+" ")
+            sbuilder.append(getString(R.string.vacuum_times) + " ")
                     .append(Autoclave.getInstance().getProfile().getVacuumTimes())
                     .append("\n");
         }
 
         if (Autoclave.getInstance().getProfile().getSterilisationTemperature() != 0) {
-            sbuilder.append(getString(R.string.sterilization_temperature)+" ")
+            sbuilder.append(getString(R.string.sterilization_temperature) + " ")
                     .append(Autoclave.getInstance().getProfile().getSterilisationTemperature())
-                    .append(" "+"\u2103")
+                    .append(" " + "\u2103")
                     .append("\n");
         }
 
         if (Autoclave.getInstance().getProfile().getSterilisationPressure() != 0) {
-            sbuilder.append(getString(R.string.sterilization_pressure)+" ")
-                    .append( Integer.toString(Autoclave.getInstance().getProfile().getSterilisationPressure()))
-                    .append(" "+getString(R.string.kpa))
+            sbuilder.append(getString(R.string.sterilization_pressure) + " ")
+                    .append(Integer.toString(Autoclave.getInstance().getProfile().getSterilisationPressure()))
+                    .append(" " + getString(R.string.kpa))
                     .append("\n");
         }
 
         if (Autoclave.getInstance().getProfile().getSterilisationTime() != 0) {
-            sbuilder.append(getString(R.string.sterilization_holding_time)+" ")
+            sbuilder.append(getString(R.string.sterilization_holding_time) + " ")
                     .append(Autoclave.getInstance().getProfile().getSterilisationTime())
-                    .append(" "+getString(R.string.min))
+                    .append(" " + getString(R.string.min))
                     .append("\n");
         }
 
         if (Autoclave.getInstance().getProfile().getVacuumPersistTemperature() != 0) {
-            sbuilder.append(getString(R.string.vacuum_persist_temperature)+" ")
+            sbuilder.append(getString(R.string.vacuum_persist_temperature) + " ")
                     .append(Autoclave.getInstance().getProfile().getVacuumPersistTemperature())
-                    .append(" "+"\u2103")
+                    .append(" " + "\u2103")
                     .append("\n");
         }
         if (Autoclave.getInstance().getProfile().getVacuumPersistTime() != 0) {
-            sbuilder.append(getString(R.string.vacuum_persist_time)+" ")
+            sbuilder.append(getString(R.string.vacuum_persist_time) + " ")
                     .append(Autoclave.getInstance().getProfile().getVacuumPersistTime())
-                    .append(" "+getString(R.string.min))
+                    .append(" " + getString(R.string.min))
                     .append("\n");
         }
         if (Autoclave.getInstance().getProfile().getDryTime() != 0) {
-            sbuilder.append(getString(R.string.drying_time)+" ")
+            sbuilder.append(getString(R.string.drying_time) + " ")
                     .append(Autoclave.getInstance().getProfile().getDryTime())
-                    .append(" "+getString(R.string.min));
+                    .append(" " + getString(R.string.min));
         }
 
         textSteps.setText(sbuilder.toString());
@@ -364,7 +378,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
         //update UI
         onAutoclaveStateChange(Autoclave.getInstance().getState());
 
-        if(AppConstants.IS_CERTOASSISTANT){
+        if (AppConstants.IS_CERTOASSISTANT) {
             buttonStop.setVisibility(View.GONE);
         }
         super.onResume();
@@ -468,10 +482,117 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
         dialog.show();
     }
 
-    private Double roundFloat(float f){
-        int tempnumber = (int) (f*100);
-        Double roundedfloat = (double) ((double)tempnumber/100.0);
+    private Double roundFloat(float f) {
+        int tempnumber = (int) (f * 100);
+        Double roundedfloat = (double) ((double) tempnumber / 100.0);
         return roundedfloat;
     }
 
+    private void showStartNowOrLaterProgramDialog() {
+        final SweetAlertDialog dialog = new SweetAlertDialog(this, R.layout.dialog_start_now_or_later, SweetAlertDialog.WARNING_TYPE);
+        dialog.setContentView(R.layout.dialog_start_now_or_later);
+        dialog.setTitle(R.string.register_new_user);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
+        Button buttonStartLater = (Button) dialog
+                .findViewById(R.id.dialogButtonStartLater);
+        Button buttonStartNow = (Button) dialog
+                .findViewById(R.id.dialogButtonStartNow);
+
+        final Handler handler = new Handler();
+        final TextView textViewTimer = (TextView) dialog.findViewById(R.id.dialog_start_now_timer);
+        final int MAX_WAITING_TIME = 5;
+        final int[] currentWaitingTimer = {MAX_WAITING_TIME};
+        textViewTimer.setText(currentWaitingTimer[0] + "");
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                textViewTimer.setText((--currentWaitingTimer[0]) + "");
+                if (currentWaitingTimer[0] > 0)
+                    handler.postDelayed(this, 1000);
+                else {
+                    if (dialog.isShowing()) {
+                        dialog.dismissWithAnimation();
+                        startProgram();
+                    }
+                }
+            }
+        };
+        handler.postDelayed(runnable, 1000);
+        buttonStartLater.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startProgramLater();
+                dialog.dismissWithAnimation();
+            }
+        });
+
+        buttonStartNow.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startProgram();
+                dialog.dismissWithAnimation();
+            }
+        });
+
+        dialog.show();
+
+    }
+
+
+    private void startProgramLater() {
+        DatePickerFragment newFragment = new DatePickerFragment();
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(Autoclave.getInstance().getDateObject());
+        newFragment.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, monthOfYear);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                TimePickerFragment newFragment = new TimePickerFragment();
+                newFragment.setOnTimeSetListener(new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        calendar.set(Calendar.MINUTE, minute);
+                        Intent intent = new Intent(MonitorActivity.this, ProgramTimerActivity.class);
+                        intent.putExtra(ProgramTimerActivity.ARG_PROGRAM_NAME, Autoclave.getInstance().getProfile().getName());
+                        intent.putExtra(ProgramTimerActivity.ARG_PROGRAM_STARTING_TIME, calendar.getTimeInMillis());
+                        startActivityForResult(intent, 0);
+                    }
+                });
+                newFragment.show(getSupportFragmentManager(), "timePicker");
+            }
+        });
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0 && resultCode == RESULT_OK) {
+            startProgram();
+        }
+    }
+
+    private void askForIndicator() {
+        if (!PreferenceManager.getDefaultSharedPreferences(ApplicationController.getContext()).getBoolean(AppConstants.PREFERENCE_KEY_INDICATOR_TEST, false))
+            return;
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                .setTitleText(getString(R.string.title_indicator_test))
+                .setContentText(getString(R.string.is_indicator_passed))
+                .setConfirmText(getString(R.string.passed))
+                .setCancelText(getString(R.string.failed))
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        new DatabaseService(ApplicationController.getContext()).updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(), AutoclaveMonitor.ERROR_CODE_INDICATOR_FAILED);
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                }).setCustomImage(R.drawable.ic_indicator);
+        sweetAlertDialog.setCanceledOnTouchOutside(false);
+        sweetAlertDialog.setCancelable(false);
+        sweetAlertDialog.show();
+    }
 }

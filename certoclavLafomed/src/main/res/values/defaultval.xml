@@ -3,6 +3,30 @@
 
     <bool name="switch_snchronization_default">false</bool>
     <bool name="switch_step_by_step_default">true</bool>
-    
+
+    //Printing options
+    <bool name="preferences_print_header">true</bool>
+    <bool name="preferences_print_autoclave_name">true</bool>
+    <bool name="preferences_print_project_name">true</bool>
+    <bool name="preferences_print_application_name">true</bool>
+    <bool name="preferences_print_signature">true</bool>
+    <bool name="preferences_print_date">true</bool>
+    <bool name="preferences_print_balance_id">true</bool>
+    <bool name="preferences_print_user_name">true</bool>
+
+
+    //Lockout options
+    <bool name="preferences_lockout_calibration">false</bool>
+    <bool name="preferences_lockout_user_settings">false</bool>
+    <bool name="preferences_lockout_balance_setup">false</bool>
+    <bool name="preferences_lockout_application_modes">false</bool>
+    <bool name="preferences_lockout_weighing_units">false</bool>
+    <bool name="preferences_lockout_glp">false</bool>
+    <bool name="preferences_lockout_communication">false</bool>
+    <bool name="preferences_lockout_library">false</bool>
+    <bool name="preferences_lockout_items">false</bool>
+    <bool name="preferences_lockout_recipes">false</bool>
+    <bool name="preferences_lockout_protocols">false</bool>
+    <bool name="preferences_lockout_factory_reset">false</bool>
 
 </resources>

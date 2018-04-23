@@ -509,7 +509,6 @@
     <string name="username_or_password_is_wrong">Wrong username or password</string>
 
 
-
     <string-array name="error_codes">
         <item>0|Successfully completed</item>
         <item>15|-1|Program cancelled by user</item>
@@ -567,6 +566,60 @@
     <string name="min">min</string>
     <string name="label_printed_com2">Label printed (COM 2)</string>
     <string name="count">Count</string>
+    <string name="start_later">START LATER</string>
+    <string name="start_now">START NOW</string>
+    <string name="is_starting_in">is starting in</string>
+    <string name="enable_autoclave_indicator_check">After sterilization, the user will be asked for the status of the steam indicator</string>
+    <string name="title_indicator_test">Batch control</string>
+    <string name="is_indicator_passed">Is the sterilization indicator passed?</string>
+    <string name="failed">Failed</string>
+    <string name="passed">Passed</string>
+    <string name="indicator_failed">Batch control negative</string>
+    <string name="permission_denied">Permission Denied</string>
+    <string name="admin_user_cant_start_a_program_and_info">Admin user can\'t start a program. Change user to start a program.</string>
 
+    <!-- GLP Preferences-->
+    <string name="preferences_glp_header">preferences_glp_header</string>
+    <string name="preferences_reset_glp">preferences_reset_glp</string>
+    <string name="preferences_glp_autoclave_name">preferences_glp_balance_name</string>
+    <string name="preferences_glp_project_name">preferences_glp_project_name</string>
+    <string name="glp_header">GLP Header</string>
+    <string name="glp_and_gmp_data">GLP and GMP data</string>
+    <string name="preferences_lockout_glp">preferences_lockout_glp</string>
+    <string name="lock_the_glp_and_gmp_data">Lock the GLP and GMP data</string>
+    <string name="header">Header</string>
+    <string name="print_header">Print Header</string>
+    <string name="print_header_on_off">Print the header on/off</string>
+    <string name="autoclave_name">Autoclave Name</string>
+    <string name="preferences_print_header">preferences_statistic_mode</string>
+
+    <string name="preferences_print_autoclave_name">preferences_print_balance_name</string>
+    <string name="preferences_print_project_name">preferences_print_project_name</string>
+    <string name="preferences_print_program_name">preferences_print_application_name</string>
+    <string name="preferences_print_signature">preferences_print_signature</string>
+    <string name="preferences_print_date">preferences_print_date</string>
+    <string name="preferences_print_autoclave_id">preferences_print_balance_id</string>
+    <string name="preferences_print_user_name">preferences_print_user_name</string>
+    <string name="print_date">Print Date</string>
+    <string name="print_data_on_off">Print date on/off</string>
+    <string name="print_autoclave_id_on_off">Print balance id on/off</string>
+    <string name="print_autoclave_id">Print Balance ID</string>
+    <string name="print_autoclave_name">Print Balance Name</string>
+    <string name="print_user_name">Print User Name</string>
+    <string name="print_project_name">Print Project Name</string>
+    <string name="print_program_name">Print Application Name</string>
+    <string name="print_signature_line">Print Signature Line</string>
+    <string name="print_signature_line_on_off">Print the signature line on/off</string>
+    <string name="print_the_program_name_on_off">Print the application name on/off</string>
+    <string name="print_the_project_name_on_off">Print the project name on/off</string>
+    <string name="set_the_autoclave_identification">Set the autoclave identification</string>
+    <string name="print_the_user_name_on_off">Print the user name on/off</string>
+    <string name="print_the_autoclave_name_on_off">Print the autoclave name on/off</string>
+    <string name="user_name">User</string>
+    <string name="project_name">Project Name</string>
+    <string name="set_the_project_name">Set the project name</string>
+
+    <string name="these_settings_are_locked_by_the_admin">These Settings are locked by the admin</string>
+    <string name="lockout">Lockout</string>
 
 </resources>
