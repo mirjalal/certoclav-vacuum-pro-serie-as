@@ -325,6 +325,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                                 Toast.makeText(LoginActivity.this,
                                         getString(R.string.login_successful),
                                         Toast.LENGTH_LONG).show();
+                                CloudUser.getInstance().setLoggedIn(true);
                                 Autoclave.getInstance().setState(
                                         AutoclaveState.NOT_RUNNING);
                                 Intent intent = new Intent(LoginActivity.this,
