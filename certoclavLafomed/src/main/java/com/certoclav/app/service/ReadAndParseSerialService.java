@@ -10,508 +10,503 @@ import com.certoclav.app.database.Profile;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
+import com.certoclav.app.model.ErrorModel;
+import com.certoclav.app.util.MyCallback;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import android_serialport_api.MessageReceivedListener;
 import android_serialport_api.SerialService;
 
 
-
 public class ReadAndParseSerialService implements MessageReceivedListener {
-	//ACK_DAT 2017.01.27,16:32:13,12,2,20.1,158.6,105,-3,001010000101,0,22,81
-	//        date,time,indexOfProgram,cyclenumber,tempSteam,tempMedia,targetPress,pressure,digital,error,version,checksum
-	//			0    1        2            3           4        5           6           7     8       9     10       11
+    //ACK_DAT 2017.01.27,16:32:13,12,2,20.1,158.6,105,-3,001010000101,0,22,81
+    //        date,time,indexOfProgram,cyclenumber,tempSteam,tempMedia,targetPress,pressure,digital,error,version,checksum
+    //			0    1        2            3           4        5           6           7     8       9     10       11
 
-	//ACK_DAT 2016.10.12,16:05:55,9,149,48.0,.0,204,-9,001000000100,0,22,91\r\n"
-	//        0         ,1       ,2,3  ,4   ,5 ,6  ,7 ,8           ,9,10,11
-	
-	public static final int INDEX_GET_DAT_DATE = 0;
-	public static final int INDEX_GET_DAT_TIME = 1;
-	public static final int INDEX_GET_DAT_PROGRAM_INDEX = 2;
-	public static final int INDEX_GET_DAT_CYCLE = 3;
-	public static final int INDEX_GET_DAT_TEMP_STEAM = 4;
-	public static final int INDEX_GET_DAT_TEMP_MEDIA = 5;
-	public static final int INDEX_GET_DAT_PRESS_TARGET = 6;
-	public static final int INDEX_GET_DAT_PRESS = 7;
-	public static final int INDEX_GET_DAT_DIGITAL = 8;
-	public static final int INDEX_GET_DAT_ERRORCODE = 9;
-	public static final int INDEX_GET_DAT_VERSION = 10;
-	public static final int INDEX_GET_DAT_CHECKSUM = 11;
-	public static final int GET_DAT_NUMBER_OF_RESPONSE_PARAMETERS = 12;
+    //ACK_DAT 2016.10.12,16:05:55,9,149,48.0,.0,204,-9,001000000100,0,22,91\r\n"
+    //        0         ,1       ,2,3  ,4   ,5 ,6  ,7 ,8           ,9,10,11
 
+    public static final int INDEX_DAT_DATE = 0;
+    public static final int INDEX_DAT_TIME = 1;
+    public static final int INDEX_DAT_PROGRAM_INDEX = 2;
+    public static final int INDEX_DAT_CYCLE = 3;
+    public static final int INDEX_DAT_TEMP_STEAM = 4;
+    public static final int INDEX_DAT_TEMP_MEDIA = 5;
+    public static final int INDEX_DAT_TEMP_OPTIONAL_1 = 6;
+    public static final int INDEX_DAT_TEMP_OPTIONAL_2 = 7;
+    public static final int INDEX_DAT_PRESSURE = 8;
+    public static final int INDEX_DAT_PRESSURE_OPTIONAL = 9;
+    public static final int INDEX_DAT_DIGITAL = 10;
+    public static final int INDEX_DAT_PROGRAM_STEP = 11;
+    public static final int INDEX_DAT_ERRORCODE = 12;
+    public static final int INDEX_DAT_CHECKSUM = 13;
+    public static final int NUMBER_OF_DAT_RESPONSE_PARAMETERS = 14;
+    public static final int NUMBER_OF_PROGRAM_RESPONSE_PARAMETERS = 8;
+    //Errors
+    public static final int ERROR_NOT_DEFINED = -1;
+    public static final int ERROR_CHECKSUM_WRONG = 0;
+    public static final int ERROR_PARSING = 0;
+    public static final int ERROR_TIMEOUT = 1;
+    //Program Parameters
+    public static final int INDEX_PROGRAM_NUM = 0;
+    public static final int INDEX_PROGRAM_NAME = 1;
+    public static final int INDEX_PROGRAM_TEMP = 2;
+    public static final int INDEX_PROGRAM_IS_LIQUID_PROGRAM = 3;
+    public static final int INDEX_PROGRAM_DRYING_TIME = 4;
+    public static final int INDEX_PROGRAM_STERILIZATION_TIME = 5;
+    public static final int INDEX_PROGRAM_PULSE_VACUUM = 6;
+    public static final int INDEX_PROGRAM_CHECKSUM = 7;
+    Double offsetSteam = 0d;
 
-	public static final int INDEX_GET_DAT_DATE_V2 = 0;
-	public static final int INDEX_GET_DAT_TIME_V2 = 1;
-	public static final int INDEX_GET_DAT_PROGRAM_INDEX_V2 = 2;
-	public static final int INDEX_GET_DAT_CYCLE_V2 = 3;
-	public static final int INDEX_GET_DAT_TEMP_STEAM_V2 = 4;
-	public static final int INDEX_GET_DAT_PRESS_TARGET_V2 = 5;
-	public static final int INDEX_GET_DAT_PRESS_V2 = 6;
-	public static final int INDEX_GET_DAT_DIGITAL_V2 = 7;
-	public static final int INDEX_GET_DAT_ERRORCODE_V2 = 8;
-	public static final int INDEX_GET_DAT_CHECKSUM_V2 = 9;
-	public static final int GET_DAT_NUMBER_OF_RESPONSE_PARAMETERS_FIRMWARE_V2 = 10;
-
-	Double offsetSteam = 0d;
-	Double offsetHeater = 0d;
-	Double offsetSteamGenerator = 0d;
-	Double offsetMedia = 0d;
-	Double offsetPress = 0d;
-
-	
-	Profile userDefinedProgram = null;
-	
-	private static final int HANDLER_MSG_CALIBRATION = 1;
-	private static final int HANDLER_MSG_DATA = 2;
-	private static final int HANDLER_MSG_USER_PROGRAM = 3;
-	private SerialService serialService = null;
+    Double offsetHeater = 0d;
+    Double offsetSteamGenerator = 0d;
+    Double offsetMedia = 0d;
+    Double offsetPress = 0d;
+    Profile userDefinedProgram = null;
 
 
-	
-	private static ReadAndParseSerialService instance = new ReadAndParseSerialService();
+    private static final int HANDLER_ERROR = -1;
+    private static final int HANDLER_MSG_CALIBRATION = 1;
+    private static final int HANDLER_MSG_DATA = 2;
+    private static final int HANDLER_MSG_USER_PROGRAM = 3;
+    private static final int HANDLER_MSG_GET_PROGRAM = 4;
+    private SerialService serialService = null;
+    private List<MyCallback> callbacks;
 
-	public static ReadAndParseSerialService getInstance(){
-		return instance;
-	}
+    private Handler handlerGetData = new Handler();
+    private Runnable runnableGetData = new Runnable() {
+        @Override
+        public void run() {
+            if (AppConstants.isIoSimulated)
+                simulateMessage();
 
-	public void sendStartCommand(int programIndex){
-	commandQueue.add("CMD_STAR " + programIndex + "\r\n");
-	}
-	public void sendStopCommand(){
-		commandQueue.add("CMD_STOP\r\n");
-	}
-	
-	public void sendPreheatCommand(boolean preheatEnabled){
-		if(preheatEnabled == true){
-			commandQueue.add("CMD_PREH 1\r\n");
-		}else{
-			commandQueue.add("CMD_PREH 0\r\n");
-		}
-	}
-	
-	public void sendKeepTemperatureCommand(boolean keepTempEnabled){
-		if(keepTempEnabled == true){
-			commandQueue.add("CMD_KEEP 1\r\n");
-		}else{
-			commandQueue.add("CMD_KEEP 0\r\n");
-		}
-	}
-	public void sendGetUserProgramCommand(){
-			commandQueue.add("GET_USER\r\n");
-			if(AppConstants.isIoSimulated){
-				Autoclave.getInstance().setUserDefinedProgram(new Profile("",1,"user defined prog",2,10,105,204,0,5,"user def",true,true,null,7));
-			}
-	}
-	/*
-	 * parameter vacuumTimes: [01-10]
-	 * parameter sterilizationTemp: [105-134]
-	 * parameter sterilizationTime: [01-25]
-	 * parameter dryingTime: [01-25]
-	 */
-	public void sendPutUserProgramCommand(Integer vacuumTimes, Integer sterilizationTemperature, Integer sterilizationTime, Integer dryingTime){
-		commandQueue.add(String.format("CMD_USER %02d,%03d,%02d,%02d\r\n", vacuumTimes,sterilizationTemperature,sterilizationTime,dryingTime ));
-	}
-	
-	public void sendGetAdjustParameterCommand(){
-		commandQueue.add("GET_ADJU\r\n");
-		if(AppConstants.isIoSimulated == true){
-			Autoclave.getInstance().setAdjustParameters(-1.0, 0.1,0.2,0.3,-10); //steam, heater, steamGenerator, mediasensor
-		}
-	}
+            if (commandQueue.size() == 0)
+                serialService.sendMessage(COMMANDS.CREATE(COMMANDS.DATA));
+            handlerGetData.postDelayed(this, 1000);
+        }
+    };
 
-	public void sendPutAdjustParameterCommand(Double offsetTemp1, Double offsetTemp2, Double offsetTemp3, Integer offsetPress, Double offsetMedia){
-		commandQueue.add(String.format(Locale.ENGLISH,"CMD_ADJU %.1f,%.1f,%.1f,%02d,%.1f\r\n", offsetTemp1,offsetTemp2,offsetTemp3,offsetPress,offsetMedia));
-		//if locale is not Locale.ENGLISH there can be comma instad of point!
-	}
-	
-	public ArrayList<String> getCommandQueue() {
-		return commandQueue;
-	}
 
-	public void setCommandQueue(ArrayList<String> commandQueue) {
-		this.commandQueue = commandQueue;
-	}
+    static class COMMANDS {
+        //Checksum will add automatically, shouldn't add to end of the commands
+        final static String NEWLINE = "\n";
+        final static String START = "CMD_STAR %s,";
+        final static String STOP = "CMD_STOP";
+        final static String DATA = "GET_DATA";
+        final static String GET_PROGRAMS = "GET_PROG %d,";
+        final static String CONFIRM_ERROR = "CMD_CNFE";
 
-	private ArrayList<String> commandQueue = new ArrayList<String>();
-	
-	
-	
+        public static String CREATE(String command, Object... args) {
+            if (command.lastIndexOf(",") == command.length() - 1) {
+                String commandFormatted = String.format(command, args);
+                return commandFormatted + getChecksum(commandFormatted) + NEWLINE;
+            }
+            return command + NEWLINE;
+        }
 
-	//data parsed from GET_DATA
-	private int cycleNumber = 0;
+        private static int getChecksum(String command) {
+            byte[] bytes = command.getBytes();
+            int sum = 0;
+            for (byte b : bytes) {
+                sum += b;
+            }
+            return sum % 256;
+        }
+    }
+
+    interface RESPONSES {
+        String START = "ACK_STAR";
+        String STOP = "ACK_STOP";
+        String DATA = "ACK_DATA";
+        String GET_PROGRAM = "ACK_PROG";
+        String CONFIRM_ERROR = "ACK_CNFE";
+    }
+
+
+    private void sendCommand(String command) {
+        commandQueue.add(command);
+
+        if (commandQueue.size() > 0) {
+            serialService.sendMessage(commandQueue.get(0));
+            Log.e("Serialservice", "CREATE: " + commandQueue.get(0));
+            commandQueue.remove(0);
+            handlerGetData.removeCallbacks(runnableGetData);
+            handlerGetData.postDelayed(runnableGetData, 1000);
+        }
+    }
+
+    private static ReadAndParseSerialService instance = new ReadAndParseSerialService();
+
+    public static ReadAndParseSerialService getInstance() {
+        return instance;
+    }
+
+    public void sendStartCommand(int programIndex) {
+        sendCommand(COMMANDS.CREATE(COMMANDS.START, programIndex));
+    }
+
+    public void confirmError() {
+        if (AppConstants.isIoSimulated)
+            AutoclaveMonitor.SimulatedFailStoppedByUser = false;
+        sendCommand(COMMANDS.CREATE(COMMANDS.CONFIRM_ERROR));
+    }
+
+    public void sendStopCommand() {
+        sendCommand(COMMANDS.CREATE(COMMANDS.STOP));
+    }
+
+    public void sendGetUserProgramCommand() {
+        commandQueue.add("GET_USER\r\n");
+        if (AppConstants.isIoSimulated) {
+            //     Autoclave.getInstance().setUserDefinedProgram(new Profile("", 1, "user defined prog", 2, 10, 105, 204, 0, 5, "user def", true, true, null, 7));
+        }
+    }
+
+    public void getProgram(int index) {
+        sendCommand(COMMANDS.CREATE(COMMANDS.GET_PROGRAMS, index));
+    }
+
+    /*
+     * parameter vacuumTimes: [01-10]
+     * parameter sterilizationTemp: [105-134]
+     * parameter sterilizationTime: [01-25]
+     * parameter dryingTime: [01-25]
+     */
+    public void sendPutUserProgramCommand(Integer vacuumTimes, Integer sterilizationTemperature, Integer sterilizationTime, Integer dryingTime) {
+        commandQueue.add(String.format("CMD_USER %02d,%03d,%02d,%02d\r\n", vacuumTimes, sterilizationTemperature, sterilizationTime, dryingTime));
+    }
+
+    public void sendGetAdjustParameterCommand() {
+        commandQueue.add("GET_ADJU\r\n");
+        if (AppConstants.isIoSimulated == true) {
+            Autoclave.getInstance().setAdjustParameters(-1.0, 0.1, 0.2, 0.3, -10); //steam, heater, steamGenerator, mediasensor
+        }
+    }
+
+    public void sendPutAdjustParameterCommand(Double offsetTemp1, Double offsetTemp2, Double offsetTemp3, Integer offsetPress, Double offsetMedia) {
+        commandQueue.add(String.format(Locale.ENGLISH, "CMD_ADJU %.1f,%.1f,%.1f,%02d,%.1f\r\n", offsetTemp1, offsetTemp2, offsetTemp3, offsetPress, offsetMedia));
+        //if locale is not Locale.ENGLISH there can be comma instad of point!
+    }
+
+    private ArrayList<String> commandQueue = new ArrayList<String>();
+
+    //data parsed from GET_DATA
+    private int cycleNumber = 0;
     boolean[] digitalData = new boolean[AppConstants.NUMBER_OF_DIGITAL_BITS];
-    private int errorCode = 0;
+    private String errorCode = "00000000";
     private String date = "";
     private String time = "";
     private int indexOfRunningProgram = 1;
     private String firmwareVersion = "";
-    Float pressureCurrent = (float) 0;
-	float[] temperatures = new float[3];
-	
-	private Handler handler = new Handler(Looper.getMainLooper()) {
-	    @Override
-	    public void handleMessage(Message msg) {
-	    	  switch (msg.what) {
-			  case HANDLER_MSG_USER_PROGRAM:
-				  Autoclave.getInstance().setUserDefinedProgram(userDefinedProgram);
-			  break;
-		        case HANDLER_MSG_DATA:
-					Autoclave.getInstance().setSensorsData(
-							temperatures, 
-							pressureCurrent, 
-							digitalData);  
-					
-					Autoclave.getInstance().setErrorCode(errorCode);
-					Autoclave.getInstance().setDate(date);
-					Autoclave.getInstance().setTime(time);
-					Autoclave.getInstance().setIndexOfRunningProgram(indexOfRunningProgram);
-					Autoclave.getInstance().setMicrocontrollerReachable(true);
-					Autoclave.getInstance().getController().setCycleNumber(cycleNumber);
-					Autoclave.getInstance().getController().setFirmwareVersion(firmwareVersion);
-		        	
-		        	break;
-		        case HANDLER_MSG_CALIBRATION:
-		       	 Autoclave.getInstance().setAdjustParameters(offsetSteam, offsetMedia, offsetHeater, offsetSteamGenerator,offsetPress);
-		       	 
-		            break;
-		 
-		        default:
+    float[] pressures = new float[2];
+    float[] temperatures = new float[4];
 
-		           // super.handleMessage(msg);
-		    }      	
-	    }
-	};
+    private Handler handler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            Autoclave.getInstance().setMicrocontrollerReachable(true);
 
-	
-     
+            switch (msg.what) {
+                case HANDLER_MSG_USER_PROGRAM:
+                    Autoclave.getInstance().setUserDefinedProgram(userDefinedProgram);
+                    break;
+                case HANDLER_MSG_DATA:
+                    Autoclave.getInstance().setSensorsData(
+                            temperatures,
+                            pressures,
+                            digitalData);
 
-	private int counter = 0;
+                    //TODO check error code
+                    Autoclave.getInstance().setErrorCode(errorCode);
+                    Autoclave.getInstance().setDate(date);
+                    Autoclave.getInstance().setTime(time);
+                    Autoclave.getInstance().setIndexOfRunningProgram(indexOfRunningProgram);
+                    Autoclave.getInstance().setMicrocontrollerReachable(true);
+                    Autoclave.getInstance().getController().setCycleNumber(cycleNumber);
+                    Autoclave.getInstance().getController().setFirmwareVersion(firmwareVersion);
 
+                    break;
+                case HANDLER_MSG_CALIBRATION:
+                    Autoclave.getInstance().setAdjustParameters(offsetSteam, offsetMedia, offsetHeater, offsetSteamGenerator, offsetPress);
+                    break;
+                case HANDLER_MSG_GET_PROGRAM:
+                    if (msg.obj != null)
+                        publishResult(msg.obj, true, HANDLER_MSG_GET_PROGRAM);
+                    else
+                        publishResult(ERROR_NOT_DEFINED, false, HANDLER_MSG_GET_PROGRAM);
+                    break;
+                case HANDLER_ERROR:
+                    publishResult(msg.obj != null ? msg.obj : ERROR_NOT_DEFINED, false, -1);
+                    break;
+                default:
 
-	private Thread serialThread = new Thread(new Runnable() {
-		@Override
-		public void run() {
-			while(true) {
-				if(AppConstants.isIoSimulated == true){
-					simulateMessage();
-				}else {
-					try {
-							if (commandQueue.size() >0) {
-								serialService.sendMessage(commandQueue.get(0));
-								Log.e("Serialservice", "SEND: " + commandQueue.get(0));
-								commandQueue.remove(0);
-							} else {
-								serialService.sendMessage("GET_DAT\n");
-								Log.e("Serialservice", "SEND: GET_DAT");
-							}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
+                    // super.handleMessage(msg);
+            }
+        }
+    };
 
 
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-	});
+    private int counter = 0;
 
-	
-	private ReadAndParseSerialService() {
-			serialService = new SerialService("/dev/ttymxc3",9600);
-		serialThread.start();
-		if(AppConstants.isIoSimulated == false){
-			serialService.setOnMessageReceivedListener(this);
-			serialService.startReadSerialThread();
-		}
-	}
-	
+    private ReadAndParseSerialService() {
+        serialService = new SerialService("/dev/ttyS4", 9600);
+        handlerGetData.post(runnableGetData);
+//        serialThread.start();
+        if (AppConstants.isIoSimulated == false) {
+            serialService.setOnMessageReceivedListener(this);
+            serialService.startReadSerialThread();
+        }
+    }
 
 
-	@Override
-	public void onMessageReceived(String message) {
-		
-		Log.e("ReadAndParse", "received: " + message);
-		String[] response = null;
-		String[] responseParameters = null;
-		try{
-			response = message.split(" ");
-			if(response.length == 2){
-				responseParameters = response[1].split(",");
-			}
-		}catch(Exception e){
-			Log.e("ReadAndParseSerial", "exception parsing response");
-			return;
-		}
-		
-		try{
-			switch(response[0]){
-			case "ACK_USER":
-				// ACK_USER 03,121,20,08
+    @Override
+    public void onMessageReceived(String message) {
 
-				if(responseParameters == null){
-					return;
-				}
-				if(responseParameters.length != 4){
-					return;
-				}
-				Integer vacuumTimes = Integer.parseInt(responseParameters[0]);
-				Integer sterilizationTemperature = Integer.parseInt(responseParameters[1]);
-				Integer sterilizationTime = Integer.parseInt(responseParameters[2]);
-				Integer dryingTime = Integer.parseInt(responseParameters[3].replace("\n", "").replace("\r", ""));
-				
-				userDefinedProgram = Autoclave.getInstance().getUserDefinedProgram();
-				userDefinedProgram.setVacuumTimes(vacuumTimes);
-				userDefinedProgram.setSterilisationTemperature(sterilizationTemperature);
-				userDefinedProgram.setSterilisationTime(sterilizationTime);
-				userDefinedProgram.setDryTime(dryingTime);
-				handler.sendEmptyMessage(HANDLER_MSG_USER_PROGRAM);
-				
-				break;
-			
-				
-			case "ACK_ADJU":
-				//ACK_ADJU -1.0,0.0,0.0,00,-0.1
-				//           0   1   2   3   4
+        Log.e("ReadAndParse", "received: " + message);
+        //TODO if need add a checksum error
+        if (AppConstants.CHECK_CHECKSUM && !checkChecksum(message)) {
+            com.certoclav.app.model.Log.e("Checksum failed!\n" + message);
+            Message mesg = new Message();
+            mesg.what = HANDLER_ERROR;
+            mesg.obj = ERROR_CHECKSUM_WRONG;
+            handler.sendMessage(mesg);
+            return;
+        }
+        String[] response = null;
+        String[] responseParameters = null;
+        try {
+            response = message.split(" ");
+            if (response.length == 2) {
+                responseParameters = response[1].split(",");
+            }
+        } catch (Exception e) {
+            Log.e("ReadAndParseSerial", "exception parsing response");
+            return;
+        }
 
-				if(responseParameters == null){
-					Log.e("ReadAndParseSerial", "parameters == null");
-					return;
-				}
-				if(responseParameters.length != 5){
-					Log.e("ReadAndParseSerial", "parameter length wrong " + responseParameters.length);
-					return;
-				}
-				offsetSteam = Double.parseDouble(responseParameters[0]);
-				offsetHeater = Double.parseDouble(responseParameters[1]);
-				offsetSteamGenerator = Double.parseDouble(responseParameters[2]);
-				offsetPress = Double.parseDouble(responseParameters[3]);
-				offsetMedia = Double.parseDouble(responseParameters[4]);
-				Log.e("ReadAndParseSerial", "parameters: " + offsetSteam + " "+ offsetHeater + " " + offsetSteamGenerator + " "+ offsetPress + " "+ offsetMedia);
-				handler.sendEmptyMessage(HANDLER_MSG_CALIBRATION);
-				
-				
-				break;
-			case "ACK_DAT":
-	
-				if(responseParameters.length==GET_DAT_NUMBER_OF_RESPONSE_PARAMETERS) {
-					date = responseParameters[INDEX_GET_DAT_DATE];
-					time = responseParameters[INDEX_GET_DAT_TIME];
-					indexOfRunningProgram = Integer.parseInt(responseParameters[INDEX_GET_DAT_PROGRAM_INDEX]);
-					cycleNumber = Integer.parseInt(responseParameters[INDEX_GET_DAT_CYCLE]);
-					temperatures[0] = Float.parseFloat(responseParameters[INDEX_GET_DAT_TEMP_STEAM]);
-					temperatures[1] = Float.parseFloat(responseParameters[INDEX_GET_DAT_TEMP_MEDIA]);
-					pressureCurrent = Float.parseFloat(responseParameters[INDEX_GET_DAT_PRESS]);
-					firmwareVersion = responseParameters[INDEX_GET_DAT_VERSION];
-					boolean isProgramFinished = (responseParameters[INDEX_GET_DAT_DIGITAL].charAt(AppConstants.DIGITAL_PROGRAM_FINISHED_INDEX) == '1');
-					boolean isProgramRunning = (responseParameters[INDEX_GET_DAT_DIGITAL].charAt(AppConstants.DIGITAL_PROGRAM_RUNNING_INDEX) == '1');
-					boolean isDoorLocked = (responseParameters[INDEX_GET_DAT_DIGITAL].charAt(AppConstants.DIGITAL_DOOR_LOCKED_INDEX) == '1');
-					boolean isDoorClosed = (responseParameters[INDEX_GET_DAT_DIGITAL].charAt(AppConstants.DIGITAL_DOOR_CLOSED_INDEX) == '1');
-					boolean isWaterLevelSourceLow = (responseParameters[INDEX_GET_DAT_DIGITAL].charAt(AppConstants.DIGITAL_WATER_LVL_LOW_INDEX) == '1');
-					boolean isWaterLevelBinFull = (responseParameters[INDEX_GET_DAT_DIGITAL].charAt(AppConstants.DIGITAL_WATER_LVL_FULL_INDEX) == '1');
-					boolean isStopedByUser = (responseParameters[INDEX_GET_DAT_DIGITAL].charAt(AppConstants.DIGITAL_FAIL_STOPPED_BY_USER) == '1');
-					boolean isPreheatOn = (responseParameters[INDEX_GET_DAT_DIGITAL].charAt(AppConstants.DIGITAL_PREHEAT_ENABLED) == '1');
-					boolean isKeepTempOn = (responseParameters[INDEX_GET_DAT_DIGITAL].charAt(AppConstants.DIGITAL_KEEP_TEMP_ENABLED) == '1');
-					boolean isWaterQualityBad = (responseParameters[INDEX_GET_DAT_DIGITAL].charAt(AppConstants.DIGITAL_FAIL_WATER_QUALITY) == '1');
-					boolean isCountdownSterilizationStarted = (responseParameters[INDEX_GET_DAT_DIGITAL].charAt(AppConstants.DIGITAL_STERILIZATION_COUNTDOWN_STARTED) == '1');
-					boolean isMediaSensorEnabled = (responseParameters[INDEX_GET_DAT_DIGITAL].charAt(AppConstants.DIGITAL_MEDIA_SENSOR_ENABLED) == '1');
+        try {
+            switch (response[0]) {
+                //TODO prase 2
+                case "ACK_ADJU":
+                    //ACK_ADJU -1.0,0.0,0.0,00,-0.1
+                    //           0   1   2   3   4
 
-					try {
-						errorCode = Integer.parseInt(responseParameters[INDEX_GET_DAT_ERRORCODE]);
-					} catch (Exception e) {
-						errorCode = 0;
-					}
-					String checksum = responseParameters[9];
+                    if (responseParameters == null) {
+                        Log.e("ReadAndParseSerial", "parameters == null");
+                        return;
+                    }
+                    if (responseParameters.length != 5) {
+                        Log.e("ReadAndParseSerial", "parameter length wrong " + responseParameters.length);
+                        return;
+                    }
+                    offsetSteam = Double.parseDouble(responseParameters[0]);
+                    offsetHeater = Double.parseDouble(responseParameters[1]);
+                    offsetSteamGenerator = Double.parseDouble(responseParameters[2]);
+                    offsetPress = Double.parseDouble(responseParameters[3]);
+                    offsetMedia = Double.parseDouble(responseParameters[4]);
+                    Log.e("ReadAndParseSerial", "parameters: " + offsetSteam + " " + offsetHeater + " " + offsetSteamGenerator + " " + offsetPress + " " + offsetMedia);
+                    handler.sendEmptyMessage(HANDLER_MSG_CALIBRATION);
+                    break;
+                case RESPONSES.DATA:
+
+                    if (responseParameters.length == NUMBER_OF_DAT_RESPONSE_PARAMETERS) {
+                        date = responseParameters[INDEX_DAT_DATE];
+                        time = responseParameters[INDEX_DAT_TIME];
+                        indexOfRunningProgram = Integer.parseInt(responseParameters[INDEX_DAT_PROGRAM_INDEX]);
+                        cycleNumber = Integer.parseInt(responseParameters[INDEX_DAT_CYCLE]);
+                        temperatures[0] = Float.parseFloat(responseParameters[INDEX_DAT_TEMP_STEAM]);
+                        temperatures[1] = Float.parseFloat(responseParameters[INDEX_DAT_TEMP_MEDIA]);
+                        temperatures[2] = Float.parseFloat(responseParameters[INDEX_DAT_TEMP_OPTIONAL_1]);
+                        temperatures[3] = Float.parseFloat(responseParameters[INDEX_DAT_TEMP_OPTIONAL_2]);
+                        pressures[0] = Float.parseFloat(responseParameters[INDEX_DAT_PRESSURE]);
+                        pressures[1] = Float.parseFloat(responseParameters[INDEX_DAT_PRESSURE_OPTIONAL]);
+
+                        String digitalFlags = responseParameters[INDEX_DAT_DIGITAL];
+                        boolean isProgramFinished = digitalFlags.charAt(AppConstants.DIGITAL_PROGRAM_FINISHED_INDEX) == '1';
+                        boolean isProgramRunning = digitalFlags.charAt(AppConstants.DIGITAL_PROGRAM_RUNNING_INDEX) == '1';
+                        boolean isDoorLocked = digitalFlags.charAt(AppConstants.DIGITAL_DOOR_LOCKED_INDEX) == '1';
+                        boolean isDoorClosed = digitalFlags.charAt(AppConstants.DIGITAL_DOOR_CLOSED_INDEX) == '1';
+                        boolean isWaterLevelSourceLow = digitalFlags.charAt(AppConstants.DIGITAL_WATER_LVL_LOW_INDEX) == '1';
+                        boolean isWaterLevelBinFull = digitalFlags.charAt(AppConstants.DIGITAL_WATER_LVL_FULL_INDEX) == '1';
+                        boolean isWaterQualityBad = digitalFlags.charAt(AppConstants.DIGITAL_FAIL_WATER_QUALITY) == '1';
+
+                        try {
+                            errorCode = responseParameters[INDEX_DAT_ERRORCODE];
+                        } catch (Exception e) {
+                            errorCode = "00000000";
+                        }
+                        String checksum = responseParameters[INDEX_DAT_CHECKSUM];
 
 
-					digitalData[AppConstants.DIGITAL_DOOR_CLOSED_INDEX] = isDoorClosed;
-					digitalData[AppConstants.DIGITAL_DOOR_LOCKED_INDEX] = isDoorLocked;
-					digitalData[AppConstants.DIGITAL_PROGRAM_FINISHED_INDEX] = isProgramFinished;
-					digitalData[AppConstants.DIGITAL_PROGRAM_RUNNING_INDEX] = isProgramRunning;
-					digitalData[AppConstants.DIGITAL_WATER_LVL_LOW_INDEX] = isWaterLevelSourceLow;
-					digitalData[AppConstants.DIGITAL_WATER_LVL_FULL_INDEX] = isWaterLevelBinFull;
-					digitalData[AppConstants.DIGITAL_FAIL_STOPPED_BY_USER] = isStopedByUser;
-					digitalData[AppConstants.DIGITAL_KEEP_TEMP_ENABLED] = isKeepTempOn;
-					digitalData[AppConstants.DIGITAL_PREHEAT_ENABLED] = isPreheatOn;
-					// digitalData[AppConstants.DIGITAL_FAIL_WATER_QUALITY]
+                        digitalData[AppConstants.DIGITAL_DOOR_CLOSED_INDEX] = isDoorClosed;
+                        digitalData[AppConstants.DIGITAL_DOOR_LOCKED_INDEX] = isDoorLocked;
+                        digitalData[AppConstants.DIGITAL_PROGRAM_FINISHED_INDEX] = isProgramFinished;
+                        digitalData[AppConstants.DIGITAL_PROGRAM_RUNNING_INDEX] = isProgramRunning;
+                        digitalData[AppConstants.DIGITAL_WATER_LVL_LOW_INDEX] = isWaterLevelSourceLow;
+                        digitalData[AppConstants.DIGITAL_WATER_LVL_FULL_INDEX] = isWaterLevelBinFull;
+                        digitalData[AppConstants.DIGITAL_WATER_LVL_FULL_INDEX] = isWaterLevelBinFull;
+                        digitalData[AppConstants.DIGITAL_FAIL_WATER_QUALITY] = isWaterQualityBad;
 
-					handler.sendEmptyMessage(HANDLER_MSG_DATA);
-					Log.e("ReadAndParseService", "temp: " + temperatures[0] + "\n" +
-							"closed: " + isDoorClosed + "\n" +
-							"locked: " + isDoorLocked + "\n" +
-							"finished: " + isProgramFinished + "\n" +
-							"running: " + isProgramRunning + "\n" +
-							"isWaterLevelLow: " + isWaterLevelSourceLow + "\n" +
-							"isBinFull: " + isWaterLevelBinFull + "\n" +
-							"isStopedByUser: " + isStopedByUser + "\n" +
-							"errorCode: " + errorCode + "\n" +
-							"press: " + pressureCurrent + "\n" +
-							"cylce: " + cycleNumber + "\n" +
-							"date: " + date + "\n" +
-							"time: " + time + "\n" +
-							"index of program: " + indexOfRunningProgram + "\n");
-				}
-				    
-				break;
-				default:
-					try{
-						responseParameters = response[0].split(",");
-						if(responseParameters.length==GET_DAT_NUMBER_OF_RESPONSE_PARAMETERS_FIRMWARE_V2) {
-							date = responseParameters[INDEX_GET_DAT_DATE_V2];
-							time = responseParameters[INDEX_GET_DAT_TIME_V2];
-							indexOfRunningProgram = Integer.parseInt(responseParameters[INDEX_GET_DAT_PROGRAM_INDEX_V2]);
-							cycleNumber = Integer.parseInt(responseParameters[INDEX_GET_DAT_CYCLE_V2]);
-							temperatures[0] = Float.parseFloat(responseParameters[INDEX_GET_DAT_TEMP_STEAM_V2]);
-							temperatures[1] = 0f;
-							pressureCurrent = Float.parseFloat(responseParameters[INDEX_GET_DAT_PRESS_V2]);
-							firmwareVersion = "V2";
-							boolean isProgramFinished = (responseParameters[INDEX_GET_DAT_DIGITAL_V2].charAt(AppConstants.DIGITAL_PROGRAM_FINISHED_INDEX) == '1');
-							boolean isProgramRunning = (responseParameters[INDEX_GET_DAT_DIGITAL_V2].charAt(AppConstants.DIGITAL_PROGRAM_RUNNING_INDEX) == '1');
-							boolean isDoorLocked = (responseParameters[INDEX_GET_DAT_DIGITAL_V2].charAt(AppConstants.DIGITAL_DOOR_LOCKED_INDEX) == '1');
-							boolean isDoorClosed = (responseParameters[INDEX_GET_DAT_DIGITAL_V2].charAt(AppConstants.DIGITAL_DOOR_CLOSED_INDEX) == '1');
-							boolean isWaterLevelSourceLow = (responseParameters[INDEX_GET_DAT_DIGITAL_V2].charAt(AppConstants.DIGITAL_WATER_LVL_LOW_INDEX) == '1');
-							boolean isWaterLevelBinFull = (responseParameters[INDEX_GET_DAT_DIGITAL_V2].charAt(AppConstants.DIGITAL_WATER_LVL_FULL_INDEX) == '1');
-							boolean isStopedByUser = (responseParameters[INDEX_GET_DAT_DIGITAL_V2].charAt(AppConstants.DIGITAL_FAIL_STOPPED_BY_USER) == '1');
-							boolean isPreheatOn = false;//(responseParameters[INDEX_GET_DAT_DIGITAL_V2].charAt(AppConstants.DIGITAL_PREHEAT_ENABLED) == '1');
-							boolean isKeepTempOn = false;//(responseParameters[INDEX_GET_DAT_DIGITAL_V2].charAt(AppConstants.DIGITAL_KEEP_TEMP_ENABLED) == '1');
-							//boolean isWaterQualityBad = (responseParameters[INDEX_GET_DAT_DIGITAL_V2].charAt(AppConstants.DIGITAL_FAIL_WATER_QUALITY) == '1');
-							//boolean isCountdownSterilizationStarted = (responseParameters[INDEX_GET_DAT_DIGITAL_V2].charAt(AppConstants.DIGITAL_STERILIZATION_COUNTDOWN_STARTED) == '1');
-							//boolean isMediaSensorEnabled = (responseParameters[INDEX_GET_DAT_DIGITAL_V2].charAt(AppConstants.DIGITAL_MEDIA_SENSOR_ENABLED) == '1');
+                        // digitalData[AppConstants.DIGITAL_FAIL_WATER_QUALITY]
+                        handler.sendEmptyMessage(HANDLER_MSG_DATA);
+                        Log.e("ReadAndParseService", "temp: " + temperatures[0] + "\n" +
+                                "closed: " + isDoorClosed + "\n" +
+                                "locked: " + isDoorLocked + "\n" +
+                                "finished: " + isProgramFinished + "\n" +
+                                "running: " + isProgramRunning + "\n" +
+                                "isWaterLevelLow: " + isWaterLevelSourceLow + "\n" +
+                                "isBinFull: " + isWaterLevelBinFull + "\n" +
+                                "errorCode: " + errorCode + "\n" +
+                                "press: " + pressures + "\n" +
+                                "cylce: " + cycleNumber + "\n" +
+                                "date: " + date + "\n" +
+                                "time: " + time + "\n" +
+                                "index of program: " + indexOfRunningProgram + "\n");
+                    }
 
-							try {
-								errorCode = Integer.parseInt(responseParameters[INDEX_GET_DAT_ERRORCODE]);
-							} catch (Exception e) {
-								errorCode = 0;
-							}
-							//String checksum = responseParameters[9];
+                    break;
+
+                case RESPONSES.GET_PROGRAM:
+                    if (responseParameters.length == NUMBER_OF_PROGRAM_RESPONSE_PARAMETERS) {
+                        Profile profile = new Profile("",
+                                1,
+                                responseParameters[INDEX_PROGRAM_NAME],
+                                Integer.valueOf(responseParameters[INDEX_PROGRAM_PULSE_VACUUM]),
+                                Integer.valueOf(responseParameters[INDEX_PROGRAM_STERILIZATION_TIME]),
+                                Float.valueOf(responseParameters[INDEX_PROGRAM_TEMP]),
+                                210,
+                                0,
+                                10,
+                                null,
+                                true,
+                                true,
+                                Integer.valueOf(responseParameters[INDEX_PROGRAM_IS_LIQUID_PROGRAM]) == 1,
+                                null,
+                                Integer.valueOf(responseParameters[INDEX_PROGRAM_NUM]));
+                        Message msg = new Message();
+                        msg.what = HANDLER_MSG_GET_PROGRAM;
+                        msg.obj = profile;
+                        handler.sendMessage(msg);
+                    } else {
+                        publishResult(new ErrorModel(null, ERROR_PARSING), false, HANDLER_MSG_GET_PROGRAM);
+                    }
+                    break;
+
+            }
+        } catch (Exception e) {
+            Log.e("onMessageReceived", e.toString());
+        }
 
 
-							digitalData[AppConstants.DIGITAL_DOOR_CLOSED_INDEX] = isDoorClosed;
-							digitalData[AppConstants.DIGITAL_DOOR_LOCKED_INDEX] = isDoorLocked;
-							digitalData[AppConstants.DIGITAL_PROGRAM_FINISHED_INDEX] = isProgramFinished;
-							digitalData[AppConstants.DIGITAL_PROGRAM_RUNNING_INDEX] = isProgramRunning;
-							digitalData[AppConstants.DIGITAL_WATER_LVL_LOW_INDEX] = isWaterLevelSourceLow;
-							digitalData[AppConstants.DIGITAL_WATER_LVL_FULL_INDEX] = isWaterLevelBinFull;
-							digitalData[AppConstants.DIGITAL_FAIL_STOPPED_BY_USER] = isStopedByUser;
-							digitalData[AppConstants.DIGITAL_KEEP_TEMP_ENABLED] = isKeepTempOn;
-							digitalData[AppConstants.DIGITAL_PREHEAT_ENABLED] = isPreheatOn;
-							// digitalData[AppConstants.DIGITAL_FAIL_WATER_QUALITY]
+    }
 
-							try {
-								errorCode = Integer.parseInt(responseParameters[INDEX_GET_DAT_ERRORCODE_V2]);
-							} catch (Exception e) {
-								errorCode = 0;
-							}
-							handler.sendEmptyMessage(HANDLER_MSG_DATA);
-					//		Log.e("ReadAndParseService", "temp: " + temperatures[0] + "\n" +
-					//				"closed: " + isDoorClosed + "\n" +
-					//				"locked: " + isDoorLocked + "\n" +
-					//				"finished: " + isProgramFinished + "\n" +
-					//				"running: " + isProgramRunning + "\n" +
-					//				"isWaterLevelLow: " + isWaterLevelSourceLow + "\n" +
-					//				"isBinFull: " + isWaterLevelBinFull + "\n" +
-					//				"isStopedByUser: " + isStopedByUser + "\n" +
-					//				"errorCode: " + errorCode + "\n" +
-					//				"press: " + pressureCurrent + "\n" +
-					//				"cylce: " + cycleNumber + "\n" +
-					//				"date: " + date + "\n" +
-					//				"time: " + time + "\n" +
-					//				"index of program: " + indexOfRunningProgram + "\n");
-						}
-						}catch (Exception e){
-						e.printStackTrace();
-					}
+    private void simulateMessage() {
 
 
+        //	Log.e("ReadAndParseSerialSer", "simulate serial");
+
+        cycleNumber = 1;
+
+        Float temperature;
 
 
-					break;
-
-			}	
-			}catch(Exception e){
-				Log.e("onMessageReceived", e.toString());
-			}
-		
-		
-				
-
-			
-	}
-	
-	private void simulateMessage(){
-		
-	
-	//	Log.e("ReadAndParseSerialSer", "simulate serial");
-
-		cycleNumber = 1;
-
-		Float temperature;
-	
-		
-		pressureCurrent = (float) 1.0;
-		boolean isProgramFinished = true;
-		boolean isProgramRunning = false;
-		boolean isDoorLocked = 		false;
-		boolean isDoorClosed = 		true;
-		boolean isWaterLevelSourceLow = false;
-		boolean isWaterLevelBinFull = false;
-		boolean isStopedByUser  = false;
+        pressures[0] = (float) 1.0;
+        boolean isProgramFinished = true;
+        boolean isProgramRunning = false;
+        boolean isDoorLocked = false;
+        boolean isDoorClosed = true;
+        boolean isWaterLevelSourceLow = false;
+        boolean isWaterLevelBinFull = false;
+        boolean isWaterQualityBad = false;
+        boolean isStopedByUser = false;
 
 
-		temperature = (float) (60 + (30.0* Math.sin(((double)counter)*0.02)));
-		counter++;
-		isDoorClosed = true;
-		isDoorLocked = false;
-		isProgramFinished = false;
-		if(Autoclave.getInstance().getState() == AutoclaveState.PREPARE_TO_RUN
-				|| Autoclave.getInstance().getState() == AutoclaveState.RUNNING
-				|| Autoclave.getInstance().getState() == AutoclaveState.RUN_CANCELED){
-			isProgramRunning = true;
-			isDoorLocked = true;
-		}else{
-			isProgramRunning = false;
-			isDoorLocked = false;
-		}
-		if(AutoclaveMonitor.getInstance().SimulatedFailStoppedByUser == true){
-			isProgramRunning = false;
-			isDoorLocked = false;
-			isStopedByUser = true;
-		}else{
-			isStopedByUser = false;
-		}
-		isWaterLevelSourceLow = false;
-		isWaterLevelBinFull = false;
-		
-		temperatures[0] = temperature;
-		temperatures[1] = temperature-3;
-		temperatures[2] = 0;
-		firmwareVersion = "SIM V1";
-		digitalData[AppConstants.DIGITAL_DOOR_CLOSED_INDEX] = isDoorClosed;
-		digitalData[AppConstants.DIGITAL_DOOR_LOCKED_INDEX] = isDoorLocked;
-		digitalData[AppConstants.DIGITAL_PROGRAM_FINISHED_INDEX] = isProgramFinished;
-		digitalData[AppConstants.DIGITAL_PROGRAM_RUNNING_INDEX] = isProgramRunning;
-		digitalData[AppConstants.DIGITAL_WATER_LVL_LOW_INDEX] = isWaterLevelSourceLow;
-	    digitalData[AppConstants.DIGITAL_WATER_LVL_FULL_INDEX] = isWaterLevelBinFull;
-	    digitalData[AppConstants.DIGITAL_FAIL_STOPPED_BY_USER] = isStopedByUser;
-		indexOfRunningProgram = 1;
-		try{
-			indexOfRunningProgram = Autoclave.getInstance().getProfile().getIndex();
-		}catch (Exception e){
-			indexOfRunningProgram = 1;
-		}
-		Autoclave.getInstance().setIndexOfRunningProgram(indexOfRunningProgram);
-	    
+        temperature = (float) (60 + (30.0 * Math.sin(((double) counter) * 0.02)));
+        counter++;
+        isDoorClosed = true;
+        isProgramFinished = false;
+        if (Autoclave.getInstance().getState() == AutoclaveState.PREPARE_TO_RUN
+                || Autoclave.getInstance().getState() == AutoclaveState.RUNNING
+                || Autoclave.getInstance().getState() == AutoclaveState.RUN_CANCELED) {
+            isProgramRunning = true;
+            isDoorLocked = true;
+        } else {
+            isProgramRunning = false;
+            isDoorLocked = false;
+        }
+        if (AutoclaveMonitor.getInstance().SimulatedFailStoppedByUser == true) {
+            isProgramRunning = false;
+            isDoorLocked = false;
+            errorCode = "00000002";
+        } else {
+            errorCode = "00000000";
+        }
+        isWaterLevelSourceLow = false;
+        isWaterLevelBinFull = false;
 
-	    
-	   handler.sendEmptyMessage(HANDLER_MSG_DATA);
-	   
-	    
-		    
-	}
+        temperatures[0] = temperature;
+        temperatures[1] = temperature - 3;
+        temperatures[2] = 0;
+        firmwareVersion = "SIM V1";
+        digitalData[AppConstants.DIGITAL_DOOR_CLOSED_INDEX] = isDoorClosed;
+        digitalData[AppConstants.DIGITAL_DOOR_LOCKED_INDEX] = isDoorLocked;
+        digitalData[AppConstants.DIGITAL_PROGRAM_FINISHED_INDEX] = isProgramFinished;
+        digitalData[AppConstants.DIGITAL_PROGRAM_RUNNING_INDEX] = isProgramRunning;
+        digitalData[AppConstants.DIGITAL_WATER_LVL_LOW_INDEX] = isWaterLevelSourceLow;
+        digitalData[AppConstants.DIGITAL_WATER_LVL_FULL_INDEX] = isWaterLevelBinFull;
+        digitalData[AppConstants.DIGITAL_FAIL_WATER_QUALITY] = isWaterQualityBad;
+        //TODO simulate manaul stop error
+        //digitalData[AppConstants.DIGITAL_FAIL_STOPPED_BY_USER] = isStopedByUser;
+        indexOfRunningProgram = 1;
+        try {
+            indexOfRunningProgram = Autoclave.getInstance().getProfile().getIndex();
+        } catch (Exception e) {
+            indexOfRunningProgram = 1;
+        }
+        Autoclave.getInstance().setIndexOfRunningProgram(indexOfRunningProgram);
+
+
+        handler.sendEmptyMessage(HANDLER_MSG_DATA);
+
+
+    }
+
+    private boolean checkChecksum(String command) {
+        command = command.trim();
+        if (AppConstants.isIoSimulated)
+            return true;
+        int lastIndex = command.lastIndexOf(",");
+        if (lastIndex >= 0)
+            try {
+                return COMMANDS.getChecksum(command.substring(0, lastIndex + 1)) == Integer.valueOf(command.substring(lastIndex + 1, command.length()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                //Parsing the checksum failed
+            }
+        return false;
+    }
+
+    public void addCallback(MyCallback callback) {
+        if (callbacks == null)
+            callbacks = new ArrayList<>();
+        callbacks.add(callback);
+    }
+
+    public void removeCallback(MyCallback callback) {
+        if (callbacks != null) {
+            callbacks.remove(callback);
+        }
+    }
+
+    private void publishResult(Object response, boolean isSuccess, int requestId) {
+        for (MyCallback callback : callbacks) {
+            if (isSuccess)
+                callback.onSuccess(response, requestId);
+            else
+                callback.onError(new ErrorModel(null, Integer.valueOf(response.toString())), requestId);
+        }
+    }
 }

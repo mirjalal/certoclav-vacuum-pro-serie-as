@@ -28,8 +28,7 @@ public class Sensor {
 
 
     public String getValueString() {
-        Double value = (double) currentValue;
-        return Integer.toString(value.intValue());
+        return String.format("%.1f", currentValue);
     }
 
 

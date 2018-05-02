@@ -16,7 +16,7 @@
         android:gravity="center"
         android:text="Steam: --- °C"
         android:textColor="@android:color/white"
-        android:textSize="20sp"
+        android:textSize="@dimen/text_size_status_bar"
         android:textStyle="bold" />
 
 
@@ -28,7 +28,7 @@
         android:gravity="center"
         android:text="Media: --- °C"
         android:textColor="@android:color/white"
-        android:textSize="20sp"
+        android:textSize="@dimen/text_size_status_bar"
         android:textStyle="bold" />
 
     <TextView
@@ -39,7 +39,7 @@
         android:gravity="center"
         android:text="Pressure: --- bar"
         android:textColor="@android:color/white"
-        android:textSize="20sp"
+        android:textSize="@dimen/text_size_status_bar"
         android:textStyle="bold" />
 
 
@@ -52,6 +52,6 @@
         android:gravity="center"
         android:text="support@certoclav.com"
         android:textColor="@android:color/white"
-        android:textSize="20sp"
+        android:textSize="@dimen/text_size_status_bar"
         android:textStyle="bold" />
 </LinearLayout>

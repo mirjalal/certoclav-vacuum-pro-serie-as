@@ -65,8 +65,6 @@ public class ActivateCloudAccountActivity extends CertoclavSuperActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
-                // TODO Auto-generated method stub
-
             }
 
             @Override
@@ -99,7 +97,7 @@ public class ActivateCloudAccountActivity extends CertoclavSuperActivity {
                         try {
                             jsonEmail.put("username", Autoclave.getInstance().getUser().getEmail());
                         } catch (JSONException e) {
-                            // TODO Auto-generated catch block
+                            // 
                             e.printStackTrace();
                         }
                         PostUtil postUtil = new PostUtil();

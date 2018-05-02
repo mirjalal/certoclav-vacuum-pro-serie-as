@@ -82,16 +82,16 @@ public class Protocol {
     private int sterilisationTime;
 
     @DatabaseField(columnName = "sterilisation_temp")
-    private int sterilisationTemperature;
+    private float sterilisationTemperature;
 
     @DatabaseField(columnName = "sterilisation_pressure")
-    private int sterilisationPressure;
+    private float sterilisationPressure;
 
     @DatabaseField(columnName = "vaccum_persist_time")
     private int vacuumPersistTime;
 
     @DatabaseField(columnName = "vaccum_persist_temp")
-    private int vacuumPersistTemperature;
+    private float vacuumPersistTemperature;
 
     @DatabaseField(columnName = "dry_time")
     private int dryTime;
@@ -124,7 +124,7 @@ public class Protocol {
         this.sterilisationTime = sterilisationTime;
     }
 
-    public int getSterilisationTemperature() {
+    public float getSterilisationTemperature() {
         return sterilisationTemperature;
     }
 
@@ -132,7 +132,7 @@ public class Protocol {
         this.sterilisationTemperature = sterilisationTemperature;
     }
 
-    public int getSterilisationPressure() {
+    public float getSterilisationPressure() {
         return sterilisationPressure;
     }
 
@@ -148,7 +148,7 @@ public class Protocol {
         this.vacuumPersistTime = vacuumPersistTime;
     }
 
-    public int getVacuumPersistTemperature() {
+    public float getVacuumPersistTemperature() {
         return vacuumPersistTemperature;
     }
 

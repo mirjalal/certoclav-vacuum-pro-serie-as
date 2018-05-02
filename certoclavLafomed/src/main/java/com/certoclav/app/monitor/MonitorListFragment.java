@@ -24,9 +24,7 @@ import java.util.ArrayList;
  */
 public class MonitorListFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private Protocol protocol;
 
@@ -37,7 +35,6 @@ public class MonitorListFragment extends Fragment {
     public MonitorListFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static MonitorListFragment newInstance(int columnCount, Protocol protocol) {
         MonitorListFragment fragment = new MonitorListFragment();

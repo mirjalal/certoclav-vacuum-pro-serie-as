@@ -11,7 +11,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 import android.support.v4.preference.PreferenceFragment;
@@ -67,36 +66,6 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        //PRE HEAT ON OFF
-        ((CheckBoxPreference) findPreference(AppConstants.PREFREENCE_KEY_PREHEAT)).setChecked(Autoclave.getInstance().isPreheat());
-        ((CheckBoxPreference) findPreference(AppConstants.PREFREENCE_KEY_PREHEAT)).setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (newValue instanceof Boolean) {
-                    Boolean boolVal = (Boolean) newValue;
-                    ReadAndParseSerialService.getInstance().sendPreheatCommand(boolVal);
-                }
-
-                return true;
-            }
-        });
-
-        //KEEP TEMP ON OFF
-        ((CheckBoxPreference) findPreference(AppConstants.PREFREENCE_KEY_KEEP_TEMP)).setChecked(Autoclave.getInstance().isPreheat());
-        ((CheckBoxPreference) findPreference(AppConstants.PREFREENCE_KEY_KEEP_TEMP)).setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (newValue instanceof Boolean) {
-                    Boolean boolVal = (Boolean) newValue;
-                    ReadAndParseSerialService.getInstance().sendKeepTemperatureCommand(boolVal);
-                }
-
-                return true;
-            }
-        });
-
         //Edit user defined program
         ((Preference) findPreference(AppConstants.PREFREENCE_KEY_USER_DEFINED)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
@@ -114,7 +83,7 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
                         public void onUserProgramReceived() {
                             Profile profile = Autoclave.getInstance().getUserDefinedProgram();
                             ((TextView) dialog.findViewById(R.id.dialog_program_edit_vacuum_times)).setText(Integer.toString(profile.getVacuumTimes()));
-                            ((TextView) dialog.findViewById(R.id.dialog_program_edit_sterilizationtemperature)).setText(Integer.toString(profile.getSterilisationTemperature()));
+                            ((TextView) dialog.findViewById(R.id.dialog_program_edit_sterilizationtemperature)).setText(Float.toString(profile.getSterilisationTemperature()));
                             ((TextView) dialog.findViewById(R.id.dialog_program_edit_sterilizationtime)).setText(Integer.toString(profile.getSterilisationTime()));
                             ((TextView) dialog.findViewById(R.id.dialog_program_edit_dryingtime)).setText(Integer.toString(profile.getDryTime()));
 
@@ -348,8 +317,7 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
 
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
-        ((CheckBoxPreference) findPreference(AppConstants.PREFREENCE_KEY_PREHEAT)).setChecked(Autoclave.getInstance().isPreheat());
+//        ((CheckBoxPreference) findPreference(AppConstants.PREFREENCE_KEY_PREHEAT)).setChecked(Autoclave.getInstance().isPreheat());
         ((CheckBoxPreference) findPreference(AppConstants.PREFREENCE_KEY_KEEP_TEMP)).setChecked(Autoclave.getInstance().isPreheat());
         ((CheckBoxPreference) findPreference(AppConstants.PREFERENCE_KEY_STEP_BY_STEP)).setChecked(prefs.getBoolean(AppConstants.PREFERENCE_KEY_STEP_BY_STEP,false));
 
@@ -477,7 +445,6 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
 
         public EditProgramDialog(Context context) {
             super(context);
-            // TODO Auto-generated constructor stub
         }
 
 

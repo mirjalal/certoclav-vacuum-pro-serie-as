@@ -133,7 +133,7 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // TODO Auto-generated method stub
+                // 
             }
         });
 
@@ -416,7 +416,7 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
 
         @Override
         protected void onProgressUpdate(Integer... values) {
-            // TODO Auto-generated method stub
+            // 
             super.onProgressUpdate(values);
         }
 

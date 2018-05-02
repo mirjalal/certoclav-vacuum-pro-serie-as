@@ -220,7 +220,6 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
             try {
                 ((Preference) findPreference(AppConstants.PREFERENCE_KEY_SERIAL_NUMBER)).setSummary(getString(R.string.please_connect_to_autoclave_first));
             } catch (Exception e1) {
-                // TODO Auto-generated catch block
                 e1.printStackTrace();
             }
         }
@@ -232,7 +231,6 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
             try {
                 ((Preference) findPreference(AppConstants.PREFERENCE_KEY_FIRMWARE_VERSION)).setSummary(getString(R.string.please_connect_to_autoclave_first));
             } catch (Exception e1) {
-                // TODO Auto-generated catch block
                 e1.printStackTrace();
             }
         }
@@ -244,7 +242,6 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
             try {
                 ((Preference) findPreference(AppConstants.PREFERENCE_KEY_CYCLE_NUMBER)).setSummary(getString(R.string.please_connect_to_autoclave_first));
             } catch (Exception e1) {
-                // TODO Auto-generated catch block
                 e1.printStackTrace();
             }
         }

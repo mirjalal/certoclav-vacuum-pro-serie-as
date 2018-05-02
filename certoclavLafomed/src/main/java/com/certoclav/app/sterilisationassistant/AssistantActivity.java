@@ -83,8 +83,6 @@ public class AssistantActivity extends CertoclavSuperActivity implements Profile
 
     @Override
     public void onWarnListChange(ArrayList<Error> errorList) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override

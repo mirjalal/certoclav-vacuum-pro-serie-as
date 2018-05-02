@@ -293,6 +293,8 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
         if (mContentTextView != null && mContentText != null) {
             showContentText(true);
             mContentTextView.setText(mContentText);
+        } else {
+            showContentText(false);
         }
         return this;
     }
@@ -330,6 +332,8 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
         if (mCancelButton != null && mCancelText != null) {
             showCancelButton(true);
             mCancelButton.setText(mCancelText);
+        } else {
+            showCancelButton(false);
         }
         return this;
     }
@@ -381,7 +385,7 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
         if (mConfirmButton != null)
             mConfirmButton.startAnimation(mOverlayOutAnim);
         else
-            ((ViewGroup)findViewById(android.R.id.content)).getChildAt(0).startAnimation(mOverlayOutAnim);
+            ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0).startAnimation(mOverlayOutAnim);
         mDialogView.startAnimation(mModalOutAnim);
     }
 

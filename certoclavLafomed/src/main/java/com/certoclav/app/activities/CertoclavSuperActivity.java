@@ -2,6 +2,7 @@ package com.certoclav.app.activities;
 
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -33,6 +34,7 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
         textMedia = (TextView) findViewById(R.id.certoclav_statusbar_text_media);
         textPressure = (TextView) findViewById(R.id.certoclav_statusbar_text_pressure);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        ((AudioManager) this.getSystemService(Context.AUDIO_SERVICE)).setRingerMode(AudioManager.RINGER_MODE_SILENT);
 
     }
 
@@ -55,7 +57,7 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
                 textMedia.setVisibility(View.GONE);
             }
 
-            textPressure.setText(getString(R.string.pressure) + ": " + data.getPress().getValueString() + " " + getString(R.string.kpa));
+            textPressure.setText(getString(R.string.pressure) + ": " + data.getPress().getValueString() + " " + getString(R.string.bar));
             textSteam.setText(getString(R.string.steam) + ": " + data.getTemp1().getValueString() + " " + getString(R.string._c));
             textMedia.setText(getString(R.string.media) + ": " + data.getTemp2().getValueString() + " " + getString(R.string._c));
         } catch (Exception e) {

@@ -24,6 +24,9 @@ public class Profile {
     @DatabaseField(columnName = "is_visible")
     private Boolean isVisible;
 
+    @DatabaseField(columnName = "is_liquid_program")
+    private Boolean isLiquidProgram;
+
     @DatabaseField(columnName = FIELD_CLOUD_ID)
     private String cloudId;
 
@@ -42,16 +45,16 @@ public class Profile {
     private int sterilisationTime;
 
     @DatabaseField(columnName = "sterilisation_temp")
-    private int sterilisationTemperature;
+    private float sterilisationTemperature;
 
     @DatabaseField(columnName = "sterilisation_pressure")
-    private int sterilisationPressure;
+    private float sterilisationPressure;
 
     @DatabaseField(columnName = "vaccum_persist_time")
     private int vacuumPersistTime;
 
     @DatabaseField(columnName = "vaccum_persist_temp")
-    private int vacuumPersistTemperature;
+    private float vacuumPersistTemperature;
 
     @DatabaseField(columnName = "dry_time")
     private int dryTime;
@@ -68,6 +71,7 @@ public class Profile {
     public long getRecentUsedDate() {
         return recentUsedDate;
     }
+
     public int getVacuumTimes() {
         return vacuumTimes;
     }
@@ -84,11 +88,11 @@ public class Profile {
         this.sterilisationTime = sterilisationTime;
     }
 
-    public int getSterilisationTemperature() {
+    public float getSterilisationTemperature() {
         return sterilisationTemperature;
     }
 
-    public int getSterilisationPressure() {
+    public float getSterilisationPressure() {
         return sterilisationPressure;
     }
 
@@ -108,7 +112,7 @@ public class Profile {
         this.sterilisationTemperature = sterilisationTemperature;
     }
 
-    public int getVacuumPersistTemperature() {
+    public float getVacuumPersistTemperature() {
         return vacuumPersistTemperature;
     }
 
@@ -138,7 +142,7 @@ public class Profile {
     /*
      * Profile index between [1 and 7] . Only neccassary for Multicontrol and Essential version
      */
-    @DatabaseField(columnName = FIELD_INDEX)
+    @DatabaseField(columnName = FIELD_INDEX, unique = true)
     private int index;
 
 
@@ -185,7 +189,7 @@ public class Profile {
     }
 
     public String getName() {
-        try {
+/*        try {
             switch (getIndex()) {
                 case 1:
                     return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_1_name);
@@ -214,9 +218,9 @@ public class Profile {
                 default:
                     return name;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
         return name;
     }
 
@@ -238,7 +242,7 @@ public class Profile {
         // needed by ormlite
     }
 
-    public Profile(String cloudId, int version, String name, int vacuumTimes, int sterilisationTime, int sterilisationTemperature, int sterilisationPressure, int vacuumPersistTime, int dryTime, String description, Boolean isLocal, Boolean isVisible, Controller controller, Integer index) {
+    public Profile(String cloudId, int version, String name, int vacuumTimes, int sterilisationTime, float sterilisationTemperature, float sterilisationPressure, int vacuumPersistTime, int dryTime, String description, Boolean isLocal, Boolean isVisible, boolean isLiquidProgram, Controller controller, Integer index) {
         this.cloudId = cloudId;
         this.version = version;
         this.description = description;
@@ -253,6 +257,7 @@ public class Profile {
         this.index = index;
         this.isVisible = isVisible;
         this.controller = controller;
+        this.isLiquidProgram = isLiquidProgram;
     }
 
 
@@ -284,9 +289,9 @@ public class Profile {
                 case 12:
                     return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_12_description);
                 default:
-                    return description;
+                    return description == null ? "" : description;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return description;
@@ -321,7 +326,13 @@ public class Profile {
         this.index = index;
     }
 
+    public void setLiquidProgram(Boolean liquidProgram) {
+        isLiquidProgram = liquidProgram;
+    }
 
+    public boolean isLiquidProgram() {
+        return isLiquidProgram;
+    }
 }
 
 

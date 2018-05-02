@@ -64,12 +64,10 @@ public class Error {
 
 
 	public int getErrorID() {
-		// TODO Auto-generated method stub
 		return errorID;
 	}
 	
 	public void setErrorID(int eErrorID) {
-		// TODO Auto-generated method stub
 		errorID = eErrorID;
 	}
 

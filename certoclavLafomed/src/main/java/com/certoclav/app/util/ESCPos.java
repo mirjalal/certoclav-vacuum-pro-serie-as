@@ -103,7 +103,7 @@ public class ESCPos {
         if (prefs.getBoolean(AppConstants.PREFERENCE_KEY_PRINT_ENTITES, true)) {
 
             sb.append(String.format("%-8s", "t[h:m]"))
-                    .append(String.format("%-8s", "P[kPa]"))
+                    .append(String.format("%-8s", "P[bar]"))
                     .append(String.format("%-8s", "S[C]"))
                     .append(String.format("%-8s", "M[C]"))
                     .append("\n");

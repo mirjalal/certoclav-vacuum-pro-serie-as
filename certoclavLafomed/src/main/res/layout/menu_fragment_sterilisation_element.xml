@@ -84,7 +84,7 @@
                         android:paddingRight="20dp"
                         android:text="20 minutes at 120 °C\n Sterilization of solids and textiles"
                         android:textColor="#333366"
-                        android:textSize="15sp"
+                        android:textSize="@dimen/text_size_program_desc"
                         tools:ignore="HardcodedText" />
 
                 </LinearLayout>

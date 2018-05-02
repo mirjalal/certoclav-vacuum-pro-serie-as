@@ -11,7 +11,7 @@ public class AppConstants {
     public static final Boolean APPLICATION_DEBUGGING_MODE = false;
     public static final String DEFAULT_ADMIN_PASSWORD = "admin";
     public static final String DEFAULT_CLOUD_ADMIN_PASSWORD = "master@certocloud";
-    public static final boolean SHOW_LOGS = false;
+    public static final boolean SHOW_LOGS = true;
     public static final String PREFERENCE_KEY_SERVER_TYPE = "servertype";
     public static final int PREFERENCE_KEY_SERVER_CERTOCLOUD = 1;
     public static final int PREFERENCE_KEY_SERVER_MANUAL = 2;
@@ -20,7 +20,9 @@ public class AppConstants {
     public static final String PREFERENCE_KEY_SERVER_NAME = "servername";
     public static final String PREFERENCE_KEY_SERVER_PORT = "serverport";
     public static final String PREFERENCE_KEY_INDICATOR_TEST = "switch_indicator_check";
-    public static Boolean isIoSimulated = true;
+    public static final String TAG = "RAYPA";
+    public static final boolean CHECK_CHECKSUM = false;
+    public static Boolean isIoSimulated = false;
     public static Boolean TABLET_HAS_ROOT = false;
     public static final Boolean IS_CERTOASSISTANT = false;
     public static final String TABLET_TYPE_SAMSUNGT113W = "samsungt113w";
@@ -66,7 +68,7 @@ public class AppConstants {
 
 
     public static final String PREFREENCE_KEY_KEEP_TEMP = "switch_keep_temp";
-    public static final String PREFREENCE_KEY_PREHEAT = "switch_preheat";
+//    public static final String PREFREENCE_KEY_PREHEAT = "switch_preheat";
     public static final String PREFREENCE_KEY_USER_DEFINED = "preferences_program_user_defined";
     public static final String PREFERENCE_KEY_DOWNLOAD_PROTOCOLS = "preferences_download_protocols";
     public static final String PREFERENCE_KEY_ONLINE_MODE = "switch_snchronization";
@@ -138,17 +140,17 @@ public class AppConstants {
     //GENERAL_STATUS WERTE VON GET_DIGI
     public static final int DIGITAL_PROGRAM_FINISHED_INDEX = 0;
     public static final int DIGITAL_PROGRAM_RUNNING_INDEX = 1;
-    public static final int DIGITAL_DOOR_LOCKED_INDEX = 3;
     public static final int DIGITAL_DOOR_CLOSED_INDEX = 2;
+    public static final int DIGITAL_DOOR_LOCKED_INDEX = 3;
     public static final int DIGITAL_WATER_LVL_LOW_INDEX = 4;
     public static final int DIGITAL_WATER_LVL_FULL_INDEX = 5;
-    public static final int DIGITAL_FAIL_STOPPED_BY_USER = 6;
-    public static final int DIGITAL_PREHEAT_ENABLED = 7;
-    public static final int DIGITAL_KEEP_TEMP_ENABLED = 8;
-    public static final int DIGITAL_FAIL_WATER_QUALITY = 9;
-    public static final int DIGITAL_STERILIZATION_COUNTDOWN_STARTED = 10;
-    public static final int DIGITAL_MEDIA_SENSOR_ENABLED = 11;
-    public static final int NUMBER_OF_DIGITAL_BITS = 12;
+    public static final int DIGITAL_FAIL_WATER_QUALITY = 6;
+    public static final int NUMBER_OF_DIGITAL_BITS = 7;
+    //    public static final int DIGITAL_FAIL_STOPPED_BY_USER = 6;
+//    public static final int DIGITAL_PREHEAT_ENABLED = 7;
+//    public static final int DIGITAL_KEEP_TEMP_ENABLED = 8;
+//    public static final int DIGITAL_STERILIZATION_COUNTDOWN_STARTED = 10;
+//    public static final int DIGITAL_MEDIA_SENSOR_ENABLED = 11;
 
 
     public static final String COUNTDOWN_STATE_REMAINING = "state_remaining";

@@ -252,6 +252,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 break;
             case PROGRAM_FINISHED:
                 buttonStop.setVisibility(View.VISIBLE);
+                buttonStop.setEnabled(false);
                 buttonStop.setText("PLEASE OPEN DOOR");
                 textState.setText(R.string.state_finished);
                 navigationbar.showButtonBack();
@@ -343,8 +344,8 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
 
         if (Autoclave.getInstance().getProfile().getSterilisationPressure() != 0) {
             sbuilder.append(getString(R.string.sterilization_pressure) + " ")
-                    .append(Integer.toString(Autoclave.getInstance().getProfile().getSterilisationPressure()))
-                    .append(" " + getString(R.string.kpa))
+                    .append(Float.toString(Autoclave.getInstance().getProfile().getSterilisationPressure()))
+                    .append(" " + getString(R.string.bar))
                     .append("\n");
         }
 

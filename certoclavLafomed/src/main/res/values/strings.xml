@@ -315,7 +315,7 @@
     <string name="press">PRESS</string>
     <string name="vent">VENT</string>
     <string name="media_temperature">Media [℃]</string>
-    <string name="pressure">Pressure</string>
+    <string name="pressure">PRESSURE</string>
     <string name="total_cycles_of_the_autoclave">Total cycles of the autoclave</string>
     <string name="total_cycles_">Total cycles:</string>
     <string name="please_connect_to_autoclave_first">Please connect to autoclave first</string>
@@ -388,7 +388,7 @@
     <string name="create_a_new_program_from_template">Create a new program from template</string>
     <string name="offset_of_steam_generator_sensor_c_">Offset of steam generator sensor [°C]</string>
     <string name="offset_of_media_sensor_c_">Offset of media sensor [°C]</string>
-    <string name="offset_of_pressure_sensor_kpa_">Offset of pressure sensor [kPa]</string>
+    <string name="offset_of_pressure_sensor_kpa_">Offset of pressure sensor [bar]</string>
     <string name="if_maintenance_is_required_please_notify_me">If maintenance is required, please notify me</string>
     <string name="by_phone">by phone</string>
     <string name="email_address">email address</string>
@@ -459,7 +459,7 @@
     <string name="header_time">TimeStamp [min]</string>
     <string name="header_temp">Chamber temp. [°C]</string>
     <string name="header_media_temp">Media temp. [°C]</string>
-    <string name="header_pressure">Pressure [kPa]</string>
+    <string name="header_pressure">Pressure [bar]</string>
     <string name="download_protocols_from_cloud">Download Protocols from CertoCloud</string>
     <string name="cur_password">Currrent Password</string>
     <string name="password_confirm">Confirm Password</string>
@@ -621,5 +621,7 @@
 
     <string name="these_settings_are_locked_by_the_admin">These Settings are locked by the admin</string>
     <string name="lockout">Lockout</string>
+    <string name="gettting_program_string">getting program %1$d</string>
+    <string name="all_program_got">Total: %1$d programs</string>
 
 </resources>

@@ -109,7 +109,7 @@ public class Autoclave extends Observable {
 
     private long secondsSinceStart = 0;
     private Date dDate = new Date();
-    private int errorCode = 0;
+    private String errorCode = "00000000";
     private String date = "";
     private String time = "";
     private int indexOfRunningProgram = 0;
@@ -128,7 +128,7 @@ public class Autoclave extends Observable {
                     }
                 }
             } catch (Exception e) {
-                userDefinedProgram = new Profile("", 1, "USER DEFINED", 3, 5, 134, 210, 0, 10, "Vacuum times: User defined\nSterilization temperature: User defined\nDry time: User defined", true, true, controller, 7);
+                userDefinedProgram = new Profile("", 1, "USER DEFINED", 3, 5, 134, 210, 0, 10, "Vacuum times: User defined\nSterilization temperature: User defined\nDry time: User defined", true, true, false, controller, 7);
             }
         }
         return userDefinedProgram;
@@ -210,7 +210,8 @@ public class Autoclave extends Observable {
     private boolean microcontrollerReachable = false;
     private AutoclaveData data = null;
 
-    public AutoclaveData getData() {
+    public AutoclaveData
+    getData() {
         return data;
     }
 
@@ -431,30 +432,31 @@ public class Autoclave extends Observable {
      * Data, which is always up to date with 1second intervall
      *
      */
-    public void setSensorsData(float[] temperatures, float pressure, boolean[] digitalData) {
+    public void setSensorsData(float[] temperatures, float[] pressures, boolean[] digitalData) {
 
 
         data.getTemp1().setCurrentValue(temperatures[0]);
         data.getTemp2().setCurrentValue(temperatures[1]);
         data.getTemp3().setCurrentValue(temperatures[2]);
-        data.getPress().setCurrentValue(pressure);
+        data.getTemp4().setCurrentValue(temperatures[3]);
+        data.getPress().setCurrentValue(pressures[0]);
+        data.getPressOptional().setCurrentValue(pressures[1]);
 
 
         data.setProgramFinishedSucessfully(digitalData[AppConstants.DIGITAL_PROGRAM_FINISHED_INDEX]);
         data.setProgramRunning(digitalData[AppConstants.DIGITAL_PROGRAM_RUNNING_INDEX]);
         data.setDoorClosed(digitalData[AppConstants.DIGITAL_DOOR_CLOSED_INDEX]);
         data.setDoorLocked(digitalData[AppConstants.DIGITAL_DOOR_LOCKED_INDEX]);
-        data.setFailStoppedByUser(digitalData[AppConstants.DIGITAL_FAIL_STOPPED_BY_USER]);
+//        data.setFailStoppedByUser(digitalData[AppConstants.DIGITAL_FAIL_STOPPED_BY_USER]);
         data.setWaterLvlFull(digitalData[AppConstants.DIGITAL_WATER_LVL_FULL_INDEX]);
         data.setWaterLvlLow(digitalData[AppConstants.DIGITAL_WATER_LVL_LOW_INDEX]);
-        setPreheat(digitalData[AppConstants.DIGITAL_PREHEAT_ENABLED]);
-        setKeepTemp(digitalData[AppConstants.DIGITAL_KEEP_TEMP_ENABLED]);
+        data.setWaterQuality(digitalData[AppConstants.DIGITAL_FAIL_WATER_QUALITY]);
 
         for (SensorDataListener listener : sensorDataListeners) {
             try {
                 listener.onSensorDataChange(data);
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
 
@@ -550,7 +552,7 @@ public class Autoclave extends Observable {
         return controller;
     }
 
-    public DeviceModel getDevice(){
+    public DeviceModel getDevice() {
         DeviceModel deviceModel = new DeviceModel();
         deviceModel.setDeviceKey(controller.getSavetyKey());
         deviceModel.setSerial(controller.getSerialnumber());
@@ -564,12 +566,12 @@ public class Autoclave extends Observable {
     }
 
 
-    public int getErrorCode() {
+    public String getErrorCode() {
         return errorCode;
     }
 
 
-    public void setErrorCode(int errorCode) {
+    public void setErrorCode(String errorCode) {
         this.errorCode = errorCode;
     }
 

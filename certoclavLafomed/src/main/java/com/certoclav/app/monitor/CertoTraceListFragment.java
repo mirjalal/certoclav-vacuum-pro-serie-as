@@ -22,9 +22,7 @@ import com.certoclav.app.database.Protocol;
  */
 public class CertoTraceListFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private Protocol protocol;
 
@@ -35,7 +33,6 @@ public class CertoTraceListFragment extends Fragment {
     public CertoTraceListFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static CertoTraceListFragment newInstance(int columnCount, Protocol protocol) {
         CertoTraceListFragment fragment = new CertoTraceListFragment();

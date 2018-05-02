@@ -8,6 +8,19 @@ public class ErrorModel {
     private int statusCode;
     private String message;
 
+    public ErrorModel() {
+
+    }
+
+    public ErrorModel(String message) {
+        this.message = message;
+    }
+
+    public ErrorModel(String message, int statusCode) {
+        this.message = message;
+        this.statusCode = statusCode;
+    }
+
     public int getStatusCode() {
         return statusCode;
     }

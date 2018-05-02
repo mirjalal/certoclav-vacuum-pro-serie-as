@@ -352,7 +352,7 @@
     <string name="create_a_new_program_from_template">Erstelle ein neues Programm von Vorlage</string>
     <string name="offset_of_steam_generator_sensor_c_">Offset Dampfgeneratorfühler [°C]</string>
     <string name="offset_of_media_sensor_c_">Offset Medienfühler [°C]</string>
-    <string name="offset_of_pressure_sensor_kpa_">Offset Drucksensor [kPa]</string>
+    <string name="offset_of_pressure_sensor_kpa_">Offset Drucksensor [bar]</string>
     <string name="if_maintenance_is_required_please_notify_me">Falls Wartung nötig ist, benachrichtigen Sie mich</string>
     <string name="by_phone">per Telefon</string>
     <string name="email_address">per E-Mail</string>
@@ -381,7 +381,7 @@
     <string name="header_time">Zeit [min]</string>
     <string name="header_temp">Kammer [°C]</string>
     <string name="header_media_temp">Medium [°C]</string>
-    <string name="header_pressure">Druck [kPa]</string>
+    <string name="header_pressure">Druck [bar]</string>
     <string name="download_protocols_from_cloud">Lade Protokolle von CertoCloud</string>
     <string name="cur_password">Aktuelles Passwort</string>
     <string name="password_confirm">Wiederhole Passwort</string>

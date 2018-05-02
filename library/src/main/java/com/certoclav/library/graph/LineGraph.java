@@ -21,7 +21,7 @@ public class LineGraph {
 	private GraphicalView view;
 	private TimeSeries timeSeriesSteam = new TimeSeries("Steam temperature"); 
 	private TimeSeries timeSeriesMedia = new TimeSeries("Media temperature");
-	private TimeSeries timeSeriesPressure = new TimeSeries("Pressure [kPa]");
+	private TimeSeries timeSeriesPressure = new TimeSeries("Pressure [bar]");
 	private XYMultipleSeriesDataset multiDataset = new XYMultipleSeriesDataset();
 	
 	private XYSeriesRenderer rendererForSeriesSteam = new XYSeriesRenderer(); // This will be used to customize line 1
@@ -124,7 +124,7 @@ public class LineGraph {
 		//multiRenderer.setYTitle(context.getString(R.string.temperature_in_c));
 		timeSeriesSteam.setTitle(context.getString(R.string.temperature));
 		timeSeriesMedia.setTitle(context.getString(R.string.media_temperature));
-		timeSeriesPressure.setTitle(context.getString(R.string.pressure)+" [kPa]");
+		timeSeriesPressure.setTitle(context.getString(R.string.pressure)+" [bar]");
 		
 		//view =  ChartFactory.getCubeLineChartView(context, mDataset, renderer, 0.3f);
 		view = ChartFactory.getLineChartView(context, multiDataset, multiRenderer);

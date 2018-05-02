@@ -292,7 +292,7 @@
     <string name="press">PRESS</string>
     <string name="vent">VENT</string>
     <string name="media_temperature">Media temperature</string>
-    <string name="pressure">Pressure</string>
+    <string name="pressure">PRESSURE</string>
     <string name="total_cycles_of_the_autoclave">Total cycles of the autoclave</string>
     <string name="total_cycles_">Total cycles:</string>
     <string name="please_connect_to_autoclave_first">Please connect to autoclave first</string>

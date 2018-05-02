@@ -8,7 +8,9 @@ public class AutoclaveData {
         temp2 = new Sensor();
         temp3 = new Sensor();
         temp4 = new Sensor();
+        //TODO change everywhere to bar
         press = new Sensor();
+        pressOptional = new Sensor();
     }
 
     //digitalData
@@ -19,10 +21,12 @@ public class AutoclaveData {
     private boolean doorLocked = false;
     private boolean waterLvlLow = false;
     private boolean waterLvlFull = false;
+    private boolean waterQuality = false;
 
     private boolean failStoppedByUser = false;
 
 
+//TODO check all stopped by methods
     public boolean isFailStoppedByUser() {
         return failStoppedByUser;
     }
@@ -48,6 +52,7 @@ public class AutoclaveData {
 
 
     private Sensor press;
+    private Sensor pressOptional;
 
     public int getmCycleCounter() {
         return mCycleCounter;
@@ -139,4 +144,19 @@ public class AutoclaveData {
         this.press = press;
     }
 
+    public void setWaterQuality(boolean isBad) {
+        this.waterQuality = isBad;
+    }
+
+    public boolean isWaterQualityBad() {
+        return waterQuality;
+    }
+
+    public Sensor getPressOptional() {
+        return pressOptional;
+    }
+
+    public void setPressOptional(Sensor pressOptional) {
+        this.pressOptional = pressOptional;
+    }
 }

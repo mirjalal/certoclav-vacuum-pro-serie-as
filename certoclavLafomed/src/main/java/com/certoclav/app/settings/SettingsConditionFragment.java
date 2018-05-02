@@ -132,15 +132,9 @@ public class SettingsConditionFragment extends Fragment implements Navigationbar
         super.onResume();
     }
 
-    public void onButtonSaveClicked() {
-        // TODO Auto-generated method stub
-
-    }
 
     @Override
     public void onClickNavigationbarButton(int buttonId) {
-        // TODO Auto-generated method stub
-
     }
 
 

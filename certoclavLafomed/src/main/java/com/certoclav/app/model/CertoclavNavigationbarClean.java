@@ -173,7 +173,6 @@ public class CertoclavNavigationbarClean implements SensorDataListener {
 
 
     public void setRefreshUnvisible() {
-        // TODO Auto-generated method stub
         actionItemRefresh.setVisibility(View.GONE);
     }
 

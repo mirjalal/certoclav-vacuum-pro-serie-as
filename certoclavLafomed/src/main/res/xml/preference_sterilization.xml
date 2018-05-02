@@ -20,15 +20,6 @@
     <Preference
         android:key="preferences_program_user_defined"
         android:title="@string/edit_user_defined_program" />
-    <CheckBoxPreference
-        android:key="switch_preheat"
-        android:summary="@string/if_on_the_sterilizer_will_heat_up_to_50_c_before_program_execution"
-        android:title="@string/preheat_chamber_on_off"></CheckBoxPreference>
-
-    <CheckBoxPreference
-        android:key="switch_keep_temp"
-        android:summary="@string/if_on_the_sterilizer_will_warm_up_the_chamber_and_steam_generator_permanently"
-        android:title="@string/keep_temperature_on_off"></CheckBoxPreference>
 
     <CheckBoxPreference
         android:key="switch_material_testing"

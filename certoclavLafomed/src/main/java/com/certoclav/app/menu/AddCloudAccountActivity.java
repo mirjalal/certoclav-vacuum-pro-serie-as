@@ -74,7 +74,7 @@ public class AddCloudAccountActivity extends Activity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
-                // TODO Auto-generated method stub
+                // 
 
             }
 
@@ -101,7 +101,7 @@ public class AddCloudAccountActivity extends Activity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
-                // TODO Auto-generated method stub
+                // 
 
             }
 

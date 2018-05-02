@@ -11,4 +11,8 @@ public class Log {
         if(AppConstants.SHOW_LOGS)
             android.util.Log.e(tag,s);
     }
+    public static void e( String s) {
+        if(AppConstants.SHOW_LOGS)
+            android.util.Log.e(AppConstants.TAG,s);
+    }
 }

@@ -22,7 +22,7 @@ public class MonitorStepListFragment extends Fragment implements ProfileListener
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.monitor_list_fragment, container, false); //je nach mIten könnte man hier anderen Inhalt laden.
+        View rootView = inflater.inflate(R.layout.monitor_list_fragment, container, false); //je nach mIten kï¿½nnte man hier anderen Inhalt laden.
 
 
         return rootView;
@@ -89,7 +89,6 @@ public class MonitorStepListFragment extends Fragment implements ProfileListener
 
     @Override
     public void onProfileChange(Profile profile) {
-        // TODO Auto-generated method stub
 
     }
 

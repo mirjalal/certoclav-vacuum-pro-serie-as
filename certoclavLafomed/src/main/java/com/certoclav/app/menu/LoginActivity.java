@@ -37,7 +37,6 @@ import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.app.monitor.MonitorActivity;
-import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.ServerConfigs;
 import com.certoclav.library.application.ApplicationController;
@@ -161,13 +160,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 
         final DatabaseService databaseService = new DatabaseService(this);
 
-        databaseService.fillDatabaseWithProgramIfEmpty();
-
-        //get data from autoclave
-        ReadAndParseSerialService.getInstance().sendGetAdjustParameterCommand();
-        ReadAndParseSerialService.getInstance().sendGetUserProgramCommand();
-        ReadAndParseSerialService.getInstance().sendGetAdjustParameterCommand();
-        ReadAndParseSerialService.getInstance().sendGetUserProgramCommand();
+//        databaseService.fillDatabaseWithProgramIfEmpty();
 
 
         // initialize navigationbar
@@ -345,6 +338,13 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
             }
         });
         // throw new RuntimeException();
+        Helper.getPrograms(this);
+
+        //get data from autoclave
+//        ReadAndParseSerialService.getInstance().sendGetAdjustParameterCommand();
+//        ReadAndParseSerialService.getInstance().sendGetUserProgramCommand();
+//        ReadAndParseSerialService.getInstance().sendGetAdjustParameterCommand();
+//        ReadAndParseSerialService.getInstance().sendGetUserProgramCommand();
     }
 
 
@@ -366,9 +366,6 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 
     }
 
-    /*
-     * TODO: Outsource logic parts of this function
-     */
     private void refreshUI() {
 
 
@@ -476,7 +473,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
     public void onControllerInfoReceived() {
         // refreshUI();
     }
-    
+
     @Override
     public void onClickNavigationbarButton(int buttonId) {
         switch (buttonId) {
@@ -569,7 +566,6 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 
                     @Override
                     protected Boolean doInBackground(Boolean... params) {
-                        // TODO add device if it is not added yet
 
                         try {
                             PostUtil postUtil = new PostUtil();
@@ -709,7 +705,6 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
             sweetAlertDialog.setCancelable(true);
             sweetAlertDialog.show();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -725,7 +720,6 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
     }
 
     private void logUser(String userID, String email, String username) {
-        // TODO: Use the current user's information
         // You can call any combination of these three methods
         Crashlytics.setUserIdentifier(userID);
         Crashlytics.setUserEmail(email);

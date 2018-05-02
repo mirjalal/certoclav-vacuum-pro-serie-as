@@ -66,7 +66,6 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
         AutoclaveMonitor.getInstance();
         Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);
 
-        // TODO: Use the current user's information
         // You can call any combination of these three methods
         Crashlytics.setUserIdentifier("12345");
         Crashlytics.setUserEmail("user@fabric.io");

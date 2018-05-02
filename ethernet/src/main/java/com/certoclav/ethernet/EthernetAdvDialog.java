@@ -141,7 +141,6 @@ public class EthernetAdvDialog extends AlertDialog implements DialogInterface.On
 
     @Override
     public void onClick(View arg0) {
-    // TODO Auto-generated method stub
 
     }
 

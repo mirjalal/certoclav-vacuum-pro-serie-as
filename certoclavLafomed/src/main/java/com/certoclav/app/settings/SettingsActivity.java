@@ -39,9 +39,6 @@ public class SettingsActivity extends CertoclavSuperActivity implements ItemList
 
 
         //((ItemListFragment) getSupportFragmentManager().findFragmentById(R.id.item_list)).setActivateOnItemClick(true);
-
-
-        // TODO: If exposing deep links into your app, handle intents here.
     }
 
 
