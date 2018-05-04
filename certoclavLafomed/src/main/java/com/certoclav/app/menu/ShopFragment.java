@@ -1,8 +1,6 @@
 package com.certoclav.app.menu;
 
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -29,10 +27,10 @@ public class ShopFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                String url = getActivity().getString(R.string.url_shop);
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
+               // String url = getActivity().getString(R.string.url_shop);
+               // Intent i = new Intent(Intent.ACTION_VIEW);
+               // i.setData(Uri.parse(url));
+               // startActivity(i);
 
 
             }

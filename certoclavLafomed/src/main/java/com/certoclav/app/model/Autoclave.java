@@ -154,7 +154,7 @@ public class Autoclave extends Observable {
 
     public SerialService getSerialsService() {
         if (serialService == null) {
-            serialService = new SerialService("/dev/ttymxc3", 9600);
+            serialService = new SerialService("/dev/ttymxc3", 38400);
         }
         return serialService;
     }

@@ -23,7 +23,7 @@
     <string name="path_video_door_close">/sdcard/Download/animation_close_lid.mp4</string>
     <string name="path_video_fill_water">/sdcard/Download/animation_fill_water.mp4</string>
     <string name="path_video_empty_water">/sdcard/Download/animation_remove_water.mp4</string>
-    <string name="path_video_power">/sdcard/Download/animation_power.mp4</string>
+    <string name="path_video_power">/animation_power.mp4</string>
     <string name="path_video_start_program_1">/sdcard/Download/animation_start_program_1.mp4</string>
     <string name="path_video_start_program_2">/sdcard/Download/animation_start_program_2.mp4</string>
     <string name="path_video_start_program_3">/sdcard/Download/animation_start_program_3.mp4</string>
@@ -483,7 +483,6 @@
     <string name="admin_password_wrong">Admin password is wrong!</string>
     <string name="admin_password">Admin Password</string>
     <string name="power_loss_during_record">Power loss during record</string>
-    <string name="kpa">kPa</string>
     <string name="choose_server">CHOOSE SERVER</string>
     <string name="certoclav_server">CertoCloud Server</string>
     <string name="manual_server">Add a server manually</string>
@@ -528,31 +527,43 @@
     </string-array>
 
 
-    <string name="program_1_name">134\u00B0C SOLID</string>
-    <string name="program_1_description">134\u00B0C   210 kPa   4min\nSolids instruments and textiles, wrapped or unwrapped"</string>
-    <string name="program_2_name">134\u00B0C POROUS</string>
-    <string name="program_2_description">134\u00B0C   210 kPa   4min\nPorous instruments and textiles, wrapped or unwrapped"</string>
-    <string name="program_3_name">134\u00B0C HOLLOW</string>
-    <string name="program_3_description">134\u00B0C   210 kPa   4min\nHollow instruments, wrapped or unwrapped"</string>
-    <string name="program_4_name">121\u00B0C SOLID</string>
-    <string name="program_4_description">121\u00B0C   110 kPa   20min\nSolid instruments and textiles, wrapped or unwrapped"</string>
-    <string name="program_5_name">121\u00B0C POROUS</string>
-    <string name="program_5_description">121\u00B0C   110 kPa   20min\nPorous instruments and textiles, wrapped or unwrapped"</string>
-    <string name="program_6_name">121\u00B0C HOLLOW</string>
-    <string name="program_6_description">121\u00B0C   110 kPa   20min\nHollow instruments, wrapped or unwrapped"</string>
-    <string name="program_7_name">USER DEFINED</string>
-    <string name="program_7_description">Vacuum times: User defined\nSterilization temperature: User defined\nDry time: User defined"</string>
-    <string name="program_8_name">BD HELIX TEST</string>
-    <string name="program_8_description">Test to evaluate the capacity\nof penetration of the steam\nin hollow loads"</string>
-    <string name="program_9_name">VACUUM TEST</string>
-    <string name="program_9_description">-80 kPa   15min\nVacuum Test, recommended for maintenance"</string>
-    <string name="program_10_name">CLEAN</string>
-    <string name="program_10_description">105\u00B0C   20 kPa   5min\nClean the autoclave"</string>
-    <string name="program_11_name">PRION</string>
-    <string name="program_11_description">134\u00B0C   210 kPa   19min\nPrion sterilization"</string>
-    <string name="program_12_name">LIQUID</string>
-    <string name="program_12_description">121\u00B0C   110 kPa   20min\nLiquid sterilization with media sensor"</string>
-    <string name="open_the_door">Open the door</string>
+    <string name="program_1_name"       >Test Bowie-Dick</string>
+    <string name="program_1_description">134\u00B0C   2.1 bar   4min\nTest to evaluate the capacity\nof penetration of the steam\nin hollow loads</string>
+
+    <string name="program_2_name"       >Test VACUUM</string>
+    <string name="program_2_description">Vacuum Test, recommended for maintenance</string>
+
+    <string name="program_3_name"       >Porous-134</string>
+    <string name="program_3_description">134\u00B0C   2.1 bar   4min\nPorous instruments and textiles, wrapped or unwrapped</string>
+
+    <string name="program_4_name"       >Prion-134</string>
+    <string name="program_4_description">134\u00B0C   2.1 bar   18min\nPrion sterilization</string>
+
+    <string name="program_5_name"       >Porous-121</string>
+    <string name="program_5_description">121\u00B0C   1.1 bar   20min\nPorous instruments and textiles, wrapped or unwrapped</string>
+
+    <string name="program_6_name"       >Hollow-134\u00B0C</string>
+    <string name="program_6_description">134\u00B0C   2.1 bar   4min\nHollow instruments, wrapped or unwrapped</string>
+
+    <string name="program_7_name"       >Hollow-121\u00B0C</string>
+    <string name="program_7_description">121\u00B0C   1.1 bar   20min\nHollow instruments, wrapped or unwrapped</string>
+
+    <string name="program_8_name"       >Wrapped-134\u00B0C</string>
+    <string name="program_8_description">134\u00B0C   2.1 bar   4min\nSingle and double wrapped solids and waste</string>
+
+    <string name="program_9_name"       >Wrapped-121\u00B0C</string>
+    <string name="program_9_description">121\u00B0C   1.1 bar   20min\nSingle and double wrapped solids and waste</string>
+
+    <string name="program_10_name"      >Solids-134\u00B0C</string>
+    <string name="program_10_description">134\u00B0C   2.1 bar   4min\nSolid instruments"</string>
+
+    <string name="program_11_name"       >Solids-121\u00B0C</string>
+    <string name="program_11_description">121\u00B0C   1.1 bar   20min\nSolid instruments"</string>
+
+    <string name="program_12_name"       >Flash-134\u00B0C</string>
+    <string name="program_12_description">134\u00B0C   2.1 bar   3min\nFast program for unwrapped solids"</string>
+
+    <string name="open_the_door"         >Open the door</string>
     <string name="unable_to_start_vacuum_test">Unable to start the vacuum test. Please wait until the chamber is cooled down.</string>
     <string name="vacuum_times">Vacuum times:</string>
     <string name="sterilization_temperature">Sterilization temperature:</string>

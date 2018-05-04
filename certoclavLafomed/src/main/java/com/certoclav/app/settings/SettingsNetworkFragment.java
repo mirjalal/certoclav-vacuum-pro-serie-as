@@ -9,7 +9,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
@@ -19,6 +18,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.provider.Settings;
 import android.support.v4.preference.PreferenceFragment;
 import android.util.Log;
 import android.view.View;
@@ -97,7 +97,23 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
      * Starts an Activity for Picking and Connecting to Wifi
      */
     private void startWifiPicker() {
-        startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK));
+
+        Intent intent = new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK);
+        intent.putExtra("only_access_points", true);
+        intent.putExtra("extra_prefs_show_button_bar", true);
+        intent.putExtra("wifi_enable_next_on_connect", true);
+        startActivityForResult(intent, 1);
+
+
+       // startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK));
+    }
+
+    private void startNetworkSettings(){
+        Intent intent = new Intent(Settings.ACTION_SETTINGS);
+        intent.putExtra("only_access_points", true);
+        intent.putExtra("extra_prefs_show_button_bar", true);
+        intent.putExtra("wifi_enable_next_on_connect", true);
+        startActivityForResult(intent, 1);
     }
 
 /*
@@ -121,9 +137,10 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
     }
 
     private void configureLan() {
-        PackageManager pm = getActivity().getPackageManager();
-        Intent launchIntent = pm.getLaunchIntentForPackage("com.fsl.ethernet");
-        getActivity().startActivity(launchIntent);
+        startNetworkSettings();
+        //PackageManager pm = getActivity().getPackageManager();
+        //Intent launchIntent = pm.getLaunchIntentForPackage("com.fsl.ethernet");
+        //getActivity().startActivity(launchIntent);
     }
 
     @Override

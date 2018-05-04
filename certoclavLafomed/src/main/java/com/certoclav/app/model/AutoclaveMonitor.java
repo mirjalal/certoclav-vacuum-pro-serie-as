@@ -25,6 +25,7 @@ import com.certoclav.library.bcrypt.BCrypt;
 import com.certoclav.library.certocloud.CloudDatabase;
 import com.certoclav.library.certocloud.Condition;
 import com.certoclav.library.certocloud.NotificationService;
+import com.certoclav.library.util.FileUtils;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -41,14 +42,47 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
     private SparseArray<String> errorMap = new SparseArray<String>();
     private SparseArray<String> errorVideoMap = new SparseArray<String>();
 
+
+
+
+
+
     public static final int ERROR_CODE_SUCCESSFULL = 0;
-
-
-    public static final int ERROR_CODE_CANCELLED_BY_USER = 30;
     public static final int ERROR_CODE_INDICATOR_FAILED = 50;
     public static final int ERROR_CODE_CONNECTION_LOST = -2;
     public static final int ERROR_CODE_CANCELLED_BY_ERROR = -3;
     public static final int ERROR_CODE_POWER_LOSS = -4;
+
+
+    // 11111111111111111111000011111111
+    // error code range is from 1 to 32 (index in binary stirng + 1)
+    public static final int WATER_FLOATING_SYSTEM_FAILURE = 32;
+    public static final int FILLING_WATER_TIME_EXCEEDED = 31;
+    public static final int REFILLING_WATER_FAILURE = 30;
+    public static final int PHASE_1_HEATING_FAILURE = 29;
+    public static final int PHASE_1_PRESSURE_FAILURE = 28;
+    public static final int PHASE_1_TIME_EXCEEDED = 27;
+    public static final int PHASE_2_TIME_EXCEEDED = 26;
+    public static final int STERILIZATION_OVERTEMPERATURE = 25;
+    public static final int STERILIZATION_UNDERTEMPERATURE = 24;
+    public static final int STERILIZATION_OVERPRESSURE = 23;
+    public static final int STERILIZATION_UNDERPRESSURE = 22;
+    public static final int PRESSURE_LEVELING_TIMEOUT = 21;
+    public static final int TEMPERATURE_PROBE_FAILURE = 20;
+    public static final int DIFFERENCE_BETWEEN_PROBES_EXCEEDED = 19;
+    public static final int DOOR_OPEN = 18;
+    public static final int LOW_PRESSURE_IN_PULSES = 17;
+    public static final int STABILIZATION_PHASE_TIMEOUT = 16;
+    public static final int WATER_PUMP_FAILURE = 15;
+    public static final int COOLING_WATER_FAILURE = 14;
+    public static final int VACUUM_TEST_FAILURE = 8;
+    public static final int VACUUM_TEST_UNDERPRESSURE = 7;
+    public static final int VACUUM_TEST_UNDERTEMPERATURE = 6;
+    public static final int VACUUM_TEST_FINAL_PRESSURE_EXCEEDED = 5;
+    public static final int MANUAL_PHASE_CHANGE = 4;
+    public static final int POWER_SUPPLY_FAILURE = 3;
+    public static final int ERROR_CODE_CANCELLED_BY_USER = 2;
+    public static final int FATAL_ERROR_PROCESS_STOPPED = 1;
 
     private long nanoTimeAtLastMessageReceived = 0;
 
@@ -65,6 +99,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
     long secondsSinceStart = 0;
     private long secondsOnLastRecord = 5; //init not to 0
     private long nanoIgnoreErrorTemporary = 0;
+    private FileUtils fileUtils = new FileUtils();
 
 
     private Integer indexOfProfile = null;
@@ -100,30 +135,39 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
 
     private AutoclaveMonitor() {
+        //map a error description to the error code.
         errorMap.put(ERROR_CODE_SUCCESSFULL, mContext.getString(R.string.progr_finished_successfully));
-        errorMap.put(ERROR_CODE_CANCELLED_BY_USER, mContext.getString(R.string.cycle_cancelled_by_user_));
         errorMap.put(ERROR_CODE_CONNECTION_LOST, mContext.getString(R.string.connection_lost_during_record));
         errorMap.put(ERROR_CODE_CANCELLED_BY_ERROR, mContext.getString(R.string.cycle_cancelled_because_of_error));
         errorMap.put(ERROR_CODE_POWER_LOSS, mContext.getString(R.string.power_loss_during_record));
         errorMap.put(ERROR_CODE_INDICATOR_FAILED, mContext.getString(R.string.indicator_failed));
-        errorMap.put(31, "The temperature of the chamber is higher than 150 °C");
-        errorMap.put(32, "The temperature of the chamber heating is higher than 280 °C");
-        errorMap.put(51, "The temperature of the chamber is lower than 0 °C");
-        errorMap.put(52, "The temperature of the chamber heating is lower than 0 °C");
-        errorMap.put(63, "The temperature of the steam generator is lower than 0 °C. The temperature of the steam generator is higher than 230 °C");
-        errorMap.put(2, "The sterilization pressure is more than 40 kPa higher than planned");
-        errorMap.put(61, "The temperature regulation is instable. The temperature in the chamber is 6 °C higher than the required temperature");
-        errorMap.put(62, "The temperature of the chamber heating is higher than 155 °C. The temperature regulation is instable");
-        errorMap.put(41, "In preheat period, after 8 min warm-up, temperature chamber heater is < 100 °C, chamber heater damaged");
-        errorMap.put(42, "In preheat period, after 8 min warm-up, temperature chamber heater is < 110 °C, chamber heater damaged");
-        errorMap.put(5, "When the period of exhaust, after working 10mins, the pressure in chamber is still over 0.5bar : air relief instability");
-        errorMap.put(6, "The door is opened during working. Door sensor damaged");
-        errorMap.put(7, "The local air pressure is < 70KPa. The local air pressure is too low.");
-        errorMap.put(8, "In pre-vacuum period, every 5 min temperature raise < 3 °C");
-        errorMap.put(9, "In sterilization period, the sterilization pressure is 0.3 bar");
-        errorMap.put(10, "The electronic locker is in wrong condition");
-        errorMap.put(11, "The electronic locker is in wrong condition");
-        errorMap.put(12, "The vacuum not reach -70Kpa during at least 3 vacuum phases");
+        errorMap.put(WATER_FLOATING_SYSTEM_FAILURE,"WATER FLOATING SYSTEM FAILURE");
+        errorMap.put(FILLING_WATER_TIME_EXCEEDED,"FILLING WATER TIME EXCEEDED");
+        errorMap.put(REFILLING_WATER_FAILURE,"REFILLING WATER FAILURE");
+        errorMap.put(PHASE_1_HEATING_FAILURE,"PHASE 1 HEATING FAILURE");
+        errorMap.put(PHASE_1_PRESSURE_FAILURE,"PHASE 1 PRESSURE FAILURE");
+        errorMap.put(PHASE_1_TIME_EXCEEDED,"PHASE 1 TIME EXCEEDED");
+        errorMap.put(PHASE_2_TIME_EXCEEDED,"PHASE 2 TIME EXCEEDED");
+        errorMap.put(STERILIZATION_OVERTEMPERATURE,"STERILIZATION OVERTEMPERATURE");
+        errorMap.put(STERILIZATION_UNDERTEMPERATURE,"STERILIZATION UNDERTEMPERATURE");
+        errorMap.put(STERILIZATION_OVERPRESSURE,"STERILIZATION OVERPRESSURE");
+        errorMap.put(STERILIZATION_UNDERPRESSURE,"STERILIZATION UNDERPRESSURE");
+        errorMap.put(PRESSURE_LEVELING_TIMEOUT,"PRESSURE LEVELING TIMEOUT");
+        errorMap.put(TEMPERATURE_PROBE_FAILURE,"TEMPERATURE PROBE FAILURE");
+        errorMap.put(DIFFERENCE_BETWEEN_PROBES_EXCEEDED,"DIFFERENCE BETWEEN PROBES EXCEEDED");
+        errorMap.put(DOOR_OPEN,"DOOR OPEN");
+        errorMap.put(LOW_PRESSURE_IN_PULSES,"LOW PRESSURE IN PULSES");
+        errorMap.put(STABILIZATION_PHASE_TIMEOUT,"STABILIZATION PHASE TIMEOUT");
+        errorMap.put(WATER_PUMP_FAILURE,"WATER PUMP FAILURE");
+        errorMap.put(COOLING_WATER_FAILURE,"COOLING WATER FAILURE");
+        errorMap.put(VACUUM_TEST_FAILURE,"VACUUM TEST FAILURE");
+        errorMap.put(VACUUM_TEST_UNDERPRESSURE,"VACUUM TEST UNDERPRESSURE");
+        errorMap.put(VACUUM_TEST_UNDERTEMPERATURE,"VACUUM TEST UNDERTEMPERATURE");
+        errorMap.put(VACUUM_TEST_FINAL_PRESSURE_EXCEEDED,"VACUUM TEST FINAL PRESSURE EXCEEDED");
+        errorMap.put(MANUAL_PHASE_CHANGE,"MANUAL PHASE CHANGE");
+        errorMap.put(POWER_SUPPLY_FAILURE,"POWER SUPPLY FAILURE");
+        errorMap.put(ERROR_CODE_CANCELLED_BY_USER, mContext.getString(R.string.cycle_cancelled_by_user_));
+        errorMap.put(FATAL_ERROR_PROCESS_STOPPED,"FATAL ERROR PROCESS STOPPED");
 
 
         Autoclave.getInstance().setOnSensorDataListener(this);
@@ -524,7 +568,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
             if (Autoclave.getInstance().isMicrocontrollerReachable() == false) {
                 errorList.clear();
                 errorList.add(new Error("ERROR: " + getErrorString(ERROR_CODE_CONNECTION_LOST),
-                        mContext.getResources().getString(R.string.path_video_power),
+                        fileUtils.getVideoDirectory() + mContext.getResources().getString(R.string.path_video_power),
                         Error.TYPE_WARNING,
                         ERROR_CODE_CONNECTION_LOST));
                 return;
@@ -785,47 +829,25 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
     }
 
-    final int ERRPRO_FALLBOYA = 0;
-    final int ERRPRO_TOUTLLENA = 1;
-    final int ERRPRO_REINTLLENA = 2;
-    final int ERRPRO_TEMPCALEN1 = 3;
-    final int ERRPRO_PRESCALEN1 = 4;
-    final int ERRPRO_TPOCALEN1 = 5;
-    final int ERRPRO_TPOCALEN2 = 6;
-    final int ERRPRO_SUPTEMPESTER = 7;
-    final int ERRPRO_INFTEMPESTER = 8;
-    final int ERRPRO_SUPPRESESTER = 9;
-    final int ERRPRO_INFPRESESTER = 10;
-    final int ERRPRO_TOUTNIVAEB = 11;
-    final int ERRPRO_FALLSONDAS = 12;
-    final int ERRPRO_DIFSONDAS = 13;
-    final int ERRPRO_PTAOPEN = 14;
-    final int ERRPRO_TOUTPVAP = 15;
-    final int ERRPRO_TOUTESTABAEB = 16;
-    final int ERRPRO_TOUTBOMBA = 17;
-    final int ERRPRO_PRESENFRFG = 18;
-    final int ERRTVAC_CICFASVACIO = 24;
-    final int ERRTVAC_PRESPERD = 25;
-    final int ERRTVAC_TEMPPERD = 26;
-    final int ERRTVAC_PRESFIN = 27;
-    final int ERRPRO_NEXTSTP = 28;
-    final int ERRPRO_CORTEFLU = 29;
-    final int ERRPRO_CANCELUSER = 30;
-    final int ERRPRO_FALLGRAVE = 31;
+
 
 
     private void checkErrors() {
 
         try {
-            String binary = String.format("%1$" + 32 + "s", new BigInteger(Autoclave.getInstance().getErrorCode(), 16).toString(2));
+            String binary = String.format("%32s" , new BigInteger(Autoclave.getInstance().getErrorCode(), 16).toString(2)).replace(" ", "0");
+            Log.e("error_hex" + Autoclave.getInstance().getErrorCode());
             Log.e("error_binary" + binary);
             errorList = new ArrayList<>();
+            int errorcode = 0;
             for (int i = 0; i < 32; i++)
-                if (binary.charAt(i) == '1')
-                    errorList.add(new Error("ERROR: " + getErrorString(i),
-                            getErrorVideo(i),
+                if (binary.charAt(i) == '1') {
+                    errorcode = i + 1;
+                    errorList.add(new Error("ERROR: " + getErrorString(errorcode),
+                            "",
                             Error.TYPE_ERROR,
-                            i));
+                            errorcode));
+                }
         }catch (Exception e){
             e.printStackTrace();
         }

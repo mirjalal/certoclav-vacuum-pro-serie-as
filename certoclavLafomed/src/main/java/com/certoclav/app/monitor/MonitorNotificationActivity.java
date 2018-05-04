@@ -1,14 +1,11 @@
 package com.certoclav.app.monitor;
 
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.certoclav.app.R;
 import com.certoclav.app.activities.CertoclavSuperActivity;
@@ -27,7 +24,7 @@ public class MonitorNotificationActivity extends CertoclavSuperActivity implemen
     private TextView textNotificationHead = null;
     private Button buttonOk = null;
     private Button buttonCancel = null;
-    private VideoView videoView = null;
+
     private String lastErrorMessage = "";
     private int errorCount = 0;
 
@@ -45,7 +42,7 @@ public class MonitorNotificationActivity extends CertoclavSuperActivity implemen
         buttonOk = (Button) findViewById(R.id.monitor_btn_ok);
         buttonCancel = (Button) findViewById(R.id.monitor_btn_cancel);
         textNotificationHead.setText(R.string.warning);
-        videoView = (VideoView) findViewById(R.id.monitor_notification_video);
+
 
         //user can press cancel button to cancel the prepare to run status
         buttonCancel.setOnClickListener(new OnClickListener() {
@@ -99,7 +96,7 @@ public class MonitorNotificationActivity extends CertoclavSuperActivity implemen
                         buttonOk.setVisibility(View.VISIBLE);
                         buttonCancel.setVisibility(View.VISIBLE);
                     }
-                    videoView.setVisibility(errorList.size() > 1 ? View.GONE : View.VISIBLE);
+
 
 
                     notificationContainer.removeAllViews();
@@ -109,33 +106,9 @@ public class MonitorNotificationActivity extends CertoclavSuperActivity implemen
                         TextView tv = (TextView) view.findViewById(R.id.text_message);
                         tv.setText(error.getMsg());
                         notificationContainer.addView(view);
-
-
-                        if (errorList.size() == 1)
-                            try {
-                                if (error.getPathVideo() != null) {
-                                    if (error.getPathVideo().isEmpty() == false) {
-                                        videoView.setVideoPath(error.getPathVideo());
-                                        videoView.setOnPreparedListener(new OnPreparedListener() {
-                                            @Override
-                                            public void onPrepared(MediaPlayer mp) {
-                                                mp.setLooping(true);
-                                            }
-                                        });
-                                        videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                                            @Override
-                                            public boolean onError(MediaPlayer mp, int what, int extra) {
-                                                return true;
-                                            }
-                                        });
-                                        videoView.start();
-                                    }
-                                }
-
-                            } catch (Exception e) {
-
-                            }
                     }
+
+
                 }
 
             }

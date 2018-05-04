@@ -109,12 +109,7 @@
         </ScrollView>
 
 
-        <VideoView
-            android:id="@+id/monitor_notification_video"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_weight="0" />
+
     </LinearLayout>
 
 

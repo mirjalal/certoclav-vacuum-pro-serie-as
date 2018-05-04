@@ -252,7 +252,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     private int counter = 0;
 
     private ReadAndParseSerialService() {
-        serialService = new SerialService("/dev/ttyS4", 9600);
+        serialService = new SerialService("/dev/ttyS4", 38400);
         handlerGetData.post(runnableGetData);
 //        serialThread.start();
         if (AppConstants.isIoSimulated == false) {
