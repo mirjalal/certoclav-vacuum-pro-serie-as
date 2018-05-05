@@ -23,6 +23,7 @@ import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.app.model.Error;
 import com.certoclav.app.monitor.MonitorActivity;
+import com.certoclav.library.util.FileUtils;
 
 import java.util.ArrayList;
 
@@ -34,6 +35,7 @@ public class AssistantActivity extends CertoclavSuperActivity implements Profile
     private VideoView videoView;
     private TextView textStepDescription;
     private Button buttonNext;
+    private FileUtils fileUtils = new FileUtils();
 
     CertoclavNavigationbarClean navigationbar;
 
@@ -106,7 +108,7 @@ public class AssistantActivity extends CertoclavSuperActivity implements Profile
                     break;
                 }
                 Log.e("AssistantActivity", "enter case 1");
-                videoView.setVideoPath(getString(R.string.path_video_door_open));
+                videoView.setVideoPath(fileUtils.getVideoDirectory() +getString(R.string.path_video_door_open));
                 videoView.setOnPreparedListener(new OnPreparedListener() {
 
                     @Override
@@ -129,7 +131,7 @@ public class AssistantActivity extends CertoclavSuperActivity implements Profile
                 videoView = null;
                 videoView = (VideoView) findViewById(R.id.sterilisation_assistant_videoview);
                 videoView.setVisibility(View.VISIBLE);
-                videoView.setVideoPath(getString(R.string.path_video_place_item));
+                videoView.setVideoPath(fileUtils.getVideoDirectory() + getString(R.string.path_video_place_item));
                 videoView.setOnPreparedListener(new OnPreparedListener() {
 
                     @Override
@@ -152,7 +154,7 @@ public class AssistantActivity extends CertoclavSuperActivity implements Profile
                 videoView = null;
                 videoView = (VideoView) findViewById(R.id.sterilisation_assistant_videoview);
                 videoView.setVisibility(View.VISIBLE);
-                videoView.setVideoPath(getString(R.string.path_video_door_close));
+                videoView.setVideoPath(fileUtils.getVideoDirectory() +getString(R.string.path_video_door_close));
                 videoView.setOnPreparedListener(new OnPreparedListener() {
 
                     @Override

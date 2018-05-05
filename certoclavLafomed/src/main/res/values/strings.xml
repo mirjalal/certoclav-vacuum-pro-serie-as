@@ -18,11 +18,11 @@
     <string name="running">"running "</string>
     <string name="prepare_to_run">prepare to run</string>
 
-    <string name="path_video_place_item">/sdcard/Download/animation_place_item.mp4</string>
-    <string name="path_video_door_open">/sdcard/Download/animation_lid.mp4</string>
-    <string name="path_video_door_close">/sdcard/Download/animation_close_lid.mp4</string>
-    <string name="path_video_fill_water">/sdcard/Download/animation_fill_water.mp4</string>
-    <string name="path_video_empty_water">/sdcard/Download/animation_remove_water.mp4</string>
+    <string name="path_video_place_item">/animation_place_item.mp4</string>
+    <string name="path_video_door_open">/animation_lid.mp4</string>
+    <string name="path_video_door_close">/animation_close_lid.mp4</string>
+    <string name="path_video_fill_water">/animation_fill_water.mp4</string>
+    <string name="path_video_empty_water">/animation_remove_water.mp4</string>
     <string name="path_video_power">/animation_power.mp4</string>
     <string name="path_video_start_program_1">/sdcard/Download/animation_start_program_1.mp4</string>
     <string name="path_video_start_program_2">/sdcard/Download/animation_start_program_2.mp4</string>

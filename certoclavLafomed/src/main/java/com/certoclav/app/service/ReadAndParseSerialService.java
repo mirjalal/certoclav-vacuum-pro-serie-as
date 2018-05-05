@@ -440,7 +440,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         if (AutoclaveMonitor.getInstance().SimulatedFailStoppedByUser == true) {
             isProgramRunning = false;
             isDoorLocked = false;
-            errorCode = "00000002";
+            errorCode = "40000000";
         } else {
             errorCode = "00000000";
         }

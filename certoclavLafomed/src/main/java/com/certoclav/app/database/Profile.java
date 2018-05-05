@@ -189,7 +189,7 @@ public class Profile {
     }
 
     public String getName() {
-/*        try {
+        try {
             switch (getIndex()) {
                 case 1:
                     return ApplicationController.getInstance().getApplicationContext().getString(R.string.program_1_name);
@@ -220,7 +220,7 @@ public class Profile {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
         return name;
     }
 
