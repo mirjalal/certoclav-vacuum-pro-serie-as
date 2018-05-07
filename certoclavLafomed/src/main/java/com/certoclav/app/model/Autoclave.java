@@ -4,8 +4,8 @@ import android.content.Context;
 import android.preference.PreferenceManager;
 
 import com.certoclav.app.AppConstants;
+import com.certoclav.app.R;
 import com.certoclav.app.database.Controller;
-import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.Profile;
 import com.certoclav.app.database.Protocol;
 import com.certoclav.app.database.User;
@@ -23,7 +23,6 @@ import com.certoclav.library.models.DeviceModel;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Observable;
 
 import android_serialport_api.SerialService;
@@ -115,7 +114,15 @@ public class Autoclave extends Observable {
     private int indexOfRunningProgram = 0;
     private Profile userDefinedProgram = null;
 
+    public ArrayList<Profile> getProfilesFromAutoclave() {
+        return profilesFromAutoclave;
+    }
 
+
+
+    private ArrayList<Profile> profilesFromAutoclave = new ArrayList<Profile>();
+
+/*
     public Profile getUserDefinedProgram() {
         if (userDefinedProgram == null) {
             try {
@@ -133,15 +140,16 @@ public class Autoclave extends Observable {
         }
         return userDefinedProgram;
     }
+*/
 
-
+/*
     public void setUserDefinedProgram(Profile userDefinedProgram) {
         this.userDefinedProgram = userDefinedProgram;
         for (UserProgramListener listener : userProgramListeners) {
             listener.onUserProgramReceived();
         }
     }
-
+*/
 
     public long getSecondsSinceStart() {
         return secondsSinceStart;
@@ -287,6 +295,200 @@ public class Autoclave extends Observable {
     private Autoclave() {
 
         data = new AutoclaveData();
+
+        //default profiles
+        profilesFromAutoclave.clear();
+        profilesFromAutoclave.add(new Profile("",
+                1,
+                "def. "+ ApplicationController.getContext().getString(R.string.program_1_name),
+                3,
+                4,
+                134.0f,
+                2.1f,
+                0,
+                4,
+                ApplicationController.getContext().getString(R.string.program_1_description),
+                true,
+                true,
+                false,
+                null,
+                1));
+
+        profilesFromAutoclave.add(new Profile("",
+                1,
+                ApplicationController.getContext().getString(R.string.program_2_name),
+                1,
+                0,
+                0f,
+                -0.8f,
+                15,
+                0,
+                ApplicationController.getContext().getString(R.string.program_2_description),
+                true,
+                true,
+                false,
+                null,
+                2));
+
+        profilesFromAutoclave.add(new Profile("",
+                1,
+                ApplicationController.getContext().getString(R.string.program_3_name),
+                3,
+                4,
+                134.0f,
+                2.1f,
+                0,
+                10,
+                ApplicationController.getContext().getString(R.string.program_3_description),
+                true,
+                true,
+                false,
+                null,
+                1));
+
+        profilesFromAutoclave.add(new Profile("",
+                1,
+                ApplicationController.getContext().getString(R.string.program_4_name),
+                3,
+                18,
+                134.0f,
+                2.1f,
+                0,
+                10,
+                ApplicationController.getContext().getString(R.string.program_4_description),
+                true,
+                true,
+                false,
+                null,
+                1));
+
+        profilesFromAutoclave.add(new Profile("",
+                1,
+                ApplicationController.getContext().getString(R.string.program_5_name),
+                3,
+                20,
+                121.0f,
+                1.1f,
+                0,
+                10,
+                ApplicationController.getContext().getString(R.string.program_5_description),
+                true,
+                true,
+                false,
+                null,
+                1));
+
+        profilesFromAutoclave.add(new Profile("",
+                1,
+                ApplicationController.getContext().getString(R.string.program_6_name),
+                3,
+                4,
+                134.0f,
+                2.1f,
+                0,
+                5,
+                ApplicationController.getContext().getString(R.string.program_6_description),
+                true,
+                true,
+                false,
+                null,
+                1));
+
+        profilesFromAutoclave.add(new Profile("",
+                1,
+                ApplicationController.getContext().getString(R.string.program_7_name),
+                3,
+                20,
+                121.0f,
+                1.1f,
+                0,
+                5,
+                ApplicationController.getContext().getString(R.string.program_7_description),
+                true,
+                true,
+                false,
+                null,
+                1));
+
+        profilesFromAutoclave.add(new Profile("",
+                1,
+                ApplicationController.getContext().getString(R.string.program_8_name),
+                1,
+                4,
+                134.0f,
+                2.1f,
+                0,
+                5,
+                ApplicationController.getContext().getString(R.string.program_8_description),
+                true,
+                true,
+                false,
+                null,
+                1));
+
+        profilesFromAutoclave.add(new Profile("",
+                1,
+                ApplicationController.getContext().getString(R.string.program_9_name),
+                1,
+                20,
+                121.0f,
+                1.1f,
+                0,
+                5,
+                ApplicationController.getContext().getString(R.string.program_9_description),
+                true,
+                true,
+                false,
+                null,
+                1));
+
+        profilesFromAutoclave.add(new Profile("",
+                1,
+                ApplicationController.getContext().getString(R.string.program_10_name),
+                1,
+                4,
+                134.0f,
+                2.1f,
+                0,
+                5,
+                ApplicationController.getContext().getString(R.string.program_10_description),
+                true,
+                true,
+                false,
+                null,
+                1));
+
+        profilesFromAutoclave.add(new Profile("",
+                1,
+                ApplicationController.getContext().getString(R.string.program_11_name),
+                3,
+                20,
+                121.0f,
+                1.1f,
+                0,
+                5,
+                ApplicationController.getContext().getString(R.string.program_11_description),
+                true,
+                true,
+                false,
+                null,
+                1));
+
+        profilesFromAutoclave.add(new Profile("",
+                1,
+                ApplicationController.getContext().getString(R.string.program_12_name),
+                3,
+                3,
+                134.0f,
+                2.1f,
+                0,
+                1,
+                ApplicationController.getContext().getString(R.string.program_12_description),
+                true,
+                true,
+                false,
+                null,
+                1));
 
 
     }

@@ -491,7 +491,7 @@ public class Helper {
     public static void getPrograms(final Context context) {
 
         if (AppConstants.isIoSimulated) {
-            new DatabaseService(context).fillDatabaseWithProgramIfEmpty();
+            Autoclave.getInstance();
             return;
         }
 
@@ -504,11 +504,11 @@ public class Helper {
         final Handler handler = new Handler();
         final int TIMEOUT = 3000;
         final int MAX_TRY = 5;
-        final int MAX_PROGRAM_COUNT = 4;
+        final int MAX_PROGRAM_COUNT = 12;
         final DatabaseService databaseService = new DatabaseService(context);
 
 
-        final MyCallback callback = new MyCallback() {
+        final MyCallback callbackProfile = new MyCallback() {
 
             @Override
             public void onSuccess(Object response, int requestId) {
@@ -522,18 +522,21 @@ public class Helper {
 
                 failCount = 0;
                 if (currentProgram < MAX_PROGRAM_COUNT && response != null) {
-                    databaseService.insertProfile((Profile) response);
+
+                    Autoclave.getInstance().getProfilesFromAutoclave().add((Profile) response);
                     ReadAndParseSerialService.getInstance().getProgram(++currentProgram);
+                    Log.e("Helper", "PUT PROFILE " + ((Profile) response).getName());
 
                     if (runnableTimeout != null)
                         handler.postDelayed(runnableTimeout, TIMEOUT);
 
                 } else {
-                    if (response != null)
-                        databaseService.insertProfile((Profile) response);
+                    if (response != null) {
+                        Autoclave.getInstance().getProfilesFromAutoclave().add((Profile) response);
+                        Log.e("Helper", "PUT PROFILE " + ((Profile) response).getName());
+                    }
                     else
                         currentProgram--;
-
                     barProgressDialog.dismissWithAnimation();
                 }
             }
@@ -577,7 +580,7 @@ public class Helper {
             public void run() {
                 failCount++;
                 if (failCount > MAX_TRY) {
-                    ReadAndParseSerialService.getInstance().removeCallback(callback);
+                    ReadAndParseSerialService.getInstance().removeCallback(callbackProfile);
                     failCount = 0;
                     barProgressDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
                     barProgressDialog.setTitleText(context.getString(R.string.failed));
@@ -593,12 +596,14 @@ public class Helper {
             }
         };
 
-        ReadAndParseSerialService.getInstance().addCallback(callback);
+        ReadAndParseSerialService.getInstance().addCallback(callbackProfile);
 
         barProgressDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
             @Override
             public void onClick(SweetAlertDialog sweetAlertDialog) {
-                databaseService.deleteAllProfiles();
+
+                Autoclave.getInstance().getProfilesFromAutoclave().clear();
+                Log.e("Helper", "CLEAR PROGRAM LIST");
                 sweetAlertDialog.dismissWithAnimation();
             }
         });
@@ -606,7 +611,7 @@ public class Helper {
         barProgressDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
             @Override
             public void onClick(SweetAlertDialog sweetAlertDialog) {
-                ReadAndParseSerialService.getInstance().addCallback(callback);
+                ReadAndParseSerialService.getInstance().addCallback(callbackProfile);
                 barProgressDialog.setConfirmText(null);
                 barProgressDialog.setCancelText(null);
                 barProgressDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
@@ -618,7 +623,8 @@ public class Helper {
                     handler.postDelayed(runnableTimeout, TIMEOUT);
             }
         });
-        databaseService.deleteAllProfiles();
+        Autoclave.getInstance().getProfilesFromAutoclave().clear();
+        Log.e("Helper", "CLEAR PROGRAM LIST");
         barProgressDialog.show();
         currentProgram = 1;
         ReadAndParseSerialService.getInstance().getProgram(1);

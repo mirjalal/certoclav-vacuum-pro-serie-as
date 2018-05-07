@@ -309,23 +309,15 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
         AutoclaveMonitor.getInstance().setOnAlertListener(this);
         Autoclave.getInstance().setOnAutoclaveStateListener(this);
 
-        DatabaseService db = new DatabaseService(this);
-        List<Profile> profilesFromDb = db.getProfiles();
+
+        List<Profile> profilesFromDb = Autoclave.getInstance().getProfilesFromAutoclave();
         if (Autoclave.getInstance().getProfile() == null) {
-            if (Autoclave.getInstance().getIndexOfRunningProgram() == 7) {
-                Autoclave.getInstance().setProfile(Autoclave.getInstance().getUserDefinedProgram());
-            } else {
                 for (Profile profile : profilesFromDb) {
                     if (profile.getIndex() == Autoclave.getInstance().getIndexOfRunningProgram()) {
                         Autoclave.getInstance().setProfile(profile);
                         break;
                     }
                 }
-            }
-        } else {
-            if (Autoclave.getInstance().getProfile().getIndex() == 7) {
-                Autoclave.getInstance().setProfile(Autoclave.getInstance().getUserDefinedProgram());
-            }
         }
 
         StringBuilder sbuilder = new StringBuilder();

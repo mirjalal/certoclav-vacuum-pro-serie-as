@@ -665,7 +665,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
     }
 
     private void startMonitorActivity() {
-        List<Profile> profileList = databaseService.getProfiles();
+        List<Profile> profileList = Autoclave.getInstance().getProfilesFromAutoclave();
         for (int i = 0; i < profileList.size(); i++) {
             if (Autoclave.getInstance().getIndexOfRunningProgram() == profileList.get(i).getIndex()) {
                 Autoclave.getInstance().setProfile(profileList.get(i));

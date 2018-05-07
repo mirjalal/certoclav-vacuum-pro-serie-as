@@ -1,8 +1,5 @@
 package com.certoclav.app.menu;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,8 +10,10 @@ import android.widget.GridView;
 
 import com.certoclav.app.R;
 import com.certoclav.app.adapters.ProgramAdapter;
-import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.Profile;
+import com.certoclav.app.model.Autoclave;
+
+import java.util.ArrayList;
 
 public class SterilisationFragment extends Fragment {
 
@@ -35,8 +34,8 @@ public class SterilisationFragment extends Fragment {
 
         }
 
-        DatabaseService db = new DatabaseService(getActivity());
-        ArrayList<Profile> profiles = (ArrayList<Profile>) db.getProfiles();
+        //DatabaseService db = new DatabaseService(getActivity());
+        ArrayList<Profile> profiles = Autoclave.getInstance().getProfilesFromAutoclave();
         Log.e("SterilisationFragment", "nach db anfrage");
 
         if (profiles != null) {
@@ -50,15 +49,18 @@ public class SterilisationFragment extends Fragment {
     @Override
     public void onResume() {
 
-        DatabaseService db = new DatabaseService(getActivity());
-        List<Profile> profiles = db.getProfiles();
-        ((ProgramAdapter) programGrid.getAdapter()).clear();
-        for (Profile profile : profiles) {
-            ((ProgramAdapter) programGrid.getAdapter()).add(profile);
-        }
+       // DatabaseService db = new DatabaseService(getActivity());
+        //List<Profile> profiles = Autoclave.getInstance().getProfilesFromAutoclave();
+        //Log.e("SterilizationFragment", "LENGTH OF PROFILE LIST: " + profiles.size());
+       // ((ProgramAdapter) programGrid.getAdapter()).clear();
+        //Log.e("SterilizationFragment", "LENGTH OF PROFILE LIST: " + profiles.size());
+       // for (Profile profile : profiles) {
+       //     ((ProgramAdapter) programGrid.getAdapter()).add(profile);
+       // }
 
         ((ProgramAdapter) programGrid.getAdapter()).notifyDataSetChanged();
-
+        //Log.e("SterilizationFragment", "LENGTH OF PROFILE LIST: " + programAdapter.getCount());
+        //Log.e("SterilizationFragment", "LENGTH OF PROFILE LIST: " + ((ProgramAdapter) programGrid.getAdapter()).getCount());
         super.onResume();
 
 

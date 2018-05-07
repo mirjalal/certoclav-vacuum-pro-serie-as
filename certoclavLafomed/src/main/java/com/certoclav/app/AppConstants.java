@@ -22,7 +22,7 @@ public class AppConstants {
     public static final String PREFERENCE_KEY_INDICATOR_TEST = "switch_indicator_check";
     public static final String TAG = "RAYPA";
     public static final boolean CHECK_CHECKSUM = false;
-    public static Boolean isIoSimulated = true;
+    public static Boolean isIoSimulated = false;
     public static Boolean TABLET_HAS_ROOT = false;
     public static final Boolean IS_CERTOASSISTANT = false;
     public static final String TABLET_TYPE_SAMSUNGT113W = "samsungt113w";

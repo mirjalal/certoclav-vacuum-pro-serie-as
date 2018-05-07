@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.SQLException;
 import android.util.Log;
 
-import com.certoclav.app.AppConstants;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.library.bcrypt.BCrypt;
 import com.certoclav.library.certocloud.CloudUser;
@@ -1021,13 +1020,7 @@ public class DatabaseService {
 
     public void fillDatabaseWithProgramIfEmpty() {
 
-        deleteAllProfiles();
-        try {
-            if (getProfiles() != null) {
-                if (getProfiles().size() > 0) {
-                    return;
-                }
-            }
+   try{
 
             Controller controller = null;
 
@@ -1045,6 +1038,9 @@ public class DatabaseService {
             }
 
 
+
+            //NO NEED TO INSERT PROFILES: THE STANDARD PROFILES ARE IN AUTOCLAVE.java
+            /*
             //Standardprofile
             Profile profile1 = new Profile("", 1, "134 \u00B0C SOLID", 1, 4, 134, 210, 0, 3, "134 \u00B0C   2.1bar   4min\nSolid instruments and textiles\nWrapped or unwrapped", true, true, false, controller, 1);
             Profile profile2 = new Profile("", 1, "134 \u00B0C POROUS", 3, 4, 134, 210, 0, 7, "134 \u00B0C   2.1bar   4min\nPorous instruments and textiles\nWrapped or unwrapped", true, true, false, controller, 2);
@@ -1061,6 +1057,7 @@ public class DatabaseService {
             if (AppConstants.IS_CERTOASSISTANT == false) {
                 profile12 = new Profile("", 1, "LIQUID", 1, 20, 121, 110, 0, 0, "Liquid sterilization\n121 \u00B0C   1.1bar   20min\nWith media sensor", true, true, true, controller, 12);
             }
+
             int result = 0;
             result = insertProfile(profile1);
             result = insertProfile(profile2);
@@ -1075,9 +1072,9 @@ public class DatabaseService {
             result = insertProfile(profile11);
 
             result = insertProfile(profile12);
-
+            */
         } catch (Exception e) {
-
+       e.printStackTrace();
         }
     }
 

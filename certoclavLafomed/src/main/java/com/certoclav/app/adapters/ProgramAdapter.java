@@ -36,7 +36,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  */
 public class ProgramAdapter extends ArrayAdapter<Profile> {
     private final Context mContext;
-    private final List<Profile> mValues;
+
 
     private DatabaseService databaseService;
 
@@ -51,7 +51,6 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
 
         super(context, R.layout.menu_fragment_sterilisation_element, values);
         this.mContext = context;
-        this.mValues = values;
         databaseService = new DatabaseService(mContext);
 
 
@@ -79,14 +78,58 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
         viewHolder.firstLine.setText(getItem(position).getName());
 
 
-        viewHolder.textDuration.setText(getItem(position).getDescription());
 
-    //    if (getItem(position).getIndex() == 7) { //user defined profile
-    //        viewHolder.textDuration.setText(mContext.getString(R.string.vacuum_times) + " " + Autoclave.getInstance().getUserDefinedProgram().getVacuumTimes() + "\n" +
-    //                mContext.getString(R.string.sterilization_temp_) + " " + Autoclave.getInstance().getUserDefinedProgram().getSterilisationTemperature() + "\u2103\n" +
-    //                mContext.getString(R.string.sterilization_time_) + " " + Autoclave.getInstance().getUserDefinedProgram().getSterilisationTime() + "min\n" +
-    //                mContext.getString(R.string.drying_time) + " " + Autoclave.getInstance().getUserDefinedProgram().getDryTime() + "min");
-    //    }
+
+        StringBuilder sbuilder = new StringBuilder();
+        if (getItem(position).getVacuumTimes() != 0) {
+            sbuilder.append(mContext.getString(R.string.vacuum_times) + " ")
+                    .append(getItem(position).getVacuumTimes())
+                    .append("\n");
+        }
+
+        if (getItem(position).getSterilisationTemperature() != 0) {
+            sbuilder.append(mContext.getString(R.string.sterilization_temperature) + " ")
+                    .append(getItem(position).getSterilisationTemperature())
+                    .append(" " + "\u2103")
+                    .append("\n");
+        }
+
+        if (getItem(position).getSterilisationPressure() != 0) {
+            sbuilder.append(mContext.getString(R.string.sterilization_pressure) + " ")
+                    .append(Float.toString(getItem(position).getSterilisationPressure()))
+                    .append(" " + mContext.getString(R.string.bar))
+                    .append("\n");
+        }
+
+        if (getItem(position).getSterilisationTime() != 0) {
+            sbuilder.append(mContext.getString(R.string.sterilization_holding_time) + " ")
+                    .append(getItem(position).getSterilisationTime())
+                    .append(" " + mContext.getString(R.string.min))
+                    .append("\n");
+        }
+
+        if (getItem(position).getVacuumPersistTemperature() != 0) {
+            sbuilder.append(mContext.getString(R.string.vacuum_persist_temperature) + " ")
+                    .append(getItem(position).getVacuumPersistTemperature())
+                    .append(" " + "\u2103")
+                    .append("\n");
+        }
+        if (getItem(position).getVacuumPersistTime() != 0) {
+            sbuilder.append(mContext.getString(R.string.vacuum_persist_time) + " ")
+                    .append(getItem(position).getVacuumPersistTime())
+                    .append(" " + mContext.getString(R.string.min))
+                    .append("\n");
+        }
+        if (getItem(position).getDryTime() != 0) {
+            sbuilder.append(mContext.getString(R.string.drying_time) + " ")
+                    .append(getItem(position).getDryTime())
+                    .append(" " + mContext.getString(R.string.min));
+        }
+
+
+
+        viewHolder.textDuration.setText(sbuilder.toString());
+
 
         viewHolder.item = getItem(position);
         viewHolder.cardView.setOnClickListener(new OnClickListener() {

@@ -24,7 +24,6 @@ import android.widget.Toast;
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.database.DatabaseService;
-import com.certoclav.app.database.Profile;
 import com.certoclav.app.database.Protocol;
 import com.certoclav.app.database.ProtocolEntry;
 import com.certoclav.app.listener.UserProgramListener;
@@ -81,11 +80,11 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
 
                         @Override
                         public void onUserProgramReceived() {
-                            Profile profile = Autoclave.getInstance().getUserDefinedProgram();
-                            ((TextView) dialog.findViewById(R.id.dialog_program_edit_vacuum_times)).setText(Integer.toString(profile.getVacuumTimes()));
-                            ((TextView) dialog.findViewById(R.id.dialog_program_edit_sterilizationtemperature)).setText(Float.toString(profile.getSterilisationTemperature()));
-                            ((TextView) dialog.findViewById(R.id.dialog_program_edit_sterilizationtime)).setText(Integer.toString(profile.getSterilisationTime()));
-                            ((TextView) dialog.findViewById(R.id.dialog_program_edit_dryingtime)).setText(Integer.toString(profile.getDryTime()));
+                           // Profile profile = Autoclave.getInstance().getUserDefinedProgram();
+                           // ((TextView) dialog.findViewById(R.id.dialog_program_edit_vacuum_times)).setText(Integer.toString(profile.getVacuumTimes()));
+                           // ((TextView) dialog.findViewById(R.id.dialog_program_edit_sterilizationtemperature)).setText(Float.toString(profile.getSterilisationTemperature()));
+                           // ((TextView) dialog.findViewById(R.id.dialog_program_edit_sterilizationtime)).setText(Integer.toString(profile.getSterilisationTime()));
+                           // ((TextView) dialog.findViewById(R.id.dialog_program_edit_dryingtime)).setText(Integer.toString(profile.getDryTime()));
 
 
                         }

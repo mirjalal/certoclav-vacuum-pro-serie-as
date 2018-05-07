@@ -65,14 +65,14 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     Double offsetSteamGenerator = 0d;
     Double offsetMedia = 0d;
     Double offsetPress = 0d;
-    Profile userDefinedProgram = null;
+
 
 
     private static final int HANDLER_ERROR = -1;
     private static final int HANDLER_MSG_CALIBRATION = 1;
     private static final int HANDLER_MSG_DATA = 2;
     private static final int HANDLER_MSG_USER_PROGRAM = 3;
-    private static final int HANDLER_MSG_GET_PROGRAM = 4;
+    private static final int HANDLER_MSG_ACK_PROGRAM = 4;
     private SerialService serialService = null;
     private List<MyCallback> callbacks;
 
@@ -121,7 +121,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         String START = "ACK_STAR";
         String STOP = "ACK_STOP";
         String DATA = "ACK_DATA";
-        String GET_PROGRAM = "ACK_PROG";
+        String ACK_PROG = "ACK_PROG";
         String CONFIRM_ERROR = "ACK_CNFE";
     }
 
@@ -211,7 +211,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 
             switch (msg.what) {
                 case HANDLER_MSG_USER_PROGRAM:
-                    Autoclave.getInstance().setUserDefinedProgram(userDefinedProgram);
+                    //no user defined program
                     break;
                 case HANDLER_MSG_DATA:
                     Autoclave.getInstance().setSensorsData(
@@ -232,11 +232,11 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                 case HANDLER_MSG_CALIBRATION:
                     Autoclave.getInstance().setAdjustParameters(offsetSteam, offsetMedia, offsetHeater, offsetSteamGenerator, offsetPress);
                     break;
-                case HANDLER_MSG_GET_PROGRAM:
+                case HANDLER_MSG_ACK_PROGRAM:
                     if (msg.obj != null)
-                        publishResult(msg.obj, true, HANDLER_MSG_GET_PROGRAM);
+                        publishResult(msg.obj, true, HANDLER_MSG_ACK_PROGRAM);
                     else
-                        publishResult(ERROR_NOT_DEFINED, false, HANDLER_MSG_GET_PROGRAM);
+                        publishResult(ERROR_NOT_DEFINED, false, HANDLER_MSG_ACK_PROGRAM);
                     break;
                 case HANDLER_ERROR:
                     publishResult(msg.obj != null ? msg.obj : ERROR_NOT_DEFINED, false, -1);
@@ -369,15 +369,23 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 
                     break;
 
-                case RESPONSES.GET_PROGRAM:
+                case RESPONSES.ACK_PROG:
+
+                    Float pressure = 0f;
+                    if(Float.valueOf(responseParameters[INDEX_PROGRAM_TEMP])>=100){
+                        pressure = (float) (0.006112*Math.exp(   (17.62*Float.valueOf(responseParameters[INDEX_PROGRAM_TEMP]) )/(243.12+Float.valueOf(responseParameters[INDEX_PROGRAM_TEMP]))   )  -1);
+                        pressure = ((int) (pressure*100))/100.0f;
+                    }
+
+
                     if (responseParameters.length == NUMBER_OF_PROGRAM_RESPONSE_PARAMETERS) {
                         Profile profile = new Profile("",
                                 1,
-                                responseParameters[INDEX_PROGRAM_NAME],
+                                responseParameters[INDEX_PROGRAM_NAME].replace("_"," "),
                                 Integer.valueOf(responseParameters[INDEX_PROGRAM_PULSE_VACUUM]),
                                 Integer.valueOf(responseParameters[INDEX_PROGRAM_STERILIZATION_TIME]),
                                 Float.valueOf(responseParameters[INDEX_PROGRAM_TEMP]),
-                                210,
+                                pressure,
                                 0,
                                 10,
                                 null,
@@ -387,11 +395,12 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                                 null,
                                 Integer.valueOf(responseParameters[INDEX_PROGRAM_NUM]));
                         Message msg = new Message();
-                        msg.what = HANDLER_MSG_GET_PROGRAM;
+                        msg.what = HANDLER_MSG_ACK_PROGRAM;
                         msg.obj = profile;
+                        Log.e("ReadAndParseSerialS", "PROGRAM PARSED: " + profile.getName() + " " + profile.getSterilisationTemperature());
                         handler.sendMessage(msg);
                     } else {
-                        publishResult(new ErrorModel(null, ERROR_PARSING), false, HANDLER_MSG_GET_PROGRAM);
+                        publishResult(new ErrorModel(null, ERROR_PARSING), false, HANDLER_MSG_ACK_PROGRAM);
                     }
                     break;
 

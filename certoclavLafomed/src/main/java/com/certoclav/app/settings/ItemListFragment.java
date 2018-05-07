@@ -7,7 +7,6 @@ import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
 
-import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.adapters.SettingsAdapter;
 import com.certoclav.app.model.Autoclave;
@@ -110,10 +109,9 @@ public class ItemListFragment extends ListFragment {
             if (Autoclave.getInstance().getUser().isAdmin()) {
                 AddItem(getListView(), getActivity().getString(R.string.calibration), R.drawable.ic_calibartion_settings, R.drawable.ic_calibartion_settings_selected, new CalibrateFragment());
                 AddItem(getListView(), getActivity().getString(R.string.lockout), R.drawable.ic_lock, R.drawable.ic_lock_selected, new SettingsGlpFragment());
+                AddItem(getListView(), "Service", R.drawable.ic_service_setttings, R.drawable.ic_service_setttings_selected, new SettingsServiceFragment());
             }
-        if (AppConstants.APPLICATION_DEBUGGING_MODE) {
-            AddItem(getListView(), "Service", R.drawable.ic_service_setttings, R.drawable.ic_service_setttings_selected, new SettingsServiceFragment());
-        }
+
 
 
         if (savedInstanceState != null
