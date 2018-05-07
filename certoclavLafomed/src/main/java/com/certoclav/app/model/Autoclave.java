@@ -39,6 +39,9 @@ public class Autoclave extends Observable {
     private SerialService serialServiceLabelPrinter = null;
     private ArrayList<String> listContent = new ArrayList<String>();
 
+
+
+    private String programStep = "";
     private SerialService serialServiceProtocolPrinter = null;
 
     public ArrayList<String> getListContent() {
@@ -155,6 +158,13 @@ public class Autoclave extends Observable {
         return secondsSinceStart;
     }
 
+    public String getProgramStep() {
+        return programStep;
+    }
+
+    public void setProgramStep(String programStep) {
+        this.programStep = programStep;
+    }
 
     public void setSecondsSinceStart(long secondsSinceStart) {
         this.secondsSinceStart = secondsSinceStart;
@@ -642,7 +652,7 @@ public class Autoclave extends Observable {
         data.getTemp3().setCurrentValue(temperatures[2]);
         data.getTemp4().setCurrentValue(temperatures[3]);
         data.getPress().setCurrentValue(pressures[0]);
-        data.getPressOptional().setCurrentValue(pressures[1]);
+        data.getPress2().setCurrentValue(pressures[1]);
 
 
         data.setProgramFinishedSucessfully(digitalData[AppConstants.DIGITAL_PROGRAM_FINISHED_INDEX]);

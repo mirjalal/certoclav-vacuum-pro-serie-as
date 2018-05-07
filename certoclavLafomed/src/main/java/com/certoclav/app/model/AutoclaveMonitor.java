@@ -256,7 +256,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
                 // IF PROGRAM HAS BEEN STARTED REMOTELY - CHANGE TO PREPARE TO RUN STATE
                 if (AppConstants.IS_CERTOASSISTANT) {
-                    if (Autoclave.getInstance().getData().isDoorLocked()) {
+                    if (Autoclave.getInstance().getData().isProgramRunning()) {
                         Autoclave.getInstance().setProgramsInRowTotal(1);
                         Autoclave.getInstance().setCurrentProgramCounter(0);
                         Autoclave.getInstance().setState(PREPARE_TO_RUN);
@@ -282,7 +282,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                 break;
             case LOCKED:
                 if (AppConstants.IS_CERTOASSISTANT) {
-                    if (Autoclave.getInstance().getData().isDoorLocked()) {
+                    if (Autoclave.getInstance().getData().isProgramRunning()) {
                         Autoclave.getInstance().setProgramsInRowTotal(1);
                         Autoclave.getInstance().setCurrentProgramCounter(0);
                         Autoclave.getInstance().setState(PREPARE_TO_RUN); //state machine sets user in the prepareToRun state
@@ -307,7 +307,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
 
                     //check if autoclave is already running
-                    if (Autoclave.getInstance().getData().isDoorLocked() || SIMUTALTE_STATE_RUNNING) {
+                    if (Autoclave.getInstance().getData().isProgramRunning() || SIMUTALTE_STATE_RUNNING) {
                         Autoclave.getInstance().increaseCurrentProgramCounter();
                         Autoclave.getInstance().setState(AutoclaveState.RUNNING);
 
@@ -462,12 +462,8 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                         Log.e("AutoclaveMonitor", "ERROR ID STORED INTO PROTOCOL: " + errorList.get(0).getErrorID());
                         cancelProgram(errorList.get(0).getErrorID());
                     } else {
-                        if (Autoclave.getInstance().getData().isDoorLocked() == false) { //Autoclave.getInstance().getData().isProgramRunning() == false &&  program finished and door is ready to open (unlocked)
+                        if (Autoclave.getInstance().getData().isProgramRunning() == false) { //Autoclave.getInstance().getData().isProgramRunning() == false &&  program finished and door is ready to open (unlocked)
 
-                            if (Autoclave.getInstance().getData().isProgramRunning() == true) {
-                                //bug in firmware. this is not possible after program has started => stop program manually
-                                ReadAndParseSerialService.getInstance().sendStopCommand();
-                            }
                             if (Autoclave.getInstance().getData().isProgramFinishedSucessfully()) {
                                 finishProgram();
                                 Autoclave.getInstance().setState(AutoclaveState.PROGRAM_FINISHED);
@@ -510,7 +506,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
             case WAITING_FOR_CONFIRMATION:
 
-                if (Autoclave.getInstance().getErrorCode().equals("00000000") && !Autoclave.getInstance().getData().isDoorLocked())
+                if (Autoclave.getInstance().getErrorCode().equals("00000000") && !Autoclave.getInstance().getData().isProgramRunning())
                     Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);
                /* if (mCodeEntered == true || Autoclave.getInstance().getData().isDoorClosed() == false || Autoclave.getInstance().getData().isDoorLocked() == false) {
                     Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);

@@ -10,7 +10,7 @@ public class AutoclaveData {
         temp4 = new Sensor();
         //TODO change everywhere to bar
         press = new Sensor();
-        pressOptional = new Sensor();
+        press2 = new Sensor();
     }
 
     //digitalData
@@ -52,7 +52,7 @@ public class AutoclaveData {
 
 
     private Sensor press;
-    private Sensor pressOptional;
+    private Sensor press2;
 
     public int getmCycleCounter() {
         return mCycleCounter;
@@ -152,11 +152,11 @@ public class AutoclaveData {
         return waterQuality;
     }
 
-    public Sensor getPressOptional() {
-        return pressOptional;
+    public Sensor getPress2() {
+        return press2;
     }
 
-    public void setPressOptional(Sensor pressOptional) {
-        this.pressOptional = pressOptional;
+    public void setPress2(Sensor press2) {
+        this.press2 = press2;
     }
 }

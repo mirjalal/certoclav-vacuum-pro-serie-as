@@ -229,15 +229,11 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 navigationbar.showButtonBack();
                 break;
             case NOT_RUNNING:
-                if (Autoclave.getInstance().getData().isDoorLocked() == true) {
-                    textState.setText(getString(R.string.wait_until_door_is_unlocked).toUpperCase());
-                    buttonStop.setVisibility(View.INVISIBLE);
-                } else {
                     textState.setText(R.string.state_not_running);
                     buttonStop.setVisibility(View.VISIBLE);
                     buttonStop.setPadding(0, 0, 0, 0);
                     buttonStop.setText("START");
-                }
+
                 navigationbar.showButtonBack();
                 break;
             case PREPARE_TO_RUN:

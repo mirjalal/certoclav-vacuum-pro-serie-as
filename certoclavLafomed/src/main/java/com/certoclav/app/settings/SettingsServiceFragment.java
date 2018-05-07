@@ -1,6 +1,7 @@
 package com.certoclav.app.settings;
 
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -56,16 +57,22 @@ public class SettingsServiceFragment extends Fragment implements SensorDataListe
     public void onSensorDataChange(AutoclaveData data) {
 
         TextView v = (TextView) mRootView.findViewById(R.id.text_temp);
-        v.setText("Temp1: " + data.getTemp1().getValueString() + "\n"
-                + "Press: " + data.getPress().getValueString() + "\n"
-                + "State: " + Autoclave.getInstance().getState().toString() + "\n"
-                + "IsConnected: " + Autoclave.getInstance().isMicrocontrollerReachable() + "\n"
-                + "indexOfRunningProgram: " + Autoclave.getInstance().getIndexOfRunningProgram() + "\n"
-                + "Date: " + Autoclave.getInstance().getDate() + "\n"
-                + "Time: " + Autoclave.getInstance().getTime() + "\n"
-                + "ErrorCode: " + Autoclave.getInstance().getErrorCode() + "\n"
-                + "CycleNumber: " + Autoclave.getInstance().getController().getCycleNumber() + "\n");
+        v.setText("Temperature 1 (Chamber):  " + data.getTemp1().getValueString() + "\n"
+                + "Temperature 2 (Probe):    " + data.getTemp2().getValueString() + "\n"
+                + "Temperature 3 (Heater):   " + data.getTemp3().getValueString() + "\n"
+                + "Temperature 4 (Not Used): " + data.getTemp4().getValueString() + "\n"
+                + "Pressure 1 (Chamber):     " + data.getPress().getValueString() + "\n"
+                + "Pressure 2 (Steam Gen.):  " + data.getPress2().getValueString() + "\n"
+                + "State:                    " + Autoclave.getInstance().getState().toString() + "\n"
+                + "Program Step:             " +Autoclave.getInstance().getProgramStep() + "\n"
+                + "Is Connected:             " + Autoclave.getInstance().isMicrocontrollerReachable() + "\n"
+                + "Index of running program: " + Autoclave.getInstance().getIndexOfRunningProgram() + "\n"
+                + "Date:                     " + Autoclave.getInstance().getDate() + "\n"
+                + "Time:                     " + Autoclave.getInstance().getTime() + "\n"
+                + "ErrorCode:                " + Autoclave.getInstance().getErrorCode() + "\n"
+                + "CycleNumber:              " + Autoclave.getInstance().getController().getCycleNumber() + "\n");
 
+        v.setTypeface(Typeface.MONOSPACE);
         CheckBox cb = (CheckBox) mRootView.findViewById(R.id.checkBox_program_finished);
         cb.setChecked(data.isProgramFinishedSucessfully());
 

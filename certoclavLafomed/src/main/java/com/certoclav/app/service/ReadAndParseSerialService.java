@@ -120,7 +120,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     interface RESPONSES {
         String START = "ACK_STAR";
         String STOP = "ACK_STOP";
-        String DATA = "ACK_DATA";
+        String ACK_DATA = "ACK_DATA";
         String ACK_PROG = "ACK_PROG";
         String CONFIRM_ERROR = "ACK_CNFE";
     }
@@ -203,6 +203,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     private String firmwareVersion = "";
     float[] pressures = new float[2];
     float[] temperatures = new float[4];
+    private String programStep = "";
 
     private Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -219,7 +220,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                             pressures,
                             digitalData);
 
-                    //TODO check error code
+                    Autoclave.getInstance().setProgramStep(programStep);
                     Autoclave.getInstance().setErrorCode(errorCode);
                     Autoclave.getInstance().setDate(date);
                     Autoclave.getInstance().setTime(time);
@@ -265,7 +266,12 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     @Override
     public void onMessageReceived(String message) {
 
-        Log.e("ReadAndParse", "received: " + message);
+        try {
+            message = new String(message.getBytes(), "UTF-8");
+        }catch (Exception e){
+            Log.e("ReadAndParse", "error transform to utf-8");
+        }
+           Log.e("ReadAndParse", "received: " + message);
         //TODO if need add a checksum error
         if (AppConstants.CHECK_CHECKSUM && !checkChecksum(message)) {
             com.certoclav.app.model.Log.e("Checksum failed!\n" + message);
@@ -310,7 +316,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                     Log.e("ReadAndParseSerial", "parameters: " + offsetSteam + " " + offsetHeater + " " + offsetSteamGenerator + " " + offsetPress + " " + offsetMedia);
                     handler.sendEmptyMessage(HANDLER_MSG_CALIBRATION);
                     break;
-                case RESPONSES.DATA:
+                case RESPONSES.ACK_DATA:
 
                     if (responseParameters.length == NUMBER_OF_DAT_RESPONSE_PARAMETERS) {
                         date = responseParameters[INDEX_DAT_DATE];
@@ -324,6 +330,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                         pressures[0] = Float.parseFloat(responseParameters[INDEX_DAT_PRESSURE]);
                         pressures[1] = Float.parseFloat(responseParameters[INDEX_DAT_PRESSURE_OPTIONAL]);
 
+
                         String digitalFlags = responseParameters[INDEX_DAT_DIGITAL];
                         boolean isProgramFinished = digitalFlags.charAt(AppConstants.DIGITAL_PROGRAM_FINISHED_INDEX) == '1';
                         boolean isProgramRunning = digitalFlags.charAt(AppConstants.DIGITAL_PROGRAM_RUNNING_INDEX) == '1';
@@ -332,6 +339,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                         boolean isWaterLevelSourceLow = digitalFlags.charAt(AppConstants.DIGITAL_WATER_LVL_LOW_INDEX) == '1';
                         boolean isWaterLevelBinFull = digitalFlags.charAt(AppConstants.DIGITAL_WATER_LVL_FULL_INDEX) == '1';
                         boolean isWaterQualityBad = digitalFlags.charAt(AppConstants.DIGITAL_FAIL_WATER_QUALITY) == '1';
+
 
                         try {
                             errorCode = responseParameters[INDEX_DAT_ERRORCODE];
@@ -350,6 +358,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                         digitalData[AppConstants.DIGITAL_WATER_LVL_FULL_INDEX] = isWaterLevelBinFull;
                         digitalData[AppConstants.DIGITAL_FAIL_WATER_QUALITY] = isWaterQualityBad;
 
+                        programStep = responseParameters[INDEX_DAT_PROGRAM_STEP];
                         // digitalData[AppConstants.DIGITAL_FAIL_WATER_QUALITY]
                         handler.sendEmptyMessage(HANDLER_MSG_DATA);
                         Log.e("ReadAndParseService", "temp: " + temperatures[0] + "\n" +
@@ -360,7 +369,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                                 "isWaterLevelLow: " + isWaterLevelSourceLow + "\n" +
                                 "isBinFull: " + isWaterLevelBinFull + "\n" +
                                 "errorCode: " + errorCode + "\n" +
-                                "press: " + pressures + "\n" +
+                                "press: " + pressures[0] + " and " + pressures[1] + "\n" +
                                 "cylce: " + cycleNumber + "\n" +
                                 "date: " + date + "\n" +
                                 "time: " + time + "\n" +
