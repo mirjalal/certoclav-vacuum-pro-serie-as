@@ -16,7 +16,7 @@
 
 <resources>
     <dimen name="quickaction_shadow_horiz">0dip</dimen>
-    <dimen name="text_size_program_desc">18sp</dimen>
+    <dimen name="text_size_program_desc">12sp</dimen>
     <dimen name="text_size_status_bar">23sp</dimen>
 
 

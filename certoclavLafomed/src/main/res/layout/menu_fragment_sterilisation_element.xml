@@ -92,10 +92,10 @@
 
                 <ImageView
                     android:id="@+id/sterilisation_element_autoclave"
-                    android:layout_width="140dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="110dp"
+                    android:layout_height="90dp"
                     android:layout_alignParentRight="true"
-                    android:layout_gravity="center"
+                    android:layout_gravity="bottom"
                     android:layout_marginRight="1dp"
                     android:scaleType="fitStart"
                     android:src="@drawable/control_autoclave" />

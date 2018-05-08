@@ -77,25 +77,39 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     private List<MyCallback> callbacks;
 
     private Handler handlerGetData = new Handler();
+    private Boolean runnableGetDataIsAlive = false;
+
+
+
     private Runnable runnableGetData = new Runnable() {
         @Override
         public void run() {
-            if (AppConstants.isIoSimulated)
-                simulateMessage();
+            try {
+                runnableGetDataIsAlive = true;
+                if (AppConstants.isIoSimulated)
+                    simulateMessage();
 
-            if (commandQueue.size() == 0)
-                serialService.sendMessage(COMMANDS.CREATE(COMMANDS.DATA));
-            handlerGetData.postDelayed(this, 1000);
+                if (commandQueue.size() == 0)
+                    serialService.sendMessage(COMMANDS.CREATE(COMMANDS.GET_DATA));
+                else
+                    commandQueue.clear();
+
+                handlerGetData.postDelayed(this, 1000);
+            }catch (Exception e){
+                e.printStackTrace();
+                runnableGetDataIsAlive = false;
+            }
         }
     };
+
 
 
     static class COMMANDS {
         //Checksum will add automatically, shouldn't add to end of the commands
         final static String NEWLINE = "\n";
         final static String START = "CMD_STAR %s,";
-        final static String STOP = "CMD_STOP";
-        final static String DATA = "GET_DATA";
+        final static String CMD_STOP = "CMD_STOP";
+        final static String GET_DATA = "GET_DATA";
         final static String GET_PROGRAMS = "GET_PROG %d,";
         final static String CONFIRM_ERROR = "CMD_CNFE";
 
@@ -126,6 +140,11 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     }
 
 
+
+
+
+
+
     private void sendCommand(String command) {
         commandQueue.add(command);
 
@@ -137,6 +156,21 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
             handlerGetData.postDelayed(runnableGetData, 1000);
         }
     }
+
+
+
+
+    public void checkGetDataRunnableIsAlive(){
+
+        Log.e("ReadAndParse", "runnableIsAlive: " + runnableGetDataIsAlive);
+        if(runnableGetDataIsAlive == false){
+            handlerGetData.postDelayed(runnableGetData, 1000);
+        }
+
+    }
+
+
+
 
     private static ReadAndParseSerialService instance = new ReadAndParseSerialService();
 
@@ -155,7 +189,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     }
 
     public void sendStopCommand() {
-        sendCommand(COMMANDS.CREATE(COMMANDS.STOP));
+        sendCommand(COMMANDS.CREATE(COMMANDS.CMD_STOP));
     }
 
     public void sendGetUserProgramCommand() {
@@ -253,8 +287,22 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     private int counter = 0;
 
     private ReadAndParseSerialService() {
-        serialService = new SerialService("/dev/ttyS4", 38400);
+        String serialPathAutoclave = "";
+        int serialBaudAutoclave = 9600;
+        if(AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH)) {
+            serialPathAutoclave = "/dev/ttyS4";
+        }else{
+            serialPathAutoclave = "/dev/ttymxc3";
+        }
+        if(AppConstants.MODEL_CURRENT.equals(AppConstants.MODEL_RAYPA_TLV)) {
+            serialBaudAutoclave = 38400;
+        }else{
+            serialBaudAutoclave = 9600;
+        }
+
+        serialService = new SerialService(serialPathAutoclave, serialBaudAutoclave);
         handlerGetData.post(runnableGetData);
+
 //        serialThread.start();
         if (AppConstants.isIoSimulated == false) {
             serialService.setOnMessageReceivedListener(this);
@@ -390,7 +438,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                     if (responseParameters.length == NUMBER_OF_PROGRAM_RESPONSE_PARAMETERS) {
                         Profile profile = new Profile("",
                                 1,
-                                responseParameters[INDEX_PROGRAM_NAME].replace("_"," "),
+                                responseParameters[INDEX_PROGRAM_NAME].replaceAll("[^ -~]", "").replace("_"," "),
                                 Integer.valueOf(responseParameters[INDEX_PROGRAM_PULSE_VACUUM]),
                                 Integer.valueOf(responseParameters[INDEX_PROGRAM_STERILIZATION_TIME]),
                                 Float.valueOf(responseParameters[INDEX_PROGRAM_TEMP]),

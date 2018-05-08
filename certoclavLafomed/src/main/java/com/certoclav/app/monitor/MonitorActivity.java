@@ -262,6 +262,30 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 }
                 buttonStop.setText(R.string.stop);
                 textState.setText(R.string.state_running);
+                textState.append(" (");
+                if(Autoclave.getInstance().getProgramStep().contains("SF1")){
+                    textState.append("Vacuum Step 1 of " + Autoclave.getInstance().getProfile().getVacuumTimes());
+                }else if(Autoclave.getInstance().getProgramStep().contains("SF2")) {
+                    textState.append("Vacuum Step 2 of " + Autoclave.getInstance().getProfile().getVacuumTimes());
+                }else if(Autoclave.getInstance().getProgramStep().contains("SF3")) {
+                    textState.append("Vacuum Step 3 of " + Autoclave.getInstance().getProfile().getVacuumTimes());
+                }else if(Autoclave.getInstance().getProgramStep().contains("SF4")) {
+                    textState.append("Vacuum Step 4 of " + Autoclave.getInstance().getProfile().getVacuumTimes());
+                }else if(Autoclave.getInstance().getProgramStep().contains("SH")) {
+                    textState.append("Heating up to " + (int) Autoclave.getInstance().getProfile().getSterilisationTemperature() + "\u00B0C");
+                }else if(Autoclave.getInstance().getProgramStep().contains("SS")) {
+                    textState.append("Hold temperature for " + (int) Autoclave.getInstance().getProfile().getSterilisationTime() + " minutes");
+                }else if(Autoclave.getInstance().getProgramStep().contains("SC")) {
+                    textState.append("Cooling down");
+                }else if(Autoclave.getInstance().getProgramStep().contains("SD")) {
+                    textState.append("Drying for " + Autoclave.getInstance().getProfile().getDryTime() + " minutes");
+                }else if(Autoclave.getInstance().getProgramStep().contains("SR")) {
+                    textState.append("Pressure compensation");
+                }else if(Autoclave.getInstance().getProgramStep().contains("SE")) {
+                    textState.append("Program finished");
+                }
+                textState.append(")");
+
                 navigationbar.hideButtonBack();
                 break;
             case RUN_CANCELED:
