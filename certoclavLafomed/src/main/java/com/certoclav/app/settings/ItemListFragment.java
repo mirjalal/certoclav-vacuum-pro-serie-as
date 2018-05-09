@@ -10,8 +10,8 @@ import android.widget.ListView;
 import com.certoclav.app.R;
 import com.certoclav.app.adapters.SettingsAdapter;
 import com.certoclav.app.model.Autoclave;
+import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.SettingItem;
-import com.certoclav.library.certocloud.CloudUser;
 
 import java.util.ArrayList;
 
@@ -95,17 +95,16 @@ public class ItemListFragment extends ListFragment {
 
         AddItem(getListView(), getActivity().getString(R.string.settings_network), R.drawable.ic_network_settings, R.drawable.ic_network_settings_selected, new SettingsNetworkFragment());
 
-        if (CloudUser.getInstance().isLoggedIn())
+        if (Autoclave.getInstance().getState() != AutoclaveState.LOCKED)
             AddItem(getListView(), getActivity().getString(R.string.settings_sterilization), R.drawable.ic_sterilization_settings, R.drawable.ic_sterilization_settings_selceted, new SettingsSterilisationFragment());
 
-        if (CloudUser.getInstance().isLoggedIn())
             AddItem(getListView(), getActivity().getString(R.string.settings_device), R.drawable.ic_device_settings, R.drawable.ic_device_settings_selected, new SettingsDeviceFragment());
 
         AddItem(getListView(), getActivity().getString(R.string.settings_language),
                 R.drawable.ic_language_settings, R.drawable.ic_language_settings_selected, new SettingsLanguageFragment());
-        if (CloudUser.getInstance().isLoggedIn())
+        if (Autoclave.getInstance().getState() != AutoclaveState.LOCKED)
             AddItem(getListView(), getActivity().getString(R.string.notifications), R.drawable.ic_notification_settings, R.drawable.ic_notification_settings_selected, new SettingsConditionFragment());
-        if (CloudUser.getInstance().isLoggedIn())
+        if (Autoclave.getInstance().getState() != AutoclaveState.LOCKED)
             if (Autoclave.getInstance().getUser().isAdmin()) {
                 AddItem(getListView(), getActivity().getString(R.string.calibration), R.drawable.ic_calibartion_settings, R.drawable.ic_calibartion_settings_selected, new CalibrateFragment());
                 AddItem(getListView(), getActivity().getString(R.string.lockout), R.drawable.ic_lock, R.drawable.ic_lock_selected, new SettingsGlpFragment());
