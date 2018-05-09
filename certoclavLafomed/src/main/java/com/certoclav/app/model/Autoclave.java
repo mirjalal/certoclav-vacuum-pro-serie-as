@@ -314,7 +314,7 @@ public class Autoclave extends Observable {
         profilesFromAutoclave.clear();
         profilesFromAutoclave.add(new Profile("",
                 1,
-                "def. "+ ApplicationController.getContext().getString(R.string.program_1_name),
+                 ApplicationController.getContext().getString(R.string.program_1_name),
                 3,
                 4,
                 134.0f,

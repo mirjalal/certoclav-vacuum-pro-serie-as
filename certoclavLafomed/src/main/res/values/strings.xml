@@ -308,7 +308,7 @@
     <string name="stop_program">STOP PROGRAM</string>
     <string name="do_you_really_want_to_stop_the_running_program_">Do you really want to stop the running program?</string>
     <string name="stopping_">STOPPING...</string>
-    <string name="connection_lost_during_record">Connection lost during record</string>
+    <string name="connection_lost_during_record">Touch panel not connected</string>
     <string name="program_finished_successfully">program finished successfully</string>
     <string name="steam">STEAM</string>
     <string name="media">MEDIA</string>

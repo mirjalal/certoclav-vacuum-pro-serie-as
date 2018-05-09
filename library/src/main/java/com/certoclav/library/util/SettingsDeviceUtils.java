@@ -13,8 +13,41 @@ public class SettingsDeviceUtils {
 	public SettingsDeviceUtils() {
 
 	}
-	
-	
+
+
+	public void setvolumeToMedium(Context eContext) {
+		AudioManager am =
+				(AudioManager) eContext.getSystemService(Context.AUDIO_SERVICE);
+
+		am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)/2, 0);
+
+		am.setStreamVolume(
+				AudioManager.STREAM_SYSTEM,
+				am.getStreamMaxVolume(AudioManager.STREAM_SYSTEM)/2,
+				0);
+
+		am.setStreamVolume(
+				AudioManager.STREAM_ALARM,
+				am.getStreamMaxVolume(AudioManager.STREAM_ALARM)/2,
+				0);
+
+		am.setStreamVolume(
+				AudioManager.STREAM_NOTIFICATION,
+				am.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION)/2,
+				0);
+		am.setStreamVolume(
+				AudioManager.STREAM_DTMF,
+				am.getStreamMaxVolume(AudioManager.STREAM_DTMF)/2,
+				0);
+		am.setStreamVolume(
+				AudioManager.STREAM_RING,
+				am.getStreamMaxVolume(AudioManager.STREAM_RING)/2,
+				0);
+		am.setStreamVolume(
+				AudioManager.STREAM_VOICE_CALL,
+				am.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL)/2,
+				0);
+	}
 
 
 	public void setvolumeToMaximum(Context eContext) {
@@ -25,7 +58,7 @@ public class SettingsDeviceUtils {
 			    AudioManager.STREAM_MUSIC,
 			    am.getStreamMaxVolume(AudioManager.STREAM_MUSIC),
 			    0);
-			
+
 			am.setStreamVolume(
 				    AudioManager.STREAM_SYSTEM,
 				    am.getStreamMaxVolume(AudioManager.STREAM_SYSTEM),

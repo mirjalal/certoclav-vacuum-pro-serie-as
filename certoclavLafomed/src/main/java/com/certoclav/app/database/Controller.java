@@ -133,7 +133,7 @@ public class Controller {
     public String getSerialnumber() {
 
         if (AppConstants.isIoSimulated == true) {
-            return "220000001";
+            return "RAYPA00003234";
         }
         //Find the directory for the SD Card using the API
         //*Don't* hardcode "/sdcard"

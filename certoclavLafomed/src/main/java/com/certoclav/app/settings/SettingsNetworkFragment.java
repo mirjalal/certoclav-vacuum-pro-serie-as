@@ -139,7 +139,7 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
 
     private void configureLan() {
         if(AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH)) {
-            startNetworkSettings();
+           // startNetworkSettings();
         }else {
             PackageManager pm = getActivity().getPackageManager();
             Intent launchIntent = pm.getLaunchIntentForPackage("com.fsl.ethernet");

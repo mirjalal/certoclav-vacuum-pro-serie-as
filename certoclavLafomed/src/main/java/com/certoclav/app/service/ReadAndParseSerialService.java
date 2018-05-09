@@ -13,7 +13,9 @@ import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.util.MyCallback;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -86,13 +88,15 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         public void run() {
             try {
                 runnableGetDataIsAlive = true;
-                if (AppConstants.isIoSimulated)
+                if (AppConstants.isIoSimulated) {
                     simulateMessage();
+                }else {
 
-                if (commandQueue.size() == 0)
-                    serialService.sendMessage(COMMANDS.CREATE(COMMANDS.GET_DATA));
-                else
-                    commandQueue.clear();
+                    if (commandQueue.size() == 0)
+                        serialService.sendMessage(COMMANDS.CREATE(COMMANDS.GET_DATA));
+                    else
+                        commandQueue.clear();
+                }
 
                 handlerGetData.postDelayed(this, 1000);
             }catch (Exception e){
@@ -164,7 +168,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 
         Log.e("ReadAndParse", "runnableIsAlive: " + runnableGetDataIsAlive);
         if(runnableGetDataIsAlive == false){
-            handlerGetData.postDelayed(runnableGetData, 1000);
+      //      handlerGetData.postDelayed(runnableGetData, 1000);
         }
 
     }
@@ -488,7 +492,10 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         boolean isWaterLevelBinFull = false;
         boolean isWaterQualityBad = false;
         boolean isStopedByUser = false;
-
+        SimpleDateFormat simpleDate =  new SimpleDateFormat("yyyy.MM.dd");
+        SimpleDateFormat simpleTime =  new SimpleDateFormat("hh:mm:ss");
+        date = simpleDate.format(new Date());
+        time = simpleTime.format(new Date());
 
         temperature = (float) (60 + (30.0 * Math.sin(((double) counter) * 0.02)));
         counter++;
@@ -515,8 +522,10 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 
         temperatures[0] = temperature;
         temperatures[1] = temperature - 3;
-        temperatures[2] = 0;
+        temperatures[2] = temperature - 4;
         firmwareVersion = "SIM V1";
+        programStep = "SF11";
+
         digitalData[AppConstants.DIGITAL_DOOR_CLOSED_INDEX] = isDoorClosed;
         digitalData[AppConstants.DIGITAL_DOOR_LOCKED_INDEX] = isDoorLocked;
         digitalData[AppConstants.DIGITAL_PROGRAM_FINISHED_INDEX] = isProgramFinished;
