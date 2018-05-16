@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <dimen name="quickaction_shadow_horiz">0dip</dimen>
+    <dimen name="text_size_program_desc">18sp</dimen>
+    <dimen name="text_size_status_bar">23sp</dimen>
+
+</resources>

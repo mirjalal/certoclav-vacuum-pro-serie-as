@@ -21,7 +21,7 @@ public class SocketService {
 
 
     public static synchronized SocketService getInstance() {
-        if(instance!=null)
+        if (instance != null)
             return instance;
         return instance = new SocketService();
     }
@@ -131,8 +131,9 @@ public class SocketService {
         this.deviceKey = deviceKey;
     }
 
-    public void endService(){
-        socket.close();
+    public void endService() {
+        if (socket != null)
+            socket.close();
         instance = null;
     }
 
