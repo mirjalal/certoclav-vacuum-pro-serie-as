@@ -308,7 +308,7 @@
     <string name="stop_program">STOP PROGRAM</string>
     <string name="do_you_really_want_to_stop_the_running_program_">Do you really want to stop the running program?</string>
     <string name="stopping_">STOPPING...</string>
-    <string name="connection_lost_during_record">Connection lost during record</string>
+    <string name="connection_lost_during_record">Touch panel not connected</string>
     <string name="program_finished_successfully">program finished successfully</string>
     <string name="steam">STEAM</string>
     <string name="media">MEDIA</string>
@@ -565,15 +565,15 @@
 
     <string name="open_the_door"         >Open the door</string>
     <string name="unable_to_start_vacuum_test">Unable to start the vacuum test. Please wait until the chamber is cooled down.</string>
-    <string name="vacuum_times">Vacuum times:</string>
-    <string name="sterilization_temperature">Sterilization temperature:</string>
-    <string name="sterilization_temp_">Sterilization temp.:</string>
-    <string name="sterilization_pressure">Sterilization pressure:</string>
-    <string name="sterilization_holding_time">Sterilization holding time:</string>
+    <string name="vacuum_times"              >Vacuum pulses:</string>
+    <string name="sterilization_temperature" >Ster. temperature:</string>
+    <string name="sterilization_pressure"    >Ster. pressure:</string>
+    <string name="drying_time"               >Drying time:</string>
+    <string name="sterilization_holding_time">Holding time:</string>
+    <string name="sterilization_temp_"       >Sterilization temp.:</string>
     <string name="sterilization_time_">Sterilization time:</string>
     <string name="vacuum_persist_temperature">Vacuum persist temperature:</string>
     <string name="vacuum_persist_time">Vacuum persist time:</string>
-    <string name="drying_time">Drying time:</string>
     <string name="min">min</string>
     <string name="label_printed_com2">Label printed (COM 2)</string>
     <string name="count">Count</string>

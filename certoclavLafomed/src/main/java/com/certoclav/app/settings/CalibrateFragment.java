@@ -74,14 +74,16 @@ public class CalibrateFragment extends Fragment implements CalibrationListener {
                     Double offsetMedia = Double.parseDouble(editOffsetMedia.getText().toString());
                     Integer offsetPress = Integer.parseInt(editOffsetPress.getText().toString());
 
-                    if (offsetTemp1 > -2 && offsetTemp1 < 2) {
-                        if (offsetTemp2 > -2 && offsetTemp2 < 2) {
-                            if (offsetTemp3 > -2 && offsetTemp3 < 2) {
+                    if (offsetTemp1 > -3 && offsetTemp1 < 3) {
+                        if (offsetTemp2 > -3 && offsetTemp2 < 3) {
+                            if (offsetTemp3 > -3 && offsetTemp3 < 3) {
                                 if (offsetPress > -20 && offsetPress < 20) {
-                                    if (offsetMedia > -2 && offsetMedia < 2) {
+                                    if (offsetMedia > -3 && offsetMedia < 3) {
                                         ReadAndParseSerialService.getInstance().sendPutAdjustParameterCommand(offsetTemp1, offsetTemp2, offsetTemp3, offsetPress, offsetMedia);
                                         ReadAndParseSerialService.getInstance().sendGetAdjustParameterCommand();
                                         Toast.makeText(getActivity(), "Parameters saved", Toast.LENGTH_LONG).show();
+                                    } else{
+                                        Toast.makeText(getActivity(), "Please enter valid offset for media sensor", Toast.LENGTH_LONG).show();
                                     }
                                 } else {
                                     Toast.makeText(getActivity(), "Please enter valid offset for pressure sensor", Toast.LENGTH_LONG).show();

@@ -53,5 +53,6 @@
         android:text="support@certoclav.com"
         android:textColor="@android:color/white"
         android:textSize="@dimen/text_size_status_bar"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="gone"/>
 </LinearLayout>

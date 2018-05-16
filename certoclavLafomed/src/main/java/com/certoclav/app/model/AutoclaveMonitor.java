@@ -216,6 +216,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
             nanoTimeAtLastServiceCheck = System.nanoTime();
             Intent intent2 = new Intent(ApplicationController.getContext(), CloudSocketService.class);
             ApplicationController.getContext().startService(intent2);
+            ReadAndParseSerialService.getInstance().checkGetDataRunnableIsAlive();
         }
 
         updateErrorList();
@@ -445,32 +446,13 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                 if (secondsSinceStart > 6) { //errorlist detection timeoffset is 3 seconds. It follows, that detection about the end of zycle must have an offset > 3
 
                     if (errorList.size() > 0) {//Autoclave.getInstance().getData().isFailStoppedByUser() || Autoclave.getInstance().isMicrocontrollerReachable()==false){
-                        if (AppConstants.IS_CERTOASSISTANT == false) {
-                            /// /if the error has been detected in the end of the liquid program
-                            if (Autoclave.getInstance().getData().getTemp1().getCurrentValue() <= 90 && Autoclave.getInstance().getData().getTemp2().getCurrentValue() <= 90 && Autoclave.getInstance().getSecondsSinceStart() > 2400 && Autoclave.getInstance().getProfile().getIndex() == 12) {
-                                Log.e("AutoclaveMonitor", "IS FAIL STOPPED BY USER " + Autoclave.getInstance().getData().isFailStoppedByUser() + " - PROGRAM CANCELLED EARLIER BUT IS FINISHED SUCESSFULLY");
-                                //if the error is a manual stop by the user, then its only a early stopped program, but not an critical error
-                                if (Autoclave.getInstance().getData().isProgramFinishedSucessfully()) {
-                                    finishProgram();
-                                    Autoclave.getInstance().setState(AutoclaveState.PROGRAM_FINISHED);
-                                    break;
-                                    //break is very important, else it will change to RUN_CANCELED status
-                                }
-                            }
-                        }
                         Autoclave.getInstance().setState(AutoclaveState.RUN_CANCELED);
                         Log.e("AutoclaveMonitor", "ERROR ID STORED INTO PROTOCOL: " + errorList.get(0).getErrorID());
                         cancelProgram(errorList.get(0).getErrorID());
                     } else {
-                        if (Autoclave.getInstance().getData().isProgramRunning() == false) { //Autoclave.getInstance().getData().isProgramRunning() == false &&  program finished and door is ready to open (unlocked)
-
-                            if (Autoclave.getInstance().getData().isProgramFinishedSucessfully()) {
+                        if (Autoclave.getInstance().getData().isProgramFinishedSucessfully()){
                                 finishProgram();
                                 Autoclave.getInstance().setState(AutoclaveState.PROGRAM_FINISHED);
-                            } else {
-                                Autoclave.getInstance().setState(AutoclaveState.RUN_CANCELED);
-                            }
-
                         }
                     }
 

@@ -163,7 +163,11 @@ public class Autoclave extends Observable {
     }
 
     public void setProgramStep(String programStep) {
+
         this.programStep = programStep;
+        for(AutoclaveStateListener listener : autoclaveStateListeners){
+            listener.onAutoclaveStateChange(getState()); //maybe this causes to problems because state didnt change but observers called
+        }
     }
 
     public void setSecondsSinceStart(long secondsSinceStart) {
@@ -172,7 +176,7 @@ public class Autoclave extends Observable {
 
     public SerialService getSerialsService() {
         if (serialService == null) {
-            serialService = new SerialService("/dev/ttymxc3", 38400);
+            serialService = new SerialService("/dev/ttymxc3", 9600);
         }
         return serialService;
     }
@@ -310,7 +314,7 @@ public class Autoclave extends Observable {
         profilesFromAutoclave.clear();
         profilesFromAutoclave.add(new Profile("",
                 1,
-                "def. "+ ApplicationController.getContext().getString(R.string.program_1_name),
+                 ApplicationController.getContext().getString(R.string.program_1_name),
                 3,
                 4,
                 134.0f,

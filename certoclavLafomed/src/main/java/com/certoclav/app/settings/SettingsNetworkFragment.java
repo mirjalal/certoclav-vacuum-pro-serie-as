@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
@@ -137,10 +138,13 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
     }
 
     private void configureLan() {
-        startNetworkSettings();
-        //PackageManager pm = getActivity().getPackageManager();
-        //Intent launchIntent = pm.getLaunchIntentForPackage("com.fsl.ethernet");
-        //getActivity().startActivity(launchIntent);
+        if(AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH)) {
+           // startNetworkSettings();
+        }else {
+            PackageManager pm = getActivity().getPackageManager();
+            Intent launchIntent = pm.getLaunchIntentForPackage("com.fsl.ethernet");
+            getActivity().startActivity(launchIntent);
+        }
     }
 
     @Override

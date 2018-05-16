@@ -317,7 +317,7 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 //        ((CheckBoxPreference) findPreference(AppConstants.PREFREENCE_KEY_PREHEAT)).setChecked(Autoclave.getInstance().isPreheat());
-        ((CheckBoxPreference) findPreference(AppConstants.PREFREENCE_KEY_KEEP_TEMP)).setChecked(Autoclave.getInstance().isPreheat());
+       // ((CheckBoxPreference) findPreference(AppConstants.PREFREENCE_KEY_KEEP_TEMP)).setChecked(Autoclave.getInstance().isPreheat());
         ((CheckBoxPreference) findPreference(AppConstants.PREFERENCE_KEY_STEP_BY_STEP)).setChecked(prefs.getBoolean(AppConstants.PREFERENCE_KEY_STEP_BY_STEP,false));
 
 

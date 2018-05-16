@@ -153,7 +153,11 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         progressBar = (ProgressBar) findViewById(R.id.login_progressbar);
         SettingsDeviceUtils settingsUtils = new SettingsDeviceUtils();
 
-        settingsUtils.setvolumeToMaximum(this);
+        if(AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_LILLIPUT)) {
+            settingsUtils.setvolumeToMaximum(this);
+        }else{
+            settingsUtils.setvolumeToMedium(this);
+        }
         settingsUtils.setScreenBrightnessToMaximum(this);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
