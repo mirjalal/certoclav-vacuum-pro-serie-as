@@ -48,9 +48,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal|bottom"
                 android:text="3"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:textSize="110sp" />
+                android:textColor="@color/raypa_dark_color"
+                android:textSize="110sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>
@@ -69,7 +69,7 @@
             android:layout_weight="1"
             android:background="@drawable/btn_login"
             android:text="@string/start_later"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/dialogButtonStartNow"
@@ -79,7 +79,7 @@
             android:layout_weight="1"
             android:background="@drawable/btn_login"
             android:text="@string/start_now"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/white" />
 
 
     </LinearLayout>

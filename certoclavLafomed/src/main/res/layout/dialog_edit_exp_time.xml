@@ -30,9 +30,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="78dp"
                 android:layout_weight="1"
-                android:text="6"
                 android:background="@drawable/edittext_selector"
-                android:inputType="number" />
+                android:inputType="number"
+                android:text="6" />
 
             <TextView
                 style="@style/text_default_white"
@@ -61,7 +61,10 @@
                 android:layout_weight="1"
                 android:background="@drawable/btn_login"
                 android:text="@string/cancel"
-                android:textAllCaps="true" />
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
 
             <Button
@@ -71,7 +74,10 @@
                 android:layout_weight="1"
                 android:background="@drawable/btn_login"
                 android:text="@string/ok"
-                android:textAllCaps="true" />
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
 
             <Button
@@ -79,10 +85,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="78dp"
                 android:layout_weight="1"
-                android:visibility="gone"
                 android:background="@drawable/btn_login"
                 android:text="@string/skip"
-                android:textAllCaps="true" />
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
 
         </LinearLayout>
     </LinearLayout>

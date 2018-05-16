@@ -18,6 +18,13 @@
     <dimen name="quickaction_shadow_horiz">0dip</dimen>
     <dimen name="text_size_program_desc">15sp</dimen>
     <dimen name="text_size_status_bar">18sp</dimen>
+    <dimen name="program_item_height">180dp</dimen>
+    <dimen name="program_item_head_height">49dp</dimen>
+    <dimen name="program_item_header_text_size">28sp</dimen>
+    <dimen name="program_item_icon_width">110dp</dimen>
+    <dimen name="program_item_icon_height">90dp</dimen>
+    <dimen name="program_item_cardview_margin">5dp</dimen>
+    <dimen name="action_bar_text_size">18sp</dimen>
 
 
     <!-- Other dimensions required -->

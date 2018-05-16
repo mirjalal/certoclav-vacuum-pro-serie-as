@@ -14,9 +14,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="20dp"
             android:gravity="center"
             android:text="@string/scan_item"
-            android:layout_margin="20dp"
             android:textColor="@android:color/black"
             android:textSize="30sp" />
 
@@ -52,7 +52,10 @@
             android:layout_weight="1"
             android:background="@drawable/btn_login"
             android:text="@string/cancel"
-            android:textColor="@android:color/black" />
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/dialogButtonOK"
@@ -62,7 +65,10 @@
             android:layout_weight="1"
             android:background="@drawable/btn_login"
             android:text="@string/yes"
-            android:textColor="@android:color/black"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"
+            android:textStyle="bold"
             android:visibility="gone"
 
             />

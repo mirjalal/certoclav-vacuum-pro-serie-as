@@ -34,7 +34,7 @@
                 android:gravity="center_horizontal|top"
                 android:lines="2"
                 android:text="@string/certoclav_server"
-                android:textColor="@android:color/black"
+                android:textColor="@color/raypa_dark_color"
                 android:textSize="23sp" />
         </LinearLayout>
 
@@ -63,7 +63,7 @@
                 android:gravity="center_horizontal|top"
                 android:lines="2"
                 android:text="@string/manual_server"
-                android:textColor="@android:color/black"
+                android:textColor="@color/raypa_dark_color"
                 android:textSize="23sp" />
         </LinearLayout>
 
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal|bottom"
                 android:text="@string/search_server"
-                android:textColor="@android:color/black"
+                android:textColor="@color/raypa_dark_color"
                 android:textSize="23sp" />
         </LinearLayout>
     </LinearLayout>
@@ -105,8 +105,8 @@
 
         <RadioGroup
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/dialogCertoCloudServer"
@@ -119,7 +119,10 @@
                 android:checked="true"
                 android:gravity="center"
                 android:text="@string/selected"
-                android:textColor="@android:color/black" />
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
             <RadioButton
                 android:id="@+id/dialogAddManually"
@@ -131,7 +134,10 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/select"
-                android:textColor="@android:color/black" />
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
             <RadioButton
                 android:id="@+id/dialogFromLocalNetwork"
@@ -143,7 +149,10 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/select"
-                android:textColor="@android:color/black" />
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
         </RadioGroup>
 
     </LinearLayout>

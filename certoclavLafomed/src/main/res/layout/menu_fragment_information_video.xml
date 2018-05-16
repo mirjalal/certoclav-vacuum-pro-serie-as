@@ -18,11 +18,10 @@
         card_view:cardElevation="5dp">
 
         <RelativeLayout
-
             android:id="@+id/information_video_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/btn_red_shadow_clickable">
+            android:background="@color/information_tab_item_bg">
 
             <TextView
                 android:id="@+id/text"
@@ -32,16 +31,17 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:text="@string/videos"
-                android:textColor="@android:color/white"
+                android:textColor="@color/program_item_header_text_color"
                 android:textSize="30dp" />
 
             <ImageView
                 android:id="@+id/imageView1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/text"
-                android:layout_margin="40dp"
-                android:src="@drawable/background_movie_white" />
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="70dp"
+                android:src="@drawable/ic_video" />
 
 
         </RelativeLayout>

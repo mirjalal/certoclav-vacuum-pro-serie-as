@@ -78,35 +78,29 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
         viewHolder.firstLine.setText(getItem(position).getName());
 
 
-
-
         StringBuilder sbuilder = new StringBuilder();
+        if (getItem(position).getSterilisationTemperature() != 0) {
+            sbuilder.append(getItem(position).getSterilisationTemperature())
+                    .append(" " + "\u2103")
+                    .append("\t");
+        }
+
+        if (getItem(position).getSterilisationPressure() != 0) {
+            sbuilder.append(Float.toString(getItem(position).getSterilisationPressure()))
+                    .append(" " + mContext.getString(R.string.bar))
+                    .append("\t");
+        }
+        if (getItem(position).getSterilisationTime() != 0) {
+            sbuilder.append(getItem(position).getSterilisationTime())
+                    .append(" " + mContext.getString(R.string.min))
+                    .append("\n");
+        }
         if (getItem(position).getVacuumTimes() != 0) {
             sbuilder.append(mContext.getString(R.string.vacuum_times) + " ")
                     .append(getItem(position).getVacuumTimes())
                     .append("\n");
         }
 
-        if (getItem(position).getSterilisationTemperature() != 0) {
-            sbuilder.append(mContext.getString(R.string.sterilization_temperature) + " ")
-                    .append(getItem(position).getSterilisationTemperature())
-                    .append(" " + "\u2103")
-                    .append("\n");
-        }
-
-        if (getItem(position).getSterilisationPressure() != 0) {
-            sbuilder.append(mContext.getString(R.string.sterilization_pressure) + " ")
-                    .append(Float.toString(getItem(position).getSterilisationPressure()))
-                    .append(" " + mContext.getString(R.string.bar))
-                    .append("\n");
-        }
-
-        if (getItem(position).getSterilisationTime() != 0) {
-            sbuilder.append(mContext.getString(R.string.sterilization_holding_time) + " ")
-                    .append(getItem(position).getSterilisationTime())
-                    .append(" " + mContext.getString(R.string.min))
-                    .append("\n");
-        }
 
         if (getItem(position).getVacuumPersistTemperature() != 0) {
             sbuilder.append(mContext.getString(R.string.vacuum_persist_temperature) + " ")
@@ -126,6 +120,8 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
                     .append(" " + mContext.getString(R.string.min));
         }
 
+        sbuilder.append(mContext.getString(R.string.exhaust_mode) + " ")
+                .append(mContext.getString(getItem(position).isLiquidProgram() ? R.string.fast_cooling : R.string.fast));
 
 
         viewHolder.textDuration.setText(sbuilder.toString());

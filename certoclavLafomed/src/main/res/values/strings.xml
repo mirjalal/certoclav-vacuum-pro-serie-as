@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">CertoClav</string>
+    <string name="app_name">Raypa</string>
 
     <string name="cancel">Cancel</string>
 
@@ -58,7 +58,7 @@
     <string name="intro_trying_to_enable_wifi">Trying to enable WLAN</string>
     <string name="connected_to">Connected to</string>
     <string name="date_and_time">Date &amp; Time</string>
-    <string name="certoclav_account">CertoClav account</string>
+    <string name="certoclav_account">Raypa account</string>
     <string name="create_new_account">Create New Account</string>
     <string name="_accounts_created">" accounts created"</string>
     <string name="password_not_correct">Password or username wrong</string>
@@ -125,9 +125,9 @@
     <string name="settings_batch_number">Batch Number</string>
     <string name="settings_software_version">Software Version</string>
     <string name="settings_contact_via_mail">Contact via mail</string>
-    <string name="settings_contact_certoclav_support_via_mail">Contact CertoClav Support via mail</string>
+    <string name="settings_contact_certoclav_support_via_mail">Contact Raypa Support via mail</string>
     <string name="settings_contact_via_phone">Contact via phone</string>
-    <string name="settings_request_a_callback_from_certoclav_support">Request a callback from CertoClav Support</string>
+    <string name="settings_request_a_callback_from_certoclav_support">Request a callback from Raypa Support</string>
     <string name="settings_langauge">Language</string>
     <string name="messages">MESSAGES</string>
     <string name="shop">SHOP</string>
@@ -225,18 +225,18 @@
     <string name="login_online_mode">LOGIN (ONLINE MODE)</string>
     <string name="login_offline_mode">LOGIN (OFFLINE MODE)</string>
     <string name="local_password">Local Password</string>
-    <string name="certocloud_password">CertoCloud Password</string>
+    <string name="certocloud_password">RaypaCloud Password</string>
     <string name="password_for_offline_mode">Password for offline mode</string>
     <string name="export_protocols_to_usb_stick">Export Protocols to USB-Stick</string>
 
     <string name="delete_user">Delete user</string>
     <string name="do_you_really_want_to_delete_">"Do you really want to delete "</string>
-    <string name="server_not_reachable">Maintanance of CertoCloud server</string>
+    <string name="server_not_reachable">Maintanance of RaypaCloud server</string>
     <string name="internet_not_connected">Internet not available</string>
     <string name="you_are_not_registered_at_certocloud_com">You are not registered at www.certocloud.com</string>
-    <string name="please_log_in_with_your_certocloud_account_first">Please log in with your CertoCloud Account first</string>
+    <string name="please_log_in_with_your_certocloud_account_first">Please log in with your RaypaCloud Account first</string>
     <string name="please_connect_to_internet">Please connect to internet!</string>
-    <string name="do_you_want_to_switch_to_offline_mode_new_protocols_will_be_uploaded_to_certocloud_after_next_successful_login">Do you want to switch to offline mode? New protocols will be uploaded to CertoCloud after next successful login</string>
+    <string name="do_you_want_to_switch_to_offline_mode_new_protocols_will_be_uploaded_to_certocloud_after_next_successful_login">Do you want to switch to offline mode? New protocols will be uploaded to RaypaCloud after next successful login</string>
     <string name="login_failed">Login failed</string>
     <string name="please_enter_a_valid_name">Please enter a valid name</string>
     <string name="please_enter_a_valid_phone_number">Please enter a valid phone number</string>
@@ -257,9 +257,9 @@
     <string name="do_you_want_to_enable_online_mode_">Do you want to enable online mode?</string>
     <string name="show_wifi_settings">Open WLAN settings</string>
     <string name="switch_to_offline_mode">Switch to offline mode</string>
-    <string name="do_not_take_advantage_from_certocloud">Do not take advantage from CertoCloud</string>
-    <string name="add_an_existing_certocloud_account">Add an existing CertoCloud account</string>
-    <string name="create_a_new_certocloud_account">Create a new CertoCloud account</string>
+    <string name="do_not_take_advantage_from_certocloud">Do not take advantage from RaypaCloud</string>
+    <string name="add_an_existing_certocloud_account">Add an existing RaypaCloud account</string>
+    <string name="create_a_new_certocloud_account">Create a new RaypaCloud account</string>
     <string name="create_local">Create local</string>
     <string name="add_existing">Add existing</string>
     <string name="create_new">Create new</string>
@@ -269,9 +269,9 @@
     <string name="an_error_occured_during_login_please_try_again_later_">An error occured during login. Please try again later.\n</string>
     <string name="timout_during_login_please_check_internet_availability_">Timout during login. Please check internet availability.\n</string>
     <string name="password_not_correct_">Password not correct.\n</string>
-    <string name="email_does_not_exist_please_create_a_certocloud_account_with_this_email_first_">Email does not exist. Please create a CertoCloud account with this email first.\n</string>
-    <string name="not_able_to_connect_to_certocloud_">Not able to connect to CertoCloud.\n</string>
-    <string name="login_notification_offline">Autoclave is in offline mode\nNo CertoCloud, automatic backups, remote control, support and software updates available</string>
+    <string name="email_does_not_exist_please_create_a_certocloud_account_with_this_email_first_">Email does not exist. Please create a RaypaCloud account with this email first.\n</string>
+    <string name="not_able_to_connect_to_certocloud_">Not able to connect to RaypaCloud.\n</string>
+    <string name="login_notification_offline">Autoclave is in offline mode\nNo RaypaCloud, automatic backups, remote control, support and software updates available</string>
     <string name="do_you_want_to_enable_network_communication">Do you want to enable network communication</string>
     <string name="network_not_connected">Network not connected</string>
     <string name="manage_wifi_connections">Manage WLAN connections</string>
@@ -281,8 +281,8 @@
     <string name="bluetooth_on_off">Bluetooth ON/OFF</string>
     <string name="add_account">Add account</string>
     <string name="account_added">Account added</string>
-    <string name="linking_certocloud_account_failed">Linking CertoCloud account failed</string>
-    <string name="add_existing_certocloud_account">Add CertoCloud Account</string>
+    <string name="linking_certocloud_account_failed">Linking RaypaCloud account failed</string>
+    <string name="add_existing_certocloud_account">Add RaypaCloud Account</string>
     <string name="resend_activation_key_via_mail">Resend activation key via mail</string>
     <string name="email_successfully_sent">Email successfully sent</string>
     <string name="sending_email_failed">Sending email failed</string>
@@ -291,7 +291,7 @@
     <string name="message_has_been_sent">Message has been sent</string>
     <string name="message_could_not_be_send">Message could not be send</string>
     <string name="subject_">SUBJECT:</string>
-    <string name="synchronize_data_with_www_certocloud_com">Synchronize data with www.CertoCloud.com</string>
+    <string name="synchronize_data_with_www_certocloud_com">Synchronize data with www.RaypaCloud.com</string>
     <string name="not_connected">Not connected</string>
     <string name="autoclave_firmware_version">Autoclave Firmware Version</string>
     <string name="do_you_really_want_to_delete">Do you really want to delete</string>
@@ -302,7 +302,7 @@
     <string name="feature_not_available_yet">Feature not available yet</string>
     <string name="transmitting_program_data_">Transmitting program data...</string>
     <string name="try_to_send_mail">try to send mail</string>
-    <string name="send_an_email_to_certosupport">Send an email to CertoSupport</string>
+    <string name="send_an_email_to_certosupport">Send an email to RaypaSupport</string>
     <string name="starting_">STARTING...</string>
     <string name="please_open_lid">PLEASE OPEN LID</string>
     <string name="stop_program">STOP PROGRAM</string>
@@ -325,7 +325,7 @@
 
     <string name="create_a_new_program_manually">Create a new program manually</string>
     <string name="notifications">Notifications</string>
-    <string name="not_able_to_connect_to_certocloud">Not able to connect to CertoCloud</string>
+    <string name="not_able_to_connect_to_certocloud">Not able to connect to RaypaCloud</string>
     <string name="by_email">by email</string>
     <string name="by_sms">by SMS</string>
     <string name="changes_successfully_saved">Changes successfully saved</string>
@@ -440,8 +440,8 @@
     <string name="touchscreen_not_connected">Touchscreen not connected</string>
 
 
-    <string name="dialog_send_email">Send an Email to CertoSupport</string>
-    <string name="dialog_share_screen">Share screen to CertoSupport</string>
+    <string name="dialog_send_email">Send an Email to RaypaSupport</string>
+    <string name="dialog_share_screen">Share screen to RaypaSupport</string>
     <string name="share_screen">Share Screen</string>
     <string name="send_email">Send Email</string>
     <string name="no_user_info">No User Info</string>
@@ -460,7 +460,7 @@
     <string name="header_temp">Chamber temp. [°C]</string>
     <string name="header_media_temp">Media temp. [°C]</string>
     <string name="header_pressure">Pressure [bar]</string>
-    <string name="download_protocols_from_cloud">Download Protocols from CertoCloud</string>
+    <string name="download_protocols_from_cloud">Download Protocols from RaypaCloud</string>
     <string name="cur_password">Currrent Password</string>
     <string name="password_confirm">Confirm Password</string>
     <string name="edit_user">Edit User</string>
@@ -484,7 +484,7 @@
     <string name="admin_password">Admin Password</string>
     <string name="power_loss_during_record">Power loss during record</string>
     <string name="choose_server">CHOOSE SERVER</string>
-    <string name="certoclav_server">CertoCloud Server</string>
+    <string name="certoclav_server">RaypaCloud Server</string>
     <string name="manual_server">Add a server manually</string>
     <string name="search_server">Add a server from local network</string>
     <string name="selected">Selected</string>
@@ -494,7 +494,7 @@
     <string name="server_not_found_content">There is not any server in the network. Please change network or try again!</string>
     <string name="server_found_title">A SERVER FOUND</string>
     <string name="server_found_content">Server: %s</string>
-    <string name="certocloud_server">CertoCloud</string>
+    <string name="certocloud_server">RaypaCloud</string>
     <string name="server_host">Host</string>
     <string name="server_port">Port</string>
     <string name="server_info">Server Info</string>
@@ -503,7 +503,7 @@
     <string name="import_protocols">Import protocols</string>
     <string name="local_account">Local Account</string>
     <string name="online_account">Online Account</string>
-    <string name="certotrace_load_documentation">CertoTrace load documentation</string>
+    <string name="certotrace_load_documentation">RaypaTrace load documentation</string>
     <string name="enable_autoclave_load_docmentation">Enable autoclave load documentation. Barcodescanner and labelprinter required.</string>
     <string name="username_or_password_is_wrong">Wrong username or password</string>
 
@@ -527,28 +527,28 @@
     </string-array>
 
 
-    <string name="program_1_name"       >Test Bowie-Dick</string>
+    <string name="program_1_name"       >Glass</string>
     <string name="program_1_description">134\u00B0C   2.1 bar   4min\nTest to evaluate the capacity\nof penetration of the steam\nin hollow loads</string>
 
-    <string name="program_2_name"       >Test VACUUM</string>
+    <string name="program_2_name"       >Glass Pulse</string>
     <string name="program_2_description">Vacuum Test, recommended for maintenance</string>
 
-    <string name="program_3_name"       >Porous-134</string>
+    <string name="program_3_name"       >Plastic</string>
     <string name="program_3_description">134\u00B0C   2.1 bar   4min\nPorous instruments and textiles, wrapped or unwrapped</string>
 
-    <string name="program_4_name"       >Prion-134</string>
+    <string name="program_4_name"       >Plastic Pulse</string>
     <string name="program_4_description">134\u00B0C   2.1 bar   18min\nPrion sterilization</string>
 
-    <string name="program_5_name"       >Porous-121</string>
+    <string name="program_5_name"       >Liquid A</string>
     <string name="program_5_description">121\u00B0C   1.1 bar   20min\nPorous instruments and textiles, wrapped or unwrapped</string>
 
-    <string name="program_6_name"       >Hollow-134\u00B0C</string>
+    <string name="program_6_name"       >Liquid A Pulse</string>
     <string name="program_6_description">134\u00B0C   2.1 bar   4min\nHollow instruments, wrapped or unwrapped</string>
 
-    <string name="program_7_name"       >Hollow-121\u00B0C</string>
+    <string name="program_7_name"       >Liquid B</string>
     <string name="program_7_description">121\u00B0C   1.1 bar   20min\nHollow instruments, wrapped or unwrapped</string>
 
-    <string name="program_8_name"       >Wrapped-134\u00B0C</string>
+    <string name="program_8_name"       >Liquid B Pulse</string>
     <string name="program_8_description">134\u00B0C   2.1 bar   4min\nSingle and double wrapped solids and waste</string>
 
     <string name="program_9_name"       >Wrapped-121\u00B0C</string>
@@ -634,5 +634,8 @@
     <string name="lockout">Lockout</string>
     <string name="gettting_program_string">getting program %1$d</string>
     <string name="all_program_got">Total: %1$d programs</string>
+    <string name="exhaust_mode">Exhaust Mode</string>
+    <string name="fast_cooling">Fast Cooling</string>
+    <string name="fast">Fast</string>
 
 </resources>

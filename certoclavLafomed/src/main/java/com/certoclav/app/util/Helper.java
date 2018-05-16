@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
@@ -534,8 +536,7 @@ public class Helper {
                     if (response != null) {
                         Autoclave.getInstance().getProfilesFromAutoclave().add((Profile) response);
                         Log.e("Helper", "PUT PROFILE " + ((Profile) response).getName());
-                    }
-                    else
+                    } else
                         currentProgram--;
                     barProgressDialog.dismissWithAnimation();
                 }
@@ -631,4 +632,9 @@ public class Helper {
         handler.postDelayed(runnableTimeout, TIMEOUT);
     }
 
+
+    public static Drawable changeColorToWhite(Drawable drawable) {
+        drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        return drawable;
+    }
 }

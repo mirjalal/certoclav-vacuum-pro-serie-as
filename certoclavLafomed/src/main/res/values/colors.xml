@@ -14,9 +14,19 @@
     <color name="white">#ffffff</color>
     <color name="bg_gradient_start">#31244e</color>
     <color name="bg_gradient_end">#6b394c</color>
-    <color name="action_bar_color">#F0F0F0</color>
+    <color name="action_bar_color">#3297DB</color>
     <color name="login_page_notification_text_color">#929ba0</color>
     <color name="login_button_text_color_disabled">#adacac</color>
-    <color name="login_button_text_color">#555555</color>
+    <color name="login_button_text_color">#ffffff</color>
     <color name="settings_item_bg">#E1E5E7</color>
+
+    <!--Sterilization Fragment-->
+    <color name="program_item_header_text_color">#666666</color>
+    <color name="navigationbar_clean_headtext">#ffffff</color>
+    <color name="navigationbar_headtext">#ffffff</color>
+    <color name="navigationbar_clean_header">#ffffffff</color>
+    <color name="action_bar_text_color">#333333</color>
+    <color name="program_item_info_color">#777777</color>
+    <color name="information_tab_item_bg">#ffffff</color>
+    <color name="raypa_dark_color">#666666</color>
 </resources>

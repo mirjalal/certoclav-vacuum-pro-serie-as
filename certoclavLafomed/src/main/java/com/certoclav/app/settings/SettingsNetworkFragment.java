@@ -106,10 +106,10 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
         startActivityForResult(intent, 1);
 
 
-       // startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK));
+        // startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK));
     }
 
-    private void startNetworkSettings(){
+    private void startNetworkSettings() {
         Intent intent = new Intent(Settings.ACTION_SETTINGS);
         intent.putExtra("only_access_points", true);
         intent.putExtra("extra_prefs_show_button_bar", true);
@@ -129,7 +129,7 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
         if (preference.hasKey()) {
             if (preference.getKey().equals(AppConstants.PREFERENCE_KEY_WIFI_MANAGER)) {
                 startWifiPicker();
-            }else if (preference.getKey().equals(AppConstants.PREFERENCE_KEY_LAN_MANAGER)){
+            } else if (preference.getKey().equals(AppConstants.PREFERENCE_KEY_LAN_MANAGER)) {
                 configureLan();
             }
 
@@ -138,9 +138,9 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
     }
 
     private void configureLan() {
-        if(AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH)) {
-           // startNetworkSettings();
-        }else {
+        if (AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH)) {
+            // startNetworkSettings();
+        } else {
             PackageManager pm = getActivity().getPackageManager();
             Intent launchIntent = pm.getLaunchIntentForPackage("com.fsl.ethernet");
             getActivity().startActivity(launchIntent);
@@ -294,7 +294,7 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
 
                     @Override
                     public void onTimeout() {
-                        if (MAX_TRY_COUNT-- > 0) {
+                        if (MAX_TRY_COUNT-- > 0 && sweetAlertDialog != null && sweetAlertDialog.isShowing()) {
                             new Thread(runnable).start();
                             return;
                         }
@@ -323,7 +323,7 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
                                 sweetAlertDialog.setTitleText(getString(R.string.server_not_found_title));
                                 sweetAlertDialog.setContentText(getString(R.string.server_not_found_content));
                                 sweetAlertDialog.setConfirmText(getString(R.string.try_again));
-                                MAX_TRY_COUNT=5;
+                                MAX_TRY_COUNT = 5;
                             }
                         });
                         sweetAlertDialog.setConfirmClickListener(listener);

@@ -3,7 +3,7 @@
     android:id="@+id/certoclav_actionbar"
     android:layout_width="match_parent"
     android:layout_height="80dp"
-    android:background="#ffffff">
+    android:background="@color/action_bar_color">
 
 
     <LinearLayout
@@ -15,8 +15,7 @@
             android:id="@+id/frame1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/btn_white_shadow_bottom">
+            android:layout_weight="1">
 
 
         </FrameLayout>
@@ -81,8 +80,8 @@
             android:gravity="center"
             android:singleLine="true"
             android:text="@string/information"
-            android:textColor="#444444"
-            android:textSize="16sp"
+            android:textColor="@color/action_bar_text_color"
+            android:textSize="@dimen/action_bar_text_size"
             android:textStyle="bold" />
 
         <TextView
@@ -93,8 +92,8 @@
             android:gravity="center"
             android:singleLine="true"
             android:text="@string/sterilisation"
-            android:textColor="#444444"
-            android:textSize="16sp"
+            android:textColor="@color/action_bar_text_color"
+            android:textSize="@dimen/action_bar_text_size"
             android:textStyle="bold" />
 
 
@@ -107,8 +106,8 @@
             android:gravity="center"
             android:singleLine="true"
             android:text="@string/logging"
-            android:textColor="#444444"
-            android:textSize="16sp"
+            android:textColor="@color/action_bar_text_color"
+            android:textSize="@dimen/action_bar_text_size"
             android:textStyle="bold" />
 
 
@@ -148,8 +147,7 @@
                 android:id="@+id/navigationbar_shadow_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
-                android:layout_alignParentBottom="true"
-                android:background="@drawable/btn_white_shadow_bottom" />
+                android:layout_alignParentBottom="true" />
 
         </RelativeLayout>
 

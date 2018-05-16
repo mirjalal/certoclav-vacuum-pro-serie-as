@@ -20,7 +20,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/btn_green_shadow">
+            android:background="@color/information_tab_item_bg">
 
             <TextView
                 android:id="@+id/information_messages_text_firstline"
@@ -30,7 +30,7 @@
                 android:paddingLeft="10dp"
                 android:singleLine="true"
                 android:text="@string/support"
-                android:textColor="@android:color/white"
+                android:textColor="@color/program_item_header_text_color"
                 android:textSize="30dp" />
 
             <TextView
@@ -44,16 +44,16 @@
                 android:paddingRight="10dp"
                 android:singleLine="true"
                 android:text="@string/send_mail_to_certosupport"
-                android:textColor="@android:color/white"
+                android:textColor="@color/program_item_header_text_color"
                 android:textSize="15dp"
                 tools:ignore="HardcodedText" />
 
 
             <ImageView
                 android:id="@+id/information_message_image"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:src="@drawable/certosupport"
+                android:layout_width="170dp"
+                android:layout_height="170dp"
+                android:src="@drawable/ic_support"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true" />
         </RelativeLayout>

@@ -153,9 +153,9 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         progressBar = (ProgressBar) findViewById(R.id.login_progressbar);
         SettingsDeviceUtils settingsUtils = new SettingsDeviceUtils();
 
-        if(AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_LILLIPUT)) {
+        if (AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_LILLIPUT)) {
             settingsUtils.setvolumeToMaximum(this);
-        }else{
+        } else {
             settingsUtils.setvolumeToMedium(this);
         }
         settingsUtils.setScreenBrightnessToMaximum(this);
@@ -694,8 +694,12 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                         @Override
                         public void onClick(SweetAlertDialog sDialog) {
                             sDialog.dismissWithAnimation();
-                            startActivity(new Intent(
-                                    WifiManager.ACTION_PICK_WIFI_NETWORK));
+                            Intent intent = new Intent(
+                                    WifiManager.ACTION_PICK_WIFI_NETWORK);
+                            intent.putExtra("only_access_points", true);
+                            intent.putExtra("extra_prefs_show_button_bar", true);
+                            intent.putExtra("wifi_enable_next_on_connect", true);
+                            startActivity(intent);
                         }
                     }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override

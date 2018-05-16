@@ -58,21 +58,25 @@
         <Button
             android:id="@+id/dialogButtonNO"
             android:layout_width="400dp"
-            android:layout_height="60dp"
-            android:layout_margin="5dp"
+            android:layout_height="70dp"
             android:layout_weight="1"
-            android:background="@drawable/button_bg_green_blue"
+            android:background="@drawable/btn_login"
             android:text="@string/cancel"
+            android:textAllCaps="true"
+            android:textSize="22sp"
+            android:textStyle="bold"
             android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/dialogButtonOK"
             android:layout_width="400dp"
-            android:layout_height="60dp"
-            android:layout_margin="5dp"
+            android:layout_height="70dp"
+            android:textAllCaps="true"
             android:layout_weight="1"
-            android:background="@drawable/button_bg_green_blue"
+            android:background="@drawable/btn_login"
             android:text="@string/start"
+            android:textSize="22sp"
+            android:textStyle="bold"
             android:textColor="@android:color/white" />
 
     </LinearLayout>

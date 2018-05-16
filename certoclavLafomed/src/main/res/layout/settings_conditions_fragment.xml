@@ -14,7 +14,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/button_bg_green_blue"
+        android:background="@drawable/btn_login"
         android:text="@string/save"
         android:textColor="@android:color/white"
         android:textSize="25sp"

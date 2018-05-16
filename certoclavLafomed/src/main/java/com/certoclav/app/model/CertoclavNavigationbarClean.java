@@ -18,6 +18,7 @@ import com.certoclav.app.button.QuickActionItem;
 import com.certoclav.app.listener.NavigationbarListener;
 import com.certoclav.app.listener.SensorDataListener;
 import com.certoclav.app.settings.SettingsActivity;
+import com.certoclav.app.util.Helper;
 
 import java.util.ArrayList;
 
@@ -60,7 +61,7 @@ public class CertoclavNavigationbarClean implements SensorDataListener {
 
         actionItemRefresh = (QuickActionItem) mActivity.getLayoutInflater().inflate(R.layout.quickaction_item, linActionContainer, false);
         actionItemRefresh.setChecked(false);
-        actionItemRefresh.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.ic_menu_refresh));
+        actionItemRefresh.setImageDrawable(Helper.changeColorToWhite(mActivity.getResources().getDrawable(R.drawable.ic_menu_refresh)));
         //actionItemAdd.setText("test");
         linActionContainer.addView(actionItemRefresh);
         actionItemRefresh.setOnClickListener(new OnClickListener() {
@@ -77,7 +78,7 @@ public class CertoclavNavigationbarClean implements SensorDataListener {
 
         actionItemSave = (QuickActionItem) mActivity.getLayoutInflater().inflate(R.layout.quickaction_item, linActionContainer, false);
         actionItemSave.setChecked(false);
-        actionItemSave.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.ic_menu_save));
+        actionItemSave.setImageDrawable(Helper.changeColorToWhite(mActivity.getResources().getDrawable(R.drawable.ic_menu_save)));
         //actionItemAdd.setText("test");
         linActionContainer.addView(actionItemSave);
         actionItemSave.setOnClickListener(new OnClickListener() {
@@ -94,7 +95,7 @@ public class CertoclavNavigationbarClean implements SensorDataListener {
         LinearLayout linActionContainerLeft = (LinearLayout) mActivity.findViewById(R.id.navigationbarclear_container_quickactionitem_left);
         actionItemBack = (QuickActionItem) mActivity.getLayoutInflater().inflate(R.layout.quickaction_item, linActionContainer, false);
         actionItemBack.setChecked(false);
-        actionItemBack.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.ic_back));
+        actionItemBack.setImageDrawable(Helper.changeColorToWhite(ContextCompat.getDrawable(mActivity, R.drawable.ic_back)));
         //actionItemAdd.setText("test");
         linActionContainerLeft.addView(actionItemBack);
         actionItemBack.setOnClickListener(new OnClickListener() {
@@ -114,7 +115,7 @@ public class CertoclavNavigationbarClean implements SensorDataListener {
 
         actionItemAdd = (QuickActionItem) mActivity.getLayoutInflater().inflate(R.layout.quickaction_item, linActionContainer, false);
         actionItemAdd.setChecked(false);
-        actionItemAdd.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.ic_action_add_user));
+        actionItemAdd.setImageDrawable(Helper.changeColorToWhite(ContextCompat.getDrawable(mActivity, R.drawable.ic_action_add_user)));
         //actionItemAdd.setText("test");
         linActionContainer.addView(actionItemAdd);
         actionItemAdd.setOnClickListener(new OnClickListener() {
@@ -131,7 +132,7 @@ public class CertoclavNavigationbarClean implements SensorDataListener {
 
         actionItemSettings = (QuickActionItem) mActivity.getLayoutInflater().inflate(R.layout.quickaction_item, linActionContainer, false);
         actionItemSettings.setChecked(false);
-        actionItemSettings.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.ic_action_settings));
+        actionItemSettings.setImageDrawable(Helper.changeColorToWhite(ContextCompat.getDrawable(mActivity, R.drawable.ic_action_settings)));
         //actionItemAdd.setText("test");
         linActionContainer.addView(actionItemSettings);
         actionItemSettings.setOnClickListener(new OnClickListener() {

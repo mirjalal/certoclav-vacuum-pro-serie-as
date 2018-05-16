@@ -119,7 +119,7 @@ public class AssistantActivity extends CertoclavSuperActivity implements Profile
                 });
                 videoView.start();
                 textStepDescription.setText(R.string.open_the_door);
-                buttonNext.setBackgroundResource(R.drawable.button_bg_green_blue);
+//                buttonNext.setBackgroundResource(R.drawable.button_bg_green_blue);
 
 
                 break;
@@ -167,7 +167,7 @@ public class AssistantActivity extends CertoclavSuperActivity implements Profile
 
                 videoView.start();
                 textStepDescription.setText(R.string.video_lock_description);
-                buttonNext.setBackgroundResource(R.drawable.button_bg_green_blue);
+//                buttonNext.setBackgroundResource(R.drawable.button_bg_green_blue);
 
                 break;
 
