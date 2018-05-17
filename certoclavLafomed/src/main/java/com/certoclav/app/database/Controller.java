@@ -84,7 +84,19 @@ public class Controller {
     public String getSavetyKey() {
 
         if (AppConstants.isIoSimulated == true) {
-            return AppConstants.SIMULATED_SAVETY_KEY;
+            if (AppConstants.isIoSimulated == true) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ApplicationController.getContext());
+                switch (prefs.getString(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL, "TLV-50")) {
+                    case "AHS-75-B":
+                        return "FF000003957204831";
+                    case "TLV-50PD":
+                        return "FF000003957204832";
+                    case "TLV-75FA":
+                        return "FF000003957204833";
+                }
+                return AppConstants.SIMULATED_SAVETY_KEY;
+            }
+
         }
 
         //Find the directory for the SD Card using the API
