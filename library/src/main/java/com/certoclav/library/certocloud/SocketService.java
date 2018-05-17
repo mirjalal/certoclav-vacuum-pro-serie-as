@@ -117,7 +117,7 @@ public class SocketService {
 
 
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
 
 
