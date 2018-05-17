@@ -10,6 +10,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StatFs;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
@@ -52,10 +53,25 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                 deviceKey = Autoclave.getInstance().getController().getSavetyKey();
             }
         }
-        ((Preference) findPreference(AppConstants.PREFERENCE_KEY_DEVICE_KEY)).setSummary(deviceKey);
+//Model Selection in the simulation mode
+        if (!AppConstants.isIoSimulated)
+            getPreferenceScreen().removePreference(findPreference(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL));
+        else {
+            if (!prefs.contains(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL))
+                ((ListPreference) findPreference(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL)).setValueIndex(0);
+            findPreference(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL).setSummary(prefs.getString(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL, "Not defined"));
+            findPreference(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    findPreference(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL).setSummary(newValue.toString());
+                    return true;
+                }
+            });
+        }
+        findPreference(AppConstants.PREFERENCE_KEY_DEVICE_KEY).setSummary(deviceKey);
 
 //Check for updates
-        ((Preference) findPreference(AppConstants.PREFERENCE_KEY_SOFTWARE_UPDATE)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        findPreference(AppConstants.PREFERENCE_KEY_SOFTWARE_UPDATE).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -73,7 +89,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
             }
         });
 
-        ((Preference) findPreference(AppConstants.PREFERENCE_KEY_ADMIN_PASSWORD)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        findPreference(AppConstants.PREFERENCE_KEY_ADMIN_PASSWORD).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -83,7 +99,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
         });
 
         //Install update from USB
-        ((Preference) findPreference(AppConstants.PREFERENCE_KEY_SOFTWARE_UPDATE_USB)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        findPreference(AppConstants.PREFERENCE_KEY_SOFTWARE_UPDATE_USB).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -102,7 +118,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 
 
         //Install update from SDCARD
-        ((Preference) findPreference(AppConstants.PREFERENCE_KEY_SOFTWARE_UPDATE_SDCARD)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        findPreference(AppConstants.PREFERENCE_KEY_SOFTWARE_UPDATE_SDCARD).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -121,7 +137,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 
 
 //Factory Reset
-        ((Preference) findPreference(AppConstants.PREFERENCE_KEY_RESET)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        findPreference(AppConstants.PREFERENCE_KEY_RESET).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -187,7 +203,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 //show date and time
 
 
-        ((Preference) findPreference(AppConstants.PREFERENCE_KEY_DATE)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        findPreference(AppConstants.PREFERENCE_KEY_DATE).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -198,7 +214,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 
 
         //Storage
-        ((Preference) findPreference(AppConstants.PREFERENCE_KEY_STORAGE))
+        findPreference(AppConstants.PREFERENCE_KEY_STORAGE)
                 .setSummary(getString(R.string.free_memory) + ": "
                         + Long.toString(FreeMemory())
                         + " MB");
@@ -207,7 +223,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
         try {
             pInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
             String version = pInfo.versionName + " (" + pInfo.versionCode + ")";
-            ((Preference) findPreference(AppConstants.PREFERENCE_KEY_VERSION)).setSummary(version);
+            findPreference(AppConstants.PREFERENCE_KEY_VERSION).setSummary(version);
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -215,10 +231,10 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 
         //serial number
         try {
-            ((Preference) findPreference(AppConstants.PREFERENCE_KEY_SERIAL_NUMBER)).setSummary(Autoclave.getInstance().getController().getSerialnumber());
+            findPreference(AppConstants.PREFERENCE_KEY_SERIAL_NUMBER).setSummary(Autoclave.getInstance().getController().getSerialnumber());
         } catch (Exception e) {
             try {
-                ((Preference) findPreference(AppConstants.PREFERENCE_KEY_SERIAL_NUMBER)).setSummary(getString(R.string.please_connect_to_autoclave_first));
+                findPreference(AppConstants.PREFERENCE_KEY_SERIAL_NUMBER).setSummary(getString(R.string.please_connect_to_autoclave_first));
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
@@ -226,10 +242,10 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 
         //firmware version
         try {
-            ((Preference) findPreference(AppConstants.PREFERENCE_KEY_FIRMWARE_VERSION)).setSummary(Autoclave.getInstance().getController().getFirmwareVersion());
+            findPreference(AppConstants.PREFERENCE_KEY_FIRMWARE_VERSION).setSummary(Autoclave.getInstance().getController().getFirmwareVersion());
         } catch (Exception e) {
             try {
-                ((Preference) findPreference(AppConstants.PREFERENCE_KEY_FIRMWARE_VERSION)).setSummary(getString(R.string.please_connect_to_autoclave_first));
+                findPreference(AppConstants.PREFERENCE_KEY_FIRMWARE_VERSION).setSummary(getString(R.string.please_connect_to_autoclave_first));
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
@@ -237,10 +253,10 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 
         //cycle number
         try {
-            ((Preference) findPreference(AppConstants.PREFERENCE_KEY_CYCLE_NUMBER)).setSummary(getString(R.string.total_cycles_) + " " + Autoclave.getInstance().getController().getCycleNumber());
+            findPreference(AppConstants.PREFERENCE_KEY_CYCLE_NUMBER).setSummary(getString(R.string.total_cycles_) + " " + Autoclave.getInstance().getController().getCycleNumber());
         } catch (Exception e) {
             try {
-                ((Preference) findPreference(AppConstants.PREFERENCE_KEY_CYCLE_NUMBER)).setSummary(getString(R.string.please_connect_to_autoclave_first));
+                findPreference(AppConstants.PREFERENCE_KEY_CYCLE_NUMBER).setSummary(getString(R.string.please_connect_to_autoclave_first));
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
@@ -275,9 +291,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
     @Override
     public void onSensorDataChange(AutoclaveData data) {
         //update date and time
-
-
-        ((Preference) findPreference(AppConstants.PREFERENCE_KEY_DATE)).setSummary(new StringBuilder()
+        findPreference(AppConstants.PREFERENCE_KEY_DATE).setSummary(new StringBuilder()
                 .append(Autoclave.getInstance().getDate())                // Month is 0 based so add 1
                 .append(" ")
                 .append(Autoclave.getInstance().getTime()));

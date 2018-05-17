@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
+import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.adapters.ProgramAdapter;
 import com.certoclav.app.database.Profile;
@@ -49,18 +50,14 @@ public class SterilisationFragment extends Fragment {
     @Override
     public void onResume() {
 
-       // DatabaseService db = new DatabaseService(getActivity());
-        //List<Profile> profiles = Autoclave.getInstance().getProfilesFromAutoclave();
-        //Log.e("SterilizationFragment", "LENGTH OF PROFILE LIST: " + profiles.size());
-       // ((ProgramAdapter) programGrid.getAdapter()).clear();
-        //Log.e("SterilizationFragment", "LENGTH OF PROFILE LIST: " + profiles.size());
-       // for (Profile profile : profiles) {
-       //     ((ProgramAdapter) programGrid.getAdapter()).add(profile);
-       // }
-
+        if (AppConstants.isIoSimulated) {
+            ArrayList<Profile> profiles = Autoclave.getInstance().getProfilesFromAutoclave();
+            if (profiles != null) {
+                programAdapter = new ProgramAdapter(getActivity(), profiles);
+                programGrid.setAdapter(programAdapter);
+            }
+        }
         ((ProgramAdapter) programGrid.getAdapter()).notifyDataSetChanged();
-        //Log.e("SterilizationFragment", "LENGTH OF PROFILE LIST: " + programAdapter.getCount());
-        //Log.e("SterilizationFragment", "LENGTH OF PROFILE LIST: " + ((ProgramAdapter) programGrid.getAdapter()).getCount());
         super.onResume();
 
 

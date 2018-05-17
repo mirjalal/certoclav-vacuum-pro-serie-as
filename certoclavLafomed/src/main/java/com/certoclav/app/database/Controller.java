@@ -1,9 +1,12 @@
 package com.certoclav.app.database;
 
 
+import android.content.SharedPreferences;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 
 import com.certoclav.app.AppConstants;
+import com.certoclav.library.application.ApplicationController;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -133,7 +136,16 @@ public class Controller {
     public String getSerialnumber() {
 
         if (AppConstants.isIoSimulated == true) {
-            return "RAYPA00003234";
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ApplicationController.getContext());
+            switch (prefs.getString(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL, "TLV-50")) {
+                case "AHS-75-B":
+                    return "40097";
+                case "TLV-50PD":
+                    return "40098";
+                case "TLV-75FA":
+                    return "40099";
+            }
+            return "40100";
         }
         //Find the directory for the SD Card using the API
         //*Don't* hardcode "/sdcard"

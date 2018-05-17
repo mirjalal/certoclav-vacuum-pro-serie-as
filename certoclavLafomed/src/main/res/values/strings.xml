@@ -526,51 +526,92 @@
         <item>99|Cable is not connected</item>
     </string-array>
 
+    <string-array name="autoclave_models">
+        <item>TLV-50</item>
+        <item>TLV-50FA</item>
+        <item>TLV-50PD</item>
+        <item>TLV-75</item>
+        <item>AHS-75-B</item>
+        <item>TLV-75FA</item>
+        <item>TLV-75PD</item>
+        <item>TLV-110</item>
+        <item>TLV-110FA</item>
+        <item>TLV-110PD</item>
+        <item>TLV-150</item>
+        <item>TLV-150FA</item>
+        <item>TLV-150PD</item>
+    </string-array>
 
-    <string name="program_1_name"       >Glass</string>
+
+    <string name="program_1_name">Glass</string>
     <string name="program_1_description">134\u00B0C   2.1 bar   4min\nTest to evaluate the capacity\nof penetration of the steam\nin hollow loads</string>
 
-    <string name="program_2_name"       >Glass Pulse</string>
+    <string name="program_2_name">Glass Pulse</string>
     <string name="program_2_description">Vacuum Test, recommended for maintenance</string>
 
-    <string name="program_3_name"       >Plastic</string>
+    <string name="program_3_name">Plastic</string>
     <string name="program_3_description">134\u00B0C   2.1 bar   4min\nPorous instruments and textiles, wrapped or unwrapped</string>
 
-    <string name="program_4_name"       >Plastic Pulse</string>
+    <string name="program_4_name">Plastic Pulse</string>
     <string name="program_4_description">134\u00B0C   2.1 bar   18min\nPrion sterilization</string>
 
-    <string name="program_5_name"       >Liquid A</string>
+    <string name="program_5_name">Liquid A</string>
     <string name="program_5_description">121\u00B0C   1.1 bar   20min\nPorous instruments and textiles, wrapped or unwrapped</string>
 
-    <string name="program_6_name"       >Liquid A Pulse</string>
+    <string name="program_6_name">Liquid A Pulse</string>
     <string name="program_6_description">134\u00B0C   2.1 bar   4min\nHollow instruments, wrapped or unwrapped</string>
 
-    <string name="program_7_name"       >Liquid B</string>
+    <string name="program_7_name">Liquid B</string>
     <string name="program_7_description">121\u00B0C   1.1 bar   20min\nHollow instruments, wrapped or unwrapped</string>
 
-    <string name="program_8_name"       >Liquid B Pulse</string>
+    <string name="program_8_name">Liquid B Pulse</string>
     <string name="program_8_description">134\u00B0C   2.1 bar   4min\nSingle and double wrapped solids and waste</string>
 
-    <string name="program_9_name"       >Wrapped-121\u00B0C</string>
+
+    <string name="program_13_name"       >Test Bowie-Dick</string>
+    <string name="program_13_description">134\u00B0C   2.1 bar   4min\nTest to evaluate the capacity\nof penetration of the steam\nin hollow loads</string>
+
+    <string name="program_14_name"       >Test VACUUM</string>
+    <string name="program_14_description">Vacuum Test, recommended for maintenance</string>
+
+    <string name="program_15_name"       >Porous-134</string>
+    <string name="program_15_description">134\u00B0C   2.1 bar   4min\nPorous instruments and textiles, wrapped or unwrapped</string>
+
+    <string name="program_16_name"       >Prion-134</string>
+    <string name="program_16_description">134\u00B0C   2.1 bar   18min\nPrion sterilization</string>
+
+    <string name="program_17_name"       >Porous-121</string>
+    <string name="program_17_description">121\u00B0C   1.1 bar   20min\nPorous instruments and textiles, wrapped or unwrapped</string>
+
+    <string name="program_18_name"       >Hollow-134\u00B0C</string>
+    <string name="program_18_description">134\u00B0C   2.1 bar   4min\nHollow instruments, wrapped or unwrapped</string>
+
+    <string name="program_19_name"       >Hollow-121\u00B0C</string>
+    <string name="program_19_description">121\u00B0C   1.1 bar   20min\nHollow instruments, wrapped or unwrapped</string>
+
+    <string name="program_20_name"       >Wrapped-134\u00B0C</string>
+    <string name="program_20_description">134\u00B0C   2.1 bar   4min\nSingle and double wrapped solids and waste</string>
+
+    <string name="program_9_name">Wrapped-121\u00B0C</string>
     <string name="program_9_description">121\u00B0C   1.1 bar   20min\nSingle and double wrapped solids and waste</string>
 
-    <string name="program_10_name"      >Solids-134\u00B0C</string>
+    <string name="program_10_name">Solids-134\u00B0C</string>
     <string name="program_10_description">134\u00B0C   2.1 bar   4min\nSolid instruments"</string>
 
-    <string name="program_11_name"       >Solids-121\u00B0C</string>
+    <string name="program_11_name">Solids-121\u00B0C</string>
     <string name="program_11_description">121\u00B0C   1.1 bar   20min\nSolid instruments"</string>
 
-    <string name="program_12_name"       >Flash-134\u00B0C</string>
+    <string name="program_12_name">Flash-134\u00B0C</string>
     <string name="program_12_description">134\u00B0C   2.1 bar   3min\nFast program for unwrapped solids"</string>
 
-    <string name="open_the_door"         >Open the door</string>
+    <string name="open_the_door">Open the door</string>
     <string name="unable_to_start_vacuum_test">Unable to start the vacuum test. Please wait until the chamber is cooled down.</string>
-    <string name="vacuum_times"              >Vacuum pulses:</string>
-    <string name="sterilization_temperature" >Ster. temperature:</string>
-    <string name="sterilization_pressure"    >Ster. pressure:</string>
-    <string name="drying_time"               >Drying time:</string>
+    <string name="vacuum_times">Vacuum pulses:</string>
+    <string name="sterilization_temperature">Ster. temperature:</string>
+    <string name="sterilization_pressure">Ster. pressure:</string>
+    <string name="drying_time">Drying time:</string>
     <string name="sterilization_holding_time">Holding time:</string>
-    <string name="sterilization_temp_"       >Sterilization temp.:</string>
+    <string name="sterilization_temp_">Sterilization temp.:</string>
     <string name="sterilization_time_">Sterilization time:</string>
     <string name="vacuum_persist_temperature">Vacuum persist temperature:</string>
     <string name="vacuum_persist_time">Vacuum persist time:</string>
@@ -637,5 +678,6 @@
     <string name="exhaust_mode">Exhaust Mode</string>
     <string name="fast_cooling">Fast Cooling</string>
     <string name="fast">Fast</string>
+    <string name="preferences_autoclave_model">Autoclave Models</string>
 
 </resources>

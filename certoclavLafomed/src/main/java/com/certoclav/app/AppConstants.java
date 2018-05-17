@@ -20,6 +20,7 @@ public class AppConstants {
     public static final String PREFERENCE_KEY_SERVER_NAME = "servername";
     public static final String PREFERENCE_KEY_SERVER_PORT = "serverport";
     public static final String PREFERENCE_KEY_INDICATOR_TEST = "switch_indicator_check";
+    public static final String PREFERENCE_KEY_AUTOCLAVE_MODEL = "preferences_autoclave_model";
     public static final String TAG = "RAYPA";
     public static final boolean CHECK_CHECKSUM = false;
     public static Boolean TABLET_HAS_ROOT = false;
