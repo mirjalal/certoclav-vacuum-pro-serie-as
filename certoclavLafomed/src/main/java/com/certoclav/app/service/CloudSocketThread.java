@@ -152,7 +152,7 @@ public class CloudSocketThread extends Thread implements SocketEventListener {
 							Log.e("CloudSocketThread", "sending: " + jsonLiveMessageObj.toString().replace("{", "[").replace("}", "]"));
 							
 						} catch (Exception e) {
-								Log.e("MainActivity", "exception json: " + e.toString());
+								Log.e("CloudSocketTread", "exception json: " + e.toString());
 						}
 						
 						 SocketService.getInstance().getSocket().emit(SocketService.EVENT_SEND_DATA_FROM_ANDROID_TO_SERVER, jsonLiveMessageObj);

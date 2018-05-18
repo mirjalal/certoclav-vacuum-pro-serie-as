@@ -909,7 +909,7 @@ public class Autoclave extends Observable {
         DeviceModel deviceModel = new DeviceModel();
         deviceModel.setDeviceKey(controller.getSavetyKey());
         deviceModel.setSerial(controller.getSerialnumber());
-        deviceModel.setModel(AppConstants.MODEL);
+        deviceModel.setModel(controller.getDeviceModel());
         return deviceModel;
     }
 

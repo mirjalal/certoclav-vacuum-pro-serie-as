@@ -225,11 +225,6 @@ public class CertoclavNavigationbar {
 			}
 		});
 
-		
-
-
-		
-
 	}
 	
 	public void hideButtonEdit(){
