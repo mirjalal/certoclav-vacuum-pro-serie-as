@@ -146,7 +146,8 @@ public class Controller {
 
         if (AppConstants.isIoSimulated == true) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ApplicationController.getContext());
-            switch (prefs.getString(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL, "TLV-50")) {
+            String model = prefs.getString(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL, "TLV-50");
+            switch (model) {
                 case "AHS-75-B":
                     return "40097";
                 case "TLV-50PD":
@@ -154,7 +155,7 @@ public class Controller {
                 case "TLV-75FA":
                     return "40099";
             }
-            return "40100";
+            return model;
         }
         //Find the directory for the SD Card using the API
         //*Don't* hardcode "/sdcard"

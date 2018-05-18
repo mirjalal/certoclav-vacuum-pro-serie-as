@@ -64,6 +64,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     findPreference(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL).setSummary(newValue.toString());
+                    findPreference(AppConstants.PREFERENCE_KEY_SERIAL_NUMBER).setSummary(Autoclave.getInstance().getController().getSerialnumber());
                     return true;
                 }
             });
