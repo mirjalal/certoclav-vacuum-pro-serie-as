@@ -101,7 +101,8 @@
             android:background="@drawable/btn_login"
             android:text="@string/cancel"
             android:visibility="gone"
-            android:textColor="@android:color/black" />
+            android:textSize="22sp"
+            android:textColor="@color/login_button_text_color" />
 
         <Button
             android:id="@+id/dialogButtonShareScreen"
@@ -111,7 +112,8 @@
             android:layout_weight="1"
             android:background="@drawable/btn_login"
             android:text="@string/share_screen"
-            android:textColor="@android:color/black" />
+            android:textSize="22sp"
+            android:textColor="@color/login_button_text_color" />
 
         <Button
             android:id="@+id/dialogButtonSendEmail"
@@ -121,7 +123,8 @@
             android:layout_weight="1"
             android:background="@drawable/btn_login"
             android:text="@string/send_email"
-            android:textColor="@android:color/black" />
+            android:textSize="22sp"
+            android:textColor="@color/login_button_text_color" />
 
 
     </LinearLayout>

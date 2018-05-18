@@ -41,9 +41,9 @@
         android:layout_weight="1"
         android:text="@string/cancel"
         android:layout_margin="5dp"
-        android:textColor="@android:color/white"
-        android:background="@drawable/btn_blue_dark"
-        />
+             android:textSize="22sp"
+        android:textColor="@color/login_button_text_color"
+        android:background="@drawable/btn_login"/>
          
      <Button
         android:id="@+id/dialogButtonOK"
@@ -52,8 +52,9 @@
         android:layout_weight="1"
         android:text="@string/yes"
         android:layout_margin="5dp"
-        android:textColor="@android:color/white"
-        android:background="@drawable/btn_blue_dark"
+         android:textSize="22sp"
+         android:textColor="@color/login_button_text_color"
+         android:background="@drawable/btn_login"
 
         />
 

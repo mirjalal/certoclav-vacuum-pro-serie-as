@@ -60,41 +60,42 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"   
         android:layout_below="@+id/dialog_container_text"
-     >
-         <Button
-        android:id="@+id/dialogButtonNO"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_weight="1"
-        android:text="@string/cancel"
-        android:layout_margin="5dp"
-        android:textColor="@android:color/white"
-        android:background="@drawable/btn_blue_dark"
-        />
-         
-     <Button
-        android:id="@+id/dialogButtonLocal"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_weight="1"
-        android:text="@string/create_new"
-        android:layout_margin="5dp"
-        android:textColor="@android:color/white"
-        android:background="@drawable/btn_blue_dark"
+                >
 
-        />
-     
-          <Button
-        android:id="@+id/dialogButtonCloud"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_weight="1"
-        android:text="@string/browse_templates"
-        android:layout_margin="5dp"
-        android:textColor="@android:color/white"
-        android:background="@drawable/btn_blue_dark"
+                <Button
+                android:id="@+id/dialogButtonNO"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:text="@string/cancel"
+                android:background="@drawable/login_button"
+                android:textColor="@color/login_button_text_color"
+                android:textSize="22sp"
+                />
 
-        />
+                <Button
+                android:id="@+id/dialogButtonLocal"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:text="@string/create_new"
+                android:background="@drawable/login_button"
+                android:textColor="@color/login_button_text_color"
+                android:textSize="22sp"
+
+                />
+
+                <Button
+                android:id="@+id/dialogButtonCloud"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:text="@string/browse_templates"
+                android:background="@drawable/login_button"
+                android:textColor="@color/login_button_text_color"
+                android:textSize="22sp"
+
+                />
           
 
  </LinearLayout>

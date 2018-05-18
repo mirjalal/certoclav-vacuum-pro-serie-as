@@ -160,10 +160,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_weight="0"
-            android:background="@drawable/button_bg_green_blue"
+            android:background="@drawable/login_button"
             android:text="@string/apply"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textColor="@color/login_button_text_color"
+            android:textSize="22sp" />
 
     </LinearLayout>
 </LinearLayout>

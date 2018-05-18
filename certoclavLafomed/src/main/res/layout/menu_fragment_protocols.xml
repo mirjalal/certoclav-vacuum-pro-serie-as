@@ -69,29 +69,29 @@
 
                 <ImageView
                     android:id="@+id/imageViewDownloadProtocol"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:layout_marginRight="10dp"
                     android:src="@drawable/bg_download"
                     android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/checkboxGraphListTrace"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:layout_marginRight="10dp"
                     android:src="@drawable/bg_graph" />
 
                 <ImageView
                     android:id="@+id/imageViewPrint"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:src="@drawable/bg_print" />
 
                 <ImageView
                     android:id="@+id/imageViewScan"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:layout_marginLeft="15dp"
                     android:src="@drawable/bg_scan" />
 

@@ -182,7 +182,8 @@
         <activity
             android:name=".menu.MenuMain"
             android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
         <activity
             android:name=".sterilisationassistant.AssistantActivity"
             android:screenOrientation="sensorLandscape" />

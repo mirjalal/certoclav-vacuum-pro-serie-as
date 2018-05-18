@@ -42,9 +42,10 @@
                 android:id="@+id/buttonStart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/button_bg_green_blue"
+                android:background="@drawable/login_button"
                 android:text="@string/start"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/login_button_text_color"
+                android:textSize="22sp"/>
 
         </LinearLayout>
 

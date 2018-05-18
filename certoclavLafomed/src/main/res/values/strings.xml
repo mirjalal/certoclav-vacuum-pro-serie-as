@@ -125,9 +125,9 @@
     <string name="settings_batch_number">Batch Number</string>
     <string name="settings_software_version">Software Version</string>
     <string name="settings_contact_via_mail">Contact via mail</string>
-    <string name="settings_contact_certoclav_support_via_mail">Contact Raypa Support via mail</string>
+    <string name="settings_contact_certoclav_support_via_mail">Contact RaypaSupport via mail</string>
     <string name="settings_contact_via_phone">Contact via phone</string>
-    <string name="settings_request_a_callback_from_certoclav_support">Request a callback from Raypa Support</string>
+    <string name="settings_request_a_callback_from_certoclav_support">Request a callback from RaypaSupport</string>
     <string name="settings_langauge">Language</string>
     <string name="messages">MESSAGES</string>
     <string name="shop">SHOP</string>
@@ -136,7 +136,7 @@
     <string name="minutes_remaining"> </string>
     <string name="no_notifications">NO NOTIFICATIONS</string>
     <string name="temperature_in_c">Temperature in °C</string>
-    <string name="sterilisation">STERILISATION</string>
+    <string name="sterilisation">STERILIZATION</string>
     <string name="logging">LOGGING</string>
     <string name="information">INFORMATION</string>
     <string name="intro_account_created">account created</string>
@@ -233,7 +233,7 @@
     <string name="do_you_really_want_to_delete_">"Do you really want to delete "</string>
     <string name="server_not_reachable">Maintanance of RaypaCloud server</string>
     <string name="internet_not_connected">Internet not available</string>
-    <string name="you_are_not_registered_at_certocloud_com">You are not registered at www.certocloud.com</string>
+    <string name="you_are_not_registered_at_certocloud_com">You are not registered at www.raypacloud.com</string>
     <string name="please_log_in_with_your_certocloud_account_first">Please log in with your RaypaCloud Account first</string>
     <string name="please_connect_to_internet">Please connect to internet!</string>
     <string name="do_you_want_to_switch_to_offline_mode_new_protocols_will_be_uploaded_to_certocloud_after_next_successful_login">Do you want to switch to offline mode? New protocols will be uploaded to RaypaCloud after next successful login</string>
@@ -392,7 +392,7 @@
     <string name="if_maintenance_is_required_please_notify_me">If maintenance is required, please notify me</string>
     <string name="by_phone">by phone</string>
     <string name="email_address">email address</string>
-    <string name="send_mail_to_certosupport">SEND MAIL TO CERTOSUPPORT</string>
+    <string name="send_mail_to_certosupport">Send an email to RaypaSupport or share this screen</string>
     <string name="print_label">Print label</string>
     <string name="login_failed_title">Login failed</string>
     <string name="new_password">New Password</string>
