@@ -45,6 +45,15 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
+        prefs.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                if(key.equals(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL)){
+                    findPreference(AppConstants.PREFERENCE_KEY_SERIAL_NUMBER).setSummary(Autoclave.getInstance().getController().getSerialnumber());
+                }
+            }
+        });
+
 
 //Device Key
         String deviceKey = "-";
@@ -57,18 +66,22 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
         if (!AppConstants.isIoSimulated)
             getPreferenceScreen().removePreference(findPreference(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL));
         else {
-            if (!prefs.contains(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL))
+            if (!prefs.contains(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL)) {
                 ((ListPreference) findPreference(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL)).setValueIndex(0);
+            }
+
             findPreference(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL).setSummary(prefs.getString(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL, "Not defined"));
             findPreference(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     findPreference(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL).setSummary(newValue.toString());
-                    findPreference(AppConstants.PREFERENCE_KEY_SERIAL_NUMBER).setSummary(Autoclave.getInstance().getController().getSerialnumber());
                     return true;
                 }
+
             });
         }
+
+
         findPreference(AppConstants.PREFERENCE_KEY_DEVICE_KEY).setSummary(deviceKey);
 
 //Check for updates
@@ -208,7 +221,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                Toast.makeText(getActivity(), getActivity().getString(R.string.please_use_secondary_lcd_screen_to_change_the_time), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(), getActivity().getString(R.string.please_use_secondary_lcd_screen_to_change_the_time), Toast.LENGTH_LONG).show();
                 return false;
             }
         });

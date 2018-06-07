@@ -9,6 +9,7 @@ import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -54,6 +55,7 @@ public class DownloadUtils {
      *
      * dirType the directory type to pass to Environment.getExternalStoragePublicDirectory(String). For example Environment.DOWNLOAD_DIRECTORY
      */
+    long requestDownloadId;
     public void Download(List<String> urls) {
         //String dirType = Environment.DIRECTORY_DOWNLOADS;
         //urls.clear();
@@ -64,10 +66,22 @@ public class DownloadUtils {
         downloadReferences = new ArrayList<Long>();
 
 
+
         barProgressDialog = new SweetAlertDialog(mContext, SweetAlertDialog.PROGRESS_TYPE);
         barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         barProgressDialog.setTitleText(mContext.getString(R.string.downloading));
-        barProgressDialog.setCancelable(false);
+        barProgressDialog.setCancelable(true);
+        barProgressDialog.showCancelButton(true);
+        barProgressDialog.setCancelText(mContext.getString(R.string.cancel));
+        barProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                barProgressDialog.dismissWithAnimation();
+
+                    downloadManager.remove(requestDownloadId);
+
+            }
+        });
         barProgressDialog.show();
       /*  barProgressDialog = new ProgressDialog(mContext);
 
@@ -88,6 +102,7 @@ public class DownloadUtils {
                 String nameOfFile = filepathArray[filepathArray.length - 1];
                 Log.e("DownloadUtils", url);
                 Log.e("DownloadUtils", "download file.. filename: " + nameOfFile);
+
                 DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
                 request.setDescription(nameOfFile);
 
@@ -121,6 +136,7 @@ public class DownloadUtils {
                 // get download service and enqueue file
 
                 final long downloadReference = downloadManager.enqueue(request);
+                requestDownloadId = downloadReference;
                 downloadReferences.add(downloadReference);
 
 
