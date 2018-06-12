@@ -526,7 +526,13 @@ public class Helper {
                 if (currentProgram < MAX_PROGRAM_COUNT && response != null) {
 
                     Autoclave.getInstance().getProfilesFromAutoclave().add((Profile) response);
-                    ReadAndParseSerialService.getInstance().getProgram(++currentProgram);
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ReadAndParseSerialService.getInstance().getProgram(++currentProgram);
+                        }
+                    }, 1000);
+
                     Log.e("Helper", "PUT PROFILE " + ((Profile) response).getName());
 
                     if (runnableTimeout != null)

@@ -33,9 +33,9 @@ public class AppConstants {
 
     /*TABLET AND AUTOCLAVE SELECTION*/
 
-    public static final String TABLET_TYPE = TABLET_TYPE_FAYTECH;//TABLET_TYPE_LILLIPUT;
+    public static final String TABLET_TYPE = TABLET_TYPE_LILLIPUT; //TABLET_TYPE_FAYTECH
     public static final String MODEL_CURRENT = MODEL_RAYPA_TLV;
-    public static Boolean isIoSimulated = true;
+    public static Boolean isIoSimulated = false;
     public final static String MODEL = "TLV-150FA";
     public static final String SIMULATED_SAVETY_KEY = "FF000003957204830";//63FBE2987481D9B6A";
 

@@ -57,6 +57,14 @@ public class AssistantActivity extends CertoclavSuperActivity implements Profile
             navigationbar.setHeadText(Autoclave.getInstance().getProfile().getName());
         }
         videoView = (VideoView) findViewById(R.id.sterilisation_assistant_videoview);
+        videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                com.certoclav.app.model.Log.e("video", "setOnErrorListener ");
+                return true;
+            }
+        });
         textStepDescription = (TextView) findViewById(R.id.sterilisation_assistant_text_description);
         buttonNext = (Button) findViewById(R.id.sterilisation_assistant_button_next);
 

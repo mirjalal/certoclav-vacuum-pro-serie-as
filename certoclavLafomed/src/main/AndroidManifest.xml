@@ -8,7 +8,7 @@
     <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="26"
-        tools:overrideLibrary="com.teamviewer.sdk.screensharing" />
+        tools:overrideLibrary="com.teamviewer.sdk.screensharing,com.android.databinding.library.baseAdapters,com.android.databinding.library,android.support.compat,android.arch.lifecycle,android.support.coreutils" />
 
     <uses-permission android:name="android.permission.ACCESS_CHECKIN_PROPERTIES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
