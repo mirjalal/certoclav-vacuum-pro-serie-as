@@ -6,9 +6,9 @@
 
     <string-array name="email_subjects_array">
         <item>Request for screen share appointment</item>
-        <item>Protocol Managment</item>
-        <item>User Managment</item>
-        <item>Program Managment</item>
+        <item>Protocol Management</item>
+        <item>User Management</item>
+        <item>Program Management</item>
         <item>Software Updates</item>
     </string-array>
     <string name="do_you_really_want_to_logout">Do you really want to log out?</string>
