@@ -69,7 +69,6 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     Double offsetPress = 0d;
 
 
-
     private static final int HANDLER_ERROR = -1;
     private static final int HANDLER_MSG_CALIBRATION = 1;
     private static final int HANDLER_MSG_DATA = 2;
@@ -80,7 +79,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 
     private Handler handlerGetData = new Handler();
     private Boolean runnableGetDataIsAlive = false;
-
+    private List<SerialReadWriteListener> listeners;
 
 
     private Runnable runnableGetData = new Runnable() {
@@ -90,22 +89,22 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                 runnableGetDataIsAlive = true;
                 if (AppConstants.isIoSimulated) {
                     simulateMessage();
-                }else {
+                } else {
 
-                    if (commandQueue.size() == 0)
+                    if (commandQueue.size() == 0) {
+                        commandSent(COMMANDS.CREATE(COMMANDS.GET_DATA));
                         serialService.sendMessage(COMMANDS.CREATE(COMMANDS.GET_DATA));
-                    else
+                    } else
                         commandQueue.clear();
                 }
 
                 handlerGetData.postDelayed(this, 1000);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 runnableGetDataIsAlive = false;
             }
         }
     };
-
 
 
     static class COMMANDS {
@@ -144,15 +143,11 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     }
 
 
-
-
-
-
-
     private void sendCommand(String command) {
         commandQueue.add(command);
 
         if (commandQueue.size() > 0) {
+            commandSent(commandQueue.get(0));
             serialService.sendMessage(commandQueue.get(0));
             Log.e("Serialservice", "CREATE: " + commandQueue.get(0));
             commandQueue.remove(0);
@@ -162,18 +157,14 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     }
 
 
-
-
-    public void checkGetDataRunnableIsAlive(){
+    public void checkGetDataRunnableIsAlive() {
 
         Log.e("ReadAndParse", "runnableIsAlive: " + runnableGetDataIsAlive);
-        if(runnableGetDataIsAlive == false){
-      //      handlerGetData.postDelayed(runnableGetData, 1000);
+        if (runnableGetDataIsAlive == false) {
+            //      handlerGetData.postDelayed(runnableGetData, 1000);
         }
 
     }
-
-
 
 
     private static ReadAndParseSerialService instance = new ReadAndParseSerialService();
@@ -293,17 +284,18 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     private ReadAndParseSerialService() {
         String serialPathAutoclave = "";
         int serialBaudAutoclave = 9600;
-        if(AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH)) {
+        if (AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH)) {
             serialPathAutoclave = "/dev/ttyS4";
-        }else{
+        } else {
             serialPathAutoclave = "/dev/ttymxc3";
         }
-        if(AppConstants.MODEL_CURRENT.equals(AppConstants.MODEL_RAYPA_TLV)) {
+        if (AppConstants.MODEL_CURRENT.equals(AppConstants.MODEL_RAYPA_TLV)) {
             serialBaudAutoclave = 38400;
-        }else{
+        } else {
             serialBaudAutoclave = 9600;
         }
 
+        listeners = new ArrayList<>();
         serialService = new SerialService(serialPathAutoclave, serialBaudAutoclave);
         handlerGetData.post(runnableGetData);
 
@@ -317,13 +309,13 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 
     @Override
     public void onMessageReceived(String message) {
-
+        responseRead(message);
         try {
             message = new String(message.getBytes(), "UTF-8");
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e("ReadAndParse", "error transform to utf-8");
         }
-           Log.e("ReadAndParse", "received: " + message);
+        Log.e("ReadAndParse", "received: " + message);
         //TODO if need add a checksum error
         if (AppConstants.CHECK_CHECKSUM && !checkChecksum(message)) {
             com.certoclav.app.model.Log.e("Checksum failed!\n" + message);
@@ -433,16 +425,16 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                 case RESPONSES.ACK_PROG:
 
                     Float pressure = 0f;
-                    if(Float.valueOf(responseParameters[INDEX_PROGRAM_TEMP])>=100){
-                        pressure = (float) (0.006112*Math.exp(   (17.62*Float.valueOf(responseParameters[INDEX_PROGRAM_TEMP]) )/(243.12+Float.valueOf(responseParameters[INDEX_PROGRAM_TEMP]))   )  -1);
-                        pressure = ((int) (pressure*100))/100.0f;
+                    if (Float.valueOf(responseParameters[INDEX_PROGRAM_TEMP]) >= 100) {
+                        pressure = (float) (0.006112 * Math.exp((17.62 * Float.valueOf(responseParameters[INDEX_PROGRAM_TEMP])) / (243.12 + Float.valueOf(responseParameters[INDEX_PROGRAM_TEMP]))) - 1);
+                        pressure = ((int) (pressure * 100)) / 100.0f;
                     }
 
 
                     if (responseParameters.length == NUMBER_OF_PROGRAM_RESPONSE_PARAMETERS) {
                         Profile profile = new Profile("",
                                 1,
-                                responseParameters[INDEX_PROGRAM_NAME].replaceAll("[^ -~]", "").replace("_"," "),
+                                responseParameters[INDEX_PROGRAM_NAME].replaceAll("[^ -~]", "").replace("_", " "),
                                 Integer.valueOf(responseParameters[INDEX_PROGRAM_PULSE_VACUUM]),
                                 Integer.valueOf(responseParameters[INDEX_PROGRAM_STERILIZATION_TIME]),
                                 Float.valueOf(responseParameters[INDEX_PROGRAM_TEMP]),
@@ -492,8 +484,8 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         boolean isWaterLevelBinFull = false;
         boolean isWaterQualityBad = false;
         boolean isStopedByUser = false;
-        SimpleDateFormat simpleDate =  new SimpleDateFormat("yyyy.MM.dd");
-        SimpleDateFormat simpleTime =  new SimpleDateFormat("hh:mm:ss");
+        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy.MM.dd");
+        SimpleDateFormat simpleTime = new SimpleDateFormat("hh:mm:ss");
         date = simpleDate.format(new Date());
         time = simpleTime.format(new Date());
 
@@ -583,5 +575,31 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
             else
                 callback.onError(new ErrorModel(null, Integer.valueOf(response.toString())), requestId);
         }
+    }
+
+    public interface SerialReadWriteListener {
+        void onRead(String message);
+
+        void onWrote(String message);
+    }
+
+    public void addSerialReadWriteListener(SerialReadWriteListener listener) {
+        if (!listeners.contains(listener))
+            listeners.add(listener);
+    }
+
+    public void removeSerialReadWriteListener(SerialReadWriteListener listener) {
+        if (listeners.contains(listener))
+            listeners.remove(listener);
+    }
+
+    private void commandSent(String message) {
+        for (SerialReadWriteListener listener : listeners)
+            listener.onWrote(message);
+    }
+
+    private void responseRead(String message) {
+        for (SerialReadWriteListener listener : listeners)
+            listener.onRead(message);
     }
 }

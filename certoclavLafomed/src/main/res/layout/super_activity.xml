@@ -7,12 +7,28 @@
 
 
     <RelativeLayout
-        android:id="@+id/main_content"
+        android:id="@+id/layout_for_debugger"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
 
+        <RelativeLayout
+            android:id="@+id/main_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
+
+        </RelativeLayout>
+
+
+        <fragment
+            android:id="@+id/fragment_debugger_uart"
+            android:name="com.certoclav.app.fragments.DebuggerUARTFragment"
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_height="300dp"
+            android:layout_weight="1" />
     </RelativeLayout>
 
     <include
@@ -22,5 +38,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_weight="0" />
+
 
 </LinearLayout>

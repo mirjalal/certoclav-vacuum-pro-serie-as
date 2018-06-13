@@ -568,28 +568,28 @@
     <string name="program_8_description">134\u00B0C   2.1 bar   4min\nSingle and double wrapped solids and waste</string>
 
 
-    <string name="program_13_name"       >Test Bowie-Dick</string>
+    <string name="program_13_name">Test Bowie-Dick</string>
     <string name="program_13_description">134\u00B0C   2.1 bar   4min\nTest to evaluate the capacity\nof penetration of the steam\nin hollow loads</string>
 
-    <string name="program_14_name"       >Test VACUUM</string>
+    <string name="program_14_name">Test VACUUM</string>
     <string name="program_14_description">Vacuum Test, recommended for maintenance</string>
 
-    <string name="program_15_name"       >Porous-134</string>
+    <string name="program_15_name">Porous-134</string>
     <string name="program_15_description">134\u00B0C   2.1 bar   4min\nPorous instruments and textiles, wrapped or unwrapped</string>
 
-    <string name="program_16_name"       >Prion-134</string>
+    <string name="program_16_name">Prion-134</string>
     <string name="program_16_description">134\u00B0C   2.1 bar   18min\nPrion sterilization</string>
 
-    <string name="program_17_name"       >Porous-121</string>
+    <string name="program_17_name">Porous-121</string>
     <string name="program_17_description">121\u00B0C   1.1 bar   20min\nPorous instruments and textiles, wrapped or unwrapped</string>
 
-    <string name="program_18_name"       >Hollow-134\u00B0C</string>
+    <string name="program_18_name">Hollow-134\u00B0C</string>
     <string name="program_18_description">134\u00B0C   2.1 bar   4min\nHollow instruments, wrapped or unwrapped</string>
 
-    <string name="program_19_name"       >Hollow-121\u00B0C</string>
+    <string name="program_19_name">Hollow-121\u00B0C</string>
     <string name="program_19_description">121\u00B0C   1.1 bar   20min\nHollow instruments, wrapped or unwrapped</string>
 
-    <string name="program_20_name"       >Wrapped-134\u00B0C</string>
+    <string name="program_20_name">Wrapped-134\u00B0C</string>
     <string name="program_20_description">134\u00B0C   2.1 bar   4min\nSingle and double wrapped solids and waste</string>
 
     <string name="program_9_name">Wrapped-121\u00B0C</string>
@@ -679,5 +679,8 @@
     <string name="fast_cooling">Fast Cooling</string>
     <string name="fast">Fast</string>
     <string name="preferences_autoclave_model">Autoclave Models</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
