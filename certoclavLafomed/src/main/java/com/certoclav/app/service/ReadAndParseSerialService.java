@@ -152,7 +152,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
             Log.e("Serialservice", "CREATE: " + commandQueue.get(0));
             commandQueue.remove(0);
             handlerGetData.removeCallbacks(runnableGetData);
-            handlerGetData.postDelayed(runnableGetData, 1000);
+            handlerGetData.postDelayed(runnableGetData, 5000);
         }
     }
 
@@ -310,6 +310,11 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     @Override
     public void onMessageReceived(String message) {
         responseRead(message);
+
+        //Wait 1 seconds before sending GET_DATA command after sending other commands
+        handlerGetData.removeCallbacks(runnableGetData);
+        handlerGetData.postDelayed(runnableGetData, 1000);
+
         try {
             message = new String(message.getBytes(), "UTF-8");
         } catch (Exception e) {
@@ -423,6 +428,10 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                     break;
 
                 case RESPONSES.ACK_PROG:
+
+
+                    handlerGetData.removeCallbacks(runnableGetData);
+                    handlerGetData.postDelayed(runnableGetData, 4000);
 
                     Float pressure = 0f;
                     if (Float.valueOf(responseParameters[INDEX_PROGRAM_TEMP]) >= 100) {
