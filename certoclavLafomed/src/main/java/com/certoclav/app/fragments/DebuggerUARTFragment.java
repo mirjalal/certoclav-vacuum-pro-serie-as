@@ -51,13 +51,31 @@ public class DebuggerUARTFragment extends Fragment implements ReadAndParseSerial
     }
 
     @Override
-    public void onRead(String message) {
-
-        binding.textViewLogs.append("<< " + message + "");
+    public void onRead(final String message) {
+        try {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    binding.textViewLogs.append("<< " + message + "");
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void onWrote(String message) {
-        binding.textViewLogs.append(">> " + message + "");
+    public void onWrote(final String message) {
+        try {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    binding.textViewLogs.append(">> " + message + "");
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }
