@@ -52,6 +52,7 @@ public class DebuggerUARTFragment extends Fragment implements ReadAndParseSerial
 
     @Override
     public void onRead(String message) {
+
         binding.textViewLogs.append("<< " + message + "");
     }
 

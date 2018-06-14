@@ -312,6 +312,7 @@ public class Autoclave extends Observable {
     private Autoclave() {
         data = new AutoclaveData();
         updateSimulatedPrograms();
+        controller = new Controller("unknown", "unknown", "unknown", "unknown", 0, "unknown");
     }
 
     private void updateSimulatedPrograms() {

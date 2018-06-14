@@ -1018,65 +1018,7 @@ public class DatabaseService {
         }
     }
 
-    public void fillDatabaseWithProgramIfEmpty() {
 
-   try{
-
-            Controller controller = null;
-
-            if (getControllers() != null) {
-                if (getControllers().size() == 0) {
-                    controller = Autoclave.getInstance().getController();
-                    insertController(controller);
-                } else {
-                    controller = getControllers().get(0);
-                }
-            } else {
-                controller = new Controller("unknown", "unknown", "unknown", "unknown", 0, "unknown");
-                Autoclave.getInstance().setController(controller);
-                insertController(controller);
-            }
-
-
-
-            //NO NEED TO INSERT PROFILES: THE STANDARD PROFILES ARE IN AUTOCLAVE.java
-            /*
-            //Standardprofile
-            Profile profile1 = new Profile("", 1, "134 \u00B0C SOLID", 1, 4, 134, 210, 0, 3, "134 \u00B0C   2.1bar   4min\nSolid instruments and textiles\nWrapped or unwrapped", true, true, false, controller, 1);
-            Profile profile2 = new Profile("", 1, "134 \u00B0C POROUS", 3, 4, 134, 210, 0, 7, "134 \u00B0C   2.1bar   4min\nPorous instruments and textiles\nWrapped or unwrapped", true, true, false, controller, 2);
-            Profile profile3 = new Profile("", 1, "134 \u00B0C HOLLOW", 3, 4, 134, 210, 0, 10, "134 \u00B0C   2.1bar   4min\nHollow instruments\nWrapped or unwrapped", true, true, false, controller, 3);
-            Profile profile4 = new Profile("", 1, "121 \u00B0C SOLID", 1, 20, 121, 110, 0, 3, "121 \u00B0C   1.1bar   20min\nSolid instruments and textiles\nWrapped or unwrapped", true, true, false, controller, 4);
-            Profile profile5 = new Profile("", 1, "121 \u00B0C POROUS", 3, 20, 121, 110, 0, 7, "121 \u00B0C   1.1bar   20min\nPorous instruments and textiles\nWrapped or unwrapped", true, true, false, controller, 5);
-            Profile profile6 = new Profile("", 1, "121 \u00B0C HOLLOW", 3, 20, 121, 110, 0, 10, "121 \u00B0C   1.1bar   20min\nHollow instruments\nWrapped or unwrapped", true, true, false, controller, 6);
-            Profile profile7 = new Profile("", 1, "USER DEFINED", 3, 5, 134, 210, 0, 10, "Vacuum times: User defined\nSterilization temperature: User defined\nDry time: User defined", true, true, false, controller, 7);
-            Profile profile8 = new Profile("", 1, "BD HELIX TEST", 3, 4, 134, 210, 0, 7, "Test to evaluate the capacity\nof penetration of the steam\nin hollow loads", true, true, false, controller, 8);
-            Profile profile9 = new Profile("", 1, "VACUUM TEST", 0, 0, 0, -80, 15, 0, "-0.8bar   15min\nVacuum Test\nRecommended on maintenance", true, true, false, controller, 9);
-            Profile profile10 = new Profile("", 1, "CLEAN", 3, 5, 105, 20, 0, 10, "105 \u00B0C   0.2bar   5min\nClean the autoclave", true, true, false, controller, 10);
-            Profile profile11 = new Profile("", 1, "PRION", 3, 19, 135, 210, 0, 10, "134 \u00B0C   2.1bar   19min\nPrion sterilization", true, true, false, controller, 11);
-            Profile profile12 = null;
-            if (AppConstants.IS_CERTOASSISTANT == false) {
-                profile12 = new Profile("", 1, "LIQUID", 1, 20, 121, 110, 0, 0, "Liquid sterilization\n121 \u00B0C   1.1bar   20min\nWith media sensor", true, true, true, controller, 12);
-            }
-
-            int result = 0;
-            result = insertProfile(profile1);
-            result = insertProfile(profile2);
-            result = insertProfile(profile3);
-            result = insertProfile(profile4);
-            result = insertProfile(profile5);
-            result = insertProfile(profile6);
-            result = insertProfile(profile7);
-            result = insertProfile(profile8);
-            result = insertProfile(profile9);
-            result = insertProfile(profile10);
-            result = insertProfile(profile11);
-
-            result = insertProfile(profile12);
-            */
-        } catch (Exception e) {
-       e.printStackTrace();
-        }
-    }
 
 
 }
