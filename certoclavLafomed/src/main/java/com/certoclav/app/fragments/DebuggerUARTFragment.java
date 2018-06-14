@@ -12,6 +12,9 @@ import com.certoclav.app.R;
 import com.certoclav.app.databinding.FragmentDebuggerUartBinding;
 import com.certoclav.app.service.ReadAndParseSerialService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DebuggerUARTFragment extends Fragment implements ReadAndParseSerialService.SerialReadWriteListener {
 
     private FragmentDebuggerUartBinding binding;
@@ -50,32 +53,37 @@ public class DebuggerUARTFragment extends Fragment implements ReadAndParseSerial
         ReadAndParseSerialService.getInstance().removeSerialReadWriteListener(this);
     }
 
+    private List<String> logs = new ArrayList<>();
+    private final static int MAX_LOG_COUNT = 15;
+
     @Override
     public void onRead(final String message) {
-        try {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    binding.textViewLogs.append("<< " + message + "");
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        logs.add("<< " + message + "");
+        updateLogs();
     }
 
     @Override
     public void onWrote(final String message) {
+        logs.add(">> " + message + "");
+        updateLogs();
+    }
+
+    private void updateLogs() {
+        if (logs.size() > MAX_LOG_COUNT)
+            logs.remove(0);
+        final StringBuilder log = new StringBuilder();
+        for (String l : logs)
+            log.append(l);
+
         try {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    binding.textViewLogs.append(">> " + message + "");
+                    binding.textViewLogs.setText(log.toString());
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }
