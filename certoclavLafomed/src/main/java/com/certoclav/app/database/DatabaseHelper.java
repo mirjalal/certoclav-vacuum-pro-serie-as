@@ -34,6 +34,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<Controller, Integer> controllerDao = null;
     private Dao<Video, Integer> videoDao = null;
     private Dao<UserController, Integer> userControllerDao = null;
+    private Dao<AuditLog, Integer> auditLogDao;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION, R.raw.ormlite_config);
@@ -55,6 +56,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Controller.class);
             TableUtils.createTable(connectionSource, Video.class);
             TableUtils.createTable(connectionSource, UserController.class);
+            TableUtils.createTable(connectionSource, AuditLog.class);
 
         } catch (SQLException e) {
             Log.e(DatabaseHelper.class.getName(), "Can't create database", e);
@@ -69,7 +71,15 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource, int oldVersion, int newVersion) {
-        db.execSQL("ALTER TABLE profile ADD COLUMN " + Profile.FIELD_LAST_USED_TIME + " INTEGER DEFAULT 0");
+        if (oldVersion < 2)
+            db.execSQL("ALTER TABLE profile ADD COLUMN " + Profile.FIELD_LAST_USED_TIME + " INTEGER DEFAULT 0");
+        if (oldVersion < 3) {
+            try {
+                TableUtils.createTable(connectionSource, AuditLog.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
@@ -105,6 +115,17 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             }
         }
         return protocolDao;
+    }
+
+    public Dao<AuditLog, Integer> getAuditDao() {
+        if (auditLogDao == null) {
+            try {
+                auditLogDao = getDao(AuditLog.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return auditLogDao;
     }
 
     public Dao<ProtocolEntry, Integer> getProtocolEntryDao() {
@@ -173,6 +194,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         profileDao = null;
         protocolDao = null;
         protocolEntryDao = null;
+        auditLogDao = null;
         messageDao = null;
         controllerDao = null;
         videoDao = null;

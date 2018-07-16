@@ -42,6 +42,7 @@ public class DatabaseService {
     Dao<Message, Integer> messageDao;
     Dao<Controller, Integer> controllerDao;
     Dao<Video, Integer> videoDao;
+    Dao<AuditLog, Integer> auditLogDao;
     Dao<UserController, Integer> userControllerDao; //helper Dao in order to realize m,n table between User and Controller table
 
     private DatabaseHelper mDatabaseHelper;
@@ -59,6 +60,7 @@ public class DatabaseService {
 
         profileDao = getHelper().getProfileDao();
         userDao = getHelper().getUserDao();
+        auditLogDao = getHelper().getAuditDao();
         protocolDao = getHelper().getProtocolDao();
         protocolEntryDao = getHelper().getProtocolEntryDao();
         messageDao = getHelper().getMessageDao();
@@ -491,6 +493,36 @@ public class DatabaseService {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    public int addAuditLog(AuditLog auditLog) {
+
+        try {
+            int x = auditLogDao.create(auditLog);
+            return x;
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public List<AuditLog> getAuditLogs(User user, String orderBy, boolean isAsc) {
+        try {
+
+            /** query for object in the database with id equal profileId */
+            QueryBuilder<AuditLog, Integer> query = auditLogDao.queryBuilder();
+            if (user != null)
+                query.where().eq(AuditLog.FIELD_USER_ID, user.getUserId());
+            if (orderBy != null)
+                query.orderBy(orderBy, isAsc);
+            return query.query();
+        } catch (SQLException e) {
+            Log.e(TAG, "Database exception", e);
+        } catch (Exception e) {
+            Log.e(TAG, "Database exception", e);
+        }
+
+        return null;
     }
 
     public boolean isProtcolExists(String cloudId) {
@@ -1017,8 +1049,6 @@ public class DatabaseService {
             e.printStackTrace();
         }
     }
-
-
 
 
 }

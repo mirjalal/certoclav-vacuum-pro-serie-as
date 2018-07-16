@@ -182,8 +182,7 @@
         <activity
             android:name=".menu.MenuMain"
             android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateAlwaysHidden">
-        </activity>
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
         <activity
             android:name=".sterilisationassistant.AssistantActivity"
             android:screenOrientation="sensorLandscape" />
@@ -267,7 +266,8 @@
             android:name="io.fabric.ApiKey"
             android:value="0e8d486e3f12f90c374d72e9854c12ebe4fe950e" />
 
-        <activity android:name=".activities.ProgramTimerActivity"></activity>
+        <activity android:name=".activities.ProgramTimerActivity" />
+        <activity android:name=".menu.AuditLogActivity"></activity>
     </application>
 
 </manifest>
