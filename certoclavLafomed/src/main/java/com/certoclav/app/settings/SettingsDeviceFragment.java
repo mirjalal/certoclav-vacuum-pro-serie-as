@@ -24,6 +24,7 @@ import com.certoclav.app.listener.SensorDataListener;
 import com.certoclav.app.menu.ChangeAdminPasswordAccountActivity;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveData;
+import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.util.DownloadUtils;
 import com.certoclav.library.util.ExportUtils;
@@ -274,6 +275,16 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
+        }
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        if ((!Autoclave.getInstance().getUser().isAdmin() || Autoclave.getInstance().getState() == AutoclaveState.LOCKED) &&
+                prefs.getBoolean(ApplicationController.getContext().getString(R.string.preferences_lockout_device),
+                        ApplicationController.getContext().getResources().getBoolean(R.bool.preferences_lockout_device))) {
+            Toast.makeText(getActivity(), R.string.these_settings_are_locked_by_the_admin, Toast.LENGTH_SHORT).show();
+            getPreferenceScreen().setEnabled(false);
+        } else {
+            getPreferenceScreen().setEnabled(true);
         }
 
 

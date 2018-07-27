@@ -5,7 +5,11 @@ import android.support.v4.app.Fragment;
 
 import com.certoclav.app.R;
 import com.certoclav.app.activities.CertoclavSuperActivity;
+import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
+import com.certoclav.app.util.AuditLogger;
+
+import java.util.Locale;
 
 /**
  * An activity representing a list of Items. This activity has different

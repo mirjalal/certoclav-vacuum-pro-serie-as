@@ -7,26 +7,31 @@
     //Printing options
     <bool name="preferences_print_header">true</bool>
     <bool name="preferences_print_autoclave_name">true</bool>
+    <bool name="preferences_print_program_name">true</bool>
+    <bool name="preferences_print_program_desc">true</bool>
+    <bool name="preferences_print_program_result">true</bool>
+    <bool name="preferences_print_program_data_points">true</bool>
     <bool name="preferences_print_project_name">true</bool>
     <bool name="preferences_print_application_name">true</bool>
     <bool name="preferences_print_signature">true</bool>
     <bool name="preferences_print_date">true</bool>
-    <bool name="preferences_print_balance_id">true</bool>
+    <bool name="preferences_print_autoclave_serial_number">true</bool>
     <bool name="preferences_print_user_name">true</bool>
+    <string name="preferences_print_autoclave_name_value">CertoClav Vacuum Pro</string>
 
 
     //Lockout options
+    <bool name="preferences_lockout_user_account">false</bool>
+    <bool name="preferences_lockout_network">false</bool>
+    <bool name="preferences_lockout_audit_logs">false</bool>
+    <bool name="preferences_lockout_create_user">true</bool>
+    <bool name="preferences_lockout_add_program">true</bool>
+    <bool name="preferences_lockout_device">false</bool>
+    <bool name="preferences_lockout_language">false</bool>
+    <bool name="preferences_lockout_notifications">false</bool>
+    <bool name="preferences_lockout_sterilization">false</bool>
     <bool name="preferences_lockout_calibration">false</bool>
-    <bool name="preferences_lockout_user_settings">false</bool>
-    <bool name="preferences_lockout_balance_setup">false</bool>
-    <bool name="preferences_lockout_application_modes">false</bool>
-    <bool name="preferences_lockout_weighing_units">false</bool>
     <bool name="preferences_lockout_glp">false</bool>
-    <bool name="preferences_lockout_communication">false</bool>
-    <bool name="preferences_lockout_library">false</bool>
-    <bool name="preferences_lockout_items">false</bool>
-    <bool name="preferences_lockout_recipes">false</bool>
-    <bool name="preferences_lockout_protocols">false</bool>
-    <bool name="preferences_lockout_factory_reset">false</bool>
+    <bool name="preferences_lockout_service">false</bool>
 
 </resources>

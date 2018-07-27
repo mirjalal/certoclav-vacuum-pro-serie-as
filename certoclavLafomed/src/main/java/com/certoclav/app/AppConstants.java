@@ -11,7 +11,7 @@ public class AppConstants {
     public static final Boolean APPLICATION_DEBUGGING_MODE = false;
     public static final String DEFAULT_ADMIN_PASSWORD = "admin";
     public static final String DEFAULT_CLOUD_ADMIN_PASSWORD = "master@certocloud";
-    public static final boolean SHOW_LOGS = true;
+    public static final boolean SHOW_LOGS = false;
     public static final String PREFERENCE_KEY_SERVER_TYPE = "servertype";
     public static final int PREFERENCE_KEY_SERVER_CERTOCLOUD = 1;
     public static final int PREFERENCE_KEY_SERVER_MANUAL = 2;
@@ -23,6 +23,10 @@ public class AppConstants {
     public static final String PREFERENCE_KEY_AUTOCLAVE_MODEL = "preferences_autoclave_model";
     public static final String TAG = "RAYPA";
     public static final boolean CHECK_CHECKSUM = false;
+    public static final int TEMP_MAX_INT = 135;
+    public static final int TEMP_MIN_INT = 105;
+    public static final String DELETED_PROFILE_NAME = "VOID";
+    public static final int MAX_PROGRAM_COUNT = 50;
     public static Boolean TABLET_HAS_ROOT = false;
     public static final Boolean IS_CERTOASSISTANT = false;
     public static final String TABLET_TYPE_SAMSUNGT113W = "samsungt113w";

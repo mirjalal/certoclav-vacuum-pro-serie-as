@@ -12,8 +12,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.activities.CertoclavSuperActivity;
+import com.certoclav.app.database.AuditLog;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.Profile;
 import com.certoclav.app.listener.NavigationbarListener;
@@ -22,6 +24,8 @@ import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.CertoclavNavigationbar;
 import com.certoclav.app.settings.SettingsActivity;
+import com.certoclav.app.util.AuditLogger;
+import com.certoclav.app.util.Helper;
 import com.certoclav.library.certocloud.GetConditionsService;
 import com.certoclav.library.view.ControlPagerAdapter;
 import com.certoclav.library.view.CustomViewPager;
@@ -35,6 +39,7 @@ import io.fabric.sdk.android.Fabric;
 
 public class MenuMain extends CertoclavSuperActivity implements NavigationbarListener {
 
+    public static final int REQUEST_PROGRAM_EDIT = 1;
     public static int INDEX_INFORMATION = 0;
     public static int INDEX_STERILISATION = 1;
     public static int INDEX_PROTOCOLS = 2;
@@ -79,7 +84,6 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
         mViewPager = (CustomViewPager) findViewById(R.id.pager);
 
         navigationbar = new CertoclavNavigationbar(this);
-
         navigationbar.showNavigationBar();
         navigationbar.setTabSterilisationEnabled();
 
@@ -182,6 +186,9 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
                                 public void onClick(SweetAlertDialog sDialog) {
                                     sDialog.dismissWithAnimation();
                                     Autoclave.getInstance().setState(AutoclaveState.LOCKED);
+                                    AuditLogger.addAuditLog(Autoclave.getInstance().getUser(),
+                                            AuditLogger.SCEEN_EMPTY, AuditLogger.ACTION_LOGOUT,
+                                            AuditLogger.OBJECT_EMPTY, null);
                                     Intent intent = new Intent(MenuMain.this, LoginActivity.class);
                                     startActivity(intent);
                                     finish();
@@ -207,40 +214,38 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
 
             case CertoclavNavigationbar.BUTTON_ADD:
                 DatabaseService db = new DatabaseService(MenuMain.this);
-                List<Profile> profiles = db.getProfilesWhereVisible();
+                List<Profile> profiles = Autoclave.getInstance().getProfilesFromAutoclave();
                 if (profiles != null) {
-                    if (profiles.size() >= 6) {
-                        Toast.makeText(MenuMain.this, "You can add maximum 7 programs", Toast.LENGTH_LONG);
+                    if (profiles.size() >= AppConstants.MAX_PROGRAM_COUNT) {
+                        Toast.makeText(MenuMain.this, getString(R.string.you_can_add_maximum_programs, AppConstants.MAX_PROGRAM_COUNT), Toast.LENGTH_LONG).show();
                         break;
                     }
                 }
                 try {
-                    final Dialog dialog = new Dialog(MenuMain.this);
-                    dialog.setContentView(R.layout.dialog_yes_no);
-                    dialog.setTitle("CREATE NEW PROGRAM");
 
-                    // set the custom dialog components - text, image and button
-                    TextView text = (TextView) dialog.findViewById(R.id.text);
-                    text.setText("Do you want add a Program from CertoCloud?");
-                    Button dialogButtonNo = (Button) dialog.findViewById(R.id.dialogButtonNO);
-                    dialogButtonNo.setOnClickListener(new OnClickListener() {
+                    SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(MenuMain.this, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText(getString(R.string.new_program))
+                            .setContentText(getString(R.string.do_you_really_want_to_add_new_program))
+                            .setConfirmText(getString(R.string.yes))
+                            .setCancelText(getString(R.string.cancel))
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                    Intent intent = new Intent(MenuMain.this, EditProgramActivity.class);
+                                    intent.putExtra(AppConstants.INTENT_EXTRA_PROFILE_ID, Autoclave.getInstance().getUnusedProfileIndex());
+                                    startActivityForResult(intent, REQUEST_PROGRAM_EDIT);
+                                }
+                            }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismissWithAnimation();
+                                }
+                            }).setCustomImage(R.drawable.ic_network_connection);
+                    sweetAlertDialog.setCanceledOnTouchOutside(true);
+                    sweetAlertDialog.setCancelable(true);
+                    sweetAlertDialog.show();
 
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
-                    Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-                    // if button is clicked, close the custom dialog
-                    dialogButton.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-
-                        }
-                    });
-
-                    dialog.show();
                 } catch (Exception e) {
 
                 }
@@ -271,6 +276,11 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
 
     }
 
-
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_PROGRAM_EDIT && resultCode == RESULT_OK) {
+            Helper.getPrograms(this);
+        }
+    }
 }

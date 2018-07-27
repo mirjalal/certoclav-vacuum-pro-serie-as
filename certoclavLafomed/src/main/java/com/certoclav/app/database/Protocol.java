@@ -14,6 +14,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -103,6 +104,7 @@ public class Protocol {
     private String profileDescription;
 
     private List<Profile> program;
+
 
     public Profile getProgram() {
         return (program != null && program.size() > 0) ? program.get(0) : null;
@@ -397,8 +399,13 @@ public class Protocol {
         return userEmail;
     }
 
+    public void setProtocolEntries(List<ProtocolEntry> protocolEntries) {
+        this.protocolEntries = protocolEntries;
+    }
+
     @SerializedName("entries")
     private List<ProtocolEntry> protocolEntries;
+
 
     public List<ProtocolEntry> getProtocolEntries() {
         return protocolEntries;

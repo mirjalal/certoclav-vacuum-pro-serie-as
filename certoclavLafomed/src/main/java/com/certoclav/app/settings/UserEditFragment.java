@@ -2,12 +2,15 @@ package com.certoclav.app.settings;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
@@ -19,6 +22,7 @@ import com.certoclav.app.menu.RegisterActivity;
 import com.certoclav.app.menu.RegisterCloudAccountActivity;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveState;
+import com.certoclav.library.application.ApplicationController;
 
 import java.util.List;
 

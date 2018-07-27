@@ -4,7 +4,10 @@ import android.content.Context;
 import android.database.SQLException;
 import android.util.Log;
 
+import com.certoclav.app.AppConstants;
 import com.certoclav.app.model.Autoclave;
+import com.certoclav.app.util.AuditLogger;
+import com.certoclav.app.util.Helper;
 import com.certoclav.library.bcrypt.BCrypt;
 import com.certoclav.library.certocloud.CloudUser;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
@@ -17,6 +20,7 @@ import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -44,6 +48,8 @@ public class DatabaseService {
     Dao<Video, Integer> videoDao;
     Dao<AuditLog, Integer> auditLogDao;
     Dao<UserController, Integer> userControllerDao; //helper Dao in order to realize m,n table between User and Controller table
+    //Deleted Programs to Sync in Cloud
+    Dao<DeletedProfileModel, Integer> deletedProfileDao = null;
 
     private DatabaseHelper mDatabaseHelper;
 
@@ -60,13 +66,14 @@ public class DatabaseService {
 
         profileDao = getHelper().getProfileDao();
         userDao = getHelper().getUserDao();
-        auditLogDao = getHelper().getAuditDao();
         protocolDao = getHelper().getProtocolDao();
         protocolEntryDao = getHelper().getProtocolEntryDao();
         messageDao = getHelper().getMessageDao();
         controllerDao = getHelper().getControllerDao();
         videoDao = getHelper().getVideoDao();
+        auditLogDao = getHelper().getAuditDao();
         userControllerDao = getHelper().getUserControllerDao();
+        deletedProfileDao = getHelper().getDeletedProfileDao();
 
     }
 
@@ -310,6 +317,40 @@ public class DatabaseService {
         return null;
     }
 
+    public int insertDeletedProfile(DeletedProfileModel model) {
+
+        try {
+            return deletedProfileDao.create(model);
+        } catch (java.sql.SQLException e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return -1;
+    }
+
+    public List<DeletedProfileModel> getDeletedProfiles() {
+        try {
+
+            /** query for object in the database with id equal profileId */
+            return deletedProfileDao.queryForAll();
+        } catch (SQLException e) {
+            Log.e(TAG, "Database exception", e);
+        } catch (Exception e) {
+            Log.e(TAG, "Database exception", e);
+        }
+
+        return new ArrayList<>();
+    }
+
+
+    public int deleteDeletedProfile(DeletedProfileModel model) {
+
+        try {
+            return deletedProfileDao.delete(model);
+        } catch (java.sql.SQLException e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return -1;
+    }
 
     public int updateUserIsLocal(String email_user_id, boolean isLocal) {
         try {
@@ -372,6 +413,39 @@ public class DatabaseService {
 
             /** query for object in the database with id equal profileId */
             return messageDao.queryForAll();
+        } catch (SQLException e) {
+            Log.e(TAG, "Database exception", e);
+        } catch (Exception e) {
+            Log.e(TAG, "Database exception", e);
+        }
+
+        return null;
+    }
+
+
+    public int addAuditLog(AuditLog auditLog) {
+
+        try {
+            int x = auditLogDao.create(auditLog);
+            return x;
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public List<AuditLog> getAuditLogs(User user, String orderBy, boolean isAsc) {
+        try {
+
+            /** query for object in the database with id equal profileId */
+            QueryBuilder<AuditLog, Integer> query = auditLogDao.queryBuilder();
+            if (user != null)
+                query.where().eq(AuditLog.FIELD_USER_ID, user.getUserId());
+            if (orderBy != null)
+                query.orderBy(orderBy, isAsc);
+            else
+                query.orderBy(AuditLog.FIELD_AUDIT_ID, false);
+            return query.query();
         } catch (SQLException e) {
             Log.e(TAG, "Database exception", e);
         } catch (Exception e) {
@@ -495,36 +569,6 @@ public class DatabaseService {
         return -1;
     }
 
-    public int addAuditLog(AuditLog auditLog) {
-
-        try {
-            int x = auditLogDao.create(auditLog);
-            return x;
-        } catch (java.sql.SQLException e) {
-            e.printStackTrace();
-        }
-        return -1;
-    }
-
-    public List<AuditLog> getAuditLogs(User user, String orderBy, boolean isAsc) {
-        try {
-
-            /** query for object in the database with id equal profileId */
-            QueryBuilder<AuditLog, Integer> query = auditLogDao.queryBuilder();
-            if (user != null)
-                query.where().eq(AuditLog.FIELD_USER_ID, user.getUserId());
-            if (orderBy != null)
-                query.orderBy(orderBy, isAsc);
-            return query.query();
-        } catch (SQLException e) {
-            Log.e(TAG, "Database exception", e);
-        } catch (Exception e) {
-            Log.e(TAG, "Database exception", e);
-        }
-
-        return null;
-    }
-
     public boolean isProtcolExists(String cloudId) {
         if (cloudId.length() <= 0) return false;
 
@@ -602,7 +646,13 @@ public class DatabaseService {
     public int insertUser(User user) {
 
         try {
-            return userDao.create(user);
+            int result = userDao.create(user);
+            if (result != -1)
+                AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                        AuditLogger.ACTION_USER_CREATED,
+                        AuditLogger.OBJECT_EMPTY,
+                        user.getEmail());
+            return result;
         } catch (java.sql.SQLException e) {
             e.printStackTrace();
         }
@@ -724,6 +774,31 @@ public class DatabaseService {
         return null;
     }
 
+
+    /**
+     * Retrieves all records from the table Profiles.
+     *
+     * @return the list of all profiles in the db
+     */
+    public List<Profile> getProfiles(int user_id) {
+        try {
+            final Dao<Profile, Integer> profileDao = mDatabaseHelper
+                    .getProfileDao();
+            QueryBuilder qb = profileDao.queryBuilder();
+            qb.where().eq("user_id", user_id);
+            qb.orderBy(FIELD_LAST_USED_TIME, false);
+            /** query for object in the database with id equal profileId */
+            return qb.query();
+        } catch (SQLException e) {
+            Log.e(TAG, "Database exception", e);
+        } catch (Exception e) {
+            Log.e(TAG, "Database exception", e);
+        }
+
+        return new ArrayList<>();
+    }
+
+
     public int updateProfileRecentUsed(int profile_id) {
         try {
             UpdateBuilder<Profile, Integer> updateBuilder = profileDao
@@ -777,11 +852,11 @@ public class DatabaseService {
         Dao<Profile, Integer> profileDao;
         try {
             profileDao = mDatabaseHelper.getProfileDao();
-            return profileDao.createOrUpdate(newProfile).isCreated() ? 1 : -1;
+            return profileDao.create(newProfile);
         } catch (java.sql.SQLException e) {
             Log.e(TAG, e.getMessage());
         }
-        return 0;
+        return -1;
     }
 
     public int deleteAllProfiles() {
@@ -968,7 +1043,13 @@ public class DatabaseService {
     public int deleteUser(User user) {
 
         try {
-            return userDao.delete(user);
+            int result = userDao.delete(user);
+            if (result != -1)
+                AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                        AuditLogger.ACTION_USER_DELETED,
+                        AuditLogger.OBJECT_EMPTY,
+                        user.getEmail());
+            return result;
         } catch (java.sql.SQLException e) {
             Log.e(TAG, e.getMessage());
         }

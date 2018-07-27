@@ -341,4 +341,11 @@
     <string name="install">INSTALL</string>
     <string name="extracting">Extracting...</string>
     <string name="copying">Copying...</string>
+
+    <string name="gettting_program_string">getting program %1$d</string>
+    <string name="all_program_got">Total: %1$d programs</string>
+    <string name="exhaust_mode">Exhaust Mode</string>
+    <string name="fast_cooling">Fast Cooling</string>
+    <string name="fast">Fast</string>
+
 </resources>

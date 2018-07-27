@@ -1,6 +1,8 @@
 package com.certoclav.app.settings;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +15,9 @@ import android.widget.Toast;
 import com.certoclav.app.R;
 import com.certoclav.app.listener.CalibrationListener;
 import com.certoclav.app.model.Autoclave;
+import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.service.ReadAndParseSerialService;
+import com.certoclav.library.application.ApplicationController;
 
 
 /**
@@ -114,6 +118,25 @@ public class CalibrateFragment extends Fragment implements CalibrationListener {
         Autoclave.getInstance().setOnCalibrationListener(this);
         ReadAndParseSerialService.getInstance().sendGetAdjustParameterCommand();
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        if ((!Autoclave.getInstance().getUser().isAdmin() || Autoclave.getInstance().getState() == AutoclaveState.LOCKED) &&
+                prefs.getBoolean(ApplicationController.getContext().getString(R.string.preferences_lockout_language),
+                        ApplicationController.getContext().getResources().getBoolean(R.bool.preferences_lockout_language))) {
+            Toast.makeText(getActivity(), R.string.these_settings_are_locked_by_the_admin, Toast.LENGTH_SHORT).show();
+            editOffsetSteamSensor.setEnabled(false);
+            editOffsetHeaterSensor.setEnabled(false);
+            editOffsetSteamGeneratorSensor.setEnabled(false);
+            editOffsetPress.setEnabled(false);
+            editOffsetMedia.setEnabled(false);
+            buttonApply.setEnabled(false);
+        }else{
+            editOffsetSteamSensor.setEnabled(true);
+            editOffsetHeaterSensor.setEnabled(true);
+            editOffsetSteamGeneratorSensor.setEnabled(true);
+            editOffsetPress.setEnabled(true);
+            editOffsetMedia.setEnabled(true);
+            buttonApply.setEnabled(true);
+        }
         super.onResume();
     }
 
@@ -127,10 +150,10 @@ public class CalibrateFragment extends Fragment implements CalibrationListener {
     @Override
     public void onCalibrationParameterReceived() {
         editOffsetSteamSensor.setText(Autoclave.getInstance().getData().getTemp1().getOffset().toString());
-        editOffsetHeaterSensor.setText(Autoclave.getInstance().getData().getTemp2().getOffset().toString());
-        editOffsetSteamGeneratorSensor.setText(Autoclave.getInstance().getData().getTemp3().getOffset().toString());
+        editOffsetHeaterSensor.setText(Autoclave.getInstance().getData().getTemp3().getOffset().toString());
+        editOffsetSteamGeneratorSensor.setText(Autoclave.getInstance().getData().getTemp4().getOffset().toString());
         editOffsetPress.setText(Integer.toString(Autoclave.getInstance().getData().getPress().getOffset().intValue()));
-        editOffsetMedia.setText(Autoclave.getInstance().getData().getTemp4().getOffset().toString());
+        editOffsetMedia.setText(Autoclave.getInstance().getData().getTemp2().getOffset().toString());
 
     }
 

@@ -69,11 +69,12 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     Double offsetPress = 0d;
 
 
-    private static final int HANDLER_ERROR = -1;
-    private static final int HANDLER_MSG_CALIBRATION = 1;
-    private static final int HANDLER_MSG_DATA = 2;
-    private static final int HANDLER_MSG_USER_PROGRAM = 3;
-    private static final int HANDLER_MSG_ACK_PROGRAM = 4;
+    public static final int HANDLER_ERROR = -1;
+    public static final int HANDLER_MSG_CALIBRATION = 1;
+    public static final int HANDLER_MSG_DATA = 2;
+    public static final int HANDLER_MSG_USER_PROGRAM = 3;
+    public static final int HANDLER_MSG_ACK_PROGRAM = 4;
+    public static final int HANDLER_MSG_ACK_PROGRAMS = 5;
     private SerialService serialService = null;
     private List<MyCallback> callbacks;
 
@@ -112,8 +113,11 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         final static String NEWLINE = "\n";
         final static String START = "CMD_STAR %s,";
         final static String CMD_STOP = "CMD_STOP";
+        final static String CMD_FLASH_USB = "CMD_STOP";
         final static String GET_DATA = "GET_DATA";
-        final static String GET_PROGRAMS = "GET_PROG %d,";
+        final static String GET_PROGRAM = "GET_PROG %d,";
+        final static String SET_PROGRAM = "SET_PROG %d,%s,%f,%d,%d,%d,%d,";
+        final static String GET_PROGRAMS = "GET_PROGS";
         final static String CONFIRM_ERROR = "CMD_CNFE";
 
         public static String CREATE(String command, Object... args) {
@@ -139,6 +143,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         String STOP = "ACK_STOP";
         String ACK_DATA = "ACK_DATA";
         String ACK_PROG = "ACK_PROG";
+        String ACK_PROGS = "ACK_PROGS";
         String CONFIRM_ERROR = "ACK_CNFE";
     }
 
@@ -195,7 +200,22 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     }
 
     public void getProgram(int index) {
-        sendCommand(COMMANDS.CREATE(COMMANDS.GET_PROGRAMS, index));
+        sendCommand(COMMANDS.CREATE(COMMANDS.GET_PROGRAM, index));
+    }
+
+    public void getPrograms() {
+        sendCommand(COMMANDS.CREATE(COMMANDS.GET_PROGRAMS));
+    }
+
+    public void setProgram(Profile profile) {
+        sendCommand(COMMANDS.CREATE(COMMANDS.SET_PROGRAM,
+                profile.getIndex(),
+                profile.getName(),
+                profile.getSterilisationTemperature(),
+                profile.isLiquidProgram() ? 1 : 0,
+                profile.getDryTime(),
+                profile.getSterilisationTime(),
+                profile.getVacuumTimes()));
     }
 
     /*
@@ -267,6 +287,12 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                         publishResult(msg.obj, true, HANDLER_MSG_ACK_PROGRAM);
                     else
                         publishResult(ERROR_NOT_DEFINED, false, HANDLER_MSG_ACK_PROGRAM);
+                    break;
+                case HANDLER_MSG_ACK_PROGRAMS:
+                    if (msg.obj != null)
+                        publishResult(msg.obj, true, HANDLER_MSG_ACK_PROGRAMS);
+                    else
+                        publishResult(ERROR_NOT_DEFINED, false, HANDLER_MSG_ACK_PROGRAMS);
                     break;
                 case HANDLER_ERROR:
                     publishResult(msg.obj != null ? msg.obj : ERROR_NOT_DEFINED, false, -1);
@@ -431,39 +457,66 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 
 
                     handlerGetData.removeCallbacks(runnableGetData);
-                    handlerGetData.postDelayed(runnableGetData, 4000);
-
-                    Float pressure = 0f;
-                    if (Float.valueOf(responseParameters[INDEX_PROGRAM_TEMP]) >= 100) {
-                        pressure = (float) (0.006112 * Math.exp((17.62 * Float.valueOf(responseParameters[INDEX_PROGRAM_TEMP])) / (243.12 + Float.valueOf(responseParameters[INDEX_PROGRAM_TEMP]))) - 1);
-                        pressure = ((int) (pressure * 100)) / 100.0f;
-                    }
+                    handlerGetData.postDelayed(runnableGetData, 1000);
 
 
-                    if (responseParameters.length == NUMBER_OF_PROGRAM_RESPONSE_PARAMETERS) {
-                        Profile profile = new Profile("",
-                                1,
-                                responseParameters[INDEX_PROGRAM_NAME].replaceAll("[^ -~]", "").replace("_", " "),
-                                Integer.valueOf(responseParameters[INDEX_PROGRAM_PULSE_VACUUM]),
-                                Integer.valueOf(responseParameters[INDEX_PROGRAM_STERILIZATION_TIME]),
-                                Float.valueOf(responseParameters[INDEX_PROGRAM_TEMP]),
-                                pressure,
-                                0,
-                                10,
-                                null,
-                                true,
-                                true,
-                                Integer.valueOf(responseParameters[INDEX_PROGRAM_IS_LIQUID_PROGRAM]) == 1,
-                                null,
-                                Integer.valueOf(responseParameters[INDEX_PROGRAM_NUM]));
-                        Message msg = new Message();
+                    if (responseParameters.length == 2 && Integer.valueOf(responseParameters[0]) == 1) {
+                                                Message msg = new Message();
                         msg.what = HANDLER_MSG_ACK_PROGRAM;
-                        msg.obj = profile;
-                        Log.e("ReadAndParseSerialS", "PROGRAM PARSED: " + profile.getName() + " " + profile.getSterilisationTemperature());
+                        msg.obj = 1;
                         handler.sendMessage(msg);
                     } else {
                         publishResult(new ErrorModel(null, ERROR_PARSING), false, HANDLER_MSG_ACK_PROGRAM);
                     }
+                    break;
+                case RESPONSES.ACK_PROGS:
+
+                    handlerGetData.removeCallbacks(runnableGetData);
+                    handlerGetData.postDelayed(runnableGetData, 1000);
+                    String[] programsParameters = response[1].split(";");
+                    List<Profile> programs = new ArrayList<>();
+                    for (String program : programsParameters) {
+                        program = program.replace(";", "");
+                        responseParameters = program.split(",");
+                        Float pressure = 0f;
+                        if (Float.valueOf(responseParameters[INDEX_PROGRAM_TEMP]) >= 100) {
+                            pressure = (float) (0.006112 * Math.exp((17.62 * Float.valueOf(responseParameters[INDEX_PROGRAM_TEMP])) / (243.12 + Float.valueOf(responseParameters[INDEX_PROGRAM_TEMP]))) - 1);
+                            pressure = ((int) (pressure * 100)) / 100.0f;
+                        }
+
+
+                        if (responseParameters.length == NUMBER_OF_PROGRAM_RESPONSE_PARAMETERS) {
+
+                            //Program is not defined skip it
+                            if (responseParameters[INDEX_PROGRAM_NAME] == null || responseParameters[INDEX_PROGRAM_NAME].equals("VOID"))
+                                continue;
+
+                            Profile profile = new Profile("",
+                                    1,
+                                    responseParameters[INDEX_PROGRAM_NAME].replaceAll("[^ -~]", "").replace("_", " "),
+                                    Integer.valueOf(responseParameters[INDEX_PROGRAM_PULSE_VACUUM]),
+                                    Integer.valueOf(responseParameters[INDEX_PROGRAM_STERILIZATION_TIME]),
+                                    Float.valueOf(responseParameters[INDEX_PROGRAM_TEMP]),
+                                    pressure,
+                                    0,
+                                    Integer.valueOf(responseParameters[INDEX_PROGRAM_DRYING_TIME]),
+                                    null,
+                                    true,
+                                    true,
+                                    Integer.valueOf(responseParameters[INDEX_PROGRAM_IS_LIQUID_PROGRAM]) == 1,
+                                    null,
+                                    Integer.valueOf(responseParameters[INDEX_PROGRAM_NUM]));
+                            programs.add(profile);
+
+                        } else {
+                            publishResult(new ErrorModel(null, ERROR_PARSING), false, HANDLER_MSG_ACK_PROGRAMS);
+                            return;
+                        }
+                    }
+                    Message msg = new Message();
+                    msg.what = HANDLER_MSG_ACK_PROGRAMS;
+                    msg.obj = programs;
+                    handler.sendMessage(msg);
                     break;
 
             }

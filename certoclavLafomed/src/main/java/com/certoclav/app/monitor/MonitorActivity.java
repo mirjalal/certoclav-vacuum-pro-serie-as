@@ -38,6 +38,7 @@ import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.app.model.Error;
 import com.certoclav.app.settings.SettingsActivity;
+import com.certoclav.app.util.AuditLogger;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.view.ControlPagerAdapter;
 import com.certoclav.library.view.CustomViewPager;
@@ -252,6 +253,12 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 buttonStop.setText("PLEASE OPEN DOOR");
                 textState.setText(R.string.state_finished);
                 navigationbar.showButtonBack();
+
+                AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                        AuditLogger.ACTION_PROGRAM_FINISHED,
+                        AuditLogger.OBJECT_EMPTY,
+                        Autoclave.getInstance().getProfile().getName() + " (" + getString(R.string.cycle) + " " + Autoclave.getInstance().getCurrentProgramCounter() + ")");
+
                 askForIndicator();
                 break;
             case RUNNING:
@@ -287,6 +294,16 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 textState.append(")");
 
                 navigationbar.hideButtonBack();
+
+                // Insert the log one time
+                if (!buttonStop.getText().equals(getString(R.string.stop))) {
+                    AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                            AuditLogger.ACTION_PROGRAM_STARTED,
+                            AuditLogger.OBJECT_EMPTY,
+                            Autoclave.getInstance().getProfile().getName() + " (" + getString(R.string.cycle) + " " + Autoclave.getInstance().getCurrentProgramCounter() + ")");
+                }
+                buttonStop.setText(R.string.stop);
+
                 break;
             case RUN_CANCELED:
                 buttonStop.setVisibility(View.INVISIBLE);
@@ -295,6 +312,10 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 }
                 textState.setText(R.string.state_cancelled);
                 navigationbar.showButtonBack();
+                AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                        AuditLogger.ACTION_PROGRAM_CANCELED,
+                        AuditLogger.OBJECT_EMPTY,
+                        Autoclave.getInstance().getProfile().getName() + " (" + getString(R.string.cycle) + " " + Autoclave.getInstance().getCurrentProgramCounter() + ")");
                 break;
             case WAITING_FOR_CONFIRMATION:
                 buttonStop.setVisibility(View.INVISIBLE);
@@ -600,10 +621,24 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                                AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
+                                AuditLogger.OBJECT_EMPTY,
+                                getString(R.string.failed));
                         new DatabaseService(ApplicationController.getContext()).updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(), AutoclaveMonitor.ERROR_CODE_INDICATOR_FAILED);
                         sweetAlertDialog.dismissWithAnimation();
                     }
-                }).setCustomImage(R.drawable.ic_indicator);
+                })
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                                AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
+                                AuditLogger.OBJECT_EMPTY,
+                                getString(R.string.success));
+                    }
+                })
+                .setCustomImage(R.drawable.ic_indicator);
         sweetAlertDialog.setCanceledOnTouchOutside(false);
         sweetAlertDialog.setCancelable(false);
         sweetAlertDialog.show();

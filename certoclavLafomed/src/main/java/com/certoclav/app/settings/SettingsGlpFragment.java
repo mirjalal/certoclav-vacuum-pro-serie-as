@@ -8,6 +8,8 @@ import android.support.v4.preference.PreferenceFragment;
 import android.widget.Toast;
 
 import com.certoclav.app.R;
+import com.certoclav.app.model.Autoclave;
+import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.library.application.ApplicationController;
 
 
@@ -25,7 +27,8 @@ public class SettingsGlpFragment extends PreferenceFragment {
     public void onResume() {
         super.onResume();
 
-        if (prefs.getBoolean(ApplicationController.getContext().getString(R.string.preferences_lockout_glp),
+        if ((!Autoclave.getInstance().getUser().isAdmin() || Autoclave.getInstance().getState() == AutoclaveState.LOCKED) &&
+                prefs.getBoolean(ApplicationController.getContext().getString(R.string.preferences_lockout_glp),
                 ApplicationController.getContext().getResources().getBoolean(R.bool.preferences_lockout_glp))) {
             Toast.makeText(getActivity(), R.string.these_settings_are_locked_by_the_admin, Toast.LENGTH_SHORT).show();
             getPreferenceScreen().setEnabled(false);

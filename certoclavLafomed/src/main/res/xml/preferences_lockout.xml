@@ -1,0 +1,82 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/preferences_lockout_user_account"
+        android:key="@string/preferences_lockout_user_account"
+        android:summary="@string/summary_lockout_user_account"
+        android:title="@string/title_lockout_user_account" />
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/preferences_lockout_network"
+        android:key="@string/preferences_lockout_network"
+        android:summary="@string/summary_lockout_network"
+        android:title="@string/title_lockout_network" />
+
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/preferences_lockout_audit_logs"
+        android:key="@string/preferences_lockout_audit_logs"
+        android:summary="@string/summary_lockout_audit_logs"
+        android:title="@string/title_lockout_audit_logs" />
+
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/preferences_lockout_create_user"
+        android:key="@string/preferences_lockout_create_user"
+        android:summary="@string/summary_lockout_create_user"
+        android:title="@string/title_lockout_create_user" />
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/preferences_lockout_add_program"
+        android:key="@string/preferences_lockout_add_program"
+        android:summary="@string/summary_lockout_add_program"
+        android:title="@string/title_lockout_add_program" />
+    <CheckBoxPreference
+        android:defaultValue="@bool/preferences_lockout_device"
+        android:key="@string/preferences_lockout_device"
+        android:summary="@string/summary_lockout_device"
+        android:title="@string/title_lockout_device" />
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/preferences_lockout_language"
+        android:key="@string/preferences_lockout_language"
+        android:summary="@string/summary_lockout_language"
+        android:title="@string/title_lockout_language" />
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/preferences_lockout_notifications"
+        android:key="@string/preferences_lockout_notifications"
+        android:summary="@string/summary_lockout_notifications"
+        android:title="@string/title_lockout_notifications" />
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/preferences_lockout_sterilization"
+        android:key="@string/preferences_lockout_sterilization"
+        android:summary="@string/summary_lockout_sterilization"
+        android:title="@string/title_lockout_sterilization" />
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/preferences_lockout_calibration"
+        android:key="@string/preferences_lockout_calibration"
+        android:summary="@string/summary_lockout_calibration"
+        android:title="@string/title_lockout_calibration" />
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/preferences_lockout_glp"
+        android:key="@string/preferences_lockout_glp"
+        android:summary="@string/summary_lockout_glp"
+        android:title="@string/title_lockout_glp" />
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/preferences_lockout_service"
+        android:key="@string/preferences_lockout_service"
+        android:summary="@string/summary_lockout_service"
+        android:title="@string/title_lockout_service"
+        android:visibility="gone" />
+
+
+</PreferenceScreen>
+
+
+

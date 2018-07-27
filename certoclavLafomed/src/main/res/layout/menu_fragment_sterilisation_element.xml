@@ -46,6 +46,28 @@
                     android:textStyle="bold"
                     tools:ignore="HardcodedText" />
 
+                <ImageView
+                    android:id="@+id/sterilization_element_image_cloud"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_toLeftOf="@+id/buttonMenu"
+                    android:layout_weight="0"
+                    android:src="@drawable/ic_cloud_no_user" />
+
+                <ImageView
+                    android:id="@+id/buttonMenu"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="0"
+                    android:src="@drawable/ic_menu" />
+
             </LinearLayout>
 
             <FrameLayout

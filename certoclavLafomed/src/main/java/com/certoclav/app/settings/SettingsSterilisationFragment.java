@@ -10,7 +10,9 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 import android.support.v4.preference.PreferenceFragment;
@@ -24,12 +26,14 @@ import android.widget.Toast;
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.database.DatabaseService;
+import com.certoclav.app.database.Profile;
 import com.certoclav.app.database.Protocol;
 import com.certoclav.app.database.ProtocolEntry;
 import com.certoclav.app.listener.UserProgramListener;
 import com.certoclav.app.menu.MenuLabelPrinterActivity;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveMonitor;
+import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.app.util.Helper;
@@ -325,6 +329,14 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
             ((CheckBoxPreference) findPreference(AppConstants.PREFERENCE_KEY_STEP_BY_STEP)).setEnabled(false);
         }
 
+        if ((!Autoclave.getInstance().getUser().isAdmin() || Autoclave.getInstance().getState() == AutoclaveState.LOCKED) &&
+                prefs.getBoolean(ApplicationController.getContext().getString(R.string.preferences_lockout_sterilization),
+                        ApplicationController.getContext().getResources().getBoolean(R.bool.preferences_lockout_sterilization))) {
+            Toast.makeText(getActivity(), R.string.these_settings_are_locked_by_the_admin, Toast.LENGTH_SHORT).show();
+            getPreferenceScreen().setEnabled(false);
+        } else {
+            getPreferenceScreen().setEnabled(true);
+        }
         super.onResume();
     }
 

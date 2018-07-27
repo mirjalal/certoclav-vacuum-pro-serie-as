@@ -461,11 +461,7 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
                 @Override
                 public void onClick(View v) {
                     Helper.printProtocols(getActivity(), protocolAdapter.getItem(aktPosition), new MyCallback() {
-
                         SweetAlertDialog dialogLocal;
-
-
-
 
                         @Override
                         public void onSuccess(Object response, int requestId) {
@@ -530,7 +526,6 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
             dialog.setCancelable(true);
             dialog.setCanceledOnTouchOutside(true);
             // set the custom dialog components - text, image and button
-
 
             final EditText editMonths = (EditText) dialog.findViewById(R.id.dialog_edit_number_months);
 

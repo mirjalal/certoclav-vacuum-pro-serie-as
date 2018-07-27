@@ -483,6 +483,7 @@
     <string name="admin_password_wrong">Admin password is wrong!</string>
     <string name="admin_password">Admin Password</string>
     <string name="power_loss_during_record">Power loss during record</string>
+    <string name="kpa">kPa</string>
     <string name="choose_server">CHOOSE SERVER</string>
     <string name="certoclav_server">RaypaCloud Server</string>
     <string name="manual_server">Add a server manually</string>
@@ -633,11 +634,10 @@
     <!-- GLP Preferences-->
     <string name="preferences_glp_header">preferences_glp_header</string>
     <string name="preferences_reset_glp">preferences_reset_glp</string>
-    <string name="preferences_glp_autoclave_name">preferences_glp_balance_name</string>
+    <string name="preferences_glp_autoclave_name">preferences_glp_autoclave_name</string>
     <string name="preferences_glp_project_name">preferences_glp_project_name</string>
     <string name="glp_header">GLP Header</string>
     <string name="glp_and_gmp_data">GLP and GMP data</string>
-    <string name="preferences_lockout_glp">preferences_lockout_glp</string>
     <string name="lock_the_glp_and_gmp_data">Lock the GLP and GMP data</string>
     <string name="header">Header</string>
     <string name="print_header">Print Header</string>
@@ -647,22 +647,29 @@
 
     <string name="preferences_print_autoclave_name">preferences_print_balance_name</string>
     <string name="preferences_print_project_name">preferences_print_project_name</string>
-    <string name="preferences_print_program_name">preferences_print_application_name</string>
+    <string name="preferences_print_program_name">preferences_print_program_name</string>
+    <string name="preferences_print_program_result">preferences_print_program_result</string>
+    <string name="preferences_print_program_data_points">preferences_print_program_data_points</string>
+    <string name="preferences_print_program_desc">preferences_print_program_desc</string>
     <string name="preferences_print_signature">preferences_print_signature</string>
     <string name="preferences_print_date">preferences_print_date</string>
-    <string name="preferences_print_autoclave_id">preferences_print_balance_id</string>
+    <string name="preferences_print_autoclave_serial_number">preferences_print_serial_number</string>
     <string name="preferences_print_user_name">preferences_print_user_name</string>
     <string name="print_date">Print Date</string>
     <string name="print_data_on_off">Print date on/off</string>
-    <string name="print_autoclave_id_on_off">Print balance id on/off</string>
-    <string name="print_autoclave_id">Print Balance ID</string>
-    <string name="print_autoclave_name">Print Balance Name</string>
+    <string name="print_autoclave_serial_number_on_off">Print Autoclave Serial Number on/off</string>
+    <string name="print_autoclave_serial_number">Print Autoclave Serial Number</string>
+    <string name="print_autoclave_name">Print Autoclave Name</string>
     <string name="print_user_name">Print User Name</string>
     <string name="print_project_name">Print Project Name</string>
-    <string name="print_program_name">Print Application Name</string>
+    <string name="print_project_desc">Print Project description</string>
+    <string name="print_program_name">Print Program Name</string>
     <string name="print_signature_line">Print Signature Line</string>
     <string name="print_signature_line_on_off">Print the signature line on/off</string>
-    <string name="print_the_program_name_on_off">Print the application name on/off</string>
+    <string name="print_the_program_name_on_off">Print the program name on/off</string>
+    <string name="print_the_program_result_on_off">Print the program result on/off</string>
+    <string name="print_the_program_data_points_on_off">Print the program data points on/off</string>
+    <string name="print_the_program_desc_on_off">Print the program description on/off</string>
     <string name="print_the_project_name_on_off">Print the project name on/off</string>
     <string name="set_the_autoclave_identification">Set the autoclave identification</string>
     <string name="print_the_user_name_on_off">Print the user name on/off</string>
@@ -673,16 +680,125 @@
 
     <string name="these_settings_are_locked_by_the_admin">These Settings are locked by the admin</string>
     <string name="lockout">Lockout</string>
-    <string name="gettting_program_string">getting program %1$d</string>
-    <string name="all_program_got">Total: %1$d programs</string>
-    <string name="exhaust_mode">Exhaust Mode</string>
-    <string name="fast_cooling">Fast Cooling</string>
-    <string name="fast">Fast</string>
-    <string name="preferences_autoclave_model">Autoclave Models</string>
+    <string name="pressure_unit">Pressure unit</string>
+    <string name="glp_program_name">Program name: </string>
+    <string name="glp_program">Program: </string>
+    <string name="glp_autoclave_name">Autoclave Name: </string>
+    <string name="print_program_desc">Program load/details</string>
+    <string name="print_program_result">Program Result</string>
+    <string name="print_program_data_points">Program Data Points</string>
+    <string name="result">Result</string>
+    <string name="glp_temperature">Temperature</string>
+    <string name="glp_pressure">Pressure</string>
+    <string name="glp_time">Time</string>
+    <string name="glp_start">Start</string>
+    <string name="glp_end">End</string>
+    <string name="glp_project_name">Project Name:</string>
+    <string name="signature">Signature</string>
+    <string name="verified_by">Verified by</string>
+    <string name="glp_date">Date:</string>
+    <string name="glp">GLP</string>
+    <string name="glp_autoclave_serial_number">Serial Number:</string>
+    <string name="glp_data_points">Data Points:</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <!--demo@certoclav.com in Login screen pressed Login button-->
-    <string name="textAuditLog"><b>%1$s</b> in  <font color="#69B7F5"><b>%2$s</b></font> %3$s <font color="#6ACC61">%4$s</font></string>
+
+    <!--Lockout-->
+    <string name="preferences_lockout_user_account">preferences_lockout_user_account</string>
+    <string name="preferences_lockout_network">preferences_lockout_network</string>
+    <string name="preferences_lockout_audit_logs">preferences_audit_logs</string>
+    <string name="preferences_lockout_create_user">preferences_create_user</string>
+    <string name="preferences_lockout_add_program">preferences_add_program</string>
+    <string name="preferences_lockout_device">preferences_lockout_device</string>
+    <string name="preferences_lockout_language">preferences_lockout_language</string>
+    <string name="preferences_lockout_notifications">preferences_lockout_notifications</string>
+    <string name="preferences_lockout_sterilization">preferences_lockout_sterilization</string>
+    <string name="preferences_lockout_calibration">preferences_lockout_calibration</string>
+    <string name="preferences_lockout_glp">preferences_lockout_glp</string>
+    <string name="preferences_lockout_service">preferences_lockout_service</string>
+
+    <string name="summary_lockout_user_account">Lock the user account settings</string>
+    <string name="title_lockout_user_account">User Account</string>
+
+    <string name="summary_lockout_network">Lock the network settings</string>
+    <string name="title_lockout_network">Network Settings</string>
+
+    <string name="summary_lockout_audit_logs">Lock the audit logs settings</string>
+    <string name="title_lockout_audit_logs">Audit Logs Settings</string>
+
+    <string name="summary_lockout_create_user">Lock the create user button</string>
+    <string name="title_lockout_create_user">Create User</string>
+
+    <string name="summary_lockout_add_program">Lock Add/Edit/Program settings</string>
+    <string name="title_lockout_add_program">Add/Edit/Remove programs</string>
+
+    <string name="summary_lockout_device">Lock the device settings</string>
+    <string name="title_lockout_device">Device Settings</string>
+
+    <string name="summary_lockout_language">Lock the language settings</string>
+    <string name="title_lockout_language">Language Settings</string>
+
+    <string name="summary_lockout_notifications">Lock the notification settings</string>
+    <string name="title_lockout_notifications">Notification Settings</string>
+
+    <string name="summary_lockout_sterilization">Lock the sterilization settings</string>
+    <string name="title_lockout_sterilization">Sterilization Settings</string>
+
+    <string name="summary_lockout_calibration">Lock the calibration settings</string>
+    <string name="title_lockout_calibration">Calibration Settings</string>
+
+    <string name="summary_lockout_glp">Lock the GLP settings</string>
+    <string name="title_lockout_glp">GLP Settings</string>
+
+    <string name="summary_lockout_service">Lock the service settings</string>
+    <string name="title_lockout_service">Service Settings</string>
+    <string name="textAuditLog"><![CDATA[<b>%1$s</b> in  <font color=\"#69B7F5\"><b>%2$s</b></font> %3$s <font color=\"#6ACC61\">%4$s</font>]]></string>
+    <string name="textAuditLogWithValue"><![CDATA[<b>%1$s</b> in  <font color=\"#69B7F5\"><b>%2$s</b></font> %3$s <font color=\"#6ACC61\">%4$s</font><b>%5$s</b>]]></string>
+    <string name="settings_audit_log">Audit Logs</string>
+
+    <string name="please_enter_admin_password">Please enter admin password</string>
+
+    <!--Audit Logger-->
+    <string name="audit_action_open_window"><![CDATA[<b>%1$s</b> opened \'<font color=\"#69B7F5\"><b>%2$s</b></font>\']]></string>
+    <string name="audit_action_failed_to_login"><![CDATA[<b>%1$s</b> failed to login]]></string>
+    <string name="audit_action_user_created"><![CDATA[<b>%1$s</b> created <font color=\"#69B7F5\"><b>%3$s</b></font> user]]></string>
+    <string name="audit_action_user_deleted"><![CDATA[<b>%1$s</b> deleted <font color=\"#69B7F5\"><b>%3$s</b></font> user]]></string>
+    <string name="audit_action_program_started"><![CDATA[<b>%1$s</b> started <font color=\"#69B7F5\"><b>%3$s</b></font> program]]></string>
+    <string name="audit_action_program_indicator_changed"><![CDATA[<b>%1$s</b> set indicator to <font color=\"#69B7F5\"><b>%3$s</b></font>]]></string>
+    <string name="audit_action_program_canceled"><![CDATA[<b>%1$s</b> canceled <font color=\"#69B7F5\"><b>%3$s</b></font> program]]></string>
+    <string name="audit_action_program_finished"><![CDATA[<font color=\"#69B7F5\"><b>%3$s</b></font> program finished.]]></string>
+    <string name="audit_action_asked_for_network">asked for Network</string>
+    <string name="audit_action_selected">selected</string>
+    <string name="audit_action_clicked">clicked</string>
+    <string name="audit_action_success_to_login"><![CDATA[<b>%1$s</b> login successfully]]></string>
+    <string name="audit_action_logout"><![CDATA[<b>%1$s</b> logout]]></string>
+    <string name="audit_action_activated"><![CDATA[<b>%1$s</b> was activated]]></string>
+    <string name="audit_action_pref_changed"><![CDATA[<b>%1$s</b> changed <font color=\"#69B7F5\"><b>%2$s</b></font> settings to  <font color=\"#6ACC61\">\'%3$s\'</font> in %4$s]]></string>
+    <string name="audit_action_canceled"><![CDATA[<b>%1$s</b> canceled <font color=\"#6ACC61\">\'%2$s\'</font>]]></string>
+    <string name="audit_action_confirmed"><![CDATA[<b>%1$s</b> confirmed <font color=\"#6ACC61\">\'%2$s\'</font>]]></string>
+
+    <string name="audit_screen_login">Login Screen</string>
+    <string name="audit_object_login_button">Login button</string>
+    <string name="audit_object_empty"></string>
+    <string name="audit_object_login">login</string>
+    <string name="audit_object_add_user_button">Add User</string>
+    <string name="audit_object_cancel_button">Cancel</string>
+    <string name="audit_object_yes_button">Confirm</string>
+    <string name="audit_object_setting_button">Settings button</string>
+    <string name="audit_object_create_local_button">Create local</string>
+    <string name="audit_objectadd_exists_button">Add exists</string>
+    <string name="audit_object_create_new_button">Create new</string>
+    <string name="network_settings">Network Settings</string>
+    <string name="preferences_autoclave_model">Model</string>
+    <string name="you_can_add_maximum_programs">You can add maximum %1$d programs</string>
+    <string name="do_you_really_want_to_add_new_program">Do you want to add a new program?</string>
+    <string name="is_liquid_program">Liquid program</string>
+    <string name="drying_time_title">DRYING TIME</string>
+    <string name="vacuum_pulse">VACUUM PULSE</string>
+    <string name="program_step_sterlisation_desc">%1$d minutes at %2$.1f °C</string>
+    <string name="program_step_dry_desc">%1$d minutes</string>
+    <string name="program_step_vacuum_desc">%1$d times</string>
+    <string name="temperature_title">TEMPERATURE</string>
+    <string name="vacuum_pulse_times">times</string>
+    <string name="drying_time_minutes">minutes</string>
 
 </resources>

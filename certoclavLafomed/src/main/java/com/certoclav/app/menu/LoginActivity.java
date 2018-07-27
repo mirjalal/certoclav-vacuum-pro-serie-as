@@ -26,6 +26,7 @@ import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.activities.CertoclavSuperActivity;
 import com.certoclav.app.adapters.UserDropdownAdapter;
+import com.certoclav.app.database.AuditLog;
 import com.certoclav.app.database.Controller;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.User;
@@ -37,6 +38,8 @@ import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.app.monitor.MonitorActivity;
+import com.certoclav.app.service.ReadAndParseSerialService;
+import com.certoclav.app.util.AuditLogger;
 import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.ServerConfigs;
 import com.certoclav.library.application.ApplicationController;
@@ -142,6 +145,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
         serverConfigs = ServerConfigs.getInstance(this);
+        AuditLogger.init();
         Fabric.with(this, new Crashlytics());
         AutoclaveMonitor.getInstance();
         Autoclave.getInstance().setController(new Controller("Touchscreen not connected",
@@ -252,9 +256,6 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                         currentUser.getUserId());
                 editor.commit();
 
-
-                Boolean defaultvalue = getResources().getBoolean(
-                        R.bool.switch_snchronization_default);
                 if (Autoclave.getInstance().isOnlineMode(LoginActivity.this)) {
                     if (ApplicationController.getInstance()
                             .isNetworkAvailable() || ServerConfigs.getInstance(LoginActivity.this).getUrl() != null) {
@@ -325,10 +326,13 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                                 Intent intent = new Intent(LoginActivity.this,
                                         MenuMain.class);
                                 startActivity(intent);
+                                AuditLogger.addAuditLog(currentUser, -1, AuditLogger.ACTION_SUCCESS_LOGIN, AuditLogger.OBJECT_EMPTY, null);
                             } else {
                                 Toast.makeText(getApplicationContext(),
                                         R.string.password_not_correct,
                                         Toast.LENGTH_LONG).show();
+
+                                AuditLogger.addAuditLog(currentUser,-1, AuditLogger.ACTION_FAILED_LOGIN, AuditLogger.OBJECT_EMPTY, null);
 
                             }
                             super.onPostExecute(result);
@@ -486,28 +490,15 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                 break;
             case CertoclavNavigationbarClean.BUTTON_ADD:
 
-                SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText(getString(R.string.register_new_user))
-                        .setContentText(getString(R.string.do_you_really_want_to) + " "
-                                + getString(R.string.create_an_account_))
-                        .setConfirmText(getString(R.string.yes))
-                        .setCancelText(getString(R.string.cancel))
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                sDialog.dismissWithAnimation();
-                                showCreateAccountDialog();
-                            }
-                        }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                sweetAlertDialog.dismissWithAnimation();
-                            }
-                        });
-                ProgressHelper progressHelper = sweetAlertDialog.getProgressHelper();
-                sweetAlertDialog.setCanceledOnTouchOutside(true);
-                sweetAlertDialog.setCancelable(true);
-                sweetAlertDialog.show();
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                if ((!Autoclave.getInstance().getUser().isAdmin() || Autoclave.getInstance().getState() == AutoclaveState.LOCKED) &&
+                        prefs.getBoolean(ApplicationController.getContext().getString(R.string.preferences_lockout_create_user),
+                                ApplicationController.getContext().getResources().getBoolean(R.bool.preferences_lockout_create_user))) {
+                    Toast.makeText(this, R.string.these_settings_are_locked_by_the_admin, Toast.LENGTH_SHORT).show();
+                    askForAdminPassword();
+                } else {
+                    askForSelecteOption();
+                }
 
                 break;
             case CertoclavNavigationbarClean.BUTTON_BACK:
@@ -553,6 +544,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                 Toast.makeText(LoginActivity.this,
                         getResources().getString(R.string.login_successful),
                         Toast.LENGTH_LONG).show();
+                AuditLogger.addAuditLog(currentUser,-1, AuditLogger.ACTION_SUCCESS_LOGIN, AuditLogger.OBJECT_EMPTY, null);
                 Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);
                 try {
                     if (Autoclave.getInstance().getUser().getIsLocal() == true) {
@@ -616,6 +608,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                 return;
         }
 
+        AuditLogger.addAuditLog(currentUser,-1, AuditLogger.ACTION_FAILED_LOGIN, AuditLogger.OBJECT_EMPTY, null);
         mHandler.post(mShowCloudLoginFailed);
 
     }
@@ -680,6 +673,65 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 
     }
 
+    private void askForSelecteOption() {
+
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(getString(R.string.register_new_user))
+                .setContentText(getString(R.string.do_you_really_want_to) + " "
+                        + getString(R.string.create_an_account_))
+                .setConfirmText(getString(R.string.yes))
+                .setCancelText(getString(R.string.cancel))
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+                        showCreateAccountDialog();
+                    }
+                }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                });
+        sweetAlertDialog.setCanceledOnTouchOutside(true);
+        sweetAlertDialog.setCancelable(true);
+        sweetAlertDialog.show();
+    }
+
+    private void askForAdminPassword() {
+        final SweetAlertDialog dialog = new SweetAlertDialog(this, R.layout.dialog_admin_password, SweetAlertDialog.WARNING_TYPE);
+        dialog.setContentView(R.layout.dialog_admin_password);
+        dialog.setTitle(R.string.register_new_user);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
+        final EditText editTextPassword = dialog.findViewById(R.id.editTextPassword);
+        Button buttonLogin = (Button) dialog
+                .findViewById(R.id.dialogButtonLogin);
+        Button buttonCancel = (Button) dialog
+                .findViewById(R.id.dialogButtonCancel);
+        buttonLogin.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Helper.checkAdminPassword(LoginActivity.this, editTextPassword.getText().toString())) {
+                    showCreateAccountDialog();
+                    dialog.dismiss();
+                } else {
+                    Toast.makeText(LoginActivity.this, getString(R.string.admin_password_wrong), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        buttonCancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismissWithAnimation();
+            }
+        });
+
+        dialog.show();
+
+    }
+
 
     private void showNotificationForNetworkNavigation() {
         try {
@@ -720,7 +772,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 
     private void changeApplicationMode(boolean isOnline) {
         SharedPreferences prefs =
-                getDefaultSharedPreferences(LoginActivity.this);
+                PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
         Editor editor = prefs.edit();
         editor.putBoolean(AppConstants.PREFERENCE_KEY_ONLINE_MODE,
                 isOnline);

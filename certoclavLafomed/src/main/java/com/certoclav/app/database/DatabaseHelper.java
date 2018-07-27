@@ -35,6 +35,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<Video, Integer> videoDao = null;
     private Dao<UserController, Integer> userControllerDao = null;
     private Dao<AuditLog, Integer> auditLogDao;
+    private Dao<DeletedProfileModel, Integer> deletedProfileDao;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION, R.raw.ormlite_config);
@@ -57,6 +58,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Video.class);
             TableUtils.createTable(connectionSource, UserController.class);
             TableUtils.createTable(connectionSource, AuditLog.class);
+            TableUtils.createTable(connectionSource, DeletedProfileModel.class);
 
         } catch (SQLException e) {
             Log.e(DatabaseHelper.class.getName(), "Can't create database", e);
@@ -82,6 +84,16 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         }
     }
 
+    public Dao<DeletedProfileModel, Integer> getDeletedProfileDao() {
+        if (deletedProfileDao == null) {
+            try {
+                deletedProfileDao = getDao(DeletedProfileModel.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return deletedProfileDao;
+    }
 
     public Dao<Profile, Integer> getProfileDao() {
         if (profileDao == null) {
@@ -117,17 +129,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return protocolDao;
     }
 
-    public Dao<AuditLog, Integer> getAuditDao() {
-        if (auditLogDao == null) {
-            try {
-                auditLogDao = getDao(AuditLog.class);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return auditLogDao;
-    }
-
     public Dao<ProtocolEntry, Integer> getProtocolEntryDao() {
         if (protocolEntryDao == null) {
             try {
@@ -159,6 +160,17 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             }
         }
         return controllerDao;
+    }
+
+    public Dao<AuditLog, Integer> getAuditDao() {
+        if (auditLogDao == null) {
+            try {
+                auditLogDao = getDao(AuditLog.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return auditLogDao;
     }
 
 
@@ -195,6 +207,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         protocolDao = null;
         protocolEntryDao = null;
         auditLogDao = null;
+        deletedProfileDao = null;
         messageDao = null;
         controllerDao = null;
         videoDao = null;

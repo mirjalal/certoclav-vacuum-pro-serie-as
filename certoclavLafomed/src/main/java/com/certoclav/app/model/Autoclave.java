@@ -19,11 +19,13 @@ import com.certoclav.app.listener.ProtocolListener;
 import com.certoclav.app.listener.SensorDataListener;
 import com.certoclav.app.listener.UserProgramListener;
 import com.certoclav.app.listener.WifiListener;
+import com.certoclav.app.util.ProfileSyncedListener;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.models.DeviceModel;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Observable;
 
 import android_serialport_api.SerialService;
@@ -43,6 +45,7 @@ public class Autoclave extends Observable {
 
     private String programStep = "";
     private SerialService serialServiceProtocolPrinter = null;
+    private List<ProfileSyncedListener> profileSyncedListeners;
 
     public ArrayList<String> getListContent() {
         return listContent;
@@ -125,8 +128,38 @@ public class Autoclave extends Observable {
         return profilesFromAutoclave;
     }
 
+    public Profile getProfileByIndex(int index) {
+        if (profilesFromAutoclave.indexOf(new Profile(index)) == -1) {
+            return new Profile(
+                    "",
+                    1,
+                    ApplicationController.getContext().getString(R.string.default_program_name),
+                    3,
+                    10,
+                    121f,
+                    200f,
+                    1,
+                    10,
+                    "",
+                    true,
+                    true,
+                    true,
+                    Autoclave.getInstance().getController(),
+                    index);
+        }
+        return profilesFromAutoclave.get(profilesFromAutoclave.indexOf(new Profile(index)));
+    }
 
-    private ArrayList<Profile> profilesFromAutoclave = new ArrayList<Profile>();
+    public int getUnusedProfileIndex() {
+        for (int i = 1; i <= AppConstants.MAX_PROGRAM_COUNT; i++) {
+            if (profilesFromAutoclave.indexOf(new Profile(i)) == -1)
+                return i;
+        }
+        return AppConstants.MAX_PROGRAM_COUNT;
+    }
+
+
+    private ArrayList<Profile> profilesFromAutoclave = new ArrayList<>();
 
 /*
     public Profile getUserDefinedProgram() {
@@ -235,8 +268,7 @@ public class Autoclave extends Observable {
     private boolean microcontrollerReachable = false;
     private AutoclaveData data = null;
 
-    public AutoclaveData
-    getData() {
+    public AutoclaveData getData() {
         return data;
     }
 
@@ -313,6 +345,7 @@ public class Autoclave extends Observable {
         data = new AutoclaveData();
         updateSimulatedPrograms();
         controller = new Controller("unknown", "unknown", "unknown", "unknown", 0, "unknown");
+        profileSyncedListeners = new ArrayList<>();
     }
 
     private void updateSimulatedPrograms() {
@@ -756,6 +789,20 @@ public class Autoclave extends Observable {
 
     }
 
+
+    public void notifyProfilesHasBeenSynced() {
+        for (ProfileSyncedListener listener : profileSyncedListeners) {
+            listener.onProfileSynced();
+        }
+    }
+
+    public void setOnProfileSyncedListener(ProfileSyncedListener listener) {
+        this.profileSyncedListeners.add(listener);
+    }
+
+    public void removeOnProfileSyncedListener(ProfileSyncedListener listener) {
+        this.profileSyncedListeners.remove(listener);
+    }
 
     public Date getmLastSelfTest() {
         return mLastSelfTest;

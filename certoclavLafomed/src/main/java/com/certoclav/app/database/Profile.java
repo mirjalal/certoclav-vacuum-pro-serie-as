@@ -106,7 +106,7 @@ public class Profile {
         this.vacuumPersistTime = vacuumPersistTime;
     }
 
-    public void setSterilisationTemperature(int sterilisationTemperature) {
+    public void setSterilisationTemperature(float sterilisationTemperature) {
         this.sterilisationTemperature = sterilisationTemperature;
     }
 
@@ -227,6 +227,11 @@ public class Profile {
     }
 
 
+    public Profile(int index) {
+        this.index = index;
+    }
+
+
     public String getDescription() {
 
         return description;
@@ -267,6 +272,12 @@ public class Profile {
 
     public boolean isLiquidProgram() {
         return isLiquidProgram;
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        return ((Profile) obj).getIndex() == getIndex();
     }
 }
 

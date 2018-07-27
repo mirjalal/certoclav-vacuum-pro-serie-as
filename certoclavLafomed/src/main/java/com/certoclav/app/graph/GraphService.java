@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.certoclav.app.AppConstants;
+import com.certoclav.app.database.Command;
 import com.certoclav.app.database.Protocol;
 import com.certoclav.app.database.ProtocolEntry;
 import com.certoclav.app.listener.SensorDataListener;
@@ -12,9 +13,13 @@ import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveData;
 import com.certoclav.library.graph.LineGraph;
 import com.certoclav.library.graph.Point;
+import com.certoclav.library.graph.ProfileGraph;
 import com.j256.ormlite.dao.ForeignCollection;
 
 import org.achartengine.GraphicalView;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class GraphService implements SensorDataListener {
 
@@ -49,7 +54,7 @@ public class GraphService implements SensorDataListener {
                 view.invalidate();
                 view.repaint();
                 view.invalidate();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -80,7 +85,7 @@ public class GraphService implements SensorDataListener {
 
                                         Point p = new Point(roundFloat((float) (secondsSinceStart / 60.0)), roundFloat((float) (Autoclave.getInstance().getData().getTemp1().getCurrentValue())));
                                         runningGraph.addNewPoints(p, LineGraph.TYPE_STEAM);
-                                        if(AppConstants.IS_CERTOASSISTANT == false) {
+                                        if (AppConstants.IS_CERTOASSISTANT == false) {
                                             Point p2 = new Point(roundFloat((float) (secondsSinceStart / 60.0)), roundFloat((float) (Autoclave.getInstance().getData().getTemp2().getCurrentValue())));
                                             runningGraph.addNewPoints(p2, LineGraph.TYPE_MEDIA);
                                         }
@@ -156,7 +161,10 @@ public class GraphService implements SensorDataListener {
 
         try {
 
-            ForeignCollection<ProtocolEntry> entrys = protocol.getProtocolEntry();
+            Collection<ProtocolEntry> entrys = protocol.getProtocolEntry();
+
+            if (protocol.getProtocolEntries() != null)
+                entrys = protocol.getProtocolEntries();
 
             long startTime = 0;
             long pastSeconds = 0;
@@ -176,7 +184,7 @@ public class GraphService implements SensorDataListener {
                     protocolGraph.addNewPoints(p, LineGraph.TYPE_STEAM);
                     Point p2 = new Point(roundFloat((float) (pastSeconds / 60.0)), roundFloat((float) (entry.getPressure())));
                     protocolGraph.addNewPoints(p2, LineGraph.TYPE_PRESS);
-                   if(AppConstants.IS_CERTOASSISTANT == false){
+                    if (AppConstants.IS_CERTOASSISTANT == false) {
                         Point p3 = new Point(roundFloat((float) (pastSeconds / 60.0)), roundFloat(entry.getMediaTemperature()));
                         protocolGraph.addNewPoints(p3, LineGraph.TYPE_MEDIA);
                     }
@@ -226,10 +234,46 @@ public class GraphService implements SensorDataListener {
     }
 
 
-    private Double roundFloat(float f){
-        int tempnumber = (int) (f*100);
-        Double roundedfloat = (double) ((double)tempnumber/100.0);
+    private Double roundFloat(float f) {
+        int tempnumber = (int) (f * 100);
+        Double roundedfloat = (double) ((double) tempnumber / 100.0);
         return roundedfloat;
+    }
+
+    public GraphicalView getProfileGraph(Context context, ArrayList<Command> commands) {
+
+        ProfileGraph profileGraph = new ProfileGraph();
+
+
+        double timecount = 0;
+        double tempOld = 20;
+
+        profileGraph.addNewPoints(new Point(0, 20));//startpunkt
+        Point p = new Point(0, 0);
+        for (Command command : commands) {
+            if (command.getMode().equals(AppConstants.MODE_ACHIEVE)) {
+                timecount = timecount + 5;
+                p = new Point(timecount, command.getValue());
+                tempOld = command.getValue();
+            } else if (command.getMode().equals(AppConstants.MODE_MAINTAIN)) {
+                timecount = timecount + command.getValue();
+                p = new Point(timecount, tempOld);
+            } else if (command.getMode().equals(AppConstants.MODE_FINISH)) {
+                //do nothing
+            } else {
+                Log.e("GraphService", "ERROR unbekannter mode");
+            }
+            double[] range = new double[4];
+            range[0] = 0;
+            range[1] = timecount;
+            range[2] = 0;
+            range[3] = 300;
+            profileGraph.setRange(range);
+            profileGraph.addNewPoints(p);
+
+        }
+
+        return profileGraph.getView(context);
     }
 
 }

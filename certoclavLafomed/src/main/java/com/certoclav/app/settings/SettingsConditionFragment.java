@@ -1,8 +1,10 @@
 package com.certoclav.app.settings;
 
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +20,9 @@ import android.widget.Toast;
 import com.certoclav.app.R;
 import com.certoclav.app.adapters.ConditionAdapter;
 import com.certoclav.app.listener.NavigationbarListener;
+import com.certoclav.app.model.Autoclave;
+import com.certoclav.app.model.AutoclaveState;
+import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.certocloud.CloudDatabase;
 import com.certoclav.library.certocloud.CloudUser;
 import com.certoclav.library.certocloud.Condition;
@@ -128,6 +133,18 @@ public class SettingsConditionFragment extends Fragment implements Navigationbar
             viewText.setVisibility(View.VISIBLE);
         }
 
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        if ((!Autoclave.getInstance().getUser().isAdmin() || Autoclave.getInstance().getState() == AutoclaveState.LOCKED) &&
+                prefs.getBoolean(ApplicationController.getContext().getString(R.string.preferences_lockout_notifications),
+                        ApplicationController.getContext().getResources().getBoolean(R.bool.preferences_lockout_notifications))) {
+            Toast.makeText(getActivity(), R.string.these_settings_are_locked_by_the_admin, Toast.LENGTH_SHORT).show();
+            buttonSave.setVisibility(View.GONE);
+            viewText.setText(getActivity().getString(R.string.these_settings_are_locked_by_the_admin));
+            conditionAdapter.clear();
+            conditionAdapter.notifyDataSetChanged();
+            viewText.setVisibility(View.VISIBLE);
+        }
 
         super.onResume();
     }

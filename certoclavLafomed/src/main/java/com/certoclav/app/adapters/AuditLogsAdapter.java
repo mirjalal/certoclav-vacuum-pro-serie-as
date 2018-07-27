@@ -1,27 +1,19 @@
 package com.certoclav.app.adapters;
 
 import android.content.Context;
-import android.text.Editable;
 import android.text.Html;
-import android.text.Spanned;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.certoclav.app.R;
 import com.certoclav.app.database.AuditLog;
 import com.certoclav.app.database.Profile;
-import com.certoclav.library.certocloud.CloudUser;
-import com.certoclav.library.certocloud.Condition;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 
@@ -32,9 +24,11 @@ import java.util.List;
  */
 public class AuditLogsAdapter extends ArrayAdapter<AuditLog> {
     private final Context mContext;
+    private SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy  hh:mm a");
 
     static class ViewHolder {
         protected TextView textViewAuditLog;
+        protected TextView textViewAuditLogDate;
 
     }
 
@@ -58,31 +52,40 @@ public class AuditLogsAdapter extends ArrayAdapter<AuditLog> {
      *
      * @see Adapter#getView(int, View, ViewGroup)
      */
+    int objectId;
+    int screenId;
+    int eventId;
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final AuditLog log = getItem(position);
         ViewHolder holder = null;
         if (convertView == null) {
             final LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.settings_condition_element, parent, false);
+            convertView = inflater.inflate(R.layout.audit_logs_element, parent, false);
             holder = new ViewHolder();
             holder.textViewAuditLog = convertView.findViewById(R.id.textViewAuditLog);
+            holder.textViewAuditLogDate = convertView.findViewById(R.id.textViewAuditLogDate);
 
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+        String username;
+        if (log.getUser() != null)
+            username = log.getUser().getEmail();
+        else
+            username = log.getEmail();
 
-        String username = log.getUser().getEmail();
+        objectId = log.getObjectId();
+        screenId = log.getScreenId();
+        eventId = log.getEventId();
 
-        if (log.getUser().getFirstName() != null && log.getUser().getFirstName().length() > 0) {
-            username = log.getUser().getFirstName();
-            if (log.getUser().getLastName() != null)
-                username += " " + log.getUser().getLastName();
-        }
+        holder.textViewAuditLog.setText(Html.fromHtml(mContext.getString(eventId,
+                username, objectId != -1 ? mContext.getString(objectId) : "", log.getValue(),
+                (screenId != -1 ? mContext.getString(screenId) : -1))));
 
-        holder.textViewAuditLog.setText(Html.fromHtml(mContext.getString(R.string.textAuditLog,
-                username, log.getScreenName(), log.getEventName(), log.getObjectName())));
+        holder.textViewAuditLogDate.setText(format.format(log.getDate()));
 
 
         return convertView;

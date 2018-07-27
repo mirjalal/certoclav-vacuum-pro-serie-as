@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
@@ -33,8 +34,10 @@ import com.certoclav.app.listener.BroadcastListener;
 import com.certoclav.app.listener.WifiListener;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveMonitor;
+import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.ServerConfigs;
+import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.certocloud.CertocloudConstants;
 import com.google.gson.Gson;
 
@@ -176,6 +179,16 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
         //update UI (Text)
         updateWifiUI();
 //		 updateBluetoothUI(0);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        if ((!Autoclave.getInstance().getUser().isAdmin() || Autoclave.getInstance().getState() == AutoclaveState.LOCKED) &&
+                prefs.getBoolean(ApplicationController.getContext().getString(R.string.preferences_lockout_network),
+                        ApplicationController.getContext().getResources().getBoolean(R.bool.preferences_lockout_network))) {
+            Toast.makeText(getActivity(), R.string.these_settings_are_locked_by_the_admin, Toast.LENGTH_SHORT).show();
+            getPreferenceScreen().setEnabled(false);
+        } else {
+            getPreferenceScreen().setEnabled(true);
+        }
         super.onResume();
     }
 

@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.certoclav.app"
-    android:versionCode="34"
-    android:versionName="34">
+    android:versionCode="35"
+    android:versionName="35">
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -182,7 +182,7 @@
         <activity
             android:name=".menu.MenuMain"
             android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".sterilisationassistant.AssistantActivity"
             android:screenOrientation="sensorLandscape" />
@@ -267,7 +267,8 @@
             android:value="0e8d486e3f12f90c374d72e9854c12ebe4fe950e" />
 
         <activity android:name=".activities.ProgramTimerActivity" />
-        <activity android:name=".menu.AuditLogActivity"></activity>
+        <activity android:name=".menu.AuditLogActivity" />
+        <activity android:name=".menu.EditProgramActivity"></activity>
     </application>
 
 </manifest>

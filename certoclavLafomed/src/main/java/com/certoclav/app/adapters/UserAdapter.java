@@ -1,6 +1,8 @@
 package com.certoclav.app.adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -9,6 +11,7 @@ import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.certoclav.app.R;
 import com.certoclav.app.button.QuickActionItem;
@@ -16,6 +19,7 @@ import com.certoclav.app.database.Profile;
 import com.certoclav.app.database.User;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveState;
+import com.certoclav.library.application.ApplicationController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +51,8 @@ public class UserAdapter extends ArrayAdapter<User> {
     private final Context mContext;
     private QuickActionItem actionItemDelete;
     private QuickActionItem actionItemEdit;
+    private SharedPreferences prefs;
+    private boolean isLocked = false;
 
 
     /**
@@ -58,7 +64,15 @@ public class UserAdapter extends ArrayAdapter<User> {
     public UserAdapter(Context context, List<User> values) {
         super(context, R.layout.user_list_row, values);
         this.mContext = context;
-
+        prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        if ((!Autoclave.getInstance().getUser().isAdmin() || Autoclave.getInstance().getState() == AutoclaveState.LOCKED) &&
+                prefs.getBoolean(ApplicationController.getContext().getString(R.string.preferences_lockout_user_account),
+                        ApplicationController.getContext().getResources().getBoolean(R.bool.preferences_lockout_user_account))) {
+            Toast.makeText(mContext, R.string.these_settings_are_locked_by_the_admin, Toast.LENGTH_SHORT).show();
+            isLocked = true;
+        } else {
+            isLocked = false;
+        }
 
     }
 
@@ -83,11 +97,16 @@ public class UserAdapter extends ArrayAdapter<User> {
         actionItemEdit = (QuickActionItem) inflater.inflate(R.layout.quickaction_item, containerItems, false);
         actionItemDelete = (QuickActionItem) inflater.inflate(R.layout.quickaction_item, containerItems, false);
 
-        if (Autoclave.getInstance().getUser() != null && Autoclave.getInstance().getState() != AutoclaveState.LOCKED && getItem(position).getEmail().equals(Autoclave.getInstance().getUser().getEmail())) {
-            if (getItem(position).getIsLocal() || Autoclave.getInstance().isOnlineMode(mContext))
-                containerItems.addView(actionItemEdit);
-            containerItems.addView(actionItemDelete);
-        }
+
+        if (!isLocked)
+            if (Autoclave.getInstance().getUser() != null && Autoclave.getInstance().getState() != AutoclaveState.LOCKED
+                    && (getItem(position).getEmail().equals(Autoclave.getInstance().getUser().getEmail())
+                    || Autoclave.getInstance().getUser().isAdmin())) {
+                if (getItem(position).getIsLocal() || Autoclave.getInstance().isOnlineMode(mContext))
+                    containerItems.addView(actionItemEdit);
+                containerItems.addView(actionItemDelete);
+            }
+
             /*if(Autoclave.getInstance().getUser() != null){
                 if(Autoclave.getInstance().getUser().getEmail().equals(getItem(position).getEmail()) && Autoclave.getInstance().getState() != AutoclaveState.WAITING_FOR_LOGIN){
 					actionItemEdit.setVisibility(View.VISIBLE);

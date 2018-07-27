@@ -3,6 +3,7 @@ package com.certoclav.app.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
+import android.content.res.XmlResourceParser;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -28,9 +29,11 @@ import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.responsemodels.UserProtocolResponseModel;
 import com.certoclav.app.responsemodels.UserProtocolsResponseModel;
 import com.certoclav.app.service.ReadAndParseSerialService;
+import com.certoclav.library.application.ApplicationController;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xmlpull.v1.XmlPullParser;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -46,9 +49,11 @@ import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
@@ -486,12 +491,60 @@ public class Helper {
         return true;
     }
 
+
+    public static HashMap<Integer, Integer> getPreferenceTitles() {
+
+        HashMap<Integer, Integer> preferenceMap = new HashMap<>();
+
+        Context context = ApplicationController.getContext();
+        int prefs[] = new int[]{
+                R.xml.preference_sterilization,
+                R.xml.preferences_device,
+                R.xml.preferences_glp,
+                R.xml.preferences_language,
+                R.xml.preferences_lockout,
+                R.xml.preferences_network,
+        };
+        final String ANDROID_NAMESPACE = "http://schemas.android.com/apk/res/android";
+
+        for (int res : prefs) {
+            XmlResourceParser xpp = context.getResources().getXml(res);
+            int eventType;
+            try {
+                eventType = xpp.getEventType();
+                while (eventType != XmlPullParser.END_DOCUMENT) {
+                    if (eventType == XmlPullParser.START_TAG) {
+                        if (xpp.getAttributeCount() > 0) {
+                            String key = xpp.getAttributeValue(ANDROID_NAMESPACE, "key");
+                            if (key != null && key.contains("@"))
+                                key = context.getString(xpp.getAttributeResourceValue(ANDROID_NAMESPACE, "key", -1));
+                            if (key != null) {
+                                preferenceMap.put(key.hashCode(), xpp.getAttributeResourceValue(ANDROID_NAMESPACE, "title", -1));
+                            }
+                        }
+                    }
+                    eventType = xpp.next();
+                }
+                xpp.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return preferenceMap;
+    }
+
+
+    public static Drawable changeColorToWhite(Drawable drawable) {
+        drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        return drawable;
+    }
+
     static Runnable runnableTimeout = null;
-    static int currentProgram = 1;
     static int failCount = 0;
 
     public static void getPrograms(final Context context) {
 
+        failCount = 0;
         if (AppConstants.isIoSimulated) {
             Autoclave.getInstance();
             return;
@@ -504,48 +557,37 @@ public class Helper {
         barProgressDialog.showCancelButton(false);
         barProgressDialog.setCanceledOnTouchOutside(false);
         final Handler handler = new Handler();
-        final int TIMEOUT = 3000;
+        final int TIMEOUT = 4000;
         final int MAX_TRY = 5;
-        final int MAX_PROGRAM_COUNT = 12;
-        final DatabaseService databaseService = new DatabaseService(context);
-
 
         final MyCallback callbackProfile = new MyCallback() {
 
             @Override
             public void onSuccess(Object response, int requestId) {
 
-                if (response != null && ((Profile) response).getIndex() != currentProgram) {
+                if (requestId != ReadAndParseSerialService.HANDLER_MSG_ACK_PROGRAMS)
+                    return;
+                if (response != null && ((List<Profile>) response).size() == 0) {
                     onError(null, requestId);
                     return;
                 }
                 if (runnableTimeout != null)
                     handler.removeCallbacks(runnableTimeout);
 
-                failCount = 0;
-                if (currentProgram < MAX_PROGRAM_COUNT && response != null) {
-
-                    Autoclave.getInstance().getProfilesFromAutoclave().add((Profile) response);
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            ReadAndParseSerialService.getInstance().getProgram(++currentProgram);
-                        }
-                    }, 1000);
-
-                    Log.e("Helper", "PUT PROFILE " + ((Profile) response).getName());
-
-                    if (runnableTimeout != null)
-                        handler.postDelayed(runnableTimeout, TIMEOUT);
-
-                } else {
-                    if (response != null) {
-                        Autoclave.getInstance().getProfilesFromAutoclave().add((Profile) response);
-                        Log.e("Helper", "PUT PROFILE " + ((Profile) response).getName());
-                    } else
-                        currentProgram--;
-                    barProgressDialog.dismissWithAnimation();
+                List<Profile> oldProfiles = new ArrayList<>(Autoclave.getInstance().getProfilesFromAutoclave());
+                Autoclave.getInstance().getProfilesFromAutoclave().clear();
+                for (Profile profile : ((List<Profile>) response)) {
+                    if (oldProfiles.contains(profile)) {
+                        Log.e("Helper", "PUT PROFILE " + profile.getName() + " " + oldProfiles.get(oldProfiles.indexOf(profile)).getName());
+                        profile.setRecentUsedDate(oldProfiles.get(oldProfiles.indexOf(profile)).getRecentUsedDate());
+                    }
+                    Autoclave.getInstance().getProfilesFromAutoclave().add(profile);
                 }
+                oldProfiles.clear();
+                ReadAndParseSerialService.getInstance().removeCallback(this);
+                barProgressDialog.dismiss();
+                Autoclave.getInstance().notifyProfilesHasBeenSynced();
+
             }
 
             @Override
@@ -564,7 +606,7 @@ public class Helper {
                     barProgressDialog.setCancelText(context.getString(R.string.close));
                     barProgressDialog.setConfirmText(context.getString(R.string.try_again));
                 } else {
-                    ReadAndParseSerialService.getInstance().getProgram(currentProgram);
+                    ReadAndParseSerialService.getInstance().getPrograms();
                     if (runnableTimeout != null) {
                         handler.postDelayed(runnableTimeout, TIMEOUT);
                     }
@@ -595,7 +637,7 @@ public class Helper {
                     barProgressDialog.setCancelText(context.getString(R.string.close));
                     barProgressDialog.setConfirmText(context.getString(R.string.try_again));
                 } else {
-                    ReadAndParseSerialService.getInstance().getProgram(currentProgram);
+                    ReadAndParseSerialService.getInstance().getPrograms();
                     if (runnableTimeout != null) {
                         handler.postDelayed(runnableTimeout, TIMEOUT);
                     }
@@ -609,7 +651,6 @@ public class Helper {
             @Override
             public void onClick(SweetAlertDialog sweetAlertDialog) {
 
-                Autoclave.getInstance().getProfilesFromAutoclave().clear();
                 Log.e("Helper", "CLEAR PROGRAM LIST");
                 sweetAlertDialog.dismissWithAnimation();
             }
@@ -624,23 +665,140 @@ public class Helper {
                 barProgressDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
                 barProgressDialog.setContentText(null);
                 barProgressDialog.setTitleText(context.getString(R.string.loading));
-                currentProgram = 1;
-                ReadAndParseSerialService.getInstance().getProgram(1);
+                ReadAndParseSerialService.getInstance().getPrograms();
                 if (runnableTimeout != null)
                     handler.postDelayed(runnableTimeout, TIMEOUT);
             }
         });
-        Autoclave.getInstance().getProfilesFromAutoclave().clear();
         Log.e("Helper", "CLEAR PROGRAM LIST");
         barProgressDialog.show();
-        currentProgram = 1;
-        ReadAndParseSerialService.getInstance().getProgram(1);
+        ReadAndParseSerialService.getInstance().getPrograms();
         handler.postDelayed(runnableTimeout, TIMEOUT);
     }
 
+    public static void setProgram(final Context context, final Profile profile, final MyCallback callback) {
+        if (AppConstants.isIoSimulated) {
+            Autoclave.getInstance();
+            return;
+        }
+//        final Context context = ApplicationController.getContext();
+        failCount = 0;
+        final SweetAlertDialog barProgressDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
+        barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        barProgressDialog.setTitleText(context.getString(R.string.loading));
+        barProgressDialog.setContentText(null);
+        barProgressDialog.showCancelButton(false);
+        barProgressDialog.setCanceledOnTouchOutside(false);
+        final Handler handler = new Handler();
+        final int TIMEOUT = 4000;
+        final int MAX_TRY = 3;
 
-    public static Drawable changeColorToWhite(Drawable drawable) {
-        drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-        return drawable;
+        final MyCallback callbackProfile = new MyCallback() {
+
+            @Override
+            public void onSuccess(Object response, int requestId) {
+
+                if (requestId != ReadAndParseSerialService.HANDLER_MSG_ACK_PROGRAM)
+                    return;
+                if (response != null && (response instanceof Integer && ((Integer) response) == 0)) {
+                    onError(null, requestId);
+                    return;
+                }
+                if (callback != null)
+                    callback.onSuccess(1, -1);
+
+                if (runnableTimeout != null) {
+                    handler.removeCallbacks(runnableTimeout);
+                }
+                profile.setRecentUsedDate(new Date().getTime());
+                ReadAndParseSerialService.getInstance().removeCallback(this);
+                barProgressDialog.dismiss();
+
+            }
+
+            @Override
+            public void onError(ErrorModel error, int requestId) {
+                com.certoclav.app.model.Log.e("program getting error");
+                failCount++;
+                if (runnableTimeout != null)
+                    handler.removeCallbacks(runnableTimeout);
+
+                if (failCount > MAX_TRY) {
+                    ReadAndParseSerialService.getInstance().removeCallback(this);
+                    failCount = 0;
+                    barProgressDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                    barProgressDialog.setTitleText(context.getString(R.string.failed));
+                    barProgressDialog.setContentText(context.getString(R.string.something_went_wrong_try_again));
+                    barProgressDialog.setCancelText(context.getString(R.string.close));
+                    barProgressDialog.setConfirmText(context.getString(R.string.try_again));
+                } else {
+                    ReadAndParseSerialService.getInstance().setProgram(profile);
+                    if (runnableTimeout != null) {
+                        handler.postDelayed(runnableTimeout, TIMEOUT);
+                    }
+                }
+            }
+
+            @Override
+            public void onStart(int requestId) {
+
+            }
+
+            @Override
+            public void onProgress(int current, int max) {
+
+            }
+        };
+
+        runnableTimeout = new Runnable() {
+            @Override
+            public void run() {
+                failCount++;
+                if (failCount > MAX_TRY) {
+                    ReadAndParseSerialService.getInstance().removeCallback(callbackProfile);
+                    failCount = 0;
+                    barProgressDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                    barProgressDialog.setTitleText(context.getString(R.string.failed));
+                    barProgressDialog.setContentText(context.getString(R.string.something_went_wrong_try_again));
+                    barProgressDialog.setCancelText(context.getString(R.string.close));
+                    barProgressDialog.setConfirmText(context.getString(R.string.try_again));
+                } else {
+                    ReadAndParseSerialService.getInstance().setProgram(profile);
+                    if (runnableTimeout != null) {
+                        handler.postDelayed(runnableTimeout, TIMEOUT);
+                    }
+                }
+            }
+        };
+
+        ReadAndParseSerialService.getInstance().addCallback(callbackProfile);
+
+        barProgressDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                Log.e("Helper", "CLEAR PROGRAM LIST");
+                sweetAlertDialog.dismissWithAnimation();
+            }
+        });
+
+        barProgressDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                ReadAndParseSerialService.getInstance().addCallback(callbackProfile);
+                barProgressDialog.setConfirmText(null);
+                barProgressDialog.setCancelText(null);
+                barProgressDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+                barProgressDialog.setContentText(null);
+                barProgressDialog.setTitleText(context.getString(R.string.loading));
+                ReadAndParseSerialService.getInstance().setProgram(profile);
+                if (runnableTimeout != null)
+                    handler.postDelayed(runnableTimeout, TIMEOUT);
+            }
+        });
+        Log.e("Helper", "CLEAR PROGRAM LIST");
+        barProgressDialog.show();
+        ReadAndParseSerialService.getInstance().setProgram(profile);
+        handler.postDelayed(runnableTimeout, TIMEOUT);
     }
 }
