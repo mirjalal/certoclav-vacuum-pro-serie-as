@@ -97,6 +97,7 @@ public class ItemListFragment extends ListFragment {
         AddItem(getListView(), getActivity().getString(R.string.settings_user_account), R.drawable.ic_account_settings, R.drawable.ic_account_settings_selected, new UserEditFragment());
         AddItem(getListView(), getActivity().getString(R.string.settings_network), R.drawable.ic_network_settings, R.drawable.ic_network_settings_selected, new SettingsNetworkFragment());
         AddItem(getListView(), getActivity().getString(R.string.settings_device), R.drawable.ic_device_settings, R.drawable.ic_device_settings_selected, new SettingsDeviceFragment());
+        AddItem(getListView(), getActivity().getString(R.string.settings_autoclave), R.drawable.ic_service_setttings, R.drawable.ic_service_setttings_selected, new SettingsAutoclaveFragment());
         AddItem(getListView(), getActivity().getString(R.string.settings_audit_log), R.drawable.ic_audit_logs, R.drawable.ic_audit_logs_selected, new AuditLogFragment());
         AddItem(getListView(), getActivity().getString(R.string.settings_language), R.drawable.ic_language_settings, R.drawable.ic_language_settings_selected, new SettingsLanguageFragment());
         AddItem(getListView(), getActivity().getString(R.string.notifications), R.drawable.ic_notification_settings, R.drawable.ic_notification_settings_selected, new SettingsConditionFragment());
@@ -106,8 +107,8 @@ public class ItemListFragment extends ListFragment {
 
 
         //following settings are only visible to admin user
-        if(Autoclave.getInstance().getUser() != null){
-            if (Autoclave.getInstance().getState() != AutoclaveState.LOCKED){
+        if (Autoclave.getInstance().getUser() != null) {
+            if (Autoclave.getInstance().getState() != AutoclaveState.LOCKED) {
                 if (Autoclave.getInstance().getUser().isAdmin()) {
                     AddItem(getListView(), getActivity().getString(R.string.lockout), R.drawable.ic_lock, R.drawable.ic_lock_selected, new SettingsLockoutFragment());
                     AddItem(getListView(), "Service", R.drawable.ic_service_setttings, R.drawable.ic_service_setttings_selected, new SettingsServiceFragment());

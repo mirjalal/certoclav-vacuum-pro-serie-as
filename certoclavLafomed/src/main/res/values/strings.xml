@@ -788,7 +788,6 @@
     <string name="audit_objectadd_exists_button">Add exists</string>
     <string name="audit_object_create_new_button">Create new</string>
     <string name="network_settings">Network Settings</string>
-    <string name="preferences_autoclave_model">Model</string>
     <string name="you_can_add_maximum_programs">You can add maximum %1$d programs</string>
     <string name="do_you_really_want_to_add_new_program">Do you want to add a new program?</string>
     <string name="is_liquid_program">Liquid program</string>
@@ -800,5 +799,30 @@
     <string name="temperature_title">TEMPERATURE</string>
     <string name="vacuum_pulse_times">times</string>
     <string name="drying_time_minutes">minutes</string>
+
+
+    <!--Settings-->
+    <string name="preferences_autoclave_model">Model</string>
+    <string name="pref_device_settings">Device</string>
+    <string name="preferences_autoclave_serial">Serial Number</string>
+    <string name="preferences_autoclave_pcb_serial">PCB Serial Number</string>
+    <string name="pref_calibration_category">Calibrations</string>
+    <string name="preferences_autoclave_is_home_mode">Home mode</string>
+    <string name="preferences_autoclave_is_user_mode">User mode</string>
+    <string name="preferences_autoclave_degrees">Degrees</string>
+    <string name="settings_autoclave">Autoclave</string>
+    <string name="pref_model_summary">Current model: %s</string>
+    <string name="preferences_autoclave_final_temperature">Final Temperature</string>
+    <string name="preferences_autoclave_setpoint_temperature">Setpoint tempereature F</string>
+    <string name="preferences_autoclave_starting_pressure">Starting Pressure</string>
+    <string name="preferences_autoclave_cooling_pressure">Colling Pressure</string>
+    <string name="preferences_autoclave_number_cycle">Cycle number</string>
+    <string name="preferences_autoclave_number_hours">Number of hours</string>
+    <string name="pref_network_category">Network</string>
+    <string name="preferences_autoclave_ip">IP</string>
+    <string name="preferences_autoclave_mask">Mask</string>
+    <string name="preferences_autoclave_runway">Runway</string>
+    <string name="preferences_autoclave_port">Port</string>
+
 
 </resources>

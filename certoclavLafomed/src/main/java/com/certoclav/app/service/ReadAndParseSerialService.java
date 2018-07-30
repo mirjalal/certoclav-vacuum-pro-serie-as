@@ -9,6 +9,7 @@ import com.certoclav.app.AppConstants;
 import com.certoclav.app.database.Profile;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveMonitor;
+import com.certoclav.app.model.AutoclaveParameter;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.util.MyCallback;
@@ -75,6 +76,9 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     public static final int HANDLER_MSG_USER_PROGRAM = 3;
     public static final int HANDLER_MSG_ACK_PROGRAM = 4;
     public static final int HANDLER_MSG_ACK_PROGRAMS = 5;
+    public static final int HANDLER_MSG_ACK_GET_PARAMETER = 6;
+    public static final int HANDLER_MSG_ACK_SET_PARAMETER = 7;
+    public static final int HANDLER_MSG_ACK_GET_PARAMETERS = 8;
     private SerialService serialService = null;
     private List<MyCallback> callbacks;
 
@@ -118,6 +122,9 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         final static String GET_PROGRAM = "GET_PROG %d,";
         final static String SET_PROGRAM = "SET_PROG %d,%s,%f,%d,%d,%d,%d,";
         final static String GET_PROGRAMS = "GET_PROGS";
+        final static String GET_PARAS = "GET_PARAS";
+        final static String SET_PARAMETER = "SET_PARA %d,%s,";
+        final static String GET_PARAMETER = "GET_PARA %d,";
         final static String CONFIRM_ERROR = "CMD_CNFE";
 
         public static String CREATE(String command, Object... args) {
@@ -143,6 +150,8 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         String STOP = "ACK_STOP";
         String ACK_DATA = "ACK_DATA";
         String ACK_PROG = "ACK_PROG";
+        String ACK_PARA = "ACK_PARA";
+        String ACK_PARAS = "ACK_PARAS";
         String ACK_PROGS = "ACK_PROGS";
         String CONFIRM_ERROR = "ACK_CNFE";
     }
@@ -206,6 +215,27 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     public void getPrograms() {
         sendCommand(COMMANDS.CREATE(COMMANDS.GET_PROGRAMS));
     }
+
+    public void getParameters() {
+        sendCommand(COMMANDS.CREATE(COMMANDS.GET_PARAS));
+    }
+
+    public void getParameter(int paramId) {
+        sendCommand(COMMANDS.CREATE(COMMANDS.GET_PARAMETER, paramId));
+    }
+
+    public void setParameter(int paramId, Object value) {
+        String valueStr = value.toString();
+        if (value instanceof Boolean)
+            valueStr = (Boolean) value ? "1" : "0";
+        if (value instanceof Date) {
+            SimpleDateFormat format = new SimpleDateFormat("YYMMDDhhmmss");
+            valueStr = format.format(value);
+        }
+
+        sendCommand(COMMANDS.CREATE(COMMANDS.SET_PARAMETER, paramId, valueStr));
+    }
+
 
     public void setProgram(Profile profile) {
         sendCommand(COMMANDS.CREATE(COMMANDS.SET_PROGRAM,
@@ -291,6 +321,24 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                 case HANDLER_MSG_ACK_PROGRAMS:
                     if (msg.obj != null)
                         publishResult(msg.obj, true, HANDLER_MSG_ACK_PROGRAMS);
+                    else
+                        publishResult(ERROR_NOT_DEFINED, false, HANDLER_MSG_ACK_PROGRAMS);
+                    break;
+                case HANDLER_MSG_ACK_GET_PARAMETERS:
+                    if (msg.obj != null)
+                        publishResult(msg.obj, true, HANDLER_MSG_ACK_GET_PARAMETERS);
+                    else
+                        publishResult(ERROR_NOT_DEFINED, false, HANDLER_MSG_ACK_GET_PARAMETERS);
+                    break;
+                case HANDLER_MSG_ACK_SET_PARAMETER:
+                    if (msg.obj != null)
+                        publishResult(msg.obj, true, HANDLER_MSG_ACK_SET_PARAMETER);
+                    else
+                        publishResult(ERROR_NOT_DEFINED, false, HANDLER_MSG_ACK_PROGRAMS);
+                    break;
+                case HANDLER_MSG_ACK_GET_PARAMETER:
+                    if (msg.obj != null)
+                        publishResult(msg.obj, true, HANDLER_MSG_ACK_GET_PARAMETER);
                     else
                         publishResult(ERROR_NOT_DEFINED, false, HANDLER_MSG_ACK_PROGRAMS);
                     break;
@@ -461,7 +509,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 
 
                     if (responseParameters.length == 2 && Integer.valueOf(responseParameters[0]) == 1) {
-                                                Message msg = new Message();
+                        Message msg = new Message();
                         msg.what = HANDLER_MSG_ACK_PROGRAM;
                         msg.obj = 1;
                         handler.sendMessage(msg);
@@ -473,9 +521,9 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 
                     handlerGetData.removeCallbacks(runnableGetData);
                     handlerGetData.postDelayed(runnableGetData, 1000);
-                    String[] programsParameters = response[1].split(";");
+                    String[] parametersParameters = response[1].split(";");
                     List<Profile> programs = new ArrayList<>();
-                    for (String program : programsParameters) {
+                    for (String program : parametersParameters) {
                         program = program.replace(";", "");
                         responseParameters = program.split(",");
                         Float pressure = 0f;
@@ -516,6 +564,51 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                     Message msg = new Message();
                     msg.what = HANDLER_MSG_ACK_PROGRAMS;
                     msg.obj = programs;
+                    handler.sendMessage(msg);
+                    break;
+                case RESPONSES.ACK_PARA:
+
+                    handlerGetData.removeCallbacks(runnableGetData);
+                    handlerGetData.postDelayed(runnableGetData, 1000);
+
+                    if (responseParameters.length == 2) {
+                        msg = new Message();
+                        msg.what = HANDLER_MSG_ACK_SET_PARAMETER;
+                        msg.obj = Integer.valueOf(responseParameters[0]);
+                        handler.sendMessage(msg);
+                    } else if (responseParameters.length == 3) {
+                        msg = new Message();
+                        msg.what = HANDLER_MSG_ACK_GET_PARAMETER;
+                        msg.obj = new AutoclaveParameter(Integer.valueOf(responseParameters[0]), responseParameters[1]);
+                        handler.sendMessage(msg);
+                    } else {
+                        publishResult(new ErrorModel(null, ERROR_PARSING), false, HANDLER_MSG_ACK_PROGRAM);
+                    }
+                    break;
+
+                case RESPONSES.ACK_PARAS:
+
+                    handlerGetData.removeCallbacks(runnableGetData);
+                    handlerGetData.postDelayed(runnableGetData, 1000);
+                    parametersParameters = response[1].split(";");
+                    List<AutoclaveParameter> parameters = new ArrayList<>();
+                    for (String parameter : parametersParameters) {
+                        parameter = parameter.replace(";", "");
+                        responseParameters = parameter.split(",");
+
+                        if (responseParameters.length == 3) {
+
+                            AutoclaveParameter autoclaveParameter = new AutoclaveParameter(Integer.valueOf(responseParameters[0]), responseParameters[1]);
+                            parameters.add(autoclaveParameter);
+
+                        } else {
+                            publishResult(new ErrorModel(null, ERROR_PARSING), false, HANDLER_MSG_ACK_PROGRAMS);
+                            return;
+                        }
+                    }
+                    msg = new Message();
+                    msg.what = HANDLER_MSG_ACK_GET_PARAMETERS;
+                    msg.obj = parameters;
                     handler.sendMessage(msg);
                     break;
 

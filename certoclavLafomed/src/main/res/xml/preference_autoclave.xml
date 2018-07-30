@@ -1,0 +1,105 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="pref_key_device_category"
+        android:title="@string/pref_device_settings">
+
+        <ListPreference
+            android:defaultValue="TLV-150FA"
+            android:entries="@array/autoclave_models"
+            android:entryValues="@array/autoclave_models"
+            android:key="preferences_autoclave_parameter_1"
+            android:summary="%s"
+            android:title="@string/preferences_autoclave_model" />
+
+        <EditTextPreference
+            android:key="preferences_autoclave_parameter_3"
+            android:summary="@string/pref_model_summary"
+            android:title="@string/preferences_autoclave_serial" />
+
+        <EditTextPreference
+            android:key="preferences_autoclave_parameter_4"
+            android:title="@string/preferences_autoclave_pcb_serial" />
+
+        <EditTextPreference
+            android:inputType="number"
+            android:key="preferences_autoclave_parameter_94"
+            android:title="@string/preferences_autoclave_number_cycle" />
+
+
+        <EditTextPreference
+            android:inputType="number"
+            android:key="preferences_autoclave_parameter_96"
+            android:title="@string/preferences_autoclave_number_hours" />
+
+        <CheckBoxPreference
+            android:key="preferences_autoclave_parameter_6"
+            android:title="@string/preferences_autoclave_is_home_mode" />
+
+        <CheckBoxPreference
+            android:key="preferences_autoclave_parameter_9"
+            android:title="@string/preferences_autoclave_is_user_mode" />
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_key_calibration_category"
+        android:title="@string/pref_calibration_category">
+
+        <EditTextPreference
+            android:inputType="numberDecimal"
+            android:key="preferences_autoclave_parameter_8"
+            android:title="@string/preferences_autoclave_degrees" />
+
+        <EditTextPreference
+            android:inputType="numberDecimal"
+            android:key="preferences_autoclave_parameter_27"
+            android:title="@string/preferences_autoclave_final_temperature" />
+
+        <EditTextPreference
+            android:inputType="numberDecimal"
+            android:key="preferences_autoclave_parameter_40"
+            android:title="@string/preferences_autoclave_setpoint_temperature" />
+        <EditTextPreference
+            android:inputType="numberDecimal"
+            android:key="preferences_autoclave_parameter_41"
+            android:title="@string/preferences_autoclave_starting_pressure" />
+        <EditTextPreference
+            android:inputType="numberDecimal"
+            android:key="preferences_autoclave_parameter_42"
+            android:title="@string/preferences_autoclave_cooling_pressure" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_key_network_category"
+        android:title="@string/pref_network_category">
+
+        <EditTextPreference
+            android:digits="0123456789."
+            android:inputType="number|numberDecimal"
+            android:key="preferences_autoclave_parameter_89"
+            android:title="@string/preferences_autoclave_ip" />
+
+        <EditTextPreference
+            android:digits="0123456789."
+            android:inputType="number|numberDecimal"
+            android:key="preferences_autoclave_parameter_90"
+            android:title="@string/preferences_autoclave_mask" />
+
+        <EditTextPreference
+            android:digits="0123456789."
+            android:inputType="number|numberDecimal"
+            android:key="preferences_autoclave_parameter_91"
+            android:title="@string/preferences_autoclave_runway" />
+
+        <EditTextPreference
+            android:digits="0123456789"
+            android:inputType="number|numberDecimal"
+            android:key="preferences_autoclave_parameter_92"
+            android:title="@string/preferences_autoclave_port" />
+
+
+    </PreferenceCategory>
+</PreferenceScreen>

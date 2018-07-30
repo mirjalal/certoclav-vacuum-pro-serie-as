@@ -55,4 +55,9 @@ public class SettingsActivity extends CertoclavSuperActivity implements ItemList
         getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragment).commit();
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

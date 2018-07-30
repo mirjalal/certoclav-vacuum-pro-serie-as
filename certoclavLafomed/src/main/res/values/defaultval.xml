@@ -34,4 +34,8 @@
     <bool name="preferences_lockout_glp">false</bool>
     <bool name="preferences_lockout_service">false</bool>
 
+
+    //Parameters
+    <bool name="preferences_param_model"></bool>
+
 </resources>

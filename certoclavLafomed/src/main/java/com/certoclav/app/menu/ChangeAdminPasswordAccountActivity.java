@@ -50,6 +50,7 @@ public class ChangeAdminPasswordAccountActivity extends Activity {
         Log.e("LoginActivity", "onCreate");
         setContentView(R.layout.change_admin_password_layout);
         CertoclavNavigationbarClean navigationbar = new CertoclavNavigationbarClean(this);
+        navigationbar.showButtonBack();
         navigationbar.setHeadText(getString(R.string.change_admin_password));
 
 
