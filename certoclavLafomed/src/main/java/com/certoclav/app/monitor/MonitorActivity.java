@@ -83,13 +83,13 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
         }
 
 
-        textSteps = (TextView) findViewById(R.id.monitor_text_steps);
+        textSteps = findViewById(R.id.monitor_text_steps);
 
 
-        textCycleCount = (TextView) findViewById(R.id.monitor_text_cycle_count);
-        textProgram = (TextView) findViewById(R.id.monitor_text_programname);
-        textState = (TextView) findViewById(R.id.monitor_text_state);
-        buttonStop = (Button) findViewById(R.id.monitor_button_stop);
+        textCycleCount = findViewById(R.id.monitor_text_cycle_count);
+        textProgram = findViewById(R.id.monitor_text_programname);
+        textState = findViewById(R.id.monitor_text_state);
+        buttonStop = findViewById(R.id.monitor_button_stop);
 
         if (Autoclave.getInstance().getProfile() != null) {
             textProgram.setText(Autoclave.getInstance().getProfile().getName());

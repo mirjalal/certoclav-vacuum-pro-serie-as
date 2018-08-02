@@ -9,6 +9,7 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -65,6 +66,13 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preference_autoclave);
 
+        findPreference("preferences_autoclave_parameter_update").setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                ReadAndParseSerialService.getInstance().requestForFirmwareUpdate();
+                return false;
+            }
+        });
     }
 
     @Override
@@ -78,8 +86,16 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                           String key) {
         Preference connectionPref = findPreference(key);
-        if (!(connectionPref instanceof CheckBoxPreference))
+        if (!(connectionPref instanceof CheckBoxPreference)) {
             connectionPref.setSummary(sharedPreferences.getString(key, ""));
+            if (sharedPreferences.contains(key))
+                ReadAndParseSerialService.getInstance().setParameter(Integer.valueOf(key.replace("preferences_autoclave_parameter_", "")),
+                        sharedPreferences.getString(key, ""));
+        } else {
+            if (sharedPreferences.contains(key))
+                ReadAndParseSerialService.getInstance().setParameter(Integer.valueOf(key.replace("preferences_autoclave_parameter_", "")),
+                        sharedPreferences.getBoolean(key, false) ? 1 : 0);
+        }
 
     }
 
@@ -89,6 +105,7 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
                 .registerOnSharedPreferenceChangeListener(this);
         ReadAndParseSerialService.getInstance().addCallback(this);
         ReadAndParseSerialService.getInstance().getParameters();
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         if ((!Autoclave.getInstance().getUser().isAdmin() || Autoclave.getInstance().getState() == AutoclaveState.LOCKED) &&
                 prefs.getBoolean(ApplicationController.getContext().getString(R.string.preferences_lockout_sterilization),
@@ -109,20 +126,52 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
             Preference pref;
             String key;
             for (AutoclaveParameter parameter : parameters) {
-                pref = findPreference(key = "preferences_autoclave_parameter_" + parameter.getParameterId());
-                if (!(pref instanceof CheckBoxPreference)) {
-                    pref.getEditor().putString(key, parameter.getValue().toString());
-                    pref.setSummary(parameter.getValue().toString());
-                } else {
-                    pref.getEditor().putBoolean(key, parameter.getValue().toString().equals("1"));
-                }
+                key = "preferences_autoclave_parameter_" + parameter.getParameterId();
+                pref = findPreference(key);
+                if (pref != null)
+                    if (!(pref instanceof CheckBoxPreference)) {
+                        pref.getEditor().putString(key, parameter.getValue().toString()).commit();
+                        pref.setSummary(parameter.getValue().toString());
+                    } else {
+                        pref.getEditor().putBoolean(key, parameter.getValue().toString().equals("1")).commit();
+                    }
             }
+        } else if (requestId == ReadAndParseSerialService.HANDLER_MSG_ACK_SET_PARAMETER) {
+            if (!(response instanceof Integer) || Integer.valueOf(response.toString()) == 0) {
+                Toast.makeText(getContext(), getString(R.string.something_went_wrong_try_again), Toast.LENGTH_SHORT).show();
+            }
+            ReadAndParseSerialService.getInstance().getParameters();
+        } else if (requestId == ReadAndParseSerialService.HANDLER_MSG_CMD_UTF) {
+            boolean isSuccess = response instanceof Integer && Integer.valueOf(response.toString()) == 1;
+            final SweetAlertDialog barProgressDialog = new SweetAlertDialog(getContext(),
+                    isSuccess ? SweetAlertDialog.SUCCESS_TYPE : SweetAlertDialog.ERROR_TYPE);
+            barProgressDialog.setTitleText(getString(isSuccess ? R.string.success : R.string.failed));
+            barProgressDialog.setContentText(getString(isSuccess ? R.string.please_reboot_to_start_update : R.string.something_went_wrong));
+            barProgressDialog.setConfirmText(getString(R.string.ok));
+            barProgressDialog.showCancelButton(false);
+            barProgressDialog.setCanceledOnTouchOutside(true);
+            barProgressDialog.show();
         }
     }
 
     @Override
     public void onError(ErrorModel error, int requestId) {
-
+        final SweetAlertDialog barProgressDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE);
+        barProgressDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+        barProgressDialog.setTitleText(getString(R.string.failed));
+        barProgressDialog.setContentText(getString(R.string.something_went_wrong_try_again));
+        barProgressDialog.setCancelText(getString(R.string.close));
+        barProgressDialog.setConfirmText(getString(R.string.try_again));
+        barProgressDialog.showCancelButton(true);
+        barProgressDialog.setCanceledOnTouchOutside(true);
+        barProgressDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                sweetAlertDialog.dismiss();
+                ReadAndParseSerialService.getInstance().getParameters();
+            }
+        });
+        barProgressDialog.show();
     }
 
     @Override

@@ -1,12 +1,15 @@
 package com.certoclav.app.settings;
 
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StatFs;
@@ -16,6 +19,8 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 import android.support.v4.preference.PreferenceFragment;
 import android.util.Log;
+import android.widget.DatePicker;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
@@ -25,12 +30,15 @@ import com.certoclav.app.menu.ChangeAdminPasswordAccountActivity;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveData;
 import com.certoclav.app.model.AutoclaveState;
+import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.util.DownloadUtils;
 import com.certoclav.library.util.ExportUtils;
 import com.certoclav.library.util.UpdateUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -38,6 +46,8 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class SettingsDeviceFragment extends PreferenceFragment implements SensorDataListener {
 
+
+    private Calendar dateTime;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +59,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
         prefs.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                if(key.equals(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL)){
+                if (key.equals(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL)) {
                     findPreference(AppConstants.PREFERENCE_KEY_SERIAL_NUMBER).setSummary(Autoclave.getInstance().getController().getSerialnumber());
                 }
             }
@@ -81,7 +91,6 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 
             });
         }
-
 
         findPreference(AppConstants.PREFERENCE_KEY_DEVICE_KEY).setSummary(deviceKey);
 
@@ -223,6 +232,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 //Toast.makeText(getActivity(), getActivity().getString(R.string.please_use_secondary_lcd_screen_to_change_the_time), Toast.LENGTH_LONG).show();
+                setTimeAndDate(true);
                 return false;
             }
         });
@@ -323,5 +333,42 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 
     }
 
+    private void setTimeAndDate(boolean isDate) {
+
+
+        if (isDate) {
+            dateTime = Calendar.getInstance();
+            DatePickerDialog datepickerdialog = new DatePickerDialog(
+                    getContext(),
+                    new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                            dateTime.set(Calendar.YEAR, year);
+                            dateTime.set(Calendar.MONTH, month);
+                            dateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                            setTimeAndDate(false);
+                        }
+                    },
+                    dateTime.get(Calendar.YEAR),
+                    dateTime.get(Calendar.MONTH),
+                    dateTime.get(Calendar.DAY_OF_MONTH)
+            );
+
+            datepickerdialog.setTitle("Please select a date"); //dialog title
+            datepickerdialog.show(); //show dialog
+        } else {
+            TimePickerDialog timepickerdialog = new TimePickerDialog(getContext(),
+                    new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                            dateTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                            dateTime.set(Calendar.MINUTE, minute);
+                            ReadAndParseSerialService.getInstance().setParameter(93, new SimpleDateFormat("yyMMddhhmmss").format(dateTime.getTime()));
+                        }
+                    },
+                    dateTime.get(Calendar.HOUR_OF_DAY), dateTime.get(Calendar.MINUTE), true);
+            timepickerdialog.show(); //show time picker dialog
+        }
+    }
 
 }

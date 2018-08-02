@@ -11,7 +11,7 @@ public interface AppConstants {
     Boolean APPLICATION_DEBUGGING_MODE = false;
     String DEFAULT_ADMIN_PASSWORD = "admin";
     String DEFAULT_CLOUD_ADMIN_PASSWORD = "master@certocloud";
-    boolean SHOW_LOGS = false;
+    boolean SHOW_LOGS = true;
     String PREFERENCE_KEY_SERVER_TYPE = "servertype";
     int PREFERENCE_KEY_SERVER_CERTOCLOUD = 1;
     int PREFERENCE_KEY_SERVER_MANUAL = 2;

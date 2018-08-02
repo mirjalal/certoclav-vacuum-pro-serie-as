@@ -40,6 +40,11 @@
             android:key="preferences_autoclave_parameter_9"
             android:title="@string/preferences_autoclave_is_user_mode" />
 
+        <Preference
+            android:key="preferences_autoclave_parameter_update"
+            android:summary="@string/preferences_autoclave_updatable_summary"
+            android:title="@string/preferences_autoclave_updatable" />
+
 
     </PreferenceCategory>
 
@@ -59,16 +64,23 @@
 
         <EditTextPreference
             android:inputType="numberDecimal"
-            android:key="preferences_autoclave_parameter_40"
-            android:title="@string/preferences_autoclave_setpoint_temperature" />
-        <EditTextPreference
-            android:inputType="numberDecimal"
             android:key="preferences_autoclave_parameter_41"
             android:title="@string/preferences_autoclave_starting_pressure" />
         <EditTextPreference
             android:inputType="numberDecimal"
             android:key="preferences_autoclave_parameter_42"
             android:title="@string/preferences_autoclave_cooling_pressure" />
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+        android:key="pref_key_f_function_category"
+        android:title="@string/pref_f_function_category">
+        <EditTextPreference
+            android:inputType="numberDecimal"
+            android:key="preferences_autoclave_parameter_40"
+            android:title="@string/preferences_autoclave_setpoint_temperature" />
 
     </PreferenceCategory>
 
@@ -102,4 +114,6 @@
 
 
     </PreferenceCategory>
+
+
 </PreferenceScreen>

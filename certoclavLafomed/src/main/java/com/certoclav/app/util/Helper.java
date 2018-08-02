@@ -504,6 +504,7 @@ public class Helper {
                 R.xml.preferences_language,
                 R.xml.preferences_lockout,
                 R.xml.preferences_network,
+                R.xml.preference_autoclave
         };
         final String ANDROID_NAMESPACE = "http://schemas.android.com/apk/res/android";
 

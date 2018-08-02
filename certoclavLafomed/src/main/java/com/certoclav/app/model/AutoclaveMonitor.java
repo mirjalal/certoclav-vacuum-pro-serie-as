@@ -15,6 +15,7 @@ import com.certoclav.app.database.User;
 import com.certoclav.app.listener.AlertListener;
 import com.certoclav.app.listener.AutoclaveStateListener;
 import com.certoclav.app.listener.ConnectionStatusListener;
+import com.certoclav.app.listener.ProtocolListener;
 import com.certoclav.app.listener.SensorDataListener;
 import com.certoclav.app.monitor.MonitorActivity;
 import com.certoclav.app.monitor.MonitorNotificationActivity;
@@ -36,15 +37,11 @@ import java.util.concurrent.TimeUnit;
 import static com.certoclav.app.model.AutoclaveState.PREPARE_TO_RUN;
 
 
-public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusListener, AutoclaveStateListener {
+public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusListener, AutoclaveStateListener, ProtocolListener {
 
     Context mContext = ApplicationController.getContext();
     private SparseArray<String> errorMap = new SparseArray<String>();
     private SparseArray<String> errorVideoMap = new SparseArray<String>();
-
-
-
-
 
 
     public static final int ERROR_CODE_SUCCESSFULL = 0;
@@ -141,38 +138,39 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
         errorMap.put(ERROR_CODE_CANCELLED_BY_ERROR, mContext.getString(R.string.cycle_cancelled_because_of_error));
         errorMap.put(ERROR_CODE_POWER_LOSS, mContext.getString(R.string.power_loss_during_record));
         errorMap.put(ERROR_CODE_INDICATOR_FAILED, mContext.getString(R.string.indicator_failed));
-        errorMap.put(WATER_FLOATING_SYSTEM_FAILURE,"WATER FLOATING SYSTEM FAILURE");
-        errorMap.put(FILLING_WATER_TIME_EXCEEDED,"FILLING WATER TIME EXCEEDED");
-        errorMap.put(REFILLING_WATER_FAILURE,"REFILLING WATER FAILURE");
-        errorMap.put(PHASE_1_HEATING_FAILURE,"PHASE 1 HEATING FAILURE");
-        errorMap.put(PHASE_1_PRESSURE_FAILURE,"PHASE 1 PRESSURE FAILURE");
-        errorMap.put(PHASE_1_TIME_EXCEEDED,"PHASE 1 TIME EXCEEDED");
-        errorMap.put(PHASE_2_TIME_EXCEEDED,"PHASE 2 TIME EXCEEDED");
-        errorMap.put(STERILIZATION_OVERTEMPERATURE,"STERILIZATION OVERTEMPERATURE");
-        errorMap.put(STERILIZATION_UNDERTEMPERATURE,"STERILIZATION UNDERTEMPERATURE");
-        errorMap.put(STERILIZATION_OVERPRESSURE,"STERILIZATION OVERPRESSURE");
-        errorMap.put(STERILIZATION_UNDERPRESSURE,"STERILIZATION UNDERPRESSURE");
-        errorMap.put(PRESSURE_LEVELING_TIMEOUT,"PRESSURE LEVELING TIMEOUT");
-        errorMap.put(TEMPERATURE_PROBE_FAILURE,"TEMPERATURE PROBE FAILURE");
-        errorMap.put(DIFFERENCE_BETWEEN_PROBES_EXCEEDED,"DIFFERENCE BETWEEN PROBES EXCEEDED");
-        errorMap.put(DOOR_OPEN,"DOOR OPEN");
-        errorMap.put(LOW_PRESSURE_IN_PULSES,"LOW PRESSURE IN PULSES");
-        errorMap.put(STABILIZATION_PHASE_TIMEOUT,"STABILIZATION PHASE TIMEOUT");
-        errorMap.put(WATER_PUMP_FAILURE,"WATER PUMP FAILURE");
-        errorMap.put(COOLING_WATER_FAILURE,"COOLING WATER FAILURE");
-        errorMap.put(VACUUM_TEST_FAILURE,"VACUUM TEST FAILURE");
-        errorMap.put(VACUUM_TEST_UNDERPRESSURE,"VACUUM TEST UNDERPRESSURE");
-        errorMap.put(VACUUM_TEST_UNDERTEMPERATURE,"VACUUM TEST UNDERTEMPERATURE");
-        errorMap.put(VACUUM_TEST_FINAL_PRESSURE_EXCEEDED,"VACUUM TEST FINAL PRESSURE EXCEEDED");
-        errorMap.put(MANUAL_PHASE_CHANGE,"MANUAL PHASE CHANGE");
-        errorMap.put(POWER_SUPPLY_FAILURE,"POWER SUPPLY FAILURE");
+        errorMap.put(WATER_FLOATING_SYSTEM_FAILURE, "WATER FLOATING SYSTEM FAILURE");
+        errorMap.put(FILLING_WATER_TIME_EXCEEDED, "FILLING WATER TIME EXCEEDED");
+        errorMap.put(REFILLING_WATER_FAILURE, "REFILLING WATER FAILURE");
+        errorMap.put(PHASE_1_HEATING_FAILURE, "PHASE 1 HEATING FAILURE");
+        errorMap.put(PHASE_1_PRESSURE_FAILURE, "PHASE 1 PRESSURE FAILURE");
+        errorMap.put(PHASE_1_TIME_EXCEEDED, "PHASE 1 TIME EXCEEDED");
+        errorMap.put(PHASE_2_TIME_EXCEEDED, "PHASE 2 TIME EXCEEDED");
+        errorMap.put(STERILIZATION_OVERTEMPERATURE, "STERILIZATION OVERTEMPERATURE");
+        errorMap.put(STERILIZATION_UNDERTEMPERATURE, "STERILIZATION UNDERTEMPERATURE");
+        errorMap.put(STERILIZATION_OVERPRESSURE, "STERILIZATION OVERPRESSURE");
+        errorMap.put(STERILIZATION_UNDERPRESSURE, "STERILIZATION UNDERPRESSURE");
+        errorMap.put(PRESSURE_LEVELING_TIMEOUT, "PRESSURE LEVELING TIMEOUT");
+        errorMap.put(TEMPERATURE_PROBE_FAILURE, "TEMPERATURE PROBE FAILURE");
+        errorMap.put(DIFFERENCE_BETWEEN_PROBES_EXCEEDED, "DIFFERENCE BETWEEN PROBES EXCEEDED");
+        errorMap.put(DOOR_OPEN, "DOOR OPEN");
+        errorMap.put(LOW_PRESSURE_IN_PULSES, "LOW PRESSURE IN PULSES");
+        errorMap.put(STABILIZATION_PHASE_TIMEOUT, "STABILIZATION PHASE TIMEOUT");
+        errorMap.put(WATER_PUMP_FAILURE, "WATER PUMP FAILURE");
+        errorMap.put(COOLING_WATER_FAILURE, "COOLING WATER FAILURE");
+        errorMap.put(VACUUM_TEST_FAILURE, "VACUUM TEST FAILURE");
+        errorMap.put(VACUUM_TEST_UNDERPRESSURE, "VACUUM TEST UNDERPRESSURE");
+        errorMap.put(VACUUM_TEST_UNDERTEMPERATURE, "VACUUM TEST UNDERTEMPERATURE");
+        errorMap.put(VACUUM_TEST_FINAL_PRESSURE_EXCEEDED, "VACUUM TEST FINAL PRESSURE EXCEEDED");
+        errorMap.put(MANUAL_PHASE_CHANGE, "MANUAL PHASE CHANGE");
+        errorMap.put(POWER_SUPPLY_FAILURE, "POWER SUPPLY FAILURE");
         errorMap.put(ERROR_CODE_CANCELLED_BY_USER, mContext.getString(R.string.cycle_cancelled_by_user_));
-        errorMap.put(FATAL_ERROR_PROCESS_STOPPED,"FATAL ERROR PROCESS STOPPED");
+        errorMap.put(FATAL_ERROR_PROCESS_STOPPED, "FATAL ERROR PROCESS STOPPED");
 
 
         Autoclave.getInstance().setOnSensorDataListener(this);
         Autoclave.getInstance().setOnConnectionStatusListener(this);
         Autoclave.getInstance().setOnAutoclaveStateListener(this);
+        Autoclave.getInstance().setOnProtocolListener(this);
         databaseService = new DatabaseService(ApplicationController.getContext());
         nanoTimeAtLastMessageReceived = System.nanoTime();
         timerHandler.postDelayed(timerRunnable, 0);
@@ -436,7 +434,9 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                                     Autoclave.getInstance().getData().getTemp1().getCurrentValue(),
                                     Autoclave.getInstance().getData().getTemp2().getCurrentValue(),
                                     Autoclave.getInstance().getData().getPress().getCurrentValue(),
-                                    Autoclave.getInstance().getProtocol()));
+                                    Autoclave.getInstance().getProtocol(),
+                                    Autoclave.getInstance().getDebugData()[0],
+                                    Autoclave.getInstance().getDebugData()[1]));
                         }
                     }
                 }
@@ -450,9 +450,9 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                         Log.e("AutoclaveMonitor", "ERROR ID STORED INTO PROTOCOL: " + errorList.get(0).getErrorID());
                         cancelProgram(errorList.get(0).getErrorID());
                     } else {
-                        if (Autoclave.getInstance().getData().isProgramFinishedSucessfully()){
-                                finishProgram();
-                                Autoclave.getInstance().setState(AutoclaveState.PROGRAM_FINISHED);
+                        if (Autoclave.getInstance().getData().isProgramFinishedSucessfully()) {
+                            finishProgram();
+                            Autoclave.getInstance().setState(AutoclaveState.PROGRAM_FINISHED);
                         }
                     }
 
@@ -808,12 +808,10 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
     }
 
 
-
-
     private void checkErrors() {
 
         try {
-            String binary = String.format("%32s" , new BigInteger(Autoclave.getInstance().getErrorCode(), 16).toString(2)).replace(" ", "0");
+            String binary = String.format("%32s", new BigInteger(Autoclave.getInstance().getErrorCode(), 16).toString(2)).replace(" ", "0");
             Log.e("error_hex" + Autoclave.getInstance().getErrorCode());
             Log.e("error_binary" + binary);
             errorList = new ArrayList<>();
@@ -826,9 +824,23 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                             Error.TYPE_ERROR,
                             errorcode));
                 }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    @Override
+    public void onDebugChanged() {
+        if (Autoclave.getInstance().getData().isProgramRunning() && Autoclave.getInstance().getProtocol() != null) {
+            Log.e("Debug Data", Autoclave.getInstance().getDebugData()[0] + " " + Autoclave.getInstance().getDebugData()[1]);
+            databaseService.insertProtocolEntry(new ProtocolEntry(
+                    Autoclave.getInstance().getDateObject(),
+                    Autoclave.getInstance().getData().getTemp1().getCurrentValue(),
+                    Autoclave.getInstance().getData().getTemp2().getCurrentValue(),
+                    Autoclave.getInstance().getData().getPress().getCurrentValue(),
+                    Autoclave.getInstance().getProtocol(),
+                    Autoclave.getInstance().getDebugData()[0],
+                    Autoclave.getInstance().getDebugData()[1]));
+        }
+    }
 }

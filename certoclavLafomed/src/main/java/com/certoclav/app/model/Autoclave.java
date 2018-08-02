@@ -41,6 +41,8 @@ public class Autoclave extends Observable {
     private SerialService serialService = null;
     private SerialService serialServiceLabelPrinter = null;
     private ArrayList<String> listContent = new ArrayList<String>();
+    private boolean isDebugMode;
+    private String[] debugData;
 
 
     private String programStep = "";
@@ -64,6 +66,13 @@ public class Autoclave extends Observable {
         this.listContent = listContent;
     }
 
+    public boolean isDebugMode() {
+        return isDebugMode;
+    }
+
+    public void setDebugMode(boolean debugMode) {
+        isDebugMode = debugMode;
+    }
 
     public int getProgramsInRowTotal() {
         return programsInRowTotal;
@@ -241,7 +250,7 @@ public class Autoclave extends Observable {
 
     ArrayList<ConnectionStatusListener> connectionStatusListeners = new ArrayList<ConnectionStatusListener>();
     ArrayList<SensorDataListener> sensorDataListeners = new ArrayList<SensorDataListener>();
-    ArrayList<AutoclaveStateListener> autoclaveStateListeners = new ArrayList<AutoclaveStateListener>();
+    ArrayList<AutoclaveStateListener> autoclaveStateListeners = new ArrayList<>();
     ArrayList<ProfileListener> profileListeners = new ArrayList<ProfileListener>();
     ArrayList<ProtocolListener> protocolListeners = new ArrayList<ProtocolListener>();
     ArrayList<WifiListener> wifiListeners = new ArrayList<WifiListener>();
@@ -1034,6 +1043,18 @@ public class Autoclave extends Observable {
 
     }
 
+    public void setDebugData(String[] debugData) {
+        if (this.debugData ==null || (!debugData[0].equals(this.debugData[0]) || !debugData[1].equals(this.debugData[1]))) {
+            this.debugData = debugData;
+            for (ProtocolListener listener : protocolListeners)
+                listener.onDebugChanged();
+            return;
+        }
+        this.debugData = debugData;
+    }
 
+    public String[] getDebugData() {
+        return debugData;
+    }
 }
 

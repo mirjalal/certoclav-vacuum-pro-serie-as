@@ -103,20 +103,20 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
         Calendar calendar = Calendar.getInstance();
         int vacuumTime = newProfile.getVacuumTimes();
         int temp = 20;
-        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, 0, protocol));
+        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, 0, protocol,"",""));
         calendar.add(Calendar.MINUTE, 1);
-        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, 0, protocol));
+        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, 0, protocol,"",""));
         for (int i = 0; i < vacuumTime - 1; i++) {
             calendar.add(Calendar.MINUTE, 5);
-            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, -84, protocol));
+            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, -84, protocol,"",""));
             calendar.add(Calendar.MINUTE, 5);
             temp = 100;
-            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, 50, protocol));
+            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, 50, protocol,"",""));
             temp = 60;
         }
 
         calendar.add(Calendar.MINUTE, 5);
-        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, -84, protocol));
+        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, -84, protocol,"",""));
         calendar.add(Calendar.MINUTE, 7);
 
         temp = (int) newProfile.getSterilisationTemperature();
@@ -134,23 +134,23 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
 
         int pressurekpa = (int) (pressure * 100);
 
-        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, pressurekpa, protocol));
+        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, pressurekpa, protocol,"",""));
         calendar.add(Calendar.MINUTE, newProfile.getSterilisationTime());
-        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, pressurekpa, protocol));
+        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, pressurekpa, protocol,"",""));
 
         if (newProfile.getDryTime() > 0) {
             calendar.add(Calendar.MINUTE, 5);
             temp = 67;
-            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, -84, protocol));
+            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, -84, protocol,"",""));
             calendar.add(Calendar.MINUTE, newProfile.getDryTime());
             temp = 68;
-            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, -84, protocol));
+            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, -84, protocol,"",""));
             calendar.add(Calendar.MINUTE, 1);
-            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, 0, protocol));
+            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, 0, protocol,"",""));
         } else {
             calendar.add(Calendar.MINUTE, 5);
             temp = 67;
-            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, 0, protocol));
+            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, 0, protocol,"",""));
         }
 
         graphFragment.setProtocol(protocol);

@@ -1,10 +1,12 @@
 package com.certoclav.app.util;
 
+import android.content.res.Configuration;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.library.application.ApplicationController;
 
 public class AppController extends ApplicationController {
@@ -48,6 +50,12 @@ public class AppController extends ApplicationController {
         if (mRequestQueue != null) {
             mRequestQueue.cancelAll(tag);
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        ReadAndParseSerialService.getInstance().setParameter(7,newConfig.locale.getLanguage());
     }
 
 }

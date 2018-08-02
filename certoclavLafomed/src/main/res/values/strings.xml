@@ -815,7 +815,7 @@
     <string name="preferences_autoclave_final_temperature">Final Temperature</string>
     <string name="preferences_autoclave_setpoint_temperature">Setpoint tempereature F</string>
     <string name="preferences_autoclave_starting_pressure">Starting Pressure</string>
-    <string name="preferences_autoclave_cooling_pressure">Colling Pressure</string>
+    <string name="preferences_autoclave_cooling_pressure">Cooling Pressure</string>
     <string name="preferences_autoclave_number_cycle">Cycle number</string>
     <string name="preferences_autoclave_number_hours">Number of hours</string>
     <string name="pref_network_category">Network</string>
@@ -823,6 +823,10 @@
     <string name="preferences_autoclave_mask">Mask</string>
     <string name="preferences_autoclave_runway">Runway</string>
     <string name="preferences_autoclave_port">Port</string>
+    <string name="pref_f_function_category">F Function</string>
+    <string name="preferences_autoclave_updatable">Enable Updating</string>
+    <string name="preferences_autoclave_updatable_summary">Enable flashing a firmware to Microcontroller from USB</string>
+    <string name="please_reboot_to_start_update">Please reboot autoclave to flash firmware from USB.</string>
 
 
 </resources>
