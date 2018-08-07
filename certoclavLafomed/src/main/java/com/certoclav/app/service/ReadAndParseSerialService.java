@@ -49,7 +49,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     public static final int INDEX_DAT_DEBUG_OUTPUT = 14;
     public static final int INDEX_DAT_CHECKSUM = 15;
     public static final int NUMBER_OF_DAT_RESPONSE_PARAMETERS = 16;
-    public static final int NUMBER_OF_PROGRAM_RESPONSE_PARAMETERS = 8;
+    public static final int NUMBER_OF_PROGRAM_RESPONSE_PARAMETERS = 11;
     private int delayForGetData = 100;
     //Errors
     public static final int ERROR_NOT_DEFINED = -1;
@@ -64,7 +64,10 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     public static final int INDEX_PROGRAM_DRYING_TIME = 4;
     public static final int INDEX_PROGRAM_STERILIZATION_TIME = 5;
     public static final int INDEX_PROGRAM_PULSE_VACUUM = 6;
-    public static final int INDEX_PROGRAM_CHECKSUM = 7;
+    public static final int INDEX_PROGRAM_IS_F0_ENABLED = 7;
+    public static final int INDEX_PROGRAM_LETHAL_TEMP = 8;
+    public static final int INDEX_PROGRAM_Z_VALUE = 9;
+    public static final int INDEX_PROGRAM_CHECKSUM = 10;
     Double offsetSteam = 0d;
     private int currentCommand = -1;
 
@@ -132,7 +135,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         final static String CMD_FLASH_USB = "CMD_STOP";
         final static String GET_DATA = "GET_DATA";
         final static String GET_PROGRAM = "GET_PROG %d,";
-        final static String SET_PROGRAM = "SET_PROG %d,%s,%f,%d,%d,%d,%d,";
+        final static String SET_PROGRAM = "SET_PROG %d,%s,%f,%d,%d,%d,%d,%d,%f,%f,";
         final static String GET_PROGRAMS = "GET_PROGS";
         final static String GET_PARAS = "GET_PARAS";
         final static String CMD_UTF = "CMD_UTF";
@@ -263,7 +266,10 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                 profile.isLiquidProgram() ? 1 : 0,
                 profile.getDryTime(),
                 profile.getSterilisationTime(),
-                profile.getVacuumTimes()));
+                profile.getVacuumTimes(),
+                profile.isF0Enabled()?1:0,
+                profile.getLethalTemp(),
+                profile.getzValue()));
     }
 
     /*
@@ -599,7 +605,11 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                                     true,
                                     Integer.valueOf(responseParameters[INDEX_PROGRAM_IS_LIQUID_PROGRAM]) == 1,
                                     null,
-                                    Integer.valueOf(responseParameters[INDEX_PROGRAM_NUM]));
+                                    Integer.valueOf(responseParameters[INDEX_PROGRAM_NUM]),
+                                    responseParameters[INDEX_PROGRAM_IS_F0_ENABLED].equals("1"),
+                                    Float.valueOf(responseParameters[INDEX_PROGRAM_LETHAL_TEMP]),
+                                    Float.valueOf(responseParameters[INDEX_PROGRAM_Z_VALUE])
+                                    );
                             programs.add(profile);
 
                         } else {

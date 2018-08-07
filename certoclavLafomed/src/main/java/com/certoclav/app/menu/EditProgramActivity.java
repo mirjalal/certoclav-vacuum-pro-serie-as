@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,9 +47,12 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
     private CertoclavNavigationbarClean navigationbar;
     private EditText editTextProgramName;
     private CheckBox checkboxIdLiquidProgram;
+    private CheckBox checkboxIsF0FunctionProgram;
     private TextView programStepSterilisationDescription;
     private TextView programStepDryDescription;
+    private TextView programStepF0FunctionDescription;
     private TextView programStepVacuumDescription;
+    private View linearLayoutF0Function;
 
 
     @Override
@@ -66,11 +70,22 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
 
         editTextProgramName = findViewById(R.id.editTextProgramName);
         checkboxIdLiquidProgram = findViewById(R.id.checkboxIdLiquidProgram);
+        checkboxIsF0FunctionProgram = findViewById(R.id.checkboxIsF0FunctionEnabled);
         programStepSterilisationDescription = findViewById(R.id.program_step_sterilisation_description);
         programStepDryDescription = findViewById(R.id.program_step_dry_description);
+        programStepF0FunctionDescription = findViewById(R.id.program_step_f0_function_description);
         programStepVacuumDescription = findViewById(R.id.program_step_vacuum_description);
 
         findViewById(R.id.linearLayoutSterilisation).setOnClickListener(this);
+        linearLayoutF0Function = findViewById(R.id.linearLayoutF0Function);
+        linearLayoutF0Function.setOnClickListener(this);
+        linearLayoutF0Function.setVisibility(checkboxIsF0FunctionProgram.isChecked() ? View.VISIBLE : View.GONE);
+        checkboxIsF0FunctionProgram.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                linearLayoutF0Function.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+            }
+        });
         findViewById(R.id.linearLayoutDry).setOnClickListener(this);
         findViewById(R.id.linearLayoutVacuum).setOnClickListener(this);
 
@@ -103,20 +118,20 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
         Calendar calendar = Calendar.getInstance();
         int vacuumTime = newProfile.getVacuumTimes();
         int temp = 20;
-        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, 0, protocol,"",""));
+        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, 0, protocol, "", ""));
         calendar.add(Calendar.MINUTE, 1);
-        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, 0, protocol,"",""));
+        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, 0, protocol, "", ""));
         for (int i = 0; i < vacuumTime - 1; i++) {
             calendar.add(Calendar.MINUTE, 5);
-            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, -84, protocol,"",""));
+            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, -84, protocol, "", ""));
             calendar.add(Calendar.MINUTE, 5);
             temp = 100;
-            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, 50, protocol,"",""));
+            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, 50, protocol, "", ""));
             temp = 60;
         }
 
         calendar.add(Calendar.MINUTE, 5);
-        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, -84, protocol,"",""));
+        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, -84, protocol, "", ""));
         calendar.add(Calendar.MINUTE, 7);
 
         temp = (int) newProfile.getSterilisationTemperature();
@@ -134,23 +149,23 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
 
         int pressurekpa = (int) (pressure * 100);
 
-        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, pressurekpa, protocol,"",""));
+        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, pressurekpa, protocol, "", ""));
         calendar.add(Calendar.MINUTE, newProfile.getSterilisationTime());
-        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, pressurekpa, protocol,"",""));
+        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, pressurekpa, protocol, "", ""));
 
         if (newProfile.getDryTime() > 0) {
             calendar.add(Calendar.MINUTE, 5);
             temp = 67;
-            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, -84, protocol,"",""));
+            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, -84, protocol, "", ""));
             calendar.add(Calendar.MINUTE, newProfile.getDryTime());
             temp = 68;
-            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, -84, protocol,"",""));
+            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, -84, protocol, "", ""));
             calendar.add(Calendar.MINUTE, 1);
-            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, 0, protocol,"",""));
+            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, 0, protocol, "", ""));
         } else {
             calendar.add(Calendar.MINUTE, 5);
             temp = 67;
-            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, 0, protocol,"",""));
+            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, 0, protocol, "", ""));
         }
 
         graphFragment.setProtocol(protocol);
@@ -159,8 +174,10 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
         if (!isEditted) {
             editTextProgramName.setText(newProfile.getName());
             checkboxIdLiquidProgram.setChecked(newProfile.isLiquidProgram());
+            checkboxIsF0FunctionProgram.setChecked(newProfile.isF0Enabled());
         }
         programStepSterilisationDescription.setText(getString(R.string.program_step_sterlisation_desc, newProfile.getSterilisationTime(), newProfile.getSterilisationTemperature()));
+        programStepF0FunctionDescription.setText(getString(R.string.program_step_f0_function_desc, newProfile.getLethalTemp(), newProfile.getzValue()));
         programStepDryDescription.setText(getString(R.string.program_step_dry_desc, newProfile.getDryTime()));
         programStepVacuumDescription.setText(getString(R.string.program_step_vacuum_desc, newProfile.getVacuumTimes()));
 
@@ -206,6 +223,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
                 }
                 newProfile.setName(name);
                 newProfile.setLiquidProgram(checkboxIdLiquidProgram.isChecked());
+                newProfile.setF0Enabled(checkboxIsF0FunctionProgram.isChecked());
                 Helper.setProgram(this, newProfile, new MyCallback() {
                     @Override
                     public void onSuccess(Object response, int requestId) {
@@ -284,6 +302,9 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
             case R.id.linearLayoutSterilisation:
                 showEditSterilisationDialog();
                 break;
+            case R.id.linearLayoutF0Function:
+                showEditF0FunctionnDialog();
+                break;
             case R.id.linearLayoutDry:
                 showEditDryOrVacuum(false);
                 break;
@@ -322,6 +343,43 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
             public void onClick(View v) {
                 newProfile.setSterilisationTime(Integer.valueOf(editTime.getText().toString()));
                 newProfile.setSterilisationTemperature(Math.max(AppConstants.TEMP_MIN_INT, Float.valueOf(editTemp.getText().toString())));
+                refreshGraphAndList(true);
+                dialog.dismissWithAnimation();
+            }
+        });
+
+        dialog.show();
+    }
+
+    private void showEditF0FunctionnDialog() {
+
+        final SweetAlertDialog dialog = new SweetAlertDialog(this, R.layout.program_definition_fragment_edit_f0_function, SweetAlertDialog.WARNING_TYPE);
+        dialog.setContentView(R.layout.program_definition_fragment_edit_f0_function);
+        dialog.setTitle(R.string.register_new_user);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
+
+        //get views
+        final EditText editLethalTemp = dialog.findViewById(R.id.program_definition_edit_lethal);
+        final EditText editZValue = dialog.findViewById(R.id.program_definition_edit_z_value);
+        editLethalTemp.setFilters(new InputFilterMinMax[]{new InputFilterMinMax(0, AppConstants.TEMP_MAX_INT)});
+
+        //insert default values
+        editZValue.setText(Float.toString(newProfile.getzValue()));
+        editLethalTemp.setText(Float.toString(newProfile.getLethalTemp()));
+
+        dialog.findViewById(R.id.cancel_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismissWithAnimation();
+            }
+        });
+
+        dialog.findViewById(R.id.confirm_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newProfile.setzValue(Float.valueOf(editZValue.getText().toString()));
+                newProfile.setLethalTemp(Float.valueOf(editLethalTemp.getText().toString()));
                 refreshGraphAndList(true);
                 dialog.dismissWithAnimation();
             }

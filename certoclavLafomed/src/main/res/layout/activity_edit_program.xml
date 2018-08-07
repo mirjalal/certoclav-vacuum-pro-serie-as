@@ -54,7 +54,7 @@
                         android:paddingRight="20dp"
                         android:text="@string/new_program"
                         android:textColor="#000000"
-                        android:textSize="20sp" />
+                        android:textSize="15sp" />
 
 
                 </LinearLayout>
@@ -63,7 +63,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="30dp"
                     android:listSelector="@android:color/background_light"
                     android:orientation="vertical">
 
@@ -73,7 +72,39 @@
                         android:layout_height="wrap_content"
                         android:text="@string/is_liquid_program" />
 
+                    <CheckBox
+                        android:id="@+id/checkboxIsF0FunctionEnabled"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/is_f0_function_enabled" />
 
+                    <LinearLayout
+                        android:id="@+id/linearLayoutF0Function"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/program_step_f0_function"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/f0_function"
+                            android:textColor="#000000"
+                            android:textSize="22sp"
+                            tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:id="@+id/program_step_f0_function_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="10 minutes at 100\u2103"
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="15sp"
+                            tools:ignore="HardcodedText" />
+
+                    </LinearLayout>
                     <LinearLayout
                         android:id="@+id/linearLayoutSterilisation"
                         android:layout_width="match_parent"
@@ -88,7 +119,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/sterilisation"
                             android:textColor="#000000"
-                            android:textSize="25sp"
+                            android:textSize="22sp"
                             tools:ignore="HardcodedText" />
 
                         <TextView
@@ -97,7 +128,7 @@
                             android:layout_height="wrap_content"
                             android:text="10 minutes at 100\u2103"
                             android:textColor="@android:color/darker_gray"
-                            android:textSize="20sp"
+                            android:textSize="15sp"
                             tools:ignore="HardcodedText" />
 
                     </LinearLayout>
@@ -116,7 +147,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/drying_time_title"
                             android:textColor="#000000"
-                            android:textSize="25sp"
+                            android:textSize="22sp"
                             tools:ignore="HardcodedText" />
 
                         <TextView
@@ -125,7 +156,7 @@
                             android:layout_height="wrap_content"
                             android:text="10 minutes at 100\u2103"
                             android:textColor="@android:color/darker_gray"
-                            android:textSize="20sp"
+                            android:textSize="15sp"
                             tools:ignore="HardcodedText" />
 
                     </LinearLayout>
@@ -144,7 +175,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/vacuum_pulse"
                             android:textColor="#000000"
-                            android:textSize="25sp"
+                            android:textSize="22sp"
                             tools:ignore="HardcodedText" />
 
                         <TextView
@@ -153,7 +184,7 @@
                             android:layout_height="wrap_content"
                             android:text="10 minutes at 100\u2103"
                             android:textColor="@android:color/darker_gray"
-                            android:textSize="20sp"
+                            android:textSize="15sp"
                             tools:ignore="HardcodedText" />
 
                     </LinearLayout>

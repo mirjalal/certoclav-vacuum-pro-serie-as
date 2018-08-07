@@ -154,7 +154,10 @@ public class Autoclave extends Observable {
                     true,
                     true,
                     Autoclave.getInstance().getController(),
-                    index);
+                    index,
+                    false,
+                    121f,
+                    10);
         }
         return profilesFromAutoclave.get(profilesFromAutoclave.indexOf(new Profile(index)));
     }
@@ -377,7 +380,10 @@ public class Autoclave extends Observable {
                     true,
                     false,
                     null,
-                    1));
+                    1,
+                    false,
+                    121f,
+                    10));
 
             profilesFromAutoclave.add(new Profile("",
                     1,
@@ -393,7 +399,10 @@ public class Autoclave extends Observable {
                     true,
                     false,
                     null,
-                    2));
+                    2,
+                    false,
+                    121f,
+                    10));
 
             profilesFromAutoclave.add(new Profile("",
                     1,
@@ -409,7 +418,10 @@ public class Autoclave extends Observable {
                     true,
                     false,
                     null,
-                    1));
+                    1,
+                    false,
+                    121f,
+                    10));
 
             profilesFromAutoclave.add(new Profile("",
                     1,
@@ -425,7 +437,10 @@ public class Autoclave extends Observable {
                     true,
                     false,
                     null,
-                    1));
+                    1,
+                    false,
+                    121f,
+                    10));
 
             profilesFromAutoclave.add(new Profile("",
                     1,
@@ -441,7 +456,10 @@ public class Autoclave extends Observable {
                     true,
                     true,
                     null,
-                    1));
+                    1,
+                    false,
+                    121f,
+                    10));
 
             profilesFromAutoclave.add(new Profile("",
                     1,
@@ -457,7 +475,10 @@ public class Autoclave extends Observable {
                     true,
                     true,
                     null,
-                    1));
+                    1,
+                    false,
+                    121f,
+                    10));
 
             profilesFromAutoclave.add(new Profile("",
                     1,
@@ -473,7 +494,10 @@ public class Autoclave extends Observable {
                     true,
                     true,
                     null,
-                    1));
+                    1,
+                    false,
+                    121f,
+                    10));
 
             profilesFromAutoclave.add(new Profile("",
                     1,
@@ -489,7 +513,10 @@ public class Autoclave extends Observable {
                     true,
                     true,
                     null,
-                    1));
+                    1,
+                    false,
+                    121f,
+                    10));
         } else {
 
             profilesFromAutoclave.add(new Profile("",
@@ -506,7 +533,10 @@ public class Autoclave extends Observable {
                     true,
                     false,
                     null,
-                    1));
+                    1,
+                    false,
+                    121f,
+                    10));
 
             profilesFromAutoclave.add(new Profile("",
                     1,
@@ -522,7 +552,10 @@ public class Autoclave extends Observable {
                     true,
                     false,
                     null,
-                    2));
+                    2,
+                    false,
+                    121f,
+                    10));
 
             profilesFromAutoclave.add(new Profile("",
                     1,
@@ -538,7 +571,10 @@ public class Autoclave extends Observable {
                     true,
                     false,
                     null,
-                    1));
+                    1,
+                    false,
+                    121f,
+                    10));
 
             profilesFromAutoclave.add(new Profile("",
                     1,
@@ -554,7 +590,10 @@ public class Autoclave extends Observable {
                     true,
                     false,
                     null,
-                    1));
+                    1,
+                    false,
+                    121f,
+                    10));
 
             profilesFromAutoclave.add(new Profile("",
                     1,
@@ -570,7 +609,10 @@ public class Autoclave extends Observable {
                     true,
                     false,
                     null,
-                    1));
+                    1,
+                    false,
+                    121f,
+                    10));
 
             profilesFromAutoclave.add(new Profile("",
                     1,
@@ -586,7 +628,10 @@ public class Autoclave extends Observable {
                     true,
                     false,
                     null,
-                    1));
+                    1,
+                    false,
+                    121f,
+                    10));
 
             profilesFromAutoclave.add(new Profile("",
                     1,
@@ -602,7 +647,10 @@ public class Autoclave extends Observable {
                     true,
                     false,
                     null,
-                    1));
+                    1,
+                    false,
+                    121f,
+                    10));
 
             profilesFromAutoclave.add(new Profile("",
                     1,
@@ -618,7 +666,10 @@ public class Autoclave extends Observable {
                     true,
                     false,
                     null,
-                    1));
+                    1,
+                    false,
+                    121f,
+                    10));
 
             profilesFromAutoclave.add(new Profile("",
                     1,
@@ -634,7 +685,10 @@ public class Autoclave extends Observable {
                     true,
                     false,
                     null,
-                    1));
+                    1,
+                    false,
+                    121f,
+                    10));
 
             profilesFromAutoclave.add(new Profile("",
                     1,
@@ -650,7 +704,10 @@ public class Autoclave extends Observable {
                     true,
                     false,
                     null,
-                    1));
+                    1,
+                    false,
+                    121f,
+                    10));
 
             profilesFromAutoclave.add(new Profile("",
                     1,
@@ -666,7 +723,10 @@ public class Autoclave extends Observable {
                     true,
                     false,
                     null,
-                    1));
+                    1,
+                    false,
+                    121f,
+                    10));
 
             profilesFromAutoclave.add(new Profile("",
                     1,
@@ -682,7 +742,10 @@ public class Autoclave extends Observable {
                     true,
                     false,
                     null,
-                    1));
+                    1,
+                    false,
+                    121f,
+                    10));
 
         }
     }

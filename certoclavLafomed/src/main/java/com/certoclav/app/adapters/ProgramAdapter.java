@@ -150,8 +150,17 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
         if (getItem(position).getDryTime() != 0) {
             sbuilder.append(mContext.getString(R.string.drying_time) + " ")
                     .append(getItem(position).getDryTime())
-                    .append(" " + mContext.getString(R.string.min));
+                    .append(" " + mContext.getString(R.string.min))
+                    .append("\n");
         }
+
+        if (getItem(position).isF0Enabled()) {
+            sbuilder.append(mContext.getString(R.string.f0_enabled) + "\n")
+                    .append(mContext.getString(R.string.lethal_temp_format,getItem(position).getLethalTemp()))
+                    .append("\n")
+                    .append(mContext.getString(R.string.z_value_format,getItem(position).getzValue()));
+        }
+
 
 
         viewHolder.textDuration.setText(sbuilder.toString());

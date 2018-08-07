@@ -47,7 +47,7 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
         textSteam = (TextView) findViewById(R.id.certoclav_statusbar_text_steam);
         textMedia = (TextView) findViewById(R.id.certoclav_statusbar_text_media);
         textPressure = (TextView) findViewById(R.id.certoclav_statusbar_text_pressure);
-        if (!AppConstants.SHOW_LOGS)
+        if (!AppConstants.SHOW_DEBUG_LOGS)
             ((ViewGroup) findViewById(R.id.fragment_debugger_uart).getParent()).removeView(findViewById(R.id.fragment_debugger_uart));
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);

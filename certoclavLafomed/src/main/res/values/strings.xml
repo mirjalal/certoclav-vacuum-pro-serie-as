@@ -794,6 +794,7 @@
     <string name="drying_time_title">DRYING TIME</string>
     <string name="vacuum_pulse">VACUUM PULSE</string>
     <string name="program_step_sterlisation_desc">%1$d minutes at %2$.1f °C</string>
+    <string name="program_step_f0_function_desc">Lethal: %1$.1f °C, Z value: %2$.1f °C</string>
     <string name="program_step_dry_desc">%1$d minutes</string>
     <string name="program_step_vacuum_desc">%1$d times</string>
     <string name="temperature_title">TEMPERATURE</string>
@@ -827,6 +828,13 @@
     <string name="preferences_autoclave_updatable">Enable Updating</string>
     <string name="preferences_autoclave_updatable_summary">Enable flashing a firmware to Microcontroller from USB</string>
     <string name="please_reboot_to_start_update">Please reboot autoclave to flash firmware from USB.</string>
+    <string name="f0_enabled">Function: F0</string>
+    <string name="lethal_temp_format">Lethal Temperature: %1$.2f</string>
+    <string name="z_value_format">Z Value: %1$.2f</string>
+    <string name="is_f0_function_enabled">Enable F0 Function</string>
+    <string name="f0_function">F0 Function</string>
+    <string name="lethal_temp_title">Lethal</string>
+    <string name="z_value_title">Z Value</string>
 
 
 </resources>
