@@ -139,7 +139,7 @@ public class ChangeAdminPasswordAccountActivity extends Activity {
         linEditTextItemContainer.addView(editPasswordItemConfirm);
 
 
-        databaseService = new DatabaseService(ChangeAdminPasswordAccountActivity.this);
+        databaseService = DatabaseService.getInstance();
 
         buttonSave = (Button) findViewById(R.id.register_button_ok);
         buttonSave.setText(getString(R.string.save));

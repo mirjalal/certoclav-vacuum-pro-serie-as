@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -230,10 +231,11 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 navigationbar.showButtonBack();
                 break;
             case NOT_RUNNING:
-                    textState.setText(R.string.state_not_running);
-                    buttonStop.setVisibility(View.VISIBLE);
-                    buttonStop.setPadding(0, 0, 0, 0);
-                    buttonStop.setText("START");
+                textState.setText(R.string.state_not_running);
+                buttonStop.setVisibility(View.VISIBLE);
+                buttonStop.setPadding(0, 0, 0, 0);
+                buttonStop.setText("START");
+                buttonStop.setEnabled(true);
 
                 navigationbar.showButtonBack();
                 break;
@@ -248,16 +250,18 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 navigationbar.showButtonBack();
                 break;
             case PROGRAM_FINISHED:
+                if (textState.getText().toString().toLowerCase().equals(getString(R.string.state_finished).toLowerCase()))
+                    break;
                 buttonStop.setVisibility(View.VISIBLE);
                 buttonStop.setEnabled(false);
-                buttonStop.setText("PLEASE OPEN DOOR");
+                buttonStop.setText(getString(R.string.please_open_door));
                 textState.setText(R.string.state_finished);
                 navigationbar.showButtonBack();
 
                 AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
                         AuditLogger.ACTION_PROGRAM_FINISHED,
                         AuditLogger.OBJECT_EMPTY,
-                        Autoclave.getInstance().getProfile().getName() + " (" + getString(R.string.cycle) + " " + Autoclave.getInstance().getCurrentProgramCounter() + ")");
+                        Autoclave.getInstance().getProfile().getName() + " (" + getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() + ")");
 
                 askForIndicator();
                 break;
@@ -270,38 +274,30 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 buttonStop.setText(R.string.stop);
                 textState.setText(R.string.state_running);
                 textState.append(" (");
-                if(Autoclave.getInstance().getProgramStep().contains("SF1")){
+                if (Autoclave.getInstance().getProgramStep().contains("SF1")) {
                     textState.append("Vacuum Step 1 of " + Autoclave.getInstance().getProfile().getVacuumTimes());
-                }else if(Autoclave.getInstance().getProgramStep().contains("SF2")) {
+                } else if (Autoclave.getInstance().getProgramStep().contains("SF2")) {
                     textState.append("Vacuum Step 2 of " + Autoclave.getInstance().getProfile().getVacuumTimes());
-                }else if(Autoclave.getInstance().getProgramStep().contains("SF3")) {
+                } else if (Autoclave.getInstance().getProgramStep().contains("SF3")) {
                     textState.append("Vacuum Step 3 of " + Autoclave.getInstance().getProfile().getVacuumTimes());
-                }else if(Autoclave.getInstance().getProgramStep().contains("SF4")) {
+                } else if (Autoclave.getInstance().getProgramStep().contains("SF4")) {
                     textState.append("Vacuum Step 4 of " + Autoclave.getInstance().getProfile().getVacuumTimes());
-                }else if(Autoclave.getInstance().getProgramStep().contains("SH")) {
+                } else if (Autoclave.getInstance().getProgramStep().contains("SH")) {
                     textState.append("Heating up to " + (int) Autoclave.getInstance().getProfile().getSterilisationTemperature() + "\u00B0C");
-                }else if(Autoclave.getInstance().getProgramStep().contains("SS")) {
+                } else if (Autoclave.getInstance().getProgramStep().contains("SS")) {
                     textState.append("Hold temperature for " + (int) Autoclave.getInstance().getProfile().getSterilisationTime() + " minutes");
-                }else if(Autoclave.getInstance().getProgramStep().contains("SC")) {
+                } else if (Autoclave.getInstance().getProgramStep().contains("SC")) {
                     textState.append("Cooling down");
-                }else if(Autoclave.getInstance().getProgramStep().contains("SD")) {
+                } else if (Autoclave.getInstance().getProgramStep().contains("SD")) {
                     textState.append("Drying for " + Autoclave.getInstance().getProfile().getDryTime() + " minutes");
-                }else if(Autoclave.getInstance().getProgramStep().contains("SR")) {
+                } else if (Autoclave.getInstance().getProgramStep().contains("SR")) {
                     textState.append("Pressure compensation");
-                }else if(Autoclave.getInstance().getProgramStep().contains("SE")) {
+                } else if (Autoclave.getInstance().getProgramStep().contains("SE")) {
                     textState.append("Program finished");
                 }
                 textState.append(")");
 
                 navigationbar.hideButtonBack();
-
-                // Insert the log one time
-                if (!buttonStop.getText().equals(getString(R.string.stop))) {
-                    AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
-                            AuditLogger.ACTION_PROGRAM_STARTED,
-                            AuditLogger.OBJECT_EMPTY,
-                            Autoclave.getInstance().getProfile().getName() + " (" + getString(R.string.cycle) + " " + Autoclave.getInstance().getCurrentProgramCounter() + ")");
-                }
                 buttonStop.setText(R.string.stop);
 
                 break;
@@ -312,10 +308,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 }
                 textState.setText(R.string.state_cancelled);
                 navigationbar.showButtonBack();
-                AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
-                        AuditLogger.ACTION_PROGRAM_CANCELED,
-                        AuditLogger.OBJECT_EMPTY,
-                        Autoclave.getInstance().getProfile().getName() + " (" + getString(R.string.cycle) + " " + Autoclave.getInstance().getCurrentProgramCounter() + ")");
+
                 break;
             case WAITING_FOR_CONFIRMATION:
                 buttonStop.setVisibility(View.INVISIBLE);
@@ -353,12 +346,12 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
 
         List<Profile> profilesFromDb = Autoclave.getInstance().getProfilesFromAutoclave();
         if (Autoclave.getInstance().getProfile() == null) {
-                for (Profile profile : profilesFromDb) {
-                    if (profile.getIndex() == Autoclave.getInstance().getIndexOfRunningProgram()) {
-                        Autoclave.getInstance().setProfile(profile);
-                        break;
-                    }
+            for (Profile profile : profilesFromDb) {
+                if (profile.getIndex() == Autoclave.getInstance().getIndexOfRunningProgram()) {
+                    Autoclave.getInstance().setProfile(profile);
+                    break;
                 }
+            }
         }
 
         StringBuilder sbuilder = new StringBuilder();
@@ -625,7 +618,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                                 AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
                                 AuditLogger.OBJECT_EMPTY,
                                 getString(R.string.failed));
-                        new DatabaseService(ApplicationController.getContext()).updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(), AutoclaveMonitor.ERROR_CODE_INDICATOR_FAILED);
+                        DatabaseService.getInstance().updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(), AutoclaveMonitor.ERROR_CODE_INDICATOR_FAILED);
                         sweetAlertDialog.dismissWithAnimation();
                     }
                 })

@@ -22,7 +22,7 @@ public class AuditLogActivity extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_audit_log, container, false); //je nach mIten k�nnte man hier anderen Inhalt laden.
-        databaseService = new DatabaseService(getActivity());
+        databaseService = DatabaseService.getInstance();
         listViewAuditLogs = rootView.findViewById(R.id.listViewAuditLogs);
         listViewAuditLogs.setAdapter(new AuditLogsAdapter(getActivity(),
                 databaseService.getAuditLogs(null, null, false)));

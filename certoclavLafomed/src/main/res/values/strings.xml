@@ -766,6 +766,7 @@
     <string name="audit_action_program_indicator_changed"><![CDATA[<b>%1$s</b> set indicator to <font color=\"#69B7F5\"><b>%3$s</b></font>]]></string>
     <string name="audit_action_program_canceled"><![CDATA[<b>%1$s</b> canceled <font color=\"#69B7F5\"><b>%3$s</b></font> program]]></string>
     <string name="audit_action_program_finished"><![CDATA[<font color=\"#69B7F5\"><b>%3$s</b></font> program finished.]]></string>
+    <string name="audit_action_program_failed"><![CDATA[<font color=\"#69B7F5\"><b>%3$s</b></font> program failed.]]></string>
     <string name="audit_action_asked_for_network">asked for Network</string>
     <string name="audit_action_selected">selected</string>
     <string name="audit_action_clicked">clicked</string>
@@ -835,6 +836,7 @@
     <string name="f0_function">F0 Function</string>
     <string name="lethal_temp_title">Lethal</string>
     <string name="z_value_title">Z Value</string>
+    <string name="please_open_door">PLEASE OPEN DOOR</string>
 
 
 </resources>

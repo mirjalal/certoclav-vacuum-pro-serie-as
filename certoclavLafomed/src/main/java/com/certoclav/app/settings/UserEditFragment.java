@@ -55,7 +55,7 @@ public class UserEditFragment extends Fragment implements UserAdapter.OnClickBut
     public void onResume() {
         adapter.setOnClickButtonListener(this);
 
-        DatabaseService db = new DatabaseService(getActivity());
+        DatabaseService db = DatabaseService.getInstance();
         adapter.clear();
         for (User user : db.getUsers()) {
             adapter.add(user);
@@ -77,7 +77,7 @@ public class UserEditFragment extends Fragment implements UserAdapter.OnClickBut
         View rootView = inflater.inflate(R.layout.settings_user_edit, container, false); //je nach mIten k�nnte man hier anderen Inhalt laden.
 
         listview = (ListView) rootView.findViewById(R.id.settings_user_edit_list);
-        DatabaseService db = new DatabaseService(getActivity());
+        DatabaseService db = DatabaseService.getInstance();
         List<User> usersVisible = db.getUsers();
         if (usersVisible != null) {
             adapter = new UserAdapter(getActivity(), usersVisible);
@@ -103,7 +103,7 @@ public class UserEditFragment extends Fragment implements UserAdapter.OnClickBut
                         @Override
                         public void onClick(SweetAlertDialog sDialog) {
                             sDialog.dismissWithAnimation();
-                            DatabaseService db = new DatabaseService(getActivity());
+                            DatabaseService db = DatabaseService.getInstance();
                             db.deleteUser(user);
                             adapter.remove(user);
                             adapter.notifyDataSetChanged();

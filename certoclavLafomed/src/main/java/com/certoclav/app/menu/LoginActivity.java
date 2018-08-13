@@ -55,6 +55,9 @@ import com.crashlytics.android.Crashlytics;
 
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import cn.pedant.SweetAlert.ProgressHelper;
@@ -144,6 +147,13 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
+
+        try {
+            if (new Date().after(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse("2018-10-15T09:27:37Z")))
+                finish();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         serverConfigs = ServerConfigs.getInstance(this);
         AuditLogger.init();
         Fabric.with(this, new Crashlytics());
@@ -166,7 +176,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
-        final DatabaseService databaseService = new DatabaseService(this);
+        final DatabaseService databaseService = DatabaseService.getInstance();
 
 //        databaseService.fillDatabaseWithProgramIfEmpty();
 
@@ -295,8 +305,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                                     || params[0].toString().equals(AppConstants.DEFAULT_CLOUD_ADMIN_PASSWORD)
                                     || Helper.checkAdminPassword(getApplicationContext(), params[0])) {
 
-                                DatabaseService databaseService = new DatabaseService(
-                                        LoginActivity.this);
+                                DatabaseService databaseService = DatabaseService.getInstance();
                                 // if the user trys to log in into this
                                 // Controller the first time, then save him into
                                 // the UserController Table.
@@ -332,7 +341,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                                         R.string.password_not_correct,
                                         Toast.LENGTH_LONG).show();
 
-                                AuditLogger.addAuditLog(currentUser,-1, AuditLogger.ACTION_FAILED_LOGIN, AuditLogger.OBJECT_EMPTY, null);
+                                AuditLogger.addAuditLog(currentUser, -1, AuditLogger.ACTION_FAILED_LOGIN, AuditLogger.OBJECT_EMPTY, null);
 
                             }
                             super.onPostExecute(result);
@@ -360,7 +369,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
     public void onResume() {
         Log.e("LoginActivity", "onresume called");
         super.onResume();
-        DatabaseService db = new DatabaseService(this);
+        DatabaseService db = DatabaseService.getInstance();
         db.createAdminAccountIfNotExistantYet();
         progressBar.setVisibility(View.GONE);
         textViewLogin.setVisibility(View.VISIBLE);
@@ -380,7 +389,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         navigationbar.setAddVisible(true);
         buttonLogin.setEnabled(true);
         textViewLogin.setEnabled(true);
-        DatabaseService databaseService = new DatabaseService(this);
+        DatabaseService databaseService = DatabaseService.getInstance();
 
         listUsers = databaseService.getUsers();
 
@@ -544,12 +553,11 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                 Toast.makeText(LoginActivity.this,
                         getResources().getString(R.string.login_successful),
                         Toast.LENGTH_LONG).show();
-                AuditLogger.addAuditLog(currentUser,-1, AuditLogger.ACTION_SUCCESS_LOGIN, AuditLogger.OBJECT_EMPTY, null);
+                AuditLogger.addAuditLog(currentUser, -1, AuditLogger.ACTION_SUCCESS_LOGIN, AuditLogger.OBJECT_EMPTY, null);
                 Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);
                 try {
                     if (Autoclave.getInstance().getUser().getIsLocal() == true) {
-                        DatabaseService databaseService = new DatabaseService(
-                                LoginActivity.this);
+                        DatabaseService databaseService = DatabaseService.getInstance();
                         databaseService.updateUserIsLocal(Autoclave.getInstance()
                                 .getUser().getEmail(), false);
                     }
@@ -608,7 +616,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                 return;
         }
 
-        AuditLogger.addAuditLog(currentUser,-1, AuditLogger.ACTION_FAILED_LOGIN, AuditLogger.OBJECT_EMPTY, null);
+        AuditLogger.addAuditLog(currentUser, -1, AuditLogger.ACTION_FAILED_LOGIN, AuditLogger.OBJECT_EMPTY, null);
         mHandler.post(mShowCloudLoginFailed);
 
     }

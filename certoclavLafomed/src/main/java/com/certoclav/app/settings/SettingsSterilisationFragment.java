@@ -358,7 +358,7 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
         barProgressDialog.show();
 
 
-        final DatabaseService databaseServie = new DatabaseService(getActivity());
+        final DatabaseService databaseServie = DatabaseService.getInstance();
 
         new AsyncTask<Void, Boolean, Boolean>() {
 

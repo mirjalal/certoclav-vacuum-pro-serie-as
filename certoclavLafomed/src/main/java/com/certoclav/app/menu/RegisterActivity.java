@@ -222,7 +222,7 @@ public class RegisterActivity extends CertoclavSuperActivity {
         linEditTextItemContainer.addView(editPasswordItemConfirm);
 
 
-        final DatabaseService databaseService = new DatabaseService(RegisterActivity.this);
+        final DatabaseService databaseService = DatabaseService.getInstance();
         buttonRegister = (Button) findViewById(R.id.register_button_ok);
 
         buttonRegister.setOnClickListener(new OnClickListener() {
@@ -261,7 +261,7 @@ public class RegisterActivity extends CertoclavSuperActivity {
                 final Boolean isLocal = true;
 
                 if (getIntent().hasExtra(AppConstants.INTENT_EXTRA_USER_ID)) {
-                    DatabaseService db = new DatabaseService(RegisterActivity.this);
+                    DatabaseService db = DatabaseService.getInstance();
                     int retval = db.deleteUser(db.getUserById(getIntent().getExtras().getInt(AppConstants.INTENT_EXTRA_USER_ID)));
                     if (retval != 1) {
                         Toast.makeText(RegisterActivity.this, "Failed to apply changes", Toast.LENGTH_LONG).show();
@@ -330,7 +330,7 @@ public class RegisterActivity extends CertoclavSuperActivity {
 
         if (getIntent().hasExtra(AppConstants.INTENT_EXTRA_USER_ID)) {
             try {
-                DatabaseService db = new DatabaseService(this);
+                DatabaseService db = DatabaseService.getInstance();
                 User user = db.getUserById(getIntent().getExtras().getInt(AppConstants.INTENT_EXTRA_USER_ID));
                 editEmailItem.setText(user.getEmail());
                 editEmailItem.setEnabled(false);

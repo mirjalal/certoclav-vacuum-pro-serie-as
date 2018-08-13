@@ -116,7 +116,7 @@ public class AddCloudAccountActivity extends Activity {
         linEditTextItemContainer.addView(editPasswordItem);
 
 
-        databaseService = new DatabaseService(AddCloudAccountActivity.this);
+        databaseService = DatabaseService.getInstance();
         buttonRegister = (Button) findViewById(R.id.register_button_ok);
         buttonRegister.setText(getString(R.string.add_account));
 

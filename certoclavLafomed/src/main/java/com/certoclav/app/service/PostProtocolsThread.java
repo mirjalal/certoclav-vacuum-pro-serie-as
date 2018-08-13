@@ -30,7 +30,7 @@ import java.util.Locale;
  */
 public class PostProtocolsThread extends Thread {
     //private boolean runFlag = true;
-    DatabaseService databaseService = new DatabaseService(ApplicationController.getContext());
+    DatabaseService databaseService = DatabaseService.getInstance();
 
     public PostProtocolsThread() {
     }

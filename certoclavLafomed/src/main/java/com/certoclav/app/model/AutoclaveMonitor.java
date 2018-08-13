@@ -21,6 +21,7 @@ import com.certoclav.app.monitor.MonitorActivity;
 import com.certoclav.app.monitor.MonitorNotificationActivity;
 import com.certoclav.app.service.CloudSocketService;
 import com.certoclav.app.service.ReadAndParseSerialService;
+import com.certoclav.app.util.AuditLogger;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.bcrypt.BCrypt;
 import com.certoclav.library.certocloud.CloudDatabase;
@@ -171,7 +172,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
         Autoclave.getInstance().setOnConnectionStatusListener(this);
         Autoclave.getInstance().setOnAutoclaveStateListener(this);
         Autoclave.getInstance().setOnProtocolListener(this);
-        databaseService = new DatabaseService(ApplicationController.getContext());
+        databaseService = DatabaseService.getInstance();
         nanoTimeAtLastMessageReceived = System.nanoTime();
         timerHandler.postDelayed(timerRunnable, 0);
         ReadAndParseSerialService.getInstance();
@@ -319,7 +320,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
                         try {
                             if (AppConstants.isIoSimulated) {
-                                DatabaseService db = new DatabaseService(mContext);
+                                DatabaseService db = DatabaseService.getInstance();
                                 for (Protocol protocol : db.getProtocols()) {
                                     if (cycleNumber < protocol.getZyklusNumber()) {
                                         cycleNumber = protocol.getZyklusNumber();
@@ -447,10 +448,17 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
                     if (errorList.size() > 0) {//Autoclave.getInstance().getData().isFailStoppedByUser() || Autoclave.getInstance().isMicrocontrollerReachable()==false){
                         Autoclave.getInstance().setState(AutoclaveState.RUN_CANCELED);
+                        AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                                AuditLogger.ACTION_PROGRAM_FAILED,
+                                AuditLogger.OBJECT_EMPTY,
+                                Autoclave.getInstance().getProfile().getName() + " (" +
+                                        mContext.getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() +
+                                        errorList.get(0).getMsg() + ")");
                         Log.e("AutoclaveMonitor", "ERROR ID STORED INTO PROTOCOL: " + errorList.get(0).getErrorID());
                         cancelProgram(errorList.get(0).getErrorID());
                     } else {
-                        if (Autoclave.getInstance().getData().isProgramFinishedSucessfully()) {
+                        if (Autoclave.getInstance().getData().isProgramFinishedSucessfully()
+                                && Autoclave.getInstance().getState() != AutoclaveState.PROGRAM_FINISHED) {
                             finishProgram();
                             Autoclave.getInstance().setState(AutoclaveState.PROGRAM_FINISHED);
                         }

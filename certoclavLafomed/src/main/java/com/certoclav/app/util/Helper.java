@@ -120,7 +120,7 @@ public class Helper {
 
             @Override
             protected Void doInBackground(UserProtocolsResponseModel... params) {
-                DatabaseService databaseService = new DatabaseService(context);
+                DatabaseService databaseService = DatabaseService.getInstance();
                 //     databaseService.deleteProtocolEntry(databaseService.getProtocols());
                 //     databaseService.deleteSyncedProtocols();
 
@@ -202,7 +202,7 @@ public class Helper {
             @Override
             protected Void doInBackground(UserProtocolResponseModel... params) {
                 Protocol protocol = params[0].getProtocol();
-                DatabaseService databaseService = new DatabaseService(context);
+                DatabaseService databaseService = DatabaseService.getInstance();
                 databaseService.deleteProtocol(protocol);
 
 

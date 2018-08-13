@@ -33,12 +33,6 @@
         android:key="preferences_device_key"
         android:title="@string/settings_device_key_security_key" />
 
-    <ListPreference
-        android:defaultValue="TLV-150FA"
-        android:entries="@array/autoclave_models"
-        android:entryValues="@array/autoclave_models"
-        android:key="preferences_autoclave_model"
-        android:title="@string/preferences_autoclave_model" />
 
     <Preference
         android:key="preferences_autoclave_firmware_version"

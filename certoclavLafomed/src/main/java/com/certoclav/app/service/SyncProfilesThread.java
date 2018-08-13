@@ -38,7 +38,7 @@ public class SyncProfilesThread extends Thread {
 
     public SyncProfilesThread(Handler parentHandler) {
         mParentHandler = parentHandler;
-        db = new DatabaseService(ApplicationController.getContext());
+        db = DatabaseService.getInstance();
     }
 
 
@@ -61,7 +61,7 @@ public class SyncProfilesThread extends Thread {
                 return;//continue; //sleep for another 60 seconds
             }
             //get all offline profiles from db
-            DatabaseService databaseService = new DatabaseService(ApplicationController.getContext());
+            DatabaseService databaseService = DatabaseService.getInstance();
             List<Profile> listLocalDbProfiles = databaseService.getProfiles(Autoclave.getInstance().getUser().getUserId());
 
 
@@ -263,7 +263,7 @@ public class SyncProfilesThread extends Thread {
             Response response = postUtil.postToCertocloud(body, CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_POST_PROFILE, true);
 
             if (response.getStatus() == PostUtil.RETURN_OK) {
-                DatabaseService db = new DatabaseService(ApplicationController.getContext());
+                DatabaseService db = DatabaseService.getInstance();
 //                db.updateProfileIsLocal(profile.getProfile_id(), false); //not neccessary
                 JSONObject jsonResponse = new JSONObject(postUtil.getResponseBody());
                 JSONObject jsonResponseProgram = jsonResponse.getJSONObject("program");

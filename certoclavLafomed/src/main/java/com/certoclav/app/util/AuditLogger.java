@@ -33,6 +33,7 @@ public class AuditLogger {
     public static final int ACTION_PROGRAM_INDICATOR_CHANGED = 11;//R.string.audit_action_program_indicator_changed;
     public static final int ACTION_PROGRAM_CANCELED = 12;//R.string.audit_action_program_canceled;
     public static final int ACTION_PROGRAM_FINISHED = 13;//R.string.audit_action_program_finished;
+    public static final int ACTION_PROGRAM_FAILED = 30;
     public static final int ACTION_FAILED_LOGIN = 14;//R.string.audit_action_failed_to_login;
     public static final int ACTION_SUCCESS_LOGIN = 15;//R.string.audit_action_success_to_login;
     public static final int ACTION_LOGOUT = 16;//R.string.audit_action_logout;
@@ -58,7 +59,7 @@ public class AuditLogger {
 
     private AuditLogger() {
         context = AppController.getInstance().getApplicationContext();
-        databaseService = new DatabaseService(context);
+        databaseService = DatabaseService.getInstance();
 
         //Screens
         map.put(SCEEN_LOCKOUT, R.string.lockout);
@@ -77,6 +78,7 @@ public class AuditLogger {
         map.put(ACTION_PROGRAM_INDICATOR_CHANGED, R.string.audit_action_program_indicator_changed);
         map.put(ACTION_PROGRAM_CANCELED, R.string.audit_action_program_canceled);
         map.put(ACTION_PROGRAM_FINISHED, R.string.audit_action_program_finished);
+        map.put(ACTION_PROGRAM_FAILED, R.string.audit_action_program_failed);
         map.put(ACTION_FAILED_LOGIN, R.string.audit_action_failed_to_login);
         map.put(ACTION_SUCCESS_LOGIN, R.string.audit_action_success_to_login);
         map.put(ACTION_LOGOUT, R.string.audit_action_logout);

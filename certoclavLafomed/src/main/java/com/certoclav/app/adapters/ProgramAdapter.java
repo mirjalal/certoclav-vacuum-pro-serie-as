@@ -61,7 +61,7 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
 
         super(context, R.layout.menu_fragment_sterilisation_element, values);
         this.mContext = context;
-        databaseService = new DatabaseService(mContext);
+        databaseService = DatabaseService.getInstance();
         this.fragment = fragment;
 
         if ((!Autoclave.getInstance().getUser().isAdmin() || Autoclave.getInstance().getState() == AutoclaveState.LOCKED) &&

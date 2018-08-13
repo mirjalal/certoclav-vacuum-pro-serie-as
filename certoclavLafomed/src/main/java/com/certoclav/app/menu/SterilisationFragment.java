@@ -88,7 +88,7 @@ public class SterilisationFragment extends Fragment implements ProfileSyncedList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = new DatabaseService(getActivity());
+        db = DatabaseService.getInstance();
     }
 
     public void onLongClick(View view) {

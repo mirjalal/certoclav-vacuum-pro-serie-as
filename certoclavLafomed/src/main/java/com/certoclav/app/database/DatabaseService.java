@@ -2,12 +2,14 @@ package com.certoclav.app.database;
 
 import android.content.Context;
 import android.database.SQLException;
+import android.os.Environment;
 import android.util.Log;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.util.AuditLogger;
 import com.certoclav.app.util.Helper;
+import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.bcrypt.BCrypt;
 import com.certoclav.library.certocloud.CloudUser;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
@@ -20,6 +22,12 @@ import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +45,7 @@ import static com.certoclav.app.database.Profile.FIELD_LAST_USED_TIME;
 public class DatabaseService {
     private final String TAG = getClass().getSimpleName();
     private final Context mContext;
+    private static DatabaseService databaseService;
 
 
     Dao<Profile, Integer> profileDao;
@@ -56,11 +65,9 @@ public class DatabaseService {
 
     /**
      * Constructor
-     *
-     * @param context the context of calling application
      */
-    public DatabaseService(final Context context) {
-        this.mContext = context;
+    private DatabaseService() {
+        this.mContext = ApplicationController.getContext();
         mDatabaseHelper = getHelper();
 
 
@@ -75,6 +82,13 @@ public class DatabaseService {
         userControllerDao = getHelper().getUserControllerDao();
         deletedProfileDao = getHelper().getDeletedProfileDao();
 
+        mDatabaseHelper.checkOldDatabaseExistsImport();
+    }
+
+    public static DatabaseService getInstance() {
+        if (databaseService == null)
+            databaseService = new DatabaseService();
+        return databaseService;
     }
 
     /**
@@ -1131,5 +1145,28 @@ public class DatabaseService {
         }
     }
 
+
+    public boolean exportDB() {
+        File sd = Environment.getExternalStorageDirectory();
+        File data = Environment.getDataDirectory();
+        FileChannel source = null;
+        FileChannel destination = null;
+        String currentDBPath = "/data/" + mContext.getPackageName() + "/databases/" + DatabaseHelper.DATABASE_NAME;
+        String backupDBPath = DatabaseHelper.DATABASE_NAME;
+        File currentDB = new File(data, currentDBPath);
+        Log.d("data", currentDB.getAbsolutePath());
+        File backupDB = new File(sd, backupDBPath);
+        try {
+            source = new FileInputStream(currentDB).getChannel();
+            destination = new FileOutputStream(backupDB).getChannel();
+            destination.transferFrom(source, 0, source.size());
+            source.close();
+            destination.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }

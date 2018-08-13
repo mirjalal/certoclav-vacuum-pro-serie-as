@@ -67,7 +67,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
         Log.e("LoginActivity", "onCreate");
         setContentView(R.layout.login_register);
         if (getIntent().hasExtra(AppConstants.INTENT_EXTRA_USER_ID)) {
-            DatabaseService db = new DatabaseService(RegisterCloudAccountActivity.this);
+            DatabaseService db = DatabaseService.getInstance();
             currentUser = db.getUserById(getIntent().getExtras().getInt(AppConstants.INTENT_EXTRA_USER_ID));
             Requests.getInstance().getUserInfo(currentUser.getEmail(), CloudUser.getInstance().getToken(), this, REQUEST_GET_USER);
         }
@@ -270,7 +270,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
         linEditTextItemContainer.addView(editPasswordItemConfirm);
 
 
-        final DatabaseService databaseService = new DatabaseService(RegisterCloudAccountActivity.this);
+        final DatabaseService databaseService = DatabaseService.getInstance();
         buttonRegister = (Button) findViewById(R.id.register_button_ok);
         buttonRegister.setText(currentUser != null ? R.string.save : R.string.register);
 

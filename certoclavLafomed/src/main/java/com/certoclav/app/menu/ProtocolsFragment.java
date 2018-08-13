@@ -105,7 +105,7 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
         textError.setVisibility(View.INVISIBLE);
         progressBarProtocolList = (ProgressBar) rootView.findViewById(R.id.protocols_progress_bar_list);
         progressBarGraph = (ProgressBar) rootView.findViewById(R.id.protocols_progress_bar_graph);
-        databaseService = new DatabaseService(getActivity());
+        databaseService = DatabaseService.getInstance();
 
         rootView.findViewById(R.id.imageViewPrint).setOnClickListener(this);
         buttonDownload = rootView.findViewById(R.id.imageViewDownloadProtocol);

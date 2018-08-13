@@ -213,7 +213,7 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
                 break;
 
             case CertoclavNavigationbar.BUTTON_ADD:
-                DatabaseService db = new DatabaseService(MenuMain.this);
+                DatabaseService db = DatabaseService.getInstance();
                 List<Profile> profiles = Autoclave.getInstance().getProfilesFromAutoclave();
                 if (profiles != null) {
                     if (profiles.size() >= AppConstants.MAX_PROGRAM_COUNT) {

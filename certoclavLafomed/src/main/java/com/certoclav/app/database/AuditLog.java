@@ -30,6 +30,16 @@ public class AuditLog {
     }
 
 
+    public AuditLog(String email, int screenId, int eventId, int objectId, String value) {
+        this.user = user;
+        this.eventId = eventId;
+        this.objectId = objectId;
+        this.value = value;
+        this.screenId = screenId;
+        this.email = email;
+    }
+
+
     AuditLog() {
         // needed by ormlite
     }
@@ -79,7 +89,7 @@ public class AuditLog {
     }
 
     public int getObjectId() {
-       return AuditLogger.getResource(objectId);
+        return AuditLogger.getResource(objectId);
     }
 
     public Date getDate() {

@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
+import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.listener.SensorDataListener;
 import com.certoclav.app.menu.ChangeAdminPasswordAccountActivity;
 import com.certoclav.app.model.Autoclave;
@@ -56,15 +57,6 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        prefs.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                if (key.equals(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL)) {
-                    findPreference(AppConstants.PREFERENCE_KEY_SERIAL_NUMBER).setSummary(Autoclave.getInstance().getController().getSerialnumber());
-                }
-            }
-        });
-
 
 //Device Key
         String deviceKey = "-";
@@ -72,24 +64,6 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
             if (Autoclave.getInstance().getController().getSavetyKey() != null) {
                 deviceKey = Autoclave.getInstance().getController().getSavetyKey();
             }
-        }
-//Model Selection in the simulation mode
-        if (!AppConstants.isIoSimulated)
-            getPreferenceScreen().removePreference(findPreference(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL));
-        else {
-            if (!prefs.contains(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL)) {
-                ((ListPreference) findPreference(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL)).setValueIndex(0);
-            }
-
-            findPreference(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL).setSummary(prefs.getString(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL, "Not defined"));
-            findPreference(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    findPreference(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL).setSummary(newValue.toString());
-                    return true;
-                }
-
-            });
         }
 
         findPreference(AppConstants.PREFERENCE_KEY_DEVICE_KEY).setSummary(deviceKey);
@@ -174,6 +148,8 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                 @Override
                                 public void onClick(SweetAlertDialog sDialog) {
+                                    if (!DatabaseService.getInstance().exportDB())
+                                        return;
                                     sDialog.dismissWithAnimation();
                                     if (AppConstants.TABLET_HAS_ROOT) {
 

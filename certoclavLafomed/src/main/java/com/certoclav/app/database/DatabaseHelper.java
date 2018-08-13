@@ -1,16 +1,22 @@
 package com.certoclav.app.database;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 import android.util.Log;
 
 import com.certoclav.app.R;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
+import java.io.File;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Database helper class used to manage the creation and upgrading of your database. This class also usually provides
@@ -19,7 +25,7 @@ import java.sql.SQLException;
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     // name of the database file for your application -- change to something appropriate for your app
-    private static final String DATABASE_NAME = "helloAndroid.db";
+    public static final String DATABASE_NAME = "helloAndroid.db";
     // any time you make changes to your database objects, you may have to increase the database version
     private static final int DATABASE_VERSION = 2;
 
@@ -212,6 +218,50 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         controllerDao = null;
         videoDao = null;
         userControllerDao = null;
+
+    }
+
+
+    public void checkOldDatabaseExistsImport() {
+        File sd = Environment.getExternalStorageDirectory();
+        String backupDBPath = DatabaseHelper.DATABASE_NAME;
+        File backupDB = new File(sd, backupDBPath);
+
+        long count = 0;
+        if (backupDB.exists()) {
+
+            SQLiteDatabase myDataBase = SQLiteDatabase.openDatabase(backupDB.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE);
+            Cursor c = myDataBase.rawQuery("select * from audit_logs", null);
+            if (c.moveToFirst()) {
+
+                for (int i = 0; i < c.getCount(); i++) {
+
+                    try {
+                        auditLogDao.create(new AuditLog(
+                                c.getString(c.getColumnIndex(AuditLog.FIELD_USER_EMAIL)),
+                                c.getInt(c.getColumnIndex(AuditLog.FIELD_SCREEN_ID)),
+                                c.getInt(c.getColumnIndex(AuditLog.FIELD_EVENT_ID)),
+                                c.getInt(c.getColumnIndex(AuditLog.FIELD_OBJECT_ID)),
+                                c.getString(c.getColumnIndex(AuditLog.FIELD_OBJECT_VALUE))));
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    c.moveToNext();
+                    count++;
+                }
+                c.close();
+                myDataBase.close();
+            }
+        }
+        QueryBuilder<AuditLog, Integer> query = auditLogDao.queryBuilder();
+        try {
+            Log.d("imported", auditLogDao.countOf() + " " + count);
+            if (auditLogDao.countOf() == count) {
+                backupDB.delete();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 
