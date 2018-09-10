@@ -48,5 +48,10 @@
         android:key="preferences_software_version"
         android:title="@string/settings_software_version" />
 
+    <CheckBoxPreference
+        android:key="preferences_device_show_logs"
+        android:defaultValue="true"
+        android:title="Show UART Logs" />
+
 
 </PreferenceScreen>

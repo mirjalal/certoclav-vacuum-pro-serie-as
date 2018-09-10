@@ -5,12 +5,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,20 +17,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.listener.SensorDataListener;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveData;
 import com.certoclav.app.util.AuditLogger;
-import com.certoclav.app.util.Helper;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
-
-import java.io.IOException;
-import java.io.StringReader;
 
 public class CertoclavSuperActivity extends FragmentActivity implements SensorDataListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private TextView textSteam = null;
@@ -47,8 +36,8 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
         textSteam = (TextView) findViewById(R.id.certoclav_statusbar_text_steam);
         textMedia = (TextView) findViewById(R.id.certoclav_statusbar_text_media);
         textPressure = (TextView) findViewById(R.id.certoclav_statusbar_text_pressure);
-        if (!AppConstants.SHOW_DEBUG_LOGS)
-            ((ViewGroup) findViewById(R.id.fragment_debugger_uart).getParent()).removeView(findViewById(R.id.fragment_debugger_uart));
+//        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("preferences_device_show_logs", true))
+//            ((ViewGroup) findViewById(R.id.fragment_debugger_uart).getParent()).removeView(findViewById(R.id.fragment_debugger_uart));
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         ((AudioManager) this.getSystemService(Context.AUDIO_SERVICE)).setRingerMode(AudioManager.RINGER_MODE_SILENT);

@@ -3,6 +3,7 @@ package com.certoclav.app.fragments;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,8 @@ public class DebuggerUARTFragment extends Fragment implements ReadAndParseSerial
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (logs == null)
+            logs = new ArrayList<>();
     }
 
     @Override
@@ -53,7 +56,7 @@ public class DebuggerUARTFragment extends Fragment implements ReadAndParseSerial
         ReadAndParseSerialService.getInstance().removeSerialReadWriteListener(this);
     }
 
-    private List<String> logs = new ArrayList<>();
+    private static List<String> logs;
     private final static int MAX_LOG_COUNT = 15;
 
     @Override
@@ -69,8 +72,19 @@ public class DebuggerUARTFragment extends Fragment implements ReadAndParseSerial
     }
 
     private void updateLogs() {
+
         if (logs.size() > MAX_LOG_COUNT)
             logs.remove(0);
+        if (!PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("preferences_device_show_logs", true)) {
+            if (binding.textViewLogs.getText().length() > 0)
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.textViewLogs.setText("");
+                    }
+                });
+            return;
+        }
         final StringBuilder log = new StringBuilder();
         for (String l : logs)
             log.append(l);
