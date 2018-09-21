@@ -14,7 +14,6 @@ import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
@@ -109,66 +108,12 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
             viewHolder = (ViewHolder) convertView.getTag();
 
         viewHolder.firstLine.setText(getItem(position).getName());
-
-
-        StringBuilder sbuilder = new StringBuilder();
-        if (getItem(position).getSterilisationTemperature() != 0) {
-            sbuilder.append(getItem(position).getSterilisationTemperature())
-                    .append(" " + "\u2103")
-                    .append("\t");
-        }
-
-        if (getItem(position).getSterilisationPressure() != 0) {
-            sbuilder.append(Float.toString(getItem(position).getSterilisationPressure()))
-                    .append(" " + mContext.getString(R.string.bar))
-                    .append("\t");
-        }
-        if (getItem(position).getSterilisationTime() != 0) {
-            sbuilder.append(getItem(position).getSterilisationTime())
-                    .append(" " + mContext.getString(R.string.min))
-                    .append("\n");
-        }
-        if (getItem(position).getVacuumTimes() != 0) {
-            sbuilder.append(mContext.getString(R.string.vacuum_times) + " ")
-                    .append(getItem(position).getVacuumTimes())
-                    .append("\n");
-        }
-
-
-        if (getItem(position).getVacuumPersistTemperature() != 0) {
-            sbuilder.append(mContext.getString(R.string.vacuum_persist_temperature) + " ")
-                    .append(getItem(position).getVacuumPersistTemperature())
-                    .append(" " + "\u2103")
-                    .append("\n");
-        }
-        if (getItem(position).getVacuumPersistTime() != 0) {
-            sbuilder.append(mContext.getString(R.string.vacuum_persist_time) + " ")
-                    .append(getItem(position).getVacuumPersistTime())
-                    .append(" " + mContext.getString(R.string.min))
-                    .append("\n");
-        }
-        if (getItem(position).getDryTime() != 0) {
-            sbuilder.append(mContext.getString(R.string.drying_time) + " ")
-                    .append(getItem(position).getDryTime())
-                    .append(" " + mContext.getString(R.string.min))
-                    .append("\n");
-        }
-
-        if (getItem(position).isF0Enabled()) {
-            sbuilder.append(mContext.getString(R.string.f0_enabled) + "\n")
-                    .append(mContext.getString(R.string.lethal_temp_format,getItem(position).getLethalTemp()))
-                    .append("\n")
-                    .append(mContext.getString(R.string.z_value_format,getItem(position).getzValue()));
-        }
-
-
-
-        viewHolder.textDuration.setText(sbuilder.toString());
+        viewHolder.textDuration.setText(getItem(position).getDescription());
 
         if (CloudUser.getInstance().isLoggedIn() == false) {
             viewHolder.imageViewCloud.setImageResource(R.drawable.ic_cloud_no_user);
         } else {
-            viewHolder.imageViewCloud.setImageResource(getItem(position).getIsLocal() ? R.drawable.ic_cloud_no_user : R.drawable.ic_cloud_user);
+            viewHolder.imageViewCloud.setImageResource(getItem(position).isLocal() ? R.drawable.ic_cloud_no_user : R.drawable.ic_cloud_user);
         }
         viewHolder.imageViewMenu.setVisibility(isLocked ? View.GONE : View.VISIBLE);
 

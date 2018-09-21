@@ -14,6 +14,7 @@ public class SocketService {
     public static final String EVENT_SEND_DATA_FROM_ANDROID_TO_SERVER = "android:give";
     public static final String EVENT_REGISTER = "register";
     public static final String EVENT_START_SEND = "server:get";
+    public static final String EVENT_PROGRAM_EDIT = "server:get:edit";
 
     private static SocketService instance;
 
@@ -84,7 +85,15 @@ public class SocketService {
                         listener.onSocketEvent(EVENT_START_SEND, args);
                     Log.e("SocketService", "SOCKET EVENT_START_SEND");
                 }
-            }).on(Socket.EVENT_MESSAGE, new Emitter.Listener() {
+            })
+                    .on(EVENT_PROGRAM_EDIT, new Emitter.Listener() {
+                        @Override
+                        public void call(Object... args) {
+                            if (listener != null)
+                                listener.onSocketEvent(EVENT_PROGRAM_EDIT, args);
+                            Log.e("SocketService", "SOCKET EVENT_START_SEND");
+                        }
+                    }).on(Socket.EVENT_MESSAGE, new Emitter.Listener() {
 
                 @Override
                 public void call(Object... args) {

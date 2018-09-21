@@ -41,7 +41,6 @@ public class PostProtocolsThread extends Thread {
 
         // Loop as long as the interface is open and stop command was not sent
 
-
         try {
             //upload new protocols to certocloud every 60 seconds
             if (Autoclave.getInstance().getState() == AutoclaveState.NOT_RUNNING) {
@@ -61,6 +60,8 @@ public class PostProtocolsThread extends Thread {
                                 entryJSONObject.put("mtmp", String.format(Locale.US, "%.2f", protocolEntry.getMediaTemperature()));
                                 entryJSONObject.put("prs", String.format(Locale.US, "%.2f", (protocolEntry.getPressure() * 0.01) + 1));
                                 entryJSONObject.put("mtmp", String.format(Locale.US, "%.2f", protocolEntry.getMediaTemperature()));
+                                entryJSONObject.put("input", protocolEntry.getDebugInput());
+                                entryJSONObject.put("output", protocolEntry.getDebugOutput());
                                 entryJSONArray.put(entryJSONObject);
                             }
 

@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.activities.CertoclavSuperActivity;
-import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.Profile;
 import com.certoclav.app.database.Protocol;
 import com.certoclav.app.database.ProtocolEntry;
@@ -267,6 +266,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
 
         navigationbar.setNavigationbarListener(this);
         newProfile = Autoclave.getInstance().getProfileByIndex(programIndex);
+//        newProfile.setLocal(true);
 
         refreshGraphAndList(false);
     }

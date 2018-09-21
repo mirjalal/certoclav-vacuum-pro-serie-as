@@ -8,7 +8,6 @@ import com.certoclav.app.database.DeletedProfileModel;
 import com.certoclav.app.database.Profile;
 import com.certoclav.app.database.User;
 import com.certoclav.app.model.Autoclave;
-import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.certocloud.CertocloudConstants;
 import com.certoclav.library.certocloud.CloudUser;
 import com.certoclav.library.certocloud.DeleteUtil;
@@ -80,7 +79,7 @@ public class SyncProfilesThread extends Thread {
             //do not upload a profile, if there are already 10 profiles in cloud
 
             for (Profile profile : listLocalDbProfiles) {
-                if (profile.getIsLocal() == true) {
+                if (profile.isLocal() == true) {
                     postProfileToCertocloud(profile); //may updates isUploaded and Cloud_id database entries of localProfiles
                 }
             }
@@ -97,7 +96,7 @@ public class SyncProfilesThread extends Thread {
             //if an profile from db has been uploaded in past && is not online on certocloud anymore, then delete it from device
             for (Profile dbProfile : listLocalDbProfiles) {
                 try {
-                    if (dbProfile.getIsLocal() == false) { //profile has been uploaded in past
+                    if (dbProfile.isLocal() == false) { //profile has been uploaded in past
                         boolean dbProfileIsStillOnline = false;
                         for (Profile cloudProfile : listCloudProfiles) {
                             if (cloudProfile.getCloudId().equals(dbProfile.getCloudId())) {

@@ -26,15 +26,19 @@ public class Profile {
     private Boolean isVisible;
 
     @DatabaseField(columnName = "is_liquid_program")
+    @SerializedName("is_liquid")
     private Boolean isLiquidProgram;
 
     @DatabaseField(columnName = FIELD_IS_F0_ENABLED)
+    @SerializedName("use_f_function")
     private Boolean isF0Enabled;
 
     @DatabaseField(columnName = FIELD_LETHAL_TEMP)
+    @SerializedName("f_lethal")
     private float lethalTemp;
 
     @DatabaseField(columnName = FIELD_Z_VALUE)
+    @SerializedName("z_value")
     private float zValue;
 
     @DatabaseField(columnName = FIELD_CLOUD_ID)
@@ -49,12 +53,14 @@ public class Profile {
 
 
     @DatabaseField(columnName = "vacuum_times")
+    @SerializedName("vacuum_pulse")
     private int vacuumTimes;
 
     @DatabaseField(columnName = "sterilisation_time")
     private int sterilisationTime;
 
     @DatabaseField(columnName = "sterilisation_temp")
+    @SerializedName("tmp")
     private float sterilisationTemperature;
 
     @DatabaseField(columnName = "sterilisation_pressure")
@@ -72,6 +78,13 @@ public class Profile {
 
     @DatabaseField(columnName = FIELD_LAST_USED_TIME)
     private long recentUsedDate = new Date().getTime();
+
+    private Duration dur;
+
+    private class Duration {
+        int h;
+        int m;
+    }
 
 
     public void setRecentUsedDate(long recentUsedDate) {
@@ -91,10 +104,16 @@ public class Profile {
     }
 
     public int getSterilisationTime() {
+        if (dur != null) {
+            sterilisationTime = dur.h * 60 + dur.m;
+            dur = null;
+        }
         return sterilisationTime;
     }
 
     public void setSterilisationTime(int sterilisationTime) {
+        //Remove cloud value
+        dur = null;
         this.sterilisationTime = sterilisationTime;
     }
 
@@ -143,7 +162,7 @@ public class Profile {
     private String description;
 
     @DatabaseField(columnName = FIELD_IS_LOCAL)
-    private Boolean isLocal;
+    private boolean isLocal;
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = "controller_id")
     private Controller controller;
@@ -153,6 +172,7 @@ public class Profile {
      * Profile index between [1 and 7] . Only neccassary for Multicontrol and Essential version
      */
     @DatabaseField(columnName = FIELD_INDEX, unique = true)
+    @SerializedName("id")
     private int index;
 
 
@@ -174,11 +194,11 @@ public class Profile {
     //}
 
 
-    public Boolean getIsLocal() {
+    public Boolean isLocal() {
         return isLocal;
     }
 
-    public void setIsLocal(Boolean isLocal) {
+    public void setLocal(Boolean isLocal) {
         this.isLocal = isLocal;
     }
 
@@ -263,7 +283,6 @@ public class Profile {
 
 
     public String getDescription() {
-
         return description;
     }
 

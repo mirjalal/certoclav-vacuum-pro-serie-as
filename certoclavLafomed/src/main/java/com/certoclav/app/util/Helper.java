@@ -26,10 +26,14 @@ import com.certoclav.app.database.ProtocolEntry;
 import com.certoclav.app.listener.BroadcastListener;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.ErrorModel;
+import com.certoclav.app.responsemodels.DeviceProgramsResponseModel;
 import com.certoclav.app.responsemodels.UserProtocolResponseModel;
 import com.certoclav.app.responsemodels.UserProtocolsResponseModel;
 import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.library.application.ApplicationController;
+import com.certoclav.library.certocloud.CertocloudConstants;
+import com.certoclav.library.certocloud.PostUtil;
+import com.certoclav.library.util.Response;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,6 +63,8 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import needle.Needle;
+import needle.UiRelatedTask;
 
 /**
  * Created by musaq on 7/11/2017.
@@ -540,6 +546,75 @@ public class Helper {
         return drawable;
     }
 
+    public static void getCloudPrograms(final Context context) {
+        final SweetAlertDialog barProgressDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
+        barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        barProgressDialog.setTitleText(context.getString(R.string.loading));
+        barProgressDialog.setContentText(null);
+        barProgressDialog.showCancelButton(false);
+        barProgressDialog.setCanceledOnTouchOutside(false);
+
+        barProgressDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                Log.e("Helper", "CLEAR PROGRAM LIST");
+                sweetAlertDialog.dismissWithAnimation();
+            }
+        });
+
+        barProgressDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                barProgressDialog.setConfirmText(null);
+                barProgressDialog.setCancelText(null);
+                barProgressDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+                barProgressDialog.setContentText(null);
+                barProgressDialog.setTitleText(context.getString(R.string.loading));
+                getCloudPrograms(context);
+            }
+        });
+
+        Requests.getInstance().getCloudPrograms(new MyCallback() {
+            @Override
+            public void onSuccess(Object response, int requestId) {
+                List<Profile> oldProfiles = new ArrayList<>(Autoclave.getInstance().getProfilesFromAutoclave());
+                Autoclave.getInstance().getProfilesFromAutoclave().clear();
+                for (Profile profile : ((DeviceProgramsResponseModel) response).getPrograms()) {
+                    if (oldProfiles.contains(profile)) {
+                        Log.e("Helper", "PUT PROFILE " + profile.getName() + " " + oldProfiles.get(oldProfiles.indexOf(profile)).getName());
+                        profile.setRecentUsedDate(oldProfiles.get(oldProfiles.indexOf(profile)).getRecentUsedDate());
+                    }
+                    Autoclave.getInstance().getProfilesFromAutoclave().add(profile);
+                    profile.setLocal(false);
+                    ReadAndParseSerialService.getInstance().setProgram(profile);
+                }
+                oldProfiles.clear();
+                barProgressDialog.dismiss();
+                Autoclave.getInstance().notifyProfilesHasBeenSynced();
+            }
+
+            @Override
+            public void onError(ErrorModel error, int requestId) {
+                barProgressDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                barProgressDialog.setTitleText(context.getString(R.string.failed));
+                barProgressDialog.setContentText(context.getString(R.string.something_went_wrong_try_again));
+                barProgressDialog.setCancelText(context.getString(R.string.close));
+                barProgressDialog.setConfirmText(context.getString(R.string.try_again));
+            }
+
+            @Override
+            public void onStart(int requestId) {
+//                barProgressDialog.show();
+            }
+
+            @Override
+            public void onProgress(int current, int max) {
+
+            }
+        }, 10);
+    }
+
     static Runnable runnableTimeout = null;
     static int failCount = 0;
 
@@ -582,7 +657,56 @@ public class Helper {
                         Log.e("Helper", "PUT PROFILE " + profile.getName() + " " + oldProfiles.get(oldProfiles.indexOf(profile)).getName());
                         profile.setRecentUsedDate(oldProfiles.get(oldProfiles.indexOf(profile)).getRecentUsedDate());
                     }
+                    //Set Description
+
+                    StringBuilder sbuilder = new StringBuilder();
+                    if (profile.getSterilisationTemperature() != 0) {
+                        sbuilder.append(profile.getSterilisationTemperature())
+                                .append(" " + "\u2103")
+                                .append("\t");
+                    }
+                    if (profile.getSterilisationPressure() != 0) {
+                        sbuilder.append(Float.toString(profile.getSterilisationPressure()))
+                                .append(" " + context.getString(R.string.bar))
+                                .append("\t");
+                    }
+                    if (profile.getSterilisationTime() != 0) {
+                        sbuilder.append(profile.getSterilisationTime())
+                                .append(" " + context.getString(R.string.min))
+                                .append("\n");
+                    }
+                    if (profile.getVacuumTimes() != 0) {
+                        sbuilder.append(context.getString(R.string.vacuum_times) + " ")
+                                .append(profile.getVacuumTimes())
+                                .append("\n");
+                    }
+                    if (profile.getVacuumPersistTemperature() != 0) {
+                        sbuilder.append(context.getString(R.string.vacuum_persist_temperature) + " ")
+                                .append(profile.getVacuumPersistTemperature())
+                                .append(" " + "\u2103")
+                                .append("\n");
+                    }
+                    if (profile.getVacuumPersistTime() != 0) {
+                        sbuilder.append(context.getString(R.string.vacuum_persist_time) + " ")
+                                .append(profile.getVacuumPersistTime())
+                                .append(" " + context.getString(R.string.min))
+                                .append("\n");
+                    }
+                    if (profile.getDryTime() != 0) {
+                        sbuilder.append(context.getString(R.string.drying_time) + " ")
+                                .append(profile.getDryTime())
+                                .append(" " + context.getString(R.string.min))
+                                .append("\n");
+                    }
+                    if (profile.isF0Enabled()) {
+                        sbuilder.append(context.getString(R.string.f0_enabled) + "\n")
+                                .append(context.getString(R.string.lethal_temp_format, profile.getLethalTemp()))
+                                .append("\n")
+                                .append(context.getString(R.string.z_value_format, profile.getzValue()));
+                    }
+                    profile.setDescription(sbuilder.toString());
                     Autoclave.getInstance().getProfilesFromAutoclave().add(profile);
+                    syncProgramWithCloud(profile);
                 }
                 oldProfiles.clear();
                 ReadAndParseSerialService.getInstance().removeCallback(this);
@@ -801,5 +925,65 @@ public class Helper {
         barProgressDialog.show();
         ReadAndParseSerialService.getInstance().setProgram(profile);
         handler.postDelayed(runnableTimeout, TIMEOUT);
+    }
+
+    public static void syncProgramWithCloud(final Profile profile) {
+        Needle.onBackgroundThread().execute(new UiRelatedTask<Boolean>() {
+            @Override
+            protected Boolean doWork() {
+
+                try {
+                    //Generate Profile properties
+                    Log.e("SyncProfilesThread", "gnerate program info for json");
+                    JSONObject programJsonObject = new JSONObject();
+                    JSONObject sterlizationTime = new JSONObject();
+                    sterlizationTime.put("h", profile.getSterilisationTime() / 60);
+                    sterlizationTime.put("m", profile.getSterilisationTime() % 60);
+                    programJsonObject.put("title", profile.getName());
+                    programJsonObject.put("note", profile.getDescription());
+                    programJsonObject.put("id", profile.getIndex());
+                    programJsonObject.put("tmp", profile.getSterilisationTemperature());
+                    programJsonObject.put("is_liquid", profile.isLiquidProgram());
+                    programJsonObject.put("use_f_function", profile.isF0Enabled());
+                    programJsonObject.put("dur", sterlizationTime);
+                    programJsonObject.put("f_lethal", profile.getLethalTemp());
+                    programJsonObject.put("z_value", profile.getzValue());
+                    programJsonObject.put("is_from_android", true);
+                    programJsonObject.put("deviceKey", Autoclave.getInstance()
+                            .getController().getSavetyKey());
+
+
+                    JSONObject programWrapper = new JSONObject();
+                    programWrapper.put("program", programJsonObject);
+
+
+                    String body = programWrapper.toString();
+
+                    PostUtil postUtil = new PostUtil();
+                    Response response = postUtil.postToCertocloud(body, CertocloudConstants.SERVER_URL +
+                            CertocloudConstants.REST_API_POST_PROFILE, false);
+
+                    Log.e("Response", response.toString());
+
+                    if (response.getStatus() == PostUtil.RETURN_OK) {
+                        DatabaseService db = DatabaseService.getInstance();
+//                db.updateProfileIsLocal(profile.getProfile_id(), false); //not neccessary
+                        JSONObject jsonResponse = new JSONObject(postUtil.getResponseBody());
+                        JSONObject jsonResponseProgram = jsonResponse.getJSONObject("program");
+                        String cloudId = jsonResponseProgram.getString("_id");
+                        return cloudId != null && cloudId.length() > 0;
+                    }
+                } catch (Exception e) {
+                    Log.e("SyncProfileThread", "exception: " + e.toString());
+                }
+                return false;
+            }
+
+            @Override
+            protected void thenDoUiRelatedWork(Boolean result) {
+                profile.setLocal(!result);
+                Autoclave.getInstance().notifyProfilesHasBeenSynced();
+            }
+        });
     }
 }

@@ -1,9 +1,14 @@
 package com.certoclav.app.service;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.Log;
+import com.certoclav.app.util.AppController;
+import com.certoclav.app.util.Helper;
 import com.certoclav.library.certocloud.SocketService;
 import com.certoclav.library.certocloud.SocketService.SocketEventListener;
 
@@ -208,6 +213,14 @@ public class CloudSocketThread extends Thread implements SocketEventListener {
                 e.printStackTrace();
             }
             SocketService.getInstance().getSocket().emit(SocketService.EVENT_REGISTER, content);
+        } else if (eventIdentifier.equals(SocketService.EVENT_PROGRAM_EDIT)) {
+            Log.e("Received", "Program Edited");
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
+                public void run() {
+                    Helper.getCloudPrograms(AppController.getContext());
+                }
+            });
         }
 
 

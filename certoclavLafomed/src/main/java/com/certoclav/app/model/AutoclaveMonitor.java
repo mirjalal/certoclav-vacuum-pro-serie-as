@@ -388,7 +388,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                         Protocol protocol = new Protocol("",
                                 1,
                                 Autoclave.getInstance().getDateObject(),
-                                Autoclave.getInstance().getDateObject(),
+                                null,
                                 cycleNumber, //??
                                 Autoclave.getInstance().getController(),
                                 Autoclave.getInstance().getUser(),

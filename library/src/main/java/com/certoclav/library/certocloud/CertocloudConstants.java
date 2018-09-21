@@ -25,7 +25,7 @@ public class CertocloudConstants {
 	 * CertoCloud REST API
 	 * Routes that can be accessed by everyone
 	 */
-	public final static String SERVER_URL = "http://api.certocloud.com";//www.ng-certocloud.rhcloud.com";
+	public final static String SERVER_URL = "http://192.168.43.41:8443";//"http://api.certocloud.com";//www.ng-certocloud.rhcloud.com";
 	public final static String REST_API_POST_LOGIN = "/login";// auth.login);
 	public final static String REST_API_POST_SIGNUP = "/signup";// auth.signup);
 	public final static String REST_API_POST_SIGNUP_EXIST = "/signup/exist";// auth.userExist);
@@ -49,6 +49,7 @@ public class CertocloudConstants {
 	public final static String REST_API_PUT_DEVICE_RENAME = "/api/devices/";// devices.rename);
 	public final static String REST_API_DELETE_DEVICE = "/api/devices/";// devices.delete);
 	public final static String REST_API_GET_PROFILES = "/api/programs/";// programs.getAll);
+	public final static String REST_API_GET_DEVICE_PROFILES = "/api/programs/all/";// programs.getAll);
 	public final static String REST_API_POST_PROFILE = "/api/programs/";// programs.create);
 	public final static String REST_API_DELETE_PROFILE = "/api/programs/";// programs.delete);
 	public final static String REST_API_GET_PROTOCOLS = "/api/device-protocols/";

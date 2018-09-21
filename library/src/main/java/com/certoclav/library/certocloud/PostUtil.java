@@ -52,6 +52,8 @@ public class PostUtil {
 				return response;
 				//return error because there must be a valid token available for auth messages
 			}
+		}else{
+			CloudUser.getInstance().setToken("bypass");
 		}
 		try {
 
@@ -61,8 +63,8 @@ public class PostUtil {
 			conn.setReadTimeout(7000);
 			conn.setRequestMethod("POST");
 			conn.setDoOutput(true);
+			conn.setRequestProperty("X-Access-Token", CloudUser.getInstance().getToken());
 			if (auth == true) {
-				conn.setRequestProperty("X-Access-Token", CloudUser.getInstance().getToken());
 				conn.setRequestProperty("X-Key", CloudUser.getInstance().getEmail());
 			}
 			conn.setRequestProperty("Content-Type", "application/json");
