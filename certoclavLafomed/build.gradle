@@ -38,6 +38,11 @@ android {
     aaptOptions {
         cruncherEnabled = false
     }
+    lintOptions {
+
+        checkReleaseBuilds false
+
+    }
 
 }
 

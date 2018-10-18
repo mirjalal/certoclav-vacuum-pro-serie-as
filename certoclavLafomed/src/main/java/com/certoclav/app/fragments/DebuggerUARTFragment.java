@@ -37,6 +37,12 @@ public class DebuggerUARTFragment extends Fragment implements ReadAndParseSerial
     }
 
     @Override
+    public void onResume() {
+        ReadAndParseSerialService.getInstance().addSerialReadWriteListener(this);
+        super.onResume();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_debugger_uart, container, false);

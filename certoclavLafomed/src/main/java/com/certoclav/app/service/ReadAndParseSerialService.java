@@ -115,7 +115,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                     } else
                         commandQueue.clear();
                 }
-
+                handlerGetData.removeCallbacks(this);
                 handlerGetData.postDelayed(this, delayForGetData);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -829,6 +829,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     }
 
     public void addSerialReadWriteListener(SerialReadWriteListener listener) {
+        listeners.clear();
         if (!listeners.contains(listener))
             listeners.add(listener);
     }
