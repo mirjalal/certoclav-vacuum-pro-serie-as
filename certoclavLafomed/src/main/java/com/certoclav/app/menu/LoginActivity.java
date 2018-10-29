@@ -148,12 +148,12 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
-        try {
-            if (new Date().after(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse("2018-10-15T09:27:37Z")))
-                finish();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            if (new Date().after(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse("2018-10-15T09:27:37Z")))
+//                finish();
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
         serverConfigs = ServerConfigs.getInstance(this);
         AuditLogger.init();
         Fabric.with(this, new Crashlytics());

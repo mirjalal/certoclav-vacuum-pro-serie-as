@@ -699,11 +699,20 @@ public class Helper {
                                 .append("\n");
                     }
                     if (profile.isF0Enabled()) {
-                        sbuilder.append(context.getString(R.string.f0_enabled) + "\n")
-                                .append(context.getString(R.string.lethal_temp_format, profile.getLethalTemp()))
-                                .append("\n")
-                                .append(context.getString(R.string.z_value_format, profile.getzValue()));
+                        sbuilder.append(context.getString(R.string.f0_value_format, profile.getF0Value()))
+                                .append("\t")
+                                .append(context.getString(R.string.z_value_format, profile.getzValue()))
+                                .append("\n");
                     }
+                    if (profile.isMaintainEnabled()) {
+                        sbuilder.append(context.getString(R.string.maintain_final_temp_format, profile.getFinalTemp()))
+                                .append("\n");
+                    }
+                    if (profile.isContByFlexProbe()) {
+                        sbuilder.append(context.getString(R.string.cont_by_flex_probe))
+                                .append("\n");
+                    }
+
                     profile.setDescription(sbuilder.toString());
                     Autoclave.getInstance().getProfilesFromAutoclave().add(profile);
                     syncProgramWithCloud(profile);
@@ -728,7 +737,6 @@ public class Helper {
                     barProgressDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
                     barProgressDialog.setTitleText(context.getString(R.string.failed));
                     barProgressDialog.setContentText(context.getString(R.string.something_went_wrong_try_again));
-                    barProgressDialog.setCancelText(context.getString(R.string.close));
                     barProgressDialog.setConfirmText(context.getString(R.string.try_again));
                 } else {
                     ReadAndParseSerialService.getInstance().getPrograms();
@@ -759,7 +767,6 @@ public class Helper {
                     barProgressDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
                     barProgressDialog.setTitleText(context.getString(R.string.failed));
                     barProgressDialog.setContentText(context.getString(R.string.something_went_wrong_try_again));
-                    barProgressDialog.setCancelText(context.getString(R.string.close));
                     barProgressDialog.setConfirmText(context.getString(R.string.try_again));
                 } else {
                     ReadAndParseSerialService.getInstance().getPrograms();
@@ -772,14 +779,6 @@ public class Helper {
 
         ReadAndParseSerialService.getInstance().addCallback(callbackProfile);
 
-        barProgressDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sweetAlertDialog) {
-
-                Log.e("Helper", "CLEAR PROGRAM LIST");
-                sweetAlertDialog.dismissWithAnimation();
-            }
-        });
 
         barProgressDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
             @Override
@@ -946,7 +945,7 @@ public class Helper {
                     programJsonObject.put("is_liquid", profile.isLiquidProgram());
                     programJsonObject.put("use_f_function", profile.isF0Enabled());
                     programJsonObject.put("dur", sterlizationTime);
-                    programJsonObject.put("f_lethal", profile.getLethalTemp());
+                    programJsonObject.put("f0_value", profile.getF0Value());
                     programJsonObject.put("z_value", profile.getzValue());
                     programJsonObject.put("is_from_android", true);
                     programJsonObject.put("deviceKey", Autoclave.getInstance()

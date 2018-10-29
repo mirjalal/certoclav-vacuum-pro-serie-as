@@ -72,11 +72,53 @@
                         android:layout_height="wrap_content"
                         android:text="@string/is_liquid_program" />
 
+
+                    <CheckBox
+                        android:id="@+id/checkboxIsContByFlexProbe"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/is_cont_by_flex_probe" />
+
+
+                    <CheckBox
+                        android:id="@+id/checkboxMaintainFinalTemp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/is_maintain_final_temp" />
                     <CheckBox
                         android:id="@+id/checkboxIsF0FunctionEnabled"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/is_f0_function_enabled" />
+
+
+                    <LinearLayout
+                        android:id="@+id/linearLayoutFinalTemp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/program_step_final_temp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/final_temp"
+                            android:textColor="#000000"
+                            android:textSize="22sp"
+                            tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:id="@+id/program_step_final_temp_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="10 minutes at 100\u2103"
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="15sp"
+                            tools:ignore="HardcodedText" />
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/linearLayoutF0Function"

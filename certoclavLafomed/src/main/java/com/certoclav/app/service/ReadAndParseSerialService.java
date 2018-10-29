@@ -53,7 +53,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     public static final int INDEX_DAT_DEBUG_OUTPUT = 14;
     public static final int INDEX_DAT_CHECKSUM = 15;
     public static final int NUMBER_OF_DAT_RESPONSE_PARAMETERS = 16;
-    public static final int NUMBER_OF_PROGRAM_RESPONSE_PARAMETERS = 11;
+    public static final int NUMBER_OF_PROGRAM_RESPONSE_PARAMETERS = 14;
     private static Context mContext;
     private int delayForGetData = 100;
     //Errors
@@ -65,14 +65,17 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     public static final int INDEX_PROGRAM_NUM = 0;
     public static final int INDEX_PROGRAM_NAME = 1;
     public static final int INDEX_PROGRAM_TEMP = 2;
-    public static final int INDEX_PROGRAM_IS_LIQUID_PROGRAM = 3;
-    public static final int INDEX_PROGRAM_DRYING_TIME = 4;
-    public static final int INDEX_PROGRAM_STERILIZATION_TIME = 5;
-    public static final int INDEX_PROGRAM_PULSE_VACUUM = 6;
-    public static final int INDEX_PROGRAM_IS_F0_ENABLED = 7;
-    public static final int INDEX_PROGRAM_LETHAL_TEMP = 8;
-    public static final int INDEX_PROGRAM_Z_VALUE = 9;
-    public static final int INDEX_PROGRAM_CHECKSUM = 10;
+    public static final int INDEX_PROGRAM_FINAL_TEMP = 3;
+    public static final int INDEX_PROGRAM_IS_MAINTAIN = 4;
+    public static final int INDEX_PROGRAM_IS_LIQUID_PROGRAM = 5;
+    public static final int INDEX_PROGRAM_IS_CONT_BY_FLEX_PROBE= 6;
+    public static final int INDEX_PROGRAM_DRYING_TIME = 7;
+    public static final int INDEX_PROGRAM_STERILIZATION_TIME = 8;
+    public static final int INDEX_PROGRAM_PULSE_VACUUM = 9;
+    public static final int INDEX_PROGRAM_IS_F0_ENABLED = 10;
+    public static final int INDEX_PROGRAM_F0_VALUE = 11;
+    public static final int INDEX_PROGRAM_Z_VALUE = 12;
+    public static final int INDEX_PROGRAM_CHECKSUM = 13;
     Double offsetSteam = 0d;
     private int currentCommand = -1;
 
@@ -140,7 +143,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         final static String CMD_FLASH_USB = "CMD_STOP";
         final static String GET_DATA = "GET_DATA";
         final static String GET_PROGRAM = "GET_PROG %d,";
-        final static String SET_PROGRAM = "SET_PROG %d,%s,%f,%d,%d,%d,%d,%d,%f,%f,";
+        final static String SET_PROGRAM = "SET_PROG %d,%s,%f,%f,%d,%d,%d,%d,%d,%d,%d,%f,%f,";
         final static String GET_PROGRAMS = "GET_PROGS";
         final static String GET_PARAS = "GET_PARAS";
         final static String CMD_UTF = "CMD_UTF";
@@ -272,12 +275,15 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                 profile.getIndex(),
                 profile.getName(),
                 profile.getSterilisationTemperature(),
+                profile.getFinalTemp(),
+                profile.isMaintainEnabled() ? 1 : 0,
                 profile.isLiquidProgram() ? 1 : 0,
+                profile.isContByFlexProbe() ? 1 : 0,
                 profile.getDryTime(),
                 profile.getSterilisationTime(),
                 profile.getVacuumTimes(),
                 profile.isF0Enabled() ? 1 : 0,
-                profile.getLethalTemp(),
+                profile.getF0Value(),
                 profile.getzValue()));
     }
 
@@ -637,11 +643,14 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                                     null,
                                     true,
                                     true,
-                                    Integer.valueOf(responseParameters[INDEX_PROGRAM_IS_LIQUID_PROGRAM]) == 1,
+                                    responseParameters[INDEX_PROGRAM_IS_LIQUID_PROGRAM].equals("1"),
                                     null,
                                     Integer.valueOf(responseParameters[INDEX_PROGRAM_NUM]),
                                     responseParameters[INDEX_PROGRAM_IS_F0_ENABLED].equals("1"),
-                                    Float.valueOf(responseParameters[INDEX_PROGRAM_LETHAL_TEMP]),
+                                    responseParameters[INDEX_PROGRAM_IS_MAINTAIN].equals("1"),
+                                    responseParameters[INDEX_PROGRAM_IS_CONT_BY_FLEX_PROBE].equals("1"),
+                                    Integer.valueOf(responseParameters[INDEX_PROGRAM_FINAL_TEMP]),
+                                    Float.valueOf(responseParameters[INDEX_PROGRAM_F0_VALUE]),
                                     Float.valueOf(responseParameters[INDEX_PROGRAM_Z_VALUE])
                             );
                             programs.add(profile);

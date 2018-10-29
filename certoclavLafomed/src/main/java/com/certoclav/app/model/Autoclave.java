@@ -156,6 +156,9 @@ public class Autoclave extends Observable {
                     Autoclave.getInstance().getController(),
                     index,
                     false,
+                    false,
+                    false,
+                    10,
                     121f,
                     10);
         }
@@ -382,6 +385,9 @@ public class Autoclave extends Observable {
                     null,
                     1,
                     false,
+                    false,
+                    false,
+                    10,
                     121f,
                     10));
 
@@ -401,6 +407,9 @@ public class Autoclave extends Observable {
                     null,
                     2,
                     false,
+                    false,
+                    false,
+                    10,
                     121f,
                     10));
 
@@ -420,6 +429,9 @@ public class Autoclave extends Observable {
                     null,
                     1,
                     false,
+                    false,
+                    false,
+                    10,
                     121f,
                     10));
 
@@ -439,6 +451,9 @@ public class Autoclave extends Observable {
                     null,
                     1,
                     false,
+                    false,
+                    false,
+                    10,
                     121f,
                     10));
 
@@ -458,6 +473,9 @@ public class Autoclave extends Observable {
                     null,
                     1,
                     false,
+                    false,
+                    false,
+                    10,
                     121f,
                     10));
 
@@ -477,6 +495,9 @@ public class Autoclave extends Observable {
                     null,
                     1,
                     false,
+                    false,
+                    false,
+                    10,
                     121f,
                     10));
 
@@ -496,6 +517,9 @@ public class Autoclave extends Observable {
                     null,
                     1,
                     false,
+                    false,
+                    false,
+                    10,
                     121f,
                     10));
 
@@ -515,6 +539,9 @@ public class Autoclave extends Observable {
                     null,
                     1,
                     false,
+                    false,
+                    false,
+                    10,
                     121f,
                     10));
         } else {
@@ -535,6 +562,9 @@ public class Autoclave extends Observable {
                     null,
                     1,
                     false,
+                    false,
+                    false,
+                    10,
                     121f,
                     10));
 
@@ -554,6 +584,9 @@ public class Autoclave extends Observable {
                     null,
                     2,
                     false,
+                    false,
+                    false,
+                    10,
                     121f,
                     10));
 
@@ -573,6 +606,9 @@ public class Autoclave extends Observable {
                     null,
                     1,
                     false,
+                    false,
+                    false,
+                    10,
                     121f,
                     10));
 
@@ -592,6 +628,9 @@ public class Autoclave extends Observable {
                     null,
                     1,
                     false,
+                    false,
+                    false,
+                    10,
                     121f,
                     10));
 
@@ -611,6 +650,9 @@ public class Autoclave extends Observable {
                     null,
                     1,
                     false,
+                    false,
+                    false,
+                    10,
                     121f,
                     10));
 
@@ -630,6 +672,9 @@ public class Autoclave extends Observable {
                     null,
                     1,
                     false,
+                    false,
+                    false,
+                    10,
                     121f,
                     10));
 
@@ -649,6 +694,9 @@ public class Autoclave extends Observable {
                     null,
                     1,
                     false,
+                    false,
+                    false,
+                    10,
                     121f,
                     10));
 
@@ -668,6 +716,9 @@ public class Autoclave extends Observable {
                     null,
                     1,
                     false,
+                    false,
+                    false,
+                    10,
                     121f,
                     10));
 
@@ -687,6 +738,9 @@ public class Autoclave extends Observable {
                     null,
                     1,
                     false,
+                    false,
+                    false,
+                    10,
                     121f,
                     10));
 
@@ -706,6 +760,9 @@ public class Autoclave extends Observable {
                     null,
                     1,
                     false,
+                    false,
+                    false,
+                    10,
                     121f,
                     10));
 
@@ -725,6 +782,9 @@ public class Autoclave extends Observable {
                     null,
                     1,
                     false,
+                    false,
+                    false,
+                    10,
                     121f,
                     10));
 
@@ -744,6 +804,9 @@ public class Autoclave extends Observable {
                     null,
                     1,
                     false,
+                    false,
+                    false,
+                    10,
                     121f,
                     10));
 

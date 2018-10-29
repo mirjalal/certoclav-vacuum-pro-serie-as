@@ -24,11 +24,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/lethal_temp_title"
+                android:text="@string/f0_value_title"
                 android:textColor="@android:color/black" />
 
             <EditText
-                android:id="@+id/program_definition_edit_lethal"
+                android:id="@+id/program_definition_edit_f0_value"
                 android:layout_width="match_parent"
                 android:layout_height="78dp"
                 android:layout_weight="1"
@@ -42,7 +42,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_weight="1"
                 android:maxLines="1"
-                android:text="°C"
+                android:text=""
                 android:textColor="@android:color/black"
                 android:textSize="20dp"
                 tools:ignore="HardcodedText" />
