@@ -26,7 +26,6 @@ import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.activities.CertoclavSuperActivity;
 import com.certoclav.app.adapters.UserDropdownAdapter;
-import com.certoclav.app.database.AuditLog;
 import com.certoclav.app.database.Controller;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.User;
@@ -38,8 +37,8 @@ import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.app.monitor.MonitorActivity;
-import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.app.util.AuditLogger;
+import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.ServerConfigs;
 import com.certoclav.library.application.ApplicationController;
@@ -55,9 +54,6 @@ import com.crashlytics.android.Crashlytics;
 
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import cn.pedant.SweetAlert.ProgressHelper;
@@ -82,6 +78,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
     private String loginFailedMessage = "";
     private TextView textViewNotification = null;
     private ProgressBar progressBar = null; // progess bar which shows cloud
+    private AutoclaveModelManager modelManager;
     // login process
 
     // Need handler for callbacks to the UI thread
@@ -147,6 +144,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
+        modelManager = AutoclaveModelManager.getInstance();
 
 //        try {
 //            if (new Date().after(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse("2018-10-15T09:27:37Z")))

@@ -1,5 +1,7 @@
 package com.certoclav.app.model;
 
+import java.util.Locale;
+
 public class Sensor {
 
     private float currentValue = 0;
@@ -28,7 +30,7 @@ public class Sensor {
 
 
     public String getValueString() {
-        return String.format("%.1f", currentValue);
+        return String.format(Locale.US,"%.2f", currentValue);
     }
 
 

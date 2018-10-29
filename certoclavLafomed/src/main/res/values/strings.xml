@@ -798,6 +798,7 @@
     <string name="program_step_f0_function_desc">F0 Value: %1$.1f °C, Z value: %2$.1f °C</string>
     <string name="program_step_dry_desc">%1$d minutes</string>
     <string name="program_step_vacuum_desc">%1$d times</string>
+    <string name="program_step_final_temp_desc">Keep temperature at %1$d °C</string>
     <string name="temperature_title">TEMPERATURE</string>
     <string name="vacuum_pulse_times">times</string>
     <string name="drying_time_minutes">minutes</string>
@@ -832,7 +833,7 @@
     <string name="please_reboot_to_start_update">Please reboot autoclave to flash firmware from USB.</string>
     <string name="f0_enabled">Function: F0</string>
     <string name="f0_value_format">F0 Value: %1$.2f</string>
-    <string name="maintain_final_temp_format">Final Temperature: %1$.2f ℃</string>
+    <string name="maintain_final_temp_format">Final Temperature: %1$d ℃</string>
     <string name="cont_by_flex_probe">Control by flex probe</string>
     <string name="z_value_format">Z Value: %1$.2f</string>
     <string name="is_f0_function_enabled">Enable F0 Function</string>
@@ -844,6 +845,11 @@
     <string name="is_cont_by_flex_probe">Enable Flex Probe Control</string>
     <string name="is_maintain_final_temp">Maintain final temperature</string>
     <string name="final_temp_type">℃</string>
+    <string name="final_temp_range">Final temperature should be between %1$d and %2$d ℃</string>
+    <string name="sterilization_temp_range">Sterilization temperature should be between %1$.2f and %2$.2f ℃</string>
+    <string name="sterilization_time_range">Sterilization time should be between %1$d and %2$d minute(s)</string>
+    <string name="vacuum_pulse_range">Number of Vacuum pulse should be between %1$d and %2$d</string>
+    <string name="dry_time_range">Drying Time should be between %1$d and %2$d minute(s)</string>
 
 
 </resources>

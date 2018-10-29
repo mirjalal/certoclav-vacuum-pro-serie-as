@@ -143,7 +143,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         final static String CMD_FLASH_USB = "CMD_STOP";
         final static String GET_DATA = "GET_DATA";
         final static String GET_PROGRAM = "GET_PROG %d,";
-        final static String SET_PROGRAM = "SET_PROG %d,%s,%f,%f,%d,%d,%d,%d,%d,%d,%d,%f,%f,";
+        final static String SET_PROGRAM = "SET_PROG %d,%s,%f,%d,%d,%d,%d,%d,%d,%d,%d,%f,%f,";
         final static String GET_PROGRAMS = "GET_PROGS";
         final static String GET_PARAS = "GET_PARAS";
         final static String CMD_UTF = "CMD_UTF";
