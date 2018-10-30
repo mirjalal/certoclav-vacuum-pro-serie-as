@@ -21,6 +21,7 @@ public class CloudUser {
 	private String token = "";
 	private String email = "";
 	private boolean isPremiumAccount = false;
+	private boolean isSuperAdmin = false;
 	private String currentDeviceKey = "";
 
 	public boolean isLoggedIn() {
@@ -53,8 +54,12 @@ public class CloudUser {
 	public void setCurrentDeviceKey(String currentDeviceKey) {
 		this.currentDeviceKey = currentDeviceKey;
 	}
-	
-	
-	
 
+	public void setSuperAdmin(boolean superAdmin) {
+		isSuperAdmin = superAdmin;
+	}
+
+	public boolean isSuperAdmin() {
+		return isSuperAdmin && isLoggedIn;
+	}
 }

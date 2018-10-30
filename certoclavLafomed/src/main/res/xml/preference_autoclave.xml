@@ -57,6 +57,7 @@
             android:key="preferences_autoclave_parameter_8"
             android:title="@string/preferences_autoclave_degrees" />
 
+
         <EditTextPreference
             android:inputType="numberDecimal"
             android:key="preferences_autoclave_parameter_27"
@@ -70,6 +71,11 @@
             android:inputType="numberDecimal"
             android:key="preferences_autoclave_parameter_42"
             android:title="@string/preferences_autoclave_cooling_pressure" />
+
+        <EditTextPreference
+            android:inputType="numberDecimal"
+            android:key="preferences_autoclave_parameter_97"
+            android:title="@string/preferences_autoclave_warm_up_temp" />
 
     </PreferenceCategory>
 

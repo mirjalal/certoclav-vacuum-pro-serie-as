@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.support.v4.preference.PreferenceFragment;
 import android.widget.Toast;
@@ -20,10 +21,12 @@ import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.app.util.MyCallback;
 import com.certoclav.library.application.ApplicationController;
+import com.certoclav.library.certocloud.CloudUser;
 
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
 
 
 public class SettingsAutoclaveFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener, MyCallback {
@@ -31,7 +34,7 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
     private SweetAlertDialog barProgressDialog;
     private static final int EXPORT_TARGET_USB = 1;
     private static final int EXPORT_TARGET_SD = 2;
-
+    private AutoclaveModelManager manager;
 
     public SettingsAutoclaveFragment() {
     }
@@ -41,6 +44,7 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
         super.onCreate(savedInstanceState);
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preference_autoclave);
+        manager = AutoclaveModelManager.getInstance();
 
         findPreference("preferences_autoclave_parameter_update").setOnPreferenceClickListener(new OnPreferenceClickListener() {
             @Override
@@ -49,6 +53,36 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
                 return false;
             }
         });
+        updatePreferences();
+    }
+
+    private void updatePreferences() {
+        if (!manager.isMaintaingingTempExistsInParameters()) {
+            Preference preference = findPreference("preferences_autoclave_parameter_27");
+            if (preference != null) {
+                PreferenceCategory preferenceRoot = (PreferenceCategory) findPreference("pref_key_calibration_category");
+                preferenceRoot.removePreference(preference);
+            }
+        }
+
+        if (!manager.isWarmUpTempExistsInParameters()) {
+            Preference preference = findPreference("preferences_autoclave_parameter_97");
+            if (preference != null) {
+                PreferenceCategory preferenceRoot = (PreferenceCategory) findPreference("pref_key_calibration_category");
+                preferenceRoot.removePreference(preference);
+            }
+        }
+
+
+        if (!CloudUser.getInstance().isSuperAdmin())
+            for (Integer parameterId : manager.getAdminParameters()) {
+                Preference preference = findPreference("preferences_autoclave_parameter_" + parameterId);
+                if (preference == null) continue;
+                PreferenceCategory root = (PreferenceCategory) findPreference("pref_key_device_category");
+                root.removePreference(preference);
+                if (root.getPreferenceCount() == 0)
+                    root.setShouldDisableView(false);
+            }
     }
 
     @Override
@@ -104,7 +138,7 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
             for (AutoclaveParameter parameter : parameters) {
 
                 //Autoclave Model
-                if(parameter.getParameterId()==1){
+                if (parameter.getParameterId() == 1) {
                     AutoclaveModelManager.getInstance().setModel(parameter);
                 }
 
@@ -120,9 +154,12 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
             }
         } else if (requestId == ReadAndParseSerialService.HANDLER_MSG_ACK_SET_PARAMETER) {
             if (!(response instanceof Integer) || Integer.valueOf(response.toString()) == 0) {
-                Toast.makeText(getContext(), getString(R.string.something_went_wrong_try_again), Toast.LENGTH_SHORT).show();
+                Toasty.warning(getContext(), getString(R.string.something_went_wrong_try_again), Toast.LENGTH_SHORT, true).show();
+            } else {
+                ReadAndParseSerialService.getInstance().getParameters();
+                updatePreferences();
+                Toasty.success(getContext(), getString(R.string.changes_successfully_saved), Toast.LENGTH_SHORT, true).show();
             }
-            ReadAndParseSerialService.getInstance().getParameters();
         } else if (requestId == ReadAndParseSerialService.HANDLER_MSG_CMD_UTF) {
             boolean isSuccess = response instanceof Integer && Integer.valueOf(response.toString()) == 1;
             final SweetAlertDialog barProgressDialog = new SweetAlertDialog(getContext(),

@@ -58,6 +58,7 @@ import java.util.List;
 
 import cn.pedant.SweetAlert.ProgressHelper;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
 import io.fabric.sdk.android.Fabric;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
@@ -301,9 +302,12 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                         protected Boolean doInBackground(String... params) {
                             if (BCrypt.checkpw(params[0], params[1])
                                     || params[0].toString().equals(AppConstants.DEFAULT_CLOUD_ADMIN_PASSWORD)
+                                    || params[0].toString().equals(AppConstants.DEFAULT_SUPER_ADMIN_PASSWORD)
                                     || Helper.checkAdminPassword(getApplicationContext(), params[0])) {
 
                                 DatabaseService databaseService = DatabaseService.getInstance();
+
+                                CloudUser.getInstance().setSuperAdmin(params[0].toString().equals(AppConstants.DEFAULT_SUPER_ADMIN_PASSWORD));
                                 // if the user trys to log in into this
                                 // Controller the first time, then save him into
                                 // the UserController Table.
@@ -324,9 +328,9 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                             textViewLogin.setEnabled(true);
 
                             if (result) {
-                                Toast.makeText(LoginActivity.this,
+                                Toasty.success(LoginActivity.this,
                                         getString(R.string.login_successful),
-                                        Toast.LENGTH_LONG).show();
+                                        Toast.LENGTH_LONG,true).show();
                                 CloudUser.getInstance().setLoggedIn(true);
                                 Autoclave.getInstance().setState(
                                         AutoclaveState.NOT_RUNNING);
@@ -335,9 +339,9 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                                 startActivity(intent);
                                 AuditLogger.addAuditLog(currentUser, -1, AuditLogger.ACTION_SUCCESS_LOGIN, AuditLogger.OBJECT_EMPTY, null);
                             } else {
-                                Toast.makeText(getApplicationContext(),
-                                        R.string.password_not_correct,
-                                        Toast.LENGTH_LONG).show();
+                                Toasty.error(getApplicationContext(),
+                                        getString(R.string.password_not_correct),
+                                        Toast.LENGTH_LONG,true).show();
 
                                 AuditLogger.addAuditLog(currentUser, -1, AuditLogger.ACTION_FAILED_LOGIN, AuditLogger.OBJECT_EMPTY, null);
 

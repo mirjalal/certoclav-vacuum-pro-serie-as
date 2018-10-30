@@ -7,6 +7,7 @@ import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.service.ReadAndParseSerialService;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by musaq on 10/29/2018.
@@ -15,6 +16,7 @@ import java.util.Arrays;
 public class AutoclaveModelManager implements MyCallback {
 
     private static AutoclaveModelManager manager;
+    private Integer[] parametersForAdmin = new Integer[]{1,2,3,4,94,95,96,98};
 
     private AutoclaveModelManager() {
         ReadAndParseSerialService.getInstance().addCallback(this);
@@ -66,6 +68,11 @@ public class AutoclaveModelManager implements MyCallback {
         //No Vacuum Phase exists
         return null;
     }
+
+    public List<Integer> getAdminParameters(){
+        return Arrays.asList(parametersForAdmin);
+    }
+
 
     public boolean isF0Exists() {
         return Arrays.asList(new String[]{"TLVPD", "TLVFA", "TLV"}).contains(getModelName());
