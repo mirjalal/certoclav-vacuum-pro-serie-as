@@ -90,8 +90,8 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         public void run() {
             buttonLogin.setEnabled(true);
             textViewLogin.setEnabled(true);
-            Toast.makeText(getApplicationContext(),
-                    R.string.password_not_correct, Toast.LENGTH_LONG).show();
+            Toasty.error(getApplicationContext(),
+                    getString(R.string.password_not_correct), Toast.LENGTH_SHORT, true).show();
         }
     };
 
@@ -132,7 +132,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
     final Runnable mShowLoginSuccessfull = new Runnable() {
         public void run() {
 
-            Toast.makeText(LoginActivity.this, getString(R.string.login_successful), Toast.LENGTH_LONG).show();
+            Toasty.success(LoginActivity.this, getString(R.string.login_successful), Toast.LENGTH_LONG, true).show();
             buttonLogin.setEnabled(true);
             textViewLogin.setEnabled(true);
             Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);
@@ -330,7 +330,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                             if (result) {
                                 Toasty.success(LoginActivity.this,
                                         getString(R.string.login_successful),
-                                        Toast.LENGTH_LONG,true).show();
+                                        Toast.LENGTH_LONG, true).show();
                                 CloudUser.getInstance().setLoggedIn(true);
                                 Autoclave.getInstance().setState(
                                         AutoclaveState.NOT_RUNNING);
@@ -341,7 +341,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                             } else {
                                 Toasty.error(getApplicationContext(),
                                         getString(R.string.password_not_correct),
-                                        Toast.LENGTH_LONG,true).show();
+                                        Toast.LENGTH_LONG, true).show();
 
                                 AuditLogger.addAuditLog(currentUser, -1, AuditLogger.ACTION_FAILED_LOGIN, AuditLogger.OBJECT_EMPTY, null);
 
@@ -505,7 +505,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                 if ((!Autoclave.getInstance().getUser().isAdmin() || Autoclave.getInstance().getState() == AutoclaveState.LOCKED) &&
                         prefs.getBoolean(ApplicationController.getContext().getString(R.string.preferences_lockout_create_user),
                                 ApplicationController.getContext().getResources().getBoolean(R.bool.preferences_lockout_create_user))) {
-                    Toast.makeText(this, R.string.these_settings_are_locked_by_the_admin, Toast.LENGTH_SHORT).show();
+                    Toasty.warning(this, getString(R.string.these_settings_are_locked_by_the_admin), Toast.LENGTH_SHORT, true).show();
                     askForAdminPassword();
                 } else {
                     askForSelecteOption();
@@ -538,7 +538,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
     @Override
     public void onTaskFinished(Response response) {
         if (response == null) {
-            Toast.makeText(LoginActivity.this, getString(R.string.something_went_wrong_try_again), Toast.LENGTH_SHORT).show();
+            Toasty.warning(LoginActivity.this, getString(R.string.something_went_wrong_try_again), Toast.LENGTH_SHORT, true).show();
             return;
         }
         progressBar.setVisibility(View.GONE);
@@ -552,9 +552,9 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
             loginFailedMessage = response.getMessage();
         switch (response.getStatus()) {
             case PostUtil.RETURN_OK:
-                Toast.makeText(LoginActivity.this,
+                Toasty.success(LoginActivity.this,
                         getResources().getString(R.string.login_successful),
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_LONG, true).show();
                 AuditLogger.addAuditLog(currentUser, -1, AuditLogger.ACTION_SUCCESS_LOGIN, AuditLogger.OBJECT_EMPTY, null);
                 Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);
                 try {
@@ -726,7 +726,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                     showCreateAccountDialog();
                     dialog.dismiss();
                 } else {
-                    Toast.makeText(LoginActivity.this, getString(R.string.admin_password_wrong), Toast.LENGTH_SHORT).show();
+                    Toasty.error(LoginActivity.this, getString(R.string.admin_password_wrong), Toast.LENGTH_SHORT, true).show();
                 }
             }
         });

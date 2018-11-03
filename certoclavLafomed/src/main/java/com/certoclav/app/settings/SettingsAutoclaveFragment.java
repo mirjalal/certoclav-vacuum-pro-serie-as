@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.support.v4.preference.PreferenceFragment;
@@ -18,6 +18,7 @@ import com.certoclav.app.model.AutoclaveParameter;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.service.ReadAndParseSerialService;
+import com.certoclav.app.util.AuditLogger;
 import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.app.util.MyCallback;
 import com.certoclav.library.application.ApplicationController;
@@ -46,19 +47,52 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
         addPreferencesFromResource(R.xml.preference_autoclave);
         manager = AutoclaveModelManager.getInstance();
 
-        findPreference("preferences_autoclave_parameter_update").setOnPreferenceClickListener(new OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                ReadAndParseSerialService.getInstance().requestForFirmwareUpdate();
-                return false;
-            }
-        });
-        updatePreferences();
     }
 
     private void updatePreferences() {
+        getPreferenceScreen().removeAll();
+
+        addPreferencesFromResource(R.xml.preference_autoclave);
+
+        findPreference("preferences_autoclave_parameter_update").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                ReadAndParseSerialService.getInstance().requestForFirmwareUpdate();
+                AuditLogger.addAuditLog(AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CLICKED,
+                        "preferences_autoclave_parameter_update".toString().hashCode(), "");
+                return false;
+            }
+        });
+
+        findPreference("preferences_autoclave_parameter_reset_review_hours").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                ReadAndParseSerialService.getInstance().setParameter(83, "1");
+                AuditLogger.addAuditLog(AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CLICKED,
+                        "preferences_autoclave_parameter_reset_review_hours".toString().hashCode(), "");
+                return false;
+            }
+        });
+
+        findPreference("preferences_autoclave_parameter_reset_filter_hours").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                ReadAndParseSerialService.getInstance().setParameter(86, "1");
+                AuditLogger.addAuditLog(AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CLICKED,
+                        "preferences_autoclave_parameter_reset_filter_hours".toString().hashCode(), "");
+                return false;
+            }
+        });
         if (!manager.isMaintaingingTempExistsInParameters()) {
             Preference preference = findPreference("preferences_autoclave_parameter_27");
+            if (preference != null) {
+                PreferenceCategory preferenceRoot = (PreferenceCategory) findPreference("pref_key_calibration_category");
+                preferenceRoot.removePreference(preference);
+            }
+        }
+
+        if (!manager.isCoolingParameterExists()) {
+            Preference preference = findPreference("preferences_autoclave_parameter_42");
             if (preference != null) {
                 PreferenceCategory preferenceRoot = (PreferenceCategory) findPreference("pref_key_calibration_category");
                 preferenceRoot.removePreference(preference);
@@ -125,51 +159,63 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
         } else {
             getPreferenceScreen().setEnabled(true);
         }
+
+        updatePreferences();
         super.onResume();
     }
 
 
     @Override
     public void onSuccess(Object response, int requestId) {
-        if (requestId == ReadAndParseSerialService.HANDLER_MSG_ACK_GET_PARAMETERS) {
-            List<AutoclaveParameter> parameters = (List<AutoclaveParameter>) response;
-            Preference pref;
-            String key;
-            for (AutoclaveParameter parameter : parameters) {
 
-                //Autoclave Model
-                if (parameter.getParameterId() == 1) {
-                    AutoclaveModelManager.getInstance().setModel(parameter);
-                }
-
-                key = "preferences_autoclave_parameter_" + parameter.getParameterId();
-                pref = findPreference(key);
-                if (pref != null)
-                    if (!(pref instanceof CheckBoxPreference)) {
-                        pref.getEditor().putString(key, parameter.getValue().toString()).commit();
-                        pref.setSummary(parameter.getValue().toString());
-                    } else {
-                        pref.getEditor().putBoolean(key, parameter.getValue().toString().equals("1")).commit();
-                    }
-            }
-        } else if (requestId == ReadAndParseSerialService.HANDLER_MSG_ACK_SET_PARAMETER) {
-            if (!(response instanceof Integer) || Integer.valueOf(response.toString()) == 0) {
-                Toasty.warning(getContext(), getString(R.string.something_went_wrong_try_again), Toast.LENGTH_SHORT, true).show();
-            } else {
-                ReadAndParseSerialService.getInstance().getParameters();
+        try {
+            if (requestId == ReadAndParseSerialService.HANDLER_MSG_ACK_GET_PARAMETERS) {
+                List<AutoclaveParameter> parameters = (List<AutoclaveParameter>) response;
+                Preference pref;
+                String key;
                 updatePreferences();
-                Toasty.success(getContext(), getString(R.string.changes_successfully_saved), Toast.LENGTH_SHORT, true).show();
+                for (AutoclaveParameter parameter : parameters) {
+
+                    //Autoclave Model
+                    if (parameter.getParameterId() == 1) {
+                        AutoclaveModelManager.getInstance().setModel(parameter);
+                        updatePreferences();
+                    }
+
+                    key = "preferences_autoclave_parameter_" + parameter.getParameterId();
+                    pref = findPreference(key);
+                    if (pref != null)
+                        if (pref instanceof ListPreference) {
+                            pref.getEditor().putString(key, parameter.getValue().toString()).commit();
+                            pref.setSummary(parameter.getValue().toString());
+                        } else if (!(pref instanceof CheckBoxPreference)) {
+                            pref.getEditor().putString(key, parameter.getValue().toString()).commit();
+                            pref.setSummary(parameter.getValue().toString());
+                        } else {
+                            pref.getEditor().putBoolean(key, parameter.getValue().toString().equals("1")).commit();
+                        }
+                }
+            } else if (requestId == ReadAndParseSerialService.HANDLER_MSG_ACK_SET_PARAMETER) {
+                if (!(response instanceof Integer) || Integer.valueOf(response.toString()) == 0) {
+                    Toasty.warning(getContext(), getString(R.string.something_went_wrong_try_again), Toast.LENGTH_SHORT, true).show();
+                } else {
+                    ReadAndParseSerialService.getInstance().getParameters();
+                    Toasty.success(getContext(), getString(R.string.changes_successfully_saved), Toast.LENGTH_SHORT, true).show();
+                }
+            } else if (requestId == ReadAndParseSerialService.HANDLER_MSG_CMD_UTF) {
+                boolean isSuccess = response instanceof Integer && Integer.valueOf(response.toString()) == 1;
+                final SweetAlertDialog barProgressDialog = new SweetAlertDialog(getContext(),
+                        isSuccess ? SweetAlertDialog.SUCCESS_TYPE : SweetAlertDialog.ERROR_TYPE);
+                barProgressDialog.setTitleText(getString(isSuccess ? R.string.success : R.string.failed));
+                barProgressDialog.setContentText(getString(isSuccess ? R.string.please_reboot_to_start_update : R.string.something_went_wrong));
+                barProgressDialog.setConfirmText(getString(R.string.ok));
+                barProgressDialog.showCancelButton(false);
+                barProgressDialog.setCanceledOnTouchOutside(true);
+                barProgressDialog.show();
             }
-        } else if (requestId == ReadAndParseSerialService.HANDLER_MSG_CMD_UTF) {
-            boolean isSuccess = response instanceof Integer && Integer.valueOf(response.toString()) == 1;
-            final SweetAlertDialog barProgressDialog = new SweetAlertDialog(getContext(),
-                    isSuccess ? SweetAlertDialog.SUCCESS_TYPE : SweetAlertDialog.ERROR_TYPE);
-            barProgressDialog.setTitleText(getString(isSuccess ? R.string.success : R.string.failed));
-            barProgressDialog.setContentText(getString(isSuccess ? R.string.please_reboot_to_start_update : R.string.something_went_wrong));
-            barProgressDialog.setConfirmText(getString(R.string.ok));
-            barProgressDialog.showCancelButton(false);
-            barProgressDialog.setCanceledOnTouchOutside(true);
-            barProgressDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            onError(null, -1);
         }
     }
 

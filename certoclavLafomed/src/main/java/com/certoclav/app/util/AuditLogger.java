@@ -7,6 +7,7 @@ import com.certoclav.app.R;
 import com.certoclav.app.database.AuditLog;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.User;
+import com.certoclav.app.model.Autoclave;
 
 import java.util.HashMap;
 import java.util.List;
@@ -120,6 +121,12 @@ public class AuditLogger {
         init();
         if (context == null) return;
         databaseService.addAuditLog(new AuditLog(user, screenId, eventId, objectId, value));
+    }
+
+    public static void addAuditLog(@StringRes int screenId, @StringRes int eventId, int objectId, String value) {
+        init();
+        if (context == null) return;
+        databaseService.addAuditLog(new AuditLog(Autoclave.getInstance().getUser(), screenId, eventId, objectId, value));
     }
 
     public static List<AuditLog> getAuditLogs(User user, String orderBy, boolean isAsc) {

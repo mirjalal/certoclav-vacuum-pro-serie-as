@@ -473,7 +473,7 @@
     <string name="account_activation_failed">Account activation failed!</string>
     <string name="account_activation_success">Account successfully activiated!</string>
     <string name="something_went_wrong_try_again">Something went wrong. Please try later!</string>
-    <string name="something_went_wrong">Something went wrong</string>
+    <string name="something_went_wrong">Something went wrong!</string>
     <string name="sending">Sending...</string>
     <string name="edit_success">Edited Successfully</string>
     <string name="label_printed">The label printed!</string>
@@ -769,7 +769,7 @@
     <string name="audit_action_program_failed"><![CDATA[<font color=\"#69B7F5\"><b>%3$s</b></font> program failed.]]></string>
     <string name="audit_action_asked_for_network">asked for Network</string>
     <string name="audit_action_selected">selected</string>
-    <string name="audit_action_clicked">clicked</string>
+    <string name="audit_action_clicked"><![CDATA[<b>%1$s</b> clicked <font color=\"#69B7F5\"><b>%2$s</b></font> in %4$s]]></string>
     <string name="audit_action_success_to_login"><![CDATA[<b>%1$s</b> login successfully]]></string>
     <string name="audit_action_logout"><![CDATA[<b>%1$s</b> logout]]></string>
     <string name="audit_action_activated"><![CDATA[<b>%1$s</b> was activated]]></string>
@@ -814,15 +814,31 @@
     <string name="preferences_autoclave_is_home_mode">Home mode</string>
     <string name="preferences_autoclave_is_user_mode">User mode</string>
     <string name="preferences_autoclave_degrees">Degrees</string>
+    <string-array name="preferences_autoclave_degrees_key">
+        <item>Celsius</item>
+        <item>Fahrenheit</item>
+    </string-array>
+
+    <string-array name="preferences_autoclave_degrees_values">
+        <item>C</item>
+        <item>F</item>
+    </string-array>
     <string name="settings_autoclave">Autoclave</string>
     <string name="pref_model_summary">Current model: %s</string>
     <string name="preferences_autoclave_final_temperature">Final Temperature</string>
+    <string name="preferences_autoclave_std_program">Std programs.</string>
+    <string name="preferences_autoclave_offset_probe_1">Offset Probe 1</string>
+    <string name="preferences_autoclave_offset_probe_2">Offset Probe 2</string>
+    <string name="preferences_autoclave_offset_pressure_probe_1">Offset Pressure Probe 1</string>
+    <string name="preferences_autoclave_offset_pressure_probe_2">Offset Pressure Probe 2</string>
     <string name="preferences_autoclave_setpoint_temperature">Setpoint tempereature F</string>
     <string name="preferences_autoclave_starting_pressure">Starting Pressure</string>
     <string name="preferences_autoclave_cooling_pressure">Cooling Pressure</string>
     <string name="preferences_autoclave_warm_up_temp">Warm-up Temperature</string>
     <string name="preferences_autoclave_number_cycle">Cycle number</string>
     <string name="preferences_autoclave_number_hours">Number of hours</string>
+    <string name="preferences_autoclave_number_review_hours">Number of review hours</string>
+    <string name="preferences_autoclave_number_filter_cycle">Number of filter cycles</string>
     <string name="pref_network_category">Network</string>
     <string name="preferences_autoclave_ip">IP</string>
     <string name="preferences_autoclave_mask">Mask</string>
@@ -831,6 +847,10 @@
     <string name="pref_f_function_category">F Function</string>
     <string name="preferences_autoclave_updatable">Enable Updating</string>
     <string name="preferences_autoclave_updatable_summary">Enable flashing a firmware to Microcontroller from USB</string>
+    <string name="preferences_autoclave_reset_review_hours">Reset review hours</string>
+    <string name="preferences_autoclave_reset_review_hours_summary">Resets the hourmeter to cancel the ad review.</string>
+    <string name="preferences_autoclave_reset_filter_hours">Reset filter hours</string>
+    <string name="preferences_autoclave_reset_filter_hours_summary">Resets the cycle counter to cancel the warning</string>
     <string name="please_reboot_to_start_update">Please reboot autoclave to flash firmware from USB.</string>
     <string name="f0_enabled">Function: F0</string>
     <string name="f0_value_format">F0 Value: %1$.2f</string>
