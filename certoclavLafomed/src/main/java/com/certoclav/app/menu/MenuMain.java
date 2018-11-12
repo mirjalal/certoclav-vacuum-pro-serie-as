@@ -1,21 +1,15 @@
 package com.certoclav.app.menu;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.activities.CertoclavSuperActivity;
-import com.certoclav.app.database.AuditLog;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.Profile;
 import com.certoclav.app.listener.NavigationbarListener;
@@ -83,7 +77,11 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
         mSectionsPagerAdapter = new ControlPagerAdapter(getSupportFragmentManager(), fragmentList);
         mViewPager = (CustomViewPager) findViewById(R.id.pager);
 
-        navigationbar = new CertoclavNavigationbar(this);
+        try {
+            navigationbar = new CertoclavNavigationbar(this);
+        }catch (Exception e){
+            finish();
+        }
         navigationbar.showNavigationBar();
         navigationbar.setTabSterilisationEnabled();
 

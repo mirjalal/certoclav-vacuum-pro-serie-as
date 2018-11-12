@@ -5,7 +5,7 @@
         android:title="@string/pref_device_settings">
 
         <ListPreference
-            android:defaultValue="TLV-150FA"
+            android:defaultValue="TLV-150-FA"
             android:entries="@array/autoclave_models"
             android:entryValues="@array/autoclave_models"
             android:key="preferences_autoclave_parameter_1"
@@ -19,20 +19,24 @@
 
         <EditTextPreference
             android:key="preferences_autoclave_parameter_3"
+            android:inputType="number"
             android:summary="@string/pref_model_summary"
             android:title="@string/preferences_autoclave_serial" />
 
         <EditTextPreference
             android:key="preferences_autoclave_parameter_4"
+            android:enabled="false"
             android:title="@string/preferences_autoclave_pcb_serial" />
 
         <EditTextPreference
             android:inputType="number"
+            android:enabled="false"
             android:key="preferences_autoclave_parameter_94"
             android:title="@string/preferences_autoclave_number_cycle" />
 
         <EditTextPreference
             android:inputType="number"
+            android:enabled="false"
             android:key="preferences_autoclave_parameter_95"
             android:title="@string/preferences_autoclave_number_hours" />
 
