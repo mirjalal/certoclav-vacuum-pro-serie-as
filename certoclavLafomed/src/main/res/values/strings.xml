@@ -853,8 +853,10 @@
     <string name="preferences_autoclave_updatable">Enable Updating</string>
     <string name="preferences_autoclave_updatable_summary">Enable flashing a firmware to Microcontroller from USB</string>
     <string name="preferences_autoclave_reset_review_hours">Reset review hours</string>
+    <string name="preferences_autoclave_review_hours">review hours</string>
     <string name="preferences_autoclave_reset_review_hours_summary">Resets the hourmeter to cancel the ad review.</string>
     <string name="preferences_autoclave_reset_filter_hours">Reset filter hours</string>
+    <string name="preferences_autoclave_filter_hours">filter hours</string>
     <string name="preferences_autoclave_reset_filter_hours_summary">Resets the cycle counter to cancel the warning</string>
     <string name="please_reboot_to_start_update">Please reboot autoclave to flash firmware from USB.</string>
     <string name="f0_enabled">Function: F0</string>
@@ -876,6 +878,8 @@
     <string name="sterilization_time_range">Sterilization time should be between %1$d and %2$d minute(s)</string>
     <string name="vacuum_pulse_range">Number of Vacuum pulse should be between %1$d and %2$d</string>
     <string name="dry_time_range">Drying Time should be between %1$d and %2$d minute(s)</string>
+    <string name="reset">Reset</string>
+    <string name="do_you_really_want_to_reset_format">Do you really want to reset %1$s</string>
 
 
 </resources>

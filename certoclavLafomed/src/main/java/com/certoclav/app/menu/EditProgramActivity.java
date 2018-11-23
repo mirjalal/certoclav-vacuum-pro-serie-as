@@ -254,7 +254,10 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
             case CertoclavNavigationbarClean.BUTTON_SAVE:
                 String name = editTextProgramName.getText().toString();
                 name = name.replaceAll(" ", "_");
-                if (!(name.length() > 0 && !name.contains(",") && !name.contains(";") && !name.contains("\n") && !name.equals(AppConstants.DELETED_PROFILE_NAME))) {
+                if (!(name.length() > 0 && !name.contains(",") && !name.contains(";")
+                        && !name.contains("\n")
+                        && !name.contains("@")
+                        && !name.equals(AppConstants.DELETED_PROFILE_NAME))) {
                     Toasty.error(this, getString(R.string.please_enter_a_valid_name), Toast.LENGTH_SHORT, true).show();
                     break;
                 }

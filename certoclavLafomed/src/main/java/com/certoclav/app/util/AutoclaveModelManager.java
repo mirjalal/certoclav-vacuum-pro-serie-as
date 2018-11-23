@@ -31,6 +31,12 @@ public class AutoclaveModelManager implements MyCallback {
 
     private AutoclaveParameter model;
 
+    public String getModel() {
+        if(model==null)
+            return "undefine";
+        return model.getValue().toString();
+    }
+
     public Pair<Float,Float> getSterilizationTempRange() {
         switch (model.getValue().toString()) {
             case "AEB":

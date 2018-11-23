@@ -20,6 +20,7 @@ import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.app.util.AuditLogger;
 import com.certoclav.app.util.AutoclaveModelManager;
+import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.MyCallback;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.certocloud.CloudUser;
@@ -67,9 +68,18 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
         findPreference("preferences_autoclave_parameter_reset_review_hours").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                ReadAndParseSerialService.getInstance().setParameter(83, "1");
-                AuditLogger.addAuditLog(AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CLICKED,
-                        "preferences_autoclave_parameter_reset_review_hours".toString().hashCode(), "");
+
+                Helper.askConfirmation(getContext(),getString(R.string.reset),getString(R.string.do_you_really_want_to_reset_format,
+                        getString(R.string.preferences_autoclave_review_hours)),new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                                ReadAndParseSerialService.getInstance().setParameter(83, "1");
+                                AuditLogger.addAuditLog(AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CLICKED,
+                                        "preferences_autoclave_parameter_reset_review_hours".toString().hashCode(), "");
+                            }
+                        },null);
+
                 return false;
             }
         });
@@ -77,9 +87,16 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
         findPreference("preferences_autoclave_parameter_reset_filter_hours").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                ReadAndParseSerialService.getInstance().setParameter(86, "1");
-                AuditLogger.addAuditLog(AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CLICKED,
-                        "preferences_autoclave_parameter_reset_filter_hours".toString().hashCode(), "");
+                Helper.askConfirmation(getContext(),getString(R.string.reset),getString(R.string.do_you_really_want_to_reset_format,
+                        getString(R.string.preferences_autoclave_filter_hours)),new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+                        ReadAndParseSerialService.getInstance().setParameter(86, "1");
+                        AuditLogger.addAuditLog(AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CLICKED,
+                                "preferences_autoclave_parameter_reset_filter_hours".toString().hashCode(), "");
+                    }
+                },null);
                 return false;
             }
         });

@@ -943,6 +943,9 @@ public class Helper {
                     programJsonObject.put("id", profile.getIndex());
                     programJsonObject.put("tmp", profile.getSterilisationTemperature());
                     programJsonObject.put("is_liquid", profile.isLiquidProgram());
+                    programJsonObject.put("is_enabled_flex_probe", profile.isContByFlexProbe());
+                    programJsonObject.put("maintain_final_temp", profile.isMaintainEnabled());
+                    programJsonObject.put("final_temp", profile.getFinalTemp());
                     programJsonObject.put("use_f_function", profile.isF0Enabled());
                     programJsonObject.put("dur", sterlizationTime);
                     programJsonObject.put("f0_value", profile.getF0Value());
@@ -950,6 +953,7 @@ public class Helper {
                     programJsonObject.put("is_from_android", true);
                     programJsonObject.put("deviceKey", Autoclave.getInstance()
                             .getController().getSavetyKey());
+                    programJsonObject.put("model",AutoclaveModelManager.getInstance().getModel());
 
 
                     JSONObject programWrapper = new JSONObject();
@@ -984,5 +988,21 @@ public class Helper {
                 Autoclave.getInstance().notifyProfilesHasBeenSynced();
             }
         });
+    }
+
+    public static void askConfirmation(Context context,String title, String content, final SweetAlertDialog.OnSweetClickListener onConfirm,
+                                       SweetAlertDialog.OnCancelListener onCancel){
+        final SweetAlertDialog dialogConfirmation = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
+        dialogConfirmation.showCancelButton(true);
+        dialogConfirmation.setCancelText(context.getString(R.string.cancel));
+        dialogConfirmation.setCanceledOnTouchOutside(false);
+        dialogConfirmation.setConfirmText(context.getString(R.string.yes));
+        dialogConfirmation.setTitleText(title);
+        dialogConfirmation.setContentText(content);
+        dialogConfirmation
+                .setConfirmClickListener(onConfirm);
+        dialogConfirmation.setOnCancelListener(onCancel);
+        dialogConfirmation.show();
+
     }
 }
