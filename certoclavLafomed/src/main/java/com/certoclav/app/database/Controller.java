@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 
 import com.certoclav.app.AppConstants;
+import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.library.application.ApplicationController;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -83,6 +84,8 @@ public class Controller {
 
     public String getSavetyKey() {
 
+
+
         if (AppConstants.isIoSimulated) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ApplicationController.getContext());
             switch (prefs.getString(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL, "TLV-50")) {
@@ -94,32 +97,34 @@ public class Controller {
                     return "FF000003957204833";
             }
             return AppConstants.SIMULATED_SAVETY_KEY;
+        }else{
+            return AutoclaveModelManager.getInstance().getSerialNumber();
         }
 
-        //Find the directory for the SD Card using the API
-        //*Don't* hardcode "/sdcard"
-        File sdcard = Environment.getExternalStorageDirectory();
-
-        //Get the text file
-        File file = new File(sdcard, "key.txt");
-
-        //Read text from file
-        StringBuilder key = new StringBuilder();
-
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String line;
-
-            if ((line = br.readLine()) != null) {
-                key.append(line);
-            }
-            br.close();
-        } catch (IOException e) {
-            return "";
-        }
-
-
-        return key.toString();
+//        //Find the directory for the SD Card using the API
+//        //*Don't* hardcode "/sdcard"
+//        File sdcard = Environment.getExternalStorageDirectory();
+//
+//        //Get the text file
+//        File file = new File(sdcard, "key.txt");
+//
+//        //Read text from file
+//        StringBuilder key = new StringBuilder();
+//
+//        try {
+//            BufferedReader br = new BufferedReader(new FileReader(file));
+//            String line;
+//
+//            if ((line = br.readLine()) != null) {
+//                key.append(line);
+//            }
+//            br.close();
+//        } catch (IOException e) {
+//            return "";
+//        }
+//
+//
+//        return key.toString();
     }
 
 //	public void setSavetyKey(String savetyKey) {

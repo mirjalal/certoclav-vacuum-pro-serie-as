@@ -15,6 +15,7 @@ import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.model.Log;
 import com.certoclav.app.util.AuditLogger;
+import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.app.util.MyCallback;
 import com.certoclav.library.application.ApplicationController;
 
@@ -185,7 +186,16 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 
 
     private void sendCommand(String command) {
+
         commandQueue.add(command);
+        if(AutoclaveModelManager.getInstance().getModel()==null){
+            commandQueue.clear();
+            commandQueue.add(COMMANDS.CREATE(COMMANDS.GET_PARAMETER, 1));
+        }else if(AutoclaveModelManager.getInstance().getSerialNumber()==null){
+            commandQueue.clear();
+            commandQueue.add(COMMANDS.CREATE(COMMANDS.GET_PARAMETER, 3));
+        }
+
 
         if (commandQueue.size() > 0) {
             commandSent(commandQueue.get(0));

@@ -198,6 +198,10 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
                         AutoclaveModelManager.getInstance().setModel(parameter);
                         updatePreferences();
                     }
+                    if(parameter.getParameterId() == 3){
+                        AutoclaveModelManager.getInstance().setSerialNumber(parameter);
+                        updatePreferences();
+                    }
 
                     key = "preferences_autoclave_parameter_" + parameter.getParameterId();
                     pref = findPreference(key);

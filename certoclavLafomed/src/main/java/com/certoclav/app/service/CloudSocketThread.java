@@ -44,6 +44,10 @@ public class CloudSocketThread extends Thread implements SocketEventListener {
         try {
             SocketService.getInstance().setOnSocketEventListener(this);
             SocketService.getInstance().setDeviceKey("");
+            if(Autoclave.getInstance().getController().getSavetyKey() ==null) {
+                endThread();
+                return;
+            }
             SocketService.getInstance().connectToCertocloud();
             jsonLiveMessageObj = new JSONObject();
             counterSendLiveDataToServer = 0;

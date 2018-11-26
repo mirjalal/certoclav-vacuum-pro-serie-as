@@ -16,48 +16,62 @@ import java.util.List;
 public class AutoclaveModelManager implements MyCallback {
 
     private static AutoclaveModelManager manager;
-    private Integer[] parametersForAdmin = new Integer[]{1,2,3,4,94,95,96,98};
+    private Integer[] parametersForAdmin = new Integer[]{1, 2, 3, 4, 94, 95, 96, 98};
+    private int currentSentParameterId = 1;
 
     private AutoclaveModelManager() {
         ReadAndParseSerialService.getInstance().addCallback(this);
-        ReadAndParseSerialService.getInstance().getParameter(1);
     }
 
     public static AutoclaveModelManager getInstance() {
         if (manager == null)
             manager = new AutoclaveModelManager();
+
         return manager;
     }
 
     private AutoclaveParameter model;
+    private AutoclaveParameter serialNumber;
+
+    public String getSerialNumber() {
+        if (serialNumber == null) {
+            return null;
+        }
+        ReadAndParseSerialService.getInstance().removeCallback(this);
+        return serialNumber.getValue().toString();
+    }
+
+    public void setSerialNumber(AutoclaveParameter serialNumber) {
+        this.serialNumber = serialNumber;
+    }
 
     public String getModel() {
-        if(model==null)
-            return "undefine";
+        if (model == null)
+            return null;
         return model.getValue().toString();
     }
 
-    public Pair<Float,Float> getSterilizationTempRange() {
+    public Pair<Float, Float> getSterilizationTempRange() {
         switch (model.getValue().toString()) {
             case "AEB":
             case "AHSB":
-                return new Pair<>(100f,134f);
+                return new Pair<>(100f, 134f);
             default:
-                return new Pair<>(100f,140f);
+                return new Pair<>(100f, 140f);
         }
     }
 
-    public Pair<Integer,Integer> getSterilizationTimeRange() {
+    public Pair<Integer, Integer> getSterilizationTimeRange() {
         switch (model.getValue().toString()) {
             case "AEB":
             case "AHSB":
-                return new Pair<>(1,250);
+                return new Pair<>(1, 250);
             default:
-                return new Pair<>(1,360);
+                return new Pair<>(1, 360);
         }
     }
 
-    public boolean isDryTimeExists(){
+    public boolean isDryTimeExists() {
         return Arrays.asList(new String[]{"AEB", "AHSB", "TLVPD"}).contains(getModelName());
     }
 
@@ -75,7 +89,7 @@ public class AutoclaveModelManager implements MyCallback {
         return null;
     }
 
-    public List<Integer> getAdminParameters(){
+    public List<Integer> getAdminParameters() {
         return Arrays.asList(parametersForAdmin);
     }
 
@@ -96,12 +110,12 @@ public class AutoclaveModelManager implements MyCallback {
         return Arrays.asList(new String[]{"AEB", "AHSB", "TLVPD"}).contains(getModelName());
     }
 
-    public boolean isCoolingParameterExists(){
+    public boolean isCoolingParameterExists() {
         return Arrays.asList(new String[]{"TLVFA"}).contains(getModelName());
     }
 
     private String getModelName() {
-        return model.getValue().toString().toUpperCase().replaceAll("\\d","").replaceAll("-","");
+        return model.getValue().toString().toUpperCase().replaceAll("\\d", "").replaceAll("-", "");
     }
 
     public void setModel(AutoclaveParameter model) {
@@ -111,13 +125,17 @@ public class AutoclaveModelManager implements MyCallback {
     @Override
     public void onSuccess(Object response, int requestId) {
         if (requestId == ReadAndParseSerialService.HANDLER_MSG_ACK_GET_PARAMETER) {
-            model = (AutoclaveParameter) response;
+            if (((AutoclaveParameter) response).getParameterId() == 1) {
+                model = (AutoclaveParameter) response;
+            }
+            if (((AutoclaveParameter) response).getParameterId() == 3) {
+                serialNumber = (AutoclaveParameter) response;
+            }
         }
     }
 
     @Override
     public void onError(ErrorModel error, int requestId) {
-        ReadAndParseSerialService.getInstance().getParameter(1);
     }
 
     @Override

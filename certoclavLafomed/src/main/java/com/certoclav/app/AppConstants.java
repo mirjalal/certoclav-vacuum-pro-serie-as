@@ -39,7 +39,7 @@ public interface AppConstants {
 
     /*TABLET AND AUTOCLAVE SELECTION*/
 
-    String TABLET_TYPE = TABLET_TYPE_LILLIPUT; //TABLET_TYPE_FAYTECH
+    String TABLET_TYPE = TABLET_TYPE_FAYTECH;//TABLET_TYPE_LILLIPUT;
     String MODEL_CURRENT = MODEL_RAYPA_TLV;
     Boolean isIoSimulated = false;
     String MODEL = "TLV-150FA";
@@ -80,8 +80,8 @@ public interface AppConstants {
 
 
     String PREFREENCE_KEY_KEEP_TEMP = "switch_keep_temp";
-//    public static final String PREFREENCE_KEY_PREHEAT = "switch_preheat";
-String PREFREENCE_KEY_USER_DEFINED = "preferences_program_user_defined";
+    //    public static final String PREFREENCE_KEY_PREHEAT = "switch_preheat";
+    String PREFREENCE_KEY_USER_DEFINED = "preferences_program_user_defined";
     String PREFERENCE_KEY_DOWNLOAD_PROTOCOLS = "preferences_download_protocols";
     String PREFERENCE_KEY_ONLINE_MODE = "switch_snchronization";
     String PREFERENCE_KEY_STEP_BY_STEP = "switch_step_by_step";

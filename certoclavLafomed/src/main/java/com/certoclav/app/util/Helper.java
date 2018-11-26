@@ -631,6 +631,7 @@ public class Helper {
         barProgressDialog.setTitleText(context.getString(R.string.loading));
         barProgressDialog.setContentText(null);
         barProgressDialog.showCancelButton(false);
+        barProgressDialog.setCancelable(false);
         barProgressDialog.setCanceledOnTouchOutside(false);
         final Handler handler = new Handler();
         final int TIMEOUT = 4000;
@@ -644,6 +645,10 @@ public class Helper {
                 if (requestId != ReadAndParseSerialService.HANDLER_MSG_ACK_PROGRAMS)
                     return;
                 if (response != null && ((List<Profile>) response).size() == 0) {
+                    onError(null, requestId);
+                    return;
+                }
+                if(AutoclaveModelManager.getInstance().getSerialNumber()==null || AutoclaveModelManager.getInstance().getModel()==null){
                     onError(null, requestId);
                     return;
                 }
@@ -943,8 +948,8 @@ public class Helper {
                     programJsonObject.put("id", profile.getIndex());
                     programJsonObject.put("tmp", profile.getSterilisationTemperature());
                     programJsonObject.put("is_liquid", profile.isLiquidProgram());
-                    programJsonObject.put("is_enabled_flex_probe", profile.isContByFlexProbe());
-                    programJsonObject.put("maintain_final_temp", profile.isMaintainEnabled());
+                    programJsonObject.put("is_cont_by_flex_probe", profile.isContByFlexProbe());
+                    programJsonObject.put("is_maintain_enabled", profile.isMaintainEnabled());
                     programJsonObject.put("final_temp", profile.getFinalTemp());
                     programJsonObject.put("use_f_function", profile.isF0Enabled());
                     programJsonObject.put("dur", sterlizationTime);
@@ -963,7 +968,7 @@ public class Helper {
                     String body = programWrapper.toString();
 
                     PostUtil postUtil = new PostUtil();
-                    Response response = postUtil.postToCertocloud(body, CertocloudConstants.SERVER_URL +
+                    Response response = postUtil.postToCertocloud(body, CertocloudConstants.getServerUrl() +
                             CertocloudConstants.REST_API_POST_PROFILE, false);
 
                     Log.e("Response", response.toString());
