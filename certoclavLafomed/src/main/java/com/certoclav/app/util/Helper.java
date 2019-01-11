@@ -582,12 +582,19 @@ public class Helper {
                 Autoclave.getInstance().getProfilesFromAutoclave().clear();
                 for (Profile profile : ((DeviceProgramsResponseModel) response).getPrograms()) {
                     if (oldProfiles.contains(profile)) {
-                        Log.e("Helper", "PUT PROFILE " + profile.getName() + " " + oldProfiles.get(oldProfiles.indexOf(profile)).getName());
                         profile.setRecentUsedDate(oldProfiles.get(oldProfiles.indexOf(profile)).getRecentUsedDate());
+                        oldProfiles.remove(profile);
                     }
                     Autoclave.getInstance().getProfilesFromAutoclave().add(profile);
                     profile.setLocal(false);
                     ReadAndParseSerialService.getInstance().setProgram(profile);
+                }
+
+                //Check are there any deleted profile in cloud, setting name to VOID means disable
+                // the profile in the autoclave
+                for(Profile deletedProfiles:oldProfiles){
+                    deletedProfiles.setName("VOID");
+                    ReadAndParseSerialService.getInstance().setProgram(deletedProfiles);
                 }
                 oldProfiles.clear();
                 barProgressDialog.dismiss();
@@ -648,7 +655,8 @@ public class Helper {
                     onError(null, requestId);
                     return;
                 }
-                if(AutoclaveModelManager.getInstance().getSerialNumber()==null || AutoclaveModelManager.getInstance().getModel()==null){
+                if(AutoclaveModelManager.getInstance().getSerialNumber()==null
+                        || AutoclaveModelManager.getInstance().getModel()==null){
                     onError(null, requestId);
                     return;
                 }
@@ -663,62 +671,7 @@ public class Helper {
                         profile.setRecentUsedDate(oldProfiles.get(oldProfiles.indexOf(profile)).getRecentUsedDate());
                     }
                     //Set Description
-
-                    StringBuilder sbuilder = new StringBuilder();
-                    if (profile.getSterilisationTemperature() != 0) {
-                        sbuilder.append(profile.getSterilisationTemperature())
-                                .append(" " + "\u2103")
-                                .append("\t");
-                    }
-                    if (profile.getSterilisationPressure() != 0) {
-                        sbuilder.append(Float.toString(profile.getSterilisationPressure()))
-                                .append(" " + context.getString(R.string.bar))
-                                .append("\t");
-                    }
-                    if (profile.getSterilisationTime() != 0) {
-                        sbuilder.append(profile.getSterilisationTime())
-                                .append(" " + context.getString(R.string.min))
-                                .append("\n");
-                    }
-                    if (profile.getVacuumTimes() != 0) {
-                        sbuilder.append(context.getString(R.string.vacuum_times) + " ")
-                                .append(profile.getVacuumTimes())
-                                .append("\n");
-                    }
-                    if (profile.getVacuumPersistTemperature() != 0) {
-                        sbuilder.append(context.getString(R.string.vacuum_persist_temperature) + " ")
-                                .append(profile.getVacuumPersistTemperature())
-                                .append(" " + "\u2103")
-                                .append("\n");
-                    }
-                    if (profile.getVacuumPersistTime() != 0) {
-                        sbuilder.append(context.getString(R.string.vacuum_persist_time) + " ")
-                                .append(profile.getVacuumPersistTime())
-                                .append(" " + context.getString(R.string.min))
-                                .append("\n");
-                    }
-                    if (profile.getDryTime() != 0) {
-                        sbuilder.append(context.getString(R.string.drying_time) + " ")
-                                .append(profile.getDryTime())
-                                .append(" " + context.getString(R.string.min))
-                                .append("\n");
-                    }
-                    if (profile.isF0Enabled()) {
-                        sbuilder.append(context.getString(R.string.f0_value_format, profile.getF0Value()))
-                                .append("\t")
-                                .append(context.getString(R.string.z_value_format, profile.getzValue()))
-                                .append("\n");
-                    }
-                    if (profile.isMaintainEnabled()) {
-                        sbuilder.append(context.getString(R.string.maintain_final_temp_format, profile.getFinalTemp()))
-                                .append("\n");
-                    }
-                    if (profile.isContByFlexProbe()) {
-                        sbuilder.append(context.getString(R.string.cont_by_flex_probe))
-                                .append("\n");
-                    }
-
-                    profile.setDescription(sbuilder.toString());
+                    profile.setDescription(getProfileDesc(profile,context));
                     Autoclave.getInstance().getProfilesFromAutoclave().add(profile);
                     syncProgramWithCloud(profile);
                 }
@@ -948,7 +901,8 @@ public class Helper {
                     programJsonObject.put("id", profile.getIndex());
                     programJsonObject.put("tmp", profile.getSterilisationTemperature());
                     programJsonObject.put("is_liquid", profile.isLiquidProgram());
-                    programJsonObject.put("is_cont_by_flex_probe", profile.isContByFlexProbe());
+                    programJsonObject.put("is_cont_by_flex_probe_1", profile.isContByFlexProbe1Enabled());
+                    programJsonObject.put("is_cont_by_flex_probe_2", profile.isContByFlexProbe2Enabled());
                     programJsonObject.put("is_maintain_enabled", profile.isMaintainEnabled());
                     programJsonObject.put("final_temp", profile.getFinalTemp());
                     programJsonObject.put("use_f_function", profile.isF0Enabled());
@@ -968,7 +922,8 @@ public class Helper {
                     String body = programWrapper.toString();
 
                     PostUtil postUtil = new PostUtil();
-                    Response response = postUtil.postToCertocloud(body, CertocloudConstants.getServerUrl() +
+                    Response response = postUtil.postToCertocloud(body,
+                            CertocloudConstants.getServerUrl() +
                             CertocloudConstants.REST_API_POST_PROFILE, false);
 
                     Log.e("Response", response.toString());
@@ -1009,5 +964,69 @@ public class Helper {
         dialogConfirmation.setOnCancelListener(onCancel);
         dialogConfirmation.show();
 
+    }
+
+    public static String getProfileDesc(Profile profile, Context context){
+        StringBuilder sbuilder = new StringBuilder();
+        if (profile.getSterilisationTemperature() != 0) {
+            sbuilder.append(profile.getSterilisationTemperature())
+                    .append(" " + "\u2103")
+                    .append("\t");
+        }
+        if (profile.getSterilisationPressure() != 0) {
+            sbuilder.append(Float.toString(profile.getSterilisationPressure()))
+                    .append(" " + context.getString(R.string.bar))
+                    .append("\t");
+        }
+        if (profile.getSterilisationTime() != 0 && !profile.isF0Enabled()) {
+            sbuilder.append(profile.getSterilisationTime())
+                    .append(" " + context.getString(R.string.min))
+                    .append("\n");
+        }else{
+            sbuilder.append("\n");
+        }
+        if (profile.getVacuumTimes() != 0) {
+            sbuilder.append(context.getString(R.string.vacuum_times) + " ")
+                    .append(profile.getVacuumTimes())
+                    .append("\n");
+        }
+        if (profile.getVacuumPersistTemperature() != 0) {
+            sbuilder.append(context.getString(R.string.vacuum_persist_temperature) + " ")
+                    .append(profile.getVacuumPersistTemperature())
+                    .append(" " + "\u2103")
+                    .append("\n");
+        }
+        if (profile.getVacuumPersistTime() != 0) {
+            sbuilder.append(context.getString(R.string.vacuum_persist_time) + " ")
+                    .append(profile.getVacuumPersistTime())
+                    .append(" " + context.getString(R.string.min))
+                    .append("\n");
+        }
+        if (profile.getDryTime() != 0 && AutoclaveModelManager.getInstance().isDryTimeExists()) {
+            sbuilder.append(context.getString(R.string.drying_time) + " ")
+                    .append(profile.getDryTime())
+                    .append(" " + context.getString(R.string.min))
+                    .append("\n");
+        }
+        if (profile.isF0Enabled()) {
+            sbuilder.append(context.getString(R.string.f0_value_format, profile.getF0Value()))
+                    .append("\t")
+                    .append(context.getString(R.string.z_value_format, profile.getzValue()))
+                    .append("\n");
+        }
+        if (profile.isMaintainEnabled()) {
+            sbuilder.append(context.getString(R.string.maintain_final_temp_format, profile.getFinalTemp()))
+                    .append("\n");
+        }
+        if (profile.isContByFlexProbe1Enabled()) {
+            sbuilder.append(context.getString(R.string.cont_by_flex_probe_1))
+                    .append("\n");
+        }
+        if (profile.isContByFlexProbe2Enabled()) {
+            sbuilder.append(context.getString(R.string.cont_by_flex_probe_2))
+                    .append("\n");
+        }
+
+        return sbuilder.toString();
     }
 }

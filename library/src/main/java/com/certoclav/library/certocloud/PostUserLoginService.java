@@ -81,7 +81,6 @@ public class PostUserLoginService {
                     CloudUser.getInstance().setCurrentDeviceKey(device.getDeviceKey());
 
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }

@@ -7,13 +7,13 @@ import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
 
-import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.adapters.SettingsAdapter;
 import com.certoclav.app.fragments.AuditLogFragment;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.SettingItem;
+import com.certoclav.app.util.LockoutManager;
 
 import java.util.ArrayList;
 
@@ -93,26 +93,68 @@ public class ItemListFragment extends ListFragment {
         setListAdapter(adapter);
 
 
+        if (!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.USER_ACCOUNT))
+            AddItem(getListView(), getActivity().getString(R.string.settings_user_account), R.drawable.ic_account_settings, R.drawable.ic_account_settings_selected, new UserEditFragment());
+
+        if (!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.NETWORK))
+            AddItem(getListView(), getActivity().getString(R.string.settings_network), R.drawable.ic_network_settings, R.drawable.ic_network_settings_selected, new SettingsNetworkFragment());
+        if (!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.LANGUAGE))
+            AddItem(getListView(), getActivity().getString(R.string.settings_language), R.drawable.ic_language_settings, R.drawable.ic_language_settings_selected, new SettingsLanguageFragment());
+
+
         //following settings are always visible
-        AddItem(getListView(), getActivity().getString(R.string.settings_user_account), R.drawable.ic_account_settings, R.drawable.ic_account_settings_selected, new UserEditFragment());
-        AddItem(getListView(), getActivity().getString(R.string.settings_network), R.drawable.ic_network_settings, R.drawable.ic_network_settings_selected, new SettingsNetworkFragment());
-        AddItem(getListView(), getActivity().getString(R.string.settings_device), R.drawable.ic_device_settings, R.drawable.ic_device_settings_selected, new SettingsDeviceFragment());
-        AddItem(getListView(), getActivity().getString(R.string.settings_autoclave), R.drawable.ic_service_setttings, R.drawable.ic_service_setttings_selected, new SettingsAutoclaveFragment());
-        AddItem(getListView(), getActivity().getString(R.string.settings_audit_log), R.drawable.ic_audit_logs, R.drawable.ic_audit_logs_selected, new AuditLogFragment());
-        AddItem(getListView(), getActivity().getString(R.string.settings_language), R.drawable.ic_language_settings, R.drawable.ic_language_settings_selected, new SettingsLanguageFragment());
-        AddItem(getListView(), getActivity().getString(R.string.notifications), R.drawable.ic_notification_settings, R.drawable.ic_notification_settings_selected, new SettingsConditionFragment());
-        AddItem(getListView(), getActivity().getString(R.string.settings_sterilization), R.drawable.ic_sterilization_settings, R.drawable.ic_sterilization_settings_selceted, new SettingsSterilisationFragment());
-        AddItem(getListView(), getActivity().getString(R.string.calibration), R.drawable.ic_calibartion_settings, R.drawable.ic_calibartion_settings_selected, new CalibrateFragment());
-        AddItem(getListView(), getActivity().getString(R.string.glp), R.drawable.ic_glp, R.drawable.ic_glp_selected, new SettingsGlpFragment());
-
-
-        //following settings are only visible to admin user
         if (Autoclave.getInstance().getUser() != null) {
             if (Autoclave.getInstance().getState() != AutoclaveState.LOCKED) {
-                if (Autoclave.getInstance().getUser().isAdmin()) {
-                    AddItem(getListView(), getActivity().getString(R.string.lockout), R.drawable.ic_lock, R.drawable.ic_lock_selected, new SettingsLockoutFragment());
-                    AddItem(getListView(), "Service", R.drawable.ic_service_setttings, R.drawable.ic_service_setttings_selected, new SettingsServiceFragment());
-                }
+
+
+                //Always if it is logged in.
+                if (!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.AUTOCLAVE)
+                        || Autoclave.getInstance().getUser().isAdmin())
+                    AddItem(getListView(), getActivity().getString(R.string.settings_autoclave), R.drawable.ic_service_setttings, R.drawable.ic_service_setttings_selected, new SettingsAutoclaveFragment());
+
+                if (!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.DEVICE)
+                        || Autoclave.getInstance().getUser().isAdmin())
+                    AddItem(getListView(), getActivity().getString(R.string.settings_device),
+                            R.drawable.ic_device_settings, R.drawable.ic_device_settings_selected,
+                            new SettingsDeviceFragment());
+
+                if (!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.AUDIT_LOGS)
+                        || Autoclave.getInstance().getUser().isAdmin())
+                    AddItem(getListView(), getActivity().getString(R.string.settings_audit_log),
+                            R.drawable.ic_audit_logs, R.drawable.ic_audit_logs_selected,
+                            new AuditLogFragment());
+                if (!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.NOTIFICATIONS)
+                        || Autoclave.getInstance().getUser().isAdmin())
+                    AddItem(getListView(), getActivity().getString(R.string.notifications),
+                            R.drawable.ic_notification_settings, R.drawable.ic_notification_settings_selected,
+                            new SettingsConditionFragment());
+
+                if (!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.STERILIZATION)
+                        || Autoclave.getInstance().getUser().isAdmin())
+                    AddItem(getListView(), getActivity().getString(R.string.settings_sterilization),
+                            R.drawable.ic_sterilization_settings, R.drawable.ic_sterilization_settings_selceted,
+                            new SettingsSterilisationFragment());
+
+                if (!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.CALIBRATION)
+                        || Autoclave.getInstance().getUser().isAdmin())
+                    AddItem(getListView(), getActivity().getString(R.string.calibration),
+                            R.drawable.ic_calibartion_settings, R.drawable.ic_calibartion_settings_selected,
+                            new CalibrateFragment());
+                if (Autoclave.getInstance().getUser().isAdmin())
+                    AddItem(getListView(), getActivity().getString(R.string.lockout),
+                            R.drawable.ic_lock, R.drawable.ic_lock_selected,
+                            new SettingsLockoutFragment());
+                if (!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.SERVICE)
+                        || Autoclave.getInstance().getUser().isAdmin())
+                    AddItem(getListView(), "Service", R.drawable.ic_service_setttings,
+                            R.drawable.ic_service_setttings_selected,
+                            new SettingsServiceFragment());
+
+                if (!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.GLP)
+                        || Autoclave.getInstance().getUser().isAdmin())
+                    AddItem(getListView(), getActivity().getString(R.string.glp),
+                            R.drawable.ic_glp, R.drawable.ic_glp_selected,
+                            new SettingsGlpFragment());
             }
         }
 

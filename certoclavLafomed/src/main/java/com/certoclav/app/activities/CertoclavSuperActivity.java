@@ -26,6 +26,7 @@ import com.certoclav.app.util.AuditLogger;
 public class CertoclavSuperActivity extends FragmentActivity implements SensorDataListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private TextView textSteam = null;
     private TextView textMedia = null;
+    private TextView textMedia2 = null;
     private TextView textPressure = null;
 
 
@@ -33,9 +34,10 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.super_activity);
-        textSteam = (TextView) findViewById(R.id.certoclav_statusbar_text_steam);
-        textMedia = (TextView) findViewById(R.id.certoclav_statusbar_text_media);
-        textPressure = (TextView) findViewById(R.id.certoclav_statusbar_text_pressure);
+        textSteam = findViewById(R.id.certoclav_statusbar_text_steam);
+        textMedia = findViewById(R.id.certoclav_statusbar_text_media);
+        textMedia2 = findViewById(R.id.certoclav_statusbar_text_media_2);
+        textPressure = findViewById(R.id.certoclav_statusbar_text_pressure);
 //        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("preferences_device_show_logs", true))
 //            ((ViewGroup) findViewById(R.id.fragment_debugger_uart).getParent()).removeView(findViewById(R.id.fragment_debugger_uart));
 
@@ -65,9 +67,13 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
                 textMedia.setVisibility(View.GONE);
             }
 
+            textMedia2.setVisibility(Autoclave.getInstance().getProfile()!=null &&
+                    Autoclave.getInstance().getProfile().isContByFlexProbe2Enabled()?View.VISIBLE:View.GONE);
+
             textPressure.setText(getString(R.string.pressure) + ": " + data.getPress().getValueString() + " " + getString(R.string.bar));
             textSteam.setText(getString(R.string.steam) + ": " + data.getTemp1().getValueString() + " " + getString(R.string._c));
             textMedia.setText(getString(R.string.media) + ": " + data.getTemp2().getValueString() + " " + getString(R.string._c));
+            textMedia2.setText(getString(R.string.media_2) + ": " + data.getTemp3().getValueString() + " " + getString(R.string._c));
         } catch (Exception e) {
             e.printStackTrace();
         }

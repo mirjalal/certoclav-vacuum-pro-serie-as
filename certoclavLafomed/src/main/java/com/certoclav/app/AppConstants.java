@@ -27,6 +27,9 @@ public interface AppConstants {
     boolean CHECK_CHECKSUM = false;
     int TEMP_MAX_INT = 135;
     int TEMP_MIN_INT = 105;
+
+    int FORCE_STOP_DELAY = 5000;
+
     String DELETED_PROFILE_NAME = "VOID";
     int MAX_PROGRAM_COUNT = 50;
     Boolean TABLET_HAS_ROOT = false;
@@ -39,7 +42,7 @@ public interface AppConstants {
 
     /*TABLET AND AUTOCLAVE SELECTION*/
 
-    String TABLET_TYPE = TABLET_TYPE_FAYTECH;//TABLET_TYPE_LILLIPUT;
+    String TABLET_TYPE = TABLET_TYPE_FAYTECH;//TABLET_TYPE_LILLIPUT
     String MODEL_CURRENT = MODEL_RAYPA_TLV;
     Boolean isIoSimulated = false;
     String MODEL = "TLV-150FA";

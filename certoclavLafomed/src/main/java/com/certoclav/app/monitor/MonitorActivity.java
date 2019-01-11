@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -12,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -40,6 +40,7 @@ import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.app.model.Error;
 import com.certoclav.app.settings.SettingsActivity;
 import com.certoclav.app.util.AuditLogger;
+import com.certoclav.app.util.Helper;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.view.ControlPagerAdapter;
 import com.certoclav.library.view.CustomViewPager;
@@ -58,6 +59,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
     private ArrayList<Fragment> fragmentList = new ArrayList<Fragment>();
     private CertoclavNavigationbarClean navigationbar;
     private Calendar dateTime;
+    private Autoclave.PROGRAM_STEPS currentProgramStep = Autoclave.PROGRAM_STEPS.NOT_DEFINED;
 
     ControlPagerAdapter mSectionsPagerAdapter;
 
@@ -98,6 +100,56 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
             textProgram.setText("-");
         }
 
+        //Force Stop Program
+        buttonStop.setOnTouchListener(new View.OnTouchListener() {
+            Handler handler = new Handler();
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    //Force Stop
+                    SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(MonitorActivity.this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText(getString(R.string.stop_program_forcibly))
+                            .setContentText(getString(R.string.do_you_want_to_stop_program_force))
+                            .setConfirmText(getString(R.string.yes))
+                            .setCancelText(getString(R.string.cancel))
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                    AutoclaveMonitor.getInstance().sendStopCommand(true);
+                                    buttonStop.setText(R.string.stopping_);
+                                }
+                            }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismissWithAnimation();
+                                }
+                            });
+                    sweetAlertDialog.setCanceledOnTouchOutside(false);
+                    sweetAlertDialog.setCancelable(false);
+                    sweetAlertDialog.show();
+                }
+            };
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        handler.postDelayed(runnable, AppConstants.FORCE_STOP_DELAY);
+                        break;
+                    case MotionEvent.ACTION_CANCEL:
+                    case MotionEvent.ACTION_HOVER_EXIT:
+                    case MotionEvent.ACTION_OUTSIDE:
+                    case MotionEvent.ACTION_UP:
+                        handler.removeCallbacks(runnable);
+                        break;
+                }
+                return false;
+            }
+        });
+
+
         buttonStop.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -105,26 +157,26 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
 
                 if (Autoclave.getInstance().getState().equals(AutoclaveState.NOT_RUNNING)) {
                     showStartNowOrLaterProgramDialog();
-                } else if (Autoclave.getInstance().getState().equals(AutoclaveState.PROGRAM_FINISHED)) {
+                } else if (Autoclave.getInstance().getState().equals(AutoclaveState.PROGRAM_FINISHED)
+                        && Autoclave.getInstance().getProgramStep() != Autoclave.PROGRAM_STEPS.MAINTAIN_TEMP) {
                     //do nothing
                 } else {
                     Log.e("MonitorActivity", "sendStopCommand");
-                    if (Autoclave.getInstance().getState().equals(AutoclaveState.RUNNING)) {
+                    if (Autoclave.getInstance().getState().equals(AutoclaveState.RUNNING)
+                            || Autoclave.getInstance().getProgramStep() == Autoclave.PROGRAM_STEPS.MAINTAIN_TEMP) {
 
-                        String dialogTitletext = "";
-                        String dialogContentText = "";
-                        if (Autoclave.getInstance().getData().getTemp1().getCurrentValue() < 90 && Autoclave.getInstance().getData().getTemp2().getCurrentValue() <= 90 && Autoclave.getInstance().getSecondsSinceStart() > 2400 && Autoclave.getInstance().getIndexOfRunningProgram() == 12) {
-                            dialogTitletext = getString(R.string.stop_program_earlier);
-                            dialogContentText = getString(R.string.do_you_want_to_stop_the_program_earlier_sterilization_result_will_be_successfull_);
-                        } else {
-                            dialogTitletext = getString(R.string.stop_program);
-                            dialogContentText = getString(R.string.do_you_really_want_to_stop_the_running_program_);
-                        }
+                        String dialogTitleText = getString(Autoclave.getInstance().getProgramStep() == Autoclave.PROGRAM_STEPS.MAINTAIN_TEMP ?
+                                R.string.stop_maintain_temp :
+                                R.string.stop_program);
+                        String dialogContentText = getString(
+                                Autoclave.getInstance().getProgramStep() == Autoclave.PROGRAM_STEPS.MAINTAIN_TEMP ?
+                                        R.string.do_you_really_want_to_stop_maintain_temp:
+                                        R.string.do_you_really_want_to_stop_the_running_program_);
 
 
                         try {
                             SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(MonitorActivity.this, SweetAlertDialog.WARNING_TYPE)
-                                    .setTitleText(dialogTitletext)
+                                    .setTitleText(dialogTitleText)
                                     .setContentText(dialogContentText)
                                     .setConfirmText(getString(R.string.yes))
                                     .setCancelText(getString(R.string.cancel))
@@ -132,8 +184,8 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                                         @Override
                                         public void onClick(SweetAlertDialog sDialog) {
                                             sDialog.dismissWithAnimation();
-                                            AutoclaveMonitor.getInstance().sendStopCommand();
-                                            buttonStop.setText("STOPPING...");
+                                            AutoclaveMonitor.getInstance().sendStopCommand(false);
+                                            buttonStop.setText(R.string.stopping_);
                                         }
                                     }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                         @Override
@@ -234,7 +286,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 textState.setText(R.string.state_not_running);
                 buttonStop.setVisibility(View.VISIBLE);
                 buttonStop.setPadding(0, 0, 0, 0);
-                buttonStop.setText("START");
+                buttonStop.setText(R.string.start);
                 buttonStop.setEnabled(true);
 
                 navigationbar.showButtonBack();
@@ -245,25 +297,40 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 } else {
                     buttonStop.setVisibility(View.VISIBLE);
                 }
-                buttonStop.setText("STARTING...");
+                buttonStop.setText(R.string.starting_);
                 textState.setText(R.string.state_prepare_to_run);
                 navigationbar.showButtonBack();
                 break;
             case PROGRAM_FINISHED:
-                if (textState.getText().toString().toLowerCase().equals(getString(R.string.state_finished).toLowerCase()))
+                if (currentProgramStep == Autoclave.getInstance().getProgramStep())
                     break;
+                //TODO Show stop if the program is in maintain temperature mode
+                currentProgramStep = Autoclave.getInstance().getProgramStep();
+
                 buttonStop.setVisibility(View.VISIBLE);
-                buttonStop.setEnabled(false);
-                buttonStop.setText(getString(R.string.please_open_door));
-                textState.setText(R.string.state_finished);
-                navigationbar.showButtonBack();
+                if (currentProgramStep == Autoclave.PROGRAM_STEPS.MAINTAIN_TEMP) {
+                    textState.setText(getString(R.string.success_sterilization_and_maintain_temp,
+                            Autoclave.getInstance().getProfile().getFinalTemp()));
+                    buttonStop.setText(getString(R.string.stop_maintain_temp));
+                } else {
+                    buttonStop.setEnabled(false);
+                    buttonStop.setText(getString(R.string.please_open_door));
+                    textState.setText(R.string.state_finished);
+                    navigationbar.showButtonBack();
+                }
+
 
                 AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
-                        AuditLogger.ACTION_PROGRAM_FINISHED,
+                        currentProgramStep == Autoclave.PROGRAM_STEPS.MAINTAIN_TEMP ?
+                                AuditLogger.ACTION_PROGRAM_FINISHED_MAINTAIN_TEMP :
+                                AuditLogger.ACTION_PROGRAM_FINISHED,
                         AuditLogger.OBJECT_EMPTY,
-                        Autoclave.getInstance().getProfile().getName() + " (" + getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() + ")");
+                        Autoclave.getInstance().getProfile().getName() + " (" + getString(R.string.cycle) + " "
+                                + Autoclave.getInstance().getController().getCycleNumber() + ")");
+                if (currentProgramStep == Autoclave.PROGRAM_STEPS.FINISHED) {
+                    askForIndicator();
+                }
 
-                askForIndicator();
                 break;
             case RUNNING:
                 if (AppConstants.IS_CERTOASSISTANT) {
@@ -274,26 +341,61 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 buttonStop.setText(R.string.stop);
                 textState.setText(R.string.state_running);
                 textState.append(" (");
-                if (Autoclave.getInstance().getProgramStep().contains("SF1")) {
-                    textState.append("Vacuum Step 1 of " + Autoclave.getInstance().getProfile().getVacuumTimes());
-                } else if (Autoclave.getInstance().getProgramStep().contains("SF2")) {
-                    textState.append("Vacuum Step 2 of " + Autoclave.getInstance().getProfile().getVacuumTimes());
-                } else if (Autoclave.getInstance().getProgramStep().contains("SF3")) {
-                    textState.append("Vacuum Step 3 of " + Autoclave.getInstance().getProfile().getVacuumTimes());
-                } else if (Autoclave.getInstance().getProgramStep().contains("SF4")) {
-                    textState.append("Vacuum Step 4 of " + Autoclave.getInstance().getProfile().getVacuumTimes());
-                } else if (Autoclave.getInstance().getProgramStep().contains("SH")) {
-                    textState.append("Heating up to " + (int) Autoclave.getInstance().getProfile().getSterilisationTemperature() + "\u00B0C");
-                } else if (Autoclave.getInstance().getProgramStep().contains("SS")) {
-                    textState.append("Hold temperature for " + (int) Autoclave.getInstance().getProfile().getSterilisationTime() + " minutes");
-                } else if (Autoclave.getInstance().getProgramStep().contains("SC")) {
-                    textState.append("Cooling down");
-                } else if (Autoclave.getInstance().getProgramStep().contains("SD")) {
-                    textState.append("Drying for " + Autoclave.getInstance().getProfile().getDryTime() + " minutes");
-                } else if (Autoclave.getInstance().getProgramStep().contains("SR")) {
-                    textState.append("Pressure compensation");
-                } else if (Autoclave.getInstance().getProgramStep().contains("SE")) {
-                    textState.append("Program finished");
+                switch (Autoclave.getInstance().getProgramStep()) {
+                    case VACUUM_PULSE_1:
+                    case VACUUM_PULSE_1_:
+                        textState.append(getString(R.string.current_program_step_vacuum_desc, 1,
+                                Autoclave.getInstance().getProfile().getVacuumTimes()));
+                        break;
+                    case VACUUM_PULSE_2:
+                    case VACUUM_PULSE_2_:
+                        textState.append(getString(R.string.current_program_step_vacuum_desc, 2,
+                                Autoclave.getInstance().getProfile().getVacuumTimes()));
+                        break;
+                    case VACUUM_PULSE_3:
+                    case VACUUM_PULSE_3_:
+                        textState.append(getString(R.string.current_program_step_vacuum_desc, 3,
+                                Autoclave.getInstance().getProfile().getVacuumTimes()));
+                        break;
+                    case HEATING:
+                        textState.append(getString(R.string.current_program_step_heating_desc,
+                                Autoclave.getInstance().getProfile().getSterilisationTemperature()));
+                        break;
+                    case STERILIZATION:
+                        textState.append(getString(R.string.sterilisation));
+                        break;
+                    case DRYING:
+                        textState.append(getString(R.string.current_program_step_drying_desc));
+                        break;
+                    case DISCHARGE:
+                        textState.append(getString(R.string.current_program_step_discharging_desc));
+                        break;
+                    case LEVELING:
+                        textState.append(getString(R.string.current_program_step_leveling_desc));
+                        break;
+                    case WARMING_UP:
+                        textState.append(getString(R.string.current_program_step_warming_up_desc));
+                        break;
+                    case VENTILATION:
+                        textState.append(getString(R.string.current_program_step_ventilation_up_desc));
+                        break;
+                    case MAINTAIN_TEMP:
+                        textState.append(getString(R.string.success_sterilization_and_maintain_temp,
+                                Autoclave.getInstance().getProfile().getFinalTemp()));
+                        break;
+                    case STABILIZATION:
+                        textState.append(getString(R.string.current_program_step_stabilization_desc));
+                        break;
+                    case COOLING_DOWN:
+                        textState.append(getString(R.string.current_program_step_cooling_down_desc));
+                        break;
+                    case FINISHED:
+                        textState.append(getString(R.string.state_finished));
+                        break;
+                    case NOT_DEFINED:
+                        textState.append("---");
+                        break;
+
                 }
                 textState.append(")");
 
@@ -328,7 +430,9 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 break;
 
         }
-        if (AppConstants.IS_CERTOASSISTANT) {
+        if (AppConstants.IS_CERTOASSISTANT)
+
+        {
             buttonStop.setVisibility(View.GONE);
         }
 
@@ -353,54 +457,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 }
             }
         }
-
-        StringBuilder sbuilder = new StringBuilder();
-        if (Autoclave.getInstance().getProfile().getVacuumTimes() != 0) {
-            sbuilder.append(getString(R.string.vacuum_times) + " ")
-                    .append(Autoclave.getInstance().getProfile().getVacuumTimes())
-                    .append("\n");
-        }
-
-        if (Autoclave.getInstance().getProfile().getSterilisationTemperature() != 0) {
-            sbuilder.append(getString(R.string.sterilization_temperature) + " ")
-                    .append(Autoclave.getInstance().getProfile().getSterilisationTemperature())
-                    .append(" " + "\u2103")
-                    .append("\n");
-        }
-
-        if (Autoclave.getInstance().getProfile().getSterilisationPressure() != 0) {
-            sbuilder.append(getString(R.string.sterilization_pressure) + " ")
-                    .append(Float.toString(Autoclave.getInstance().getProfile().getSterilisationPressure()))
-                    .append(" " + getString(R.string.bar))
-                    .append("\n");
-        }
-
-        if (Autoclave.getInstance().getProfile().getSterilisationTime() != 0) {
-            sbuilder.append(getString(R.string.sterilization_holding_time) + " ")
-                    .append(Autoclave.getInstance().getProfile().getSterilisationTime())
-                    .append(" " + getString(R.string.min))
-                    .append("\n");
-        }
-
-        if (Autoclave.getInstance().getProfile().getVacuumPersistTemperature() != 0) {
-            sbuilder.append(getString(R.string.vacuum_persist_temperature) + " ")
-                    .append(Autoclave.getInstance().getProfile().getVacuumPersistTemperature())
-                    .append(" " + "\u2103")
-                    .append("\n");
-        }
-        if (Autoclave.getInstance().getProfile().getVacuumPersistTime() != 0) {
-            sbuilder.append(getString(R.string.vacuum_persist_time) + " ")
-                    .append(Autoclave.getInstance().getProfile().getVacuumPersistTime())
-                    .append(" " + getString(R.string.min))
-                    .append("\n");
-        }
-        if (Autoclave.getInstance().getProfile().getDryTime() != 0) {
-            sbuilder.append(getString(R.string.drying_time) + " ")
-                    .append(Autoclave.getInstance().getProfile().getDryTime())
-                    .append(" " + getString(R.string.min));
-        }
-
-        textSteps.setText(sbuilder.toString());
+        textSteps.setText(Helper.getProfileDesc(Autoclave.getInstance().getProfile(), this));
 
         //update UI
         onAutoclaveStateChange(Autoclave.getInstance().getState());

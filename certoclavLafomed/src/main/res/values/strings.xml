@@ -307,11 +307,13 @@
     <string name="please_open_lid">PLEASE OPEN LID</string>
     <string name="stop_program">STOP PROGRAM</string>
     <string name="do_you_really_want_to_stop_the_running_program_">Do you really want to stop the running program?</string>
+    <string name="do_you_really_want_to_stop_maintain_temp">Do you really want to stop the maintaining process?</string>
     <string name="stopping_">STOPPING...</string>
     <string name="connection_lost_during_record">Touch panel not connected</string>
     <string name="program_finished_successfully">program finished successfully</string>
     <string name="steam">STEAM</string>
     <string name="media">MEDIA</string>
+    <string name="media_2">MEDIA 2</string>
     <string name="press">PRESS</string>
     <string name="vent">VENT</string>
     <string name="media_temperature">Media [℃]</string>
@@ -708,6 +710,7 @@
 
 
     <!--Lockout-->
+    <!--The name must start with "preferences_lockout_" -->
     <string name="preferences_lockout_user_account">preferences_lockout_user_account</string>
     <string name="preferences_lockout_network">preferences_lockout_network</string>
     <string name="preferences_lockout_audit_logs">preferences_audit_logs</string>
@@ -717,6 +720,7 @@
     <string name="preferences_lockout_language">preferences_lockout_language</string>
     <string name="preferences_lockout_notifications">preferences_lockout_notifications</string>
     <string name="preferences_lockout_sterilization">preferences_lockout_sterilization</string>
+    <string name="preferences_lockout_autoclave">preferences_lockout_autoclave</string>
     <string name="preferences_lockout_calibration">preferences_lockout_calibration</string>
     <string name="preferences_lockout_glp">preferences_lockout_glp</string>
     <string name="preferences_lockout_service">preferences_lockout_service</string>
@@ -748,6 +752,9 @@
     <string name="summary_lockout_sterilization">Lock the sterilization settings</string>
     <string name="title_lockout_sterilization">Sterilization Settings</string>
 
+    <string name="summary_lockout_autoclave">Lock the autoclave settings</string>
+    <string name="title_lockout_autoclave">Autoclave Settings</string>
+
     <string name="summary_lockout_calibration">Lock the calibration settings</string>
     <string name="title_lockout_calibration">Calibration Settings</string>
 
@@ -771,6 +778,7 @@
     <string name="audit_action_program_indicator_changed"><![CDATA[<b>%1$s</b> set indicator to <font color=\"#69B7F5\"><b>%3$s</b></font>]]></string>
     <string name="audit_action_program_canceled"><![CDATA[<b>%1$s</b> canceled <font color=\"#69B7F5\"><b>%3$s</b></font> program]]></string>
     <string name="audit_action_program_finished"><![CDATA[<font color=\"#69B7F5\"><b>%3$s</b></font> program finished.]]></string>
+    <string name="audit_action_program_finished_maintain"><![CDATA[<font color=\"#69B7F5\"><b>%3$s</b></font> program finished. Maintain temperature.]]></string>
     <string name="audit_action_program_failed"><![CDATA[<font color=\"#69B7F5\"><b>%3$s</b></font> program failed.]]></string>
     <string name="audit_action_asked_for_network">asked for Network</string>
     <string name="audit_action_selected">selected</string>
@@ -800,6 +808,7 @@
     <string name="drying_time_title">DRYING TIME</string>
     <string name="vacuum_pulse">VACUUM PULSE</string>
     <string name="program_step_sterlisation_desc">%1$d minutes at %2$.1f °C</string>
+    <string name="program_step_sterlisation_desc_f0">%1$.1f °C</string>
     <string name="program_step_f0_function_desc">F0 Value: %1$.1f °C, Z value: %2$.1f °C</string>
     <string name="program_step_dry_desc">%1$d minutes</string>
     <string name="program_step_vacuum_desc">%1$d times</string>
@@ -832,11 +841,14 @@
     <string name="pref_model_summary">Current model: %s</string>
     <string name="preferences_autoclave_final_temperature">Final Temperature</string>
     <string name="preferences_autoclave_std_program">Std programs.</string>
+    <string name="preferences_autoclave_std_program_summary">Std assigns programs to model and delete the rest.</string>
     <string name="preferences_autoclave_offset_probe_1">Offset Probe 1</string>
     <string name="preferences_autoclave_offset_probe_2">Offset Probe 2</string>
     <string name="preferences_autoclave_offset_pressure_probe_1">Offset Pressure Probe 1</string>
     <string name="preferences_autoclave_offset_pressure_probe_2">Offset Pressure Probe 2</string>
     <string name="preferences_autoclave_setpoint_temperature">Setpoint tempereature F</string>
+    <string name="preferences_autoclave_setpoint_hours_review">Setpoint Hours Review</string>
+    <string name="preferences_autoclave_setpoint_filter_cycle">Setpoint Filter Cycle</string>
     <string name="preferences_autoclave_starting_pressure">Starting Pressure</string>
     <string name="preferences_autoclave_cooling_pressure">Cooling Pressure</string>
     <string name="preferences_autoclave_warm_up_temp">Warm-up Temperature</string>
@@ -861,8 +873,9 @@
     <string name="please_reboot_to_start_update">Please reboot autoclave to flash firmware from USB.</string>
     <string name="f0_enabled">Function: F0</string>
     <string name="f0_value_format">F0 Value: %1$.2f</string>
-    <string name="maintain_final_temp_format">Final Temperature: %1$d ℃</string>
-    <string name="cont_by_flex_probe">Control by flex probe</string>
+    <string name="maintain_final_temp_format">Final Temperature: %1$.1f ℃</string>
+    <string name="cont_by_flex_probe_1">Control by flex probe 1</string>
+    <string name="cont_by_flex_probe_2">Control by flex probe 2</string>
     <string name="z_value_format">Z Value: %1$.2f</string>
     <string name="is_f0_function_enabled">Enable F0 Function</string>
     <string name="f0_function">F0 Function</string>
@@ -870,7 +883,8 @@
     <string name="f0_value_title">F0 Value</string>
     <string name="z_value_title">Z Value</string>
     <string name="please_open_door">PLEASE OPEN DOOR</string>
-    <string name="is_cont_by_flex_probe">Enable Flex Probe Control</string>
+    <string name="is_cont_by_flex_probe_1">Enable Flex Probe Control 1</string>
+    <string name="is_cont_by_flex_probe_2">Enable Flex Probe Control 2</string>
     <string name="is_maintain_final_temp">Maintain final temperature</string>
     <string name="final_temp_type">℃</string>
     <string name="final_temp_range">Final temperature should be between %1$d and %2$d ℃</string>
@@ -880,6 +894,20 @@
     <string name="dry_time_range">Drying Time should be between %1$d and %2$d minute(s)</string>
     <string name="reset">Reset</string>
     <string name="do_you_really_want_to_reset_format">Do you really want to reset %1$s</string>
+    <string name="do_you_really_want_to_assign_programs">Do you want to assign programs to model and delete the rest.</string>
+    <string name="do_you_want_to_stop_program_force">Do you want to stop the program forcibly?</string>
+    <string name="stop_program_forcibly">STOP PROGRAM FORCIBLY?</string>
+    <string name="success_sterilization_and_maintain_temp">FINISHED. MAINTAIN TEMPERATURE AT %1$.1f ℃</string>
+    <string name="stop_maintain_temp">STOP MAINTAIN</string>
+    <string name="current_program_step_vacuum_desc">Vacuum phase %1$d of %2$d</string>
+    <string name="current_program_step_heating_desc">Heating up to %1$.1f</string>
+    <string name="current_program_step_drying_desc">DRYING</string>
+    <string name="current_program_step_discharging_desc">DISCHARGING</string>
+    <string name="current_program_step_leveling_desc">LEVELING</string>
+    <string name="current_program_step_warming_up_desc">WARMING UP</string>
+    <string name="current_program_step_ventilation_up_desc">VENTILATION</string>
+    <string name="current_program_step_stabilization_desc">STABILIZATION</string>
+    <string name="current_program_step_cooling_down_desc">COOLING DOWN</string>
 
 
 </resources>

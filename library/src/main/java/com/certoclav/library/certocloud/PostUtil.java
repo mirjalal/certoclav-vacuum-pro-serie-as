@@ -45,7 +45,7 @@ public class PostUtil {
 		Log.e("PostUtil", "send to Server: " + body);
 		Response response = new Response();
 		int returnval = RETURN_UNKNOWN;
-		if (auth == true) {
+		if (auth) {
 			if (CloudUser.getInstance().getToken().isEmpty()) {
 				response.setError(true);
 				response.setMessage("Invalid Token or Key");

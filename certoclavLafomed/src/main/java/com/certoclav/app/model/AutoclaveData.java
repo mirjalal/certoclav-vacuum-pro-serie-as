@@ -8,7 +8,6 @@ public class AutoclaveData {
         temp2 = new Sensor();
         temp3 = new Sensor();
         temp4 = new Sensor();
-        //TODO change everywhere to bar
         press = new Sensor();
         press2 = new Sensor();
     }
@@ -25,8 +24,6 @@ public class AutoclaveData {
 
     private boolean failStoppedByUser = false;
 
-
-//TODO check all stopped by methods
     public boolean isFailStoppedByUser() {
         return failStoppedByUser;
     }

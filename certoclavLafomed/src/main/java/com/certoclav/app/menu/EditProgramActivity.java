@@ -4,6 +4,7 @@ package com.certoclav.app.menu;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.util.Pair;
 import android.view.MotionEvent;
@@ -52,14 +53,14 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
     private CheckBox checkboxIdLiquidProgram;
     private CheckBox checkboxIsF0FunctionProgram;
     private CheckBox checkboxMaintainFinalTemp;
-    private CheckBox checkboxIsContByFlexProbe;
+    private CheckBox checkboxIsContByFlexProbe1;
+    private CheckBox checkboxIsContByFlexProbe2;
     private TextView programStepSterilisationDescription;
     private TextView programStepDryDescription;
     private TextView programStepF0FunctionDescription;
     private TextView programStepVacuumDescription;
     private TextView programStepFinalTempDescription;
     private View linearLayoutF0Function;
-    private View linearLayoutFinalTemp;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -78,7 +79,8 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
         editTextProgramName = findViewById(R.id.editTextProgramName);
         checkboxIdLiquidProgram = findViewById(R.id.checkboxIdLiquidProgram);
         checkboxIsF0FunctionProgram = findViewById(R.id.checkboxIsF0FunctionEnabled);
-        checkboxIsContByFlexProbe = findViewById(R.id.checkboxIsContByFlexProbe);
+        checkboxIsContByFlexProbe1 = findViewById(R.id.checkboxIsContByFlexProbe1);
+        checkboxIsContByFlexProbe2 = findViewById(R.id.checkboxIsContByFlexProbe2);
         checkboxMaintainFinalTemp = findViewById(R.id.checkboxMaintainFinalTemp);
         programStepSterilisationDescription = findViewById(R.id.program_step_sterilisation_description);
         programStepDryDescription = findViewById(R.id.program_step_dry_description);
@@ -86,25 +88,25 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
         programStepVacuumDescription = findViewById(R.id.program_step_vacuum_description);
         programStepFinalTempDescription = findViewById(R.id.program_step_final_temp_description);
 
-        findViewById(R.id.linearLayoutSterilisation).setOnClickListener(this);
-        linearLayoutF0Function = findViewById(R.id.linearLayoutF0Function);
-        linearLayoutFinalTemp = findViewById(R.id.linearLayoutFinalTemp);
-        linearLayoutF0Function.setOnClickListener(this);
-        linearLayoutF0Function.setVisibility(checkboxIsF0FunctionProgram.isChecked() ? View.VISIBLE : View.GONE);
-        checkboxIsF0FunctionProgram.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        checkboxIsContByFlexProbe1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                linearLayoutF0Function.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                checkboxIsContByFlexProbe2.setEnabled(b && checkboxIdLiquidProgram.isChecked());
+            }
+        });
+        checkboxIdLiquidProgram.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                checkboxIsContByFlexProbe1.setEnabled(b);
+                checkboxIsContByFlexProbe2.setEnabled(b && checkboxIsContByFlexProbe1.isChecked());
             }
         });
 
-        linearLayoutFinalTemp.setVisibility(checkboxMaintainFinalTemp.isChecked() ? View.VISIBLE : View.GONE);
-        checkboxMaintainFinalTemp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                linearLayoutFinalTemp.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-            }
-        });
+        findViewById(R.id.linearLayoutSterilisation).setOnClickListener(this);
+        linearLayoutF0Function = findViewById(R.id.linearLayoutF0Function);
+        linearLayoutF0Function.setOnClickListener(this);
+        linearLayoutF0Function.setVisibility(checkboxIsF0FunctionProgram.isChecked() ? View.VISIBLE : View.GONE);
+
         findViewById(R.id.linearLayoutDry).setOnClickListener(this);
         findViewById(R.id.linearLayoutVacuum).setOnClickListener(this);
         findViewById(R.id.linearLayoutFinalTemp).setOnClickListener(this);
@@ -209,10 +211,17 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
             editTextProgramName.setText(newProfile.getName());
             checkboxIdLiquidProgram.setChecked(newProfile.isLiquidProgram());
             checkboxIsF0FunctionProgram.setChecked(newProfile.isF0Enabled());
-            checkboxIsContByFlexProbe.setChecked(newProfile.isContByFlexProbe());
+            checkboxIsContByFlexProbe1.setChecked(newProfile.isContByFlexProbe1Enabled());
+            checkboxIsContByFlexProbe2.setChecked(newProfile.isContByFlexProbe2Enabled());
             checkboxMaintainFinalTemp.setChecked(newProfile.isMaintainEnabled());
         }
-        programStepSterilisationDescription.setText(getString(R.string.program_step_sterlisation_desc, newProfile.getSterilisationTime(), newProfile.getSterilisationTemperature()));
+
+        linearLayoutF0Function.setVisibility(newProfile.isF0Enabled() ? View.VISIBLE : View.GONE);
+
+        if (!checkboxIsF0FunctionProgram.isChecked())
+            programStepSterilisationDescription.setText(getString(R.string.program_step_sterlisation_desc, newProfile.getSterilisationTime(), newProfile.getSterilisationTemperature()));
+        else
+            programStepSterilisationDescription.setText(getString(R.string.program_step_sterlisation_desc_f0, newProfile.getSterilisationTemperature()));
         programStepF0FunctionDescription.setText(getString(R.string.program_step_f0_function_desc, newProfile.getF0Value(), newProfile.getzValue()));
         programStepDryDescription.setText(getString(R.string.program_step_dry_desc, newProfile.getDryTime()));
         programStepVacuumDescription.setText(getString(R.string.program_step_vacuum_desc, newProfile.getVacuumTimes()));
@@ -265,7 +274,8 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
                 newProfile.setLiquidProgram(checkboxIdLiquidProgram.isChecked());
                 newProfile.setMaintainEnabled(checkboxMaintainFinalTemp.isChecked());
                 newProfile.setF0Enabled(checkboxIsF0FunctionProgram.isChecked());
-                newProfile.setContByFlexProbe(checkboxIsContByFlexProbe.isChecked());
+                newProfile.setContByFlexProbe1(checkboxIsContByFlexProbe1.isChecked());
+                newProfile.setContByFlexProbe2(checkboxIsContByFlexProbe2.isChecked());
                 Helper.setProgram(this, newProfile, new MyCallback() {
                     @Override
                     public void onSuccess(Object response, int requestId) {
@@ -310,8 +320,24 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
         navigationbar.setNavigationbarListener(this);
         newProfile = Autoclave.getInstance().getProfileByIndex(programIndex);
 //        newProfile.setLocal(true);
-
+        checkboxIsF0FunctionProgram.setOnCheckedChangeListener(null);
         refreshGraphAndList(false);
+
+        //It is here because, else onReseum F0Function dialog will be shown
+        checkboxIsF0FunctionProgram.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                linearLayoutF0Function.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+                if (!checkboxIsF0FunctionProgram.isChecked())
+                    programStepSterilisationDescription.setText(getString(R.string.program_step_sterlisation_desc,
+                            newProfile.getSterilisationTime(), newProfile.getSterilisationTemperature()));
+                else
+                    programStepSterilisationDescription.setText(getString(R.string.program_step_sterlisation_desc_f0,
+                            newProfile.getSterilisationTemperature()));
+                if (isChecked)
+                    showEditF0FunctionnDialog();
+            }
+        });
     }
 
 
@@ -371,6 +397,8 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
         //get views
         final EditText editTemp = dialog.findViewById(R.id.program_definition_editstep_edit_temp);
         final EditText editTime = dialog.findViewById(R.id.program_definition_editstep_edit_time);
+
+        editTime.setEnabled(!checkboxIsF0FunctionProgram.isChecked());
 
         //insert default values
         editTime.setText(Integer.toString(newProfile.getSterilisationTime()));
@@ -440,6 +468,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
             public void onClick(View v) {
                 newProfile.setzValue(Float.valueOf(editZValue.getText().toString()));
                 newProfile.setF0Value(Float.valueOf(editLethalTemp.getText().toString()));
+                newProfile.setF0Enabled(true);
                 refreshGraphAndList(true);
                 dialog.dismissWithAnimation();
             }
@@ -479,7 +508,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
             public void onClick(View v) {
 
                 int value = Integer.valueOf(editParameter.getText().toString());
-                Pair<Integer,Integer> vacuumPulseRange = manager.getVacuumPulseRange();
+                Pair<Integer, Integer> vacuumPulseRange = manager.getVacuumPulseRange();
                 if (isVacuum && (value < vacuumPulseRange.first || value > vacuumPulseRange.second)) {
                     Toasty.error(getApplicationContext(), getString(R.string.vacuum_pulse_range, vacuumPulseRange.first, vacuumPulseRange.second), Toast.LENGTH_SHORT, true).show();
                     return;
@@ -514,9 +543,10 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
         final TextView textViewParameterName = dialog.findViewById(R.id.textViewParameterName);
         final TextView textViewParameterType = dialog.findViewById(R.id.textViewParameterType);
         final EditText editParameter = dialog.findViewById(R.id.program_definition_parameter);
+        editParameter.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         //insert default values
-        editParameter.setText(String.format("%d", newProfile.getFinalTemp()));
+        editParameter.setText(String.format("%.1f", newProfile.getFinalTemp()));
 
         textViewParameterName.setText(R.string.final_temp);
         textViewParameterType.setText(R.string.final_temp_type);
@@ -531,8 +561,8 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
         dialog.findViewById(R.id.confirm_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int value = Integer.valueOf(editParameter.getText().toString());
-                if (value < 50 || value > 95) {
+                float value = Float.valueOf(editParameter.getText().toString());
+                if (value < 50f || value > 95f) {
                     Toasty.error(getApplicationContext(), getString(R.string.final_temp_range, 50, 95), Toast.LENGTH_SHORT, true).show();
                     return;
                 }

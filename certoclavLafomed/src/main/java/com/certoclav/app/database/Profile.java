@@ -17,7 +17,8 @@ public class Profile {
     public static final String FIELD_IS_F0_ENABLED = "is_f0_enabled";
     public static final String FIELD_F0_VALUE = "f0_value";
     public static final String FIELD_IS_MAINTAIN = "is_maintain_enabled";
-    public static final String FIELD_IS_CONT_BY_FLEX_PROBE = "is_cont_by_flex_probe";
+    public static final String FIELD_IS_CONT_BY_FLEX_PROBE_1 = "is_cont_by_flex_probe_1";
+    public static final String FIELD_IS_CONT_BY_FLEX_PROBE_2 = "is_cont_by_flex_probe_2";
     public static final String FIELD_FINAL_TEMP = "final_temp";
     public static final String FIELD_Z_VALUE = "z_value";
 
@@ -40,10 +41,13 @@ public class Profile {
     @SerializedName("is_maintain_enabled")
     private Boolean isMaintainEnabled;
 
-    @DatabaseField(columnName = FIELD_IS_CONT_BY_FLEX_PROBE)
-    @SerializedName("is_cont_by_flex_probe")
-    private Boolean isContByFlexProbe;
+    @DatabaseField(columnName = FIELD_IS_CONT_BY_FLEX_PROBE_1)
+    @SerializedName("is_cont_by_flex_probe_1")
+    private Boolean isContByFlexProbe1;
 
+    @DatabaseField(columnName = FIELD_IS_CONT_BY_FLEX_PROBE_2)
+    @SerializedName("is_cont_by_flex_probe_2")
+    private Boolean isContByFlexProbe2;
 
     @DatabaseField(columnName = FIELD_F0_VALUE)
     @SerializedName("f0_value")
@@ -55,7 +59,7 @@ public class Profile {
 
     @DatabaseField(columnName = FIELD_FINAL_TEMP)
     @SerializedName("final_temp")
-    private int finalTemp;
+    private float finalTemp;
 
     @DatabaseField(columnName = FIELD_CLOUD_ID)
     private String cloudId;
@@ -271,7 +275,8 @@ public class Profile {
                    Integer index,
                    boolean isF0Enabled,
                    boolean isMaintainEnabled,
-                   boolean isContByFlexProbe,
+                   boolean isContByFlexProbe1,
+                   boolean isContByFlexProbe2,
                    int finalTemp,
                    float f0Value,
                    float zValue) {
@@ -292,7 +297,8 @@ public class Profile {
         this.isLiquidProgram = isLiquidProgram;
         this.isF0Enabled = isF0Enabled;
         this.zValue = zValue;
-        this.isContByFlexProbe = isContByFlexProbe;
+        this.isContByFlexProbe1 = isContByFlexProbe1;
+        this.isContByFlexProbe2 = isContByFlexProbe2;
         this.isMaintainEnabled = isMaintainEnabled;
         this.finalTemp = finalTemp;
         this.f0Value = f0Value;
@@ -365,12 +371,20 @@ public class Profile {
         isMaintainEnabled = maintainEnabled;
     }
 
-    public Boolean isContByFlexProbe() {
-        return isContByFlexProbe;
+    public Boolean isContByFlexProbe1Enabled() {
+        return isContByFlexProbe1;
     }
 
-    public void setContByFlexProbe(Boolean contByFlexProbe) {
-        isContByFlexProbe = contByFlexProbe;
+    public Boolean isContByFlexProbe2Enabled() {
+        return isContByFlexProbe2;
+    }
+
+    public void setContByFlexProbe1(Boolean contByFlexProbe1) {
+        isContByFlexProbe1 = contByFlexProbe1;
+    }
+
+    public void setContByFlexProbe2(Boolean contByFlexProbe2) {
+        isContByFlexProbe2 = contByFlexProbe2;
     }
 
     public float getF0Value() {
@@ -381,11 +395,11 @@ public class Profile {
         this.f0Value = f0Value;
     }
 
-    public int getFinalTemp() {
+    public float getFinalTemp() {
         return finalTemp;
     }
 
-    public void setFinalTemp(int finalTemp) {
+    public void setFinalTemp(float finalTemp) {
         this.finalTemp = finalTemp;
     }
 

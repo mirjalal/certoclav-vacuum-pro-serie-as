@@ -407,7 +407,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                             if (System.nanoTime() - nanoTimeAtLastStopCommand > (1000000000L * 15)) {
                                 nanoTimeAtLastStopCommand = (System.nanoTime() + (1000000000L * 15)); // + 15 seconds shift = 30 secoonds
                                 Log.e("AutoclaveMonitor", "CREATE --->   CMD_STOP");
-                                ReadAndParseSerialService.getInstance().sendStopCommand();
+                                ReadAndParseSerialService.getInstance().sendStopCommand(true);
                             }
                         }
 
@@ -618,7 +618,6 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                             Error.TYPE_WARNING,
                             0));
                 }
-                //TODO add water quality error
 
                 if (Autoclave.getInstance().getData().isWaterLvlLow()) {
                     errorList.add(new Error(mContext.getString(R.string.fill_water),
@@ -684,9 +683,9 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
     }
 
 
-    public void sendStopCommand() {
+    public void sendStopCommand(boolean isForce) {
 
-        ReadAndParseSerialService.getInstance().sendStopCommand();
+        ReadAndParseSerialService.getInstance().sendStopCommand(isForce);
 
         if (AppConstants.isIoSimulated) {
             SimulatedFailStoppedByUser = true;

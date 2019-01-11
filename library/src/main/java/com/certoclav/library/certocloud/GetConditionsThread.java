@@ -62,7 +62,6 @@ public class GetConditionsThread extends Thread {
 												jsonObjectCondition.put("conditions", jsonArrayCondition);
 												body.put("condition", jsonObjectCondition);
 											} catch (Exception e1) {
-												// TODO Auto-generated catch block
 												e1.printStackTrace();
 											}
 											postUtil.postToCertocloud(body.toString(), CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_POST_CONDITIONS_CREATE, true);

@@ -2,7 +2,7 @@
 <resources>
     <dimen name="quickaction_shadow_horiz">0dip</dimen>
     <dimen name="text_size_program_desc">20sp</dimen>
-    <dimen name="text_size_status_bar">28sp</dimen>
+    <dimen name="text_size_status_bar">26sp</dimen>
     <dimen name="program_item_height">220dp</dimen>
     <dimen name="program_item_head_height">54dp</dimen>
     <dimen name="program_item_header_text_size">32sp</dimen>

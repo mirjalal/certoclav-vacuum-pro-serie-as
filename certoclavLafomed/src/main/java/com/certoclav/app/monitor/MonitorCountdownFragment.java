@@ -1,11 +1,15 @@
 package com.certoclav.app.monitor;
 
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.certoclav.app.R;
@@ -16,7 +20,8 @@ import com.certoclav.app.model.AutoclaveData;
 public class MonitorCountdownFragment extends Fragment implements SensorDataListener {
 
     private TextView textNumber;
-    private View loadingBar;
+    private TextView timeLeft;
+    private ProgressBar loadingBar;
     private MonitorUtils monitorService;
 
 
@@ -24,10 +29,17 @@ public class MonitorCountdownFragment extends Fragment implements SensorDataList
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.monitor_countdown_fragment, container, false); //je nach mIten könnte man hier anderen Inhalt laden.
 
-        textNumber = (TextView) rootView.findViewById(R.id.monitor_countdown_number);
-        loadingBar = rootView.findViewById(R.id.monitor_countdown_bar);
+        textNumber = rootView.findViewById(R.id.monitor_countdown_number);
+        timeLeft = rootView.findViewById(R.id.monitor_countdown_left);
+        loadingBar = rootView.findViewById(R.id.progressBarF0Function);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            loadingBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#3297DB")));
+        }
         monitorService = new MonitorUtils();
         Autoclave.getInstance().setOnSensorDataListener(this);
+
+        loadingBar.setVisibility(Autoclave.getInstance().getProfile().isF0Enabled()?View.VISIBLE:View.GONE);
+        timeLeft.setVisibility(Autoclave.getInstance().getProfile().isF0Enabled()?View.GONE:View.VISIBLE);
 
         return rootView;
     }
@@ -67,6 +79,16 @@ public class MonitorCountdownFragment extends Fragment implements SensorDataList
                     .append(":")
                     .append(String.format("%02d", seconds));
             textNumber.setText(sBuilder.toString());
+            float timeLeftSeconds = Autoclave.getInstance().getTimeOrPercent();
+            if (Autoclave.getInstance().getProfile().isF0Enabled()) {
+                loadingBar.setProgress((int)(timeLeftSeconds*10));
+            } else {
+                timeLeft.setText(String.format("%02d:%02d:%02d",
+                        (timeLeftSeconds / 60 / 60) % 24,
+                        (timeLeftSeconds / 60) % 60,
+                        timeLeftSeconds % 60));
+            }
+
             //loadingBar.getLayoutParams().width = 300 - (3* ((monitorService.getRemainingTime()*100) / monitorService.getAbsoluteTime(Autoclave.getInstance().getProfile())));
         } catch (Exception e) {
             //do nothing

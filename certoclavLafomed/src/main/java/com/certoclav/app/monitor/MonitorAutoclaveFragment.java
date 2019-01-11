@@ -37,7 +37,6 @@ public class MonitorAutoclaveFragment extends Fragment implements SensorDataList
     @Override
     public void onResume() {
         super.onResume();
-        //Todo check is liquid program
         if (Autoclave.getInstance().getProfile().isLiquidProgram()) { //liquid program
             textMedia.setVisibility(View.VISIBLE);
         } else {

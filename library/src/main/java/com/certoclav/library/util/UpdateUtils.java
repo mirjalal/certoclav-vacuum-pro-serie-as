@@ -332,8 +332,6 @@ public class UpdateUtils {
 
 
     private boolean copyFile(String source, String dest) {
-        // TODO Auto-generated method stub
-
         try {
             Log.e("UpdateUtils", "copyFile() from: " + source + " to: " + dest);
             OutputStream myoutput = new FileOutputStream(dest);

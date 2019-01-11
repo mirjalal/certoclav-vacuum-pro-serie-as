@@ -25,7 +25,9 @@ import com.certoclav.library.models.DeviceModel;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 
 import android_serialport_api.SerialService;
@@ -44,8 +46,56 @@ public class Autoclave extends Observable {
     private boolean isDebugMode;
     private String[] debugData;
 
+    public enum PROGRAM_STEPS{
+        WARMING_UP("SW"),
+        VACUUM_PULSE_1("SF11"),
+        VACUUM_PULSE_1_("SF12"),
+        VACUUM_PULSE_2("SF21"),
+        VACUUM_PULSE_2_("SF22"),
+        VACUUM_PULSE_3("SF31"),
+        VACUUM_PULSE_3_("SF32"),
+        HEATING("SH"),
+        STABILIZATION("ST"),
+        STERILIZATION("SS"),
+        DISCHARGE("SDC"),
+        DRYING("SD"),
+        VENTILATION("SV"),
+        LEVELING("SL"),
+        FINISHED("SE"),
+        COOLING_DOWN("SC"),
+        MAINTAIN_TEMP("SM"),
+        NOT_DEFINED("-1");
+
+        private String value;
+        PROGRAM_STEPS(final String value) {
+            this.value = value;
+        }
+        private static final Map<String, PROGRAM_STEPS> map = new HashMap<>();
+        static {
+            for (PROGRAM_STEPS en : values()) {
+                map.put(en.value, en);
+            }
+        }
+
+        public static PROGRAM_STEPS valueFor(String name) {
+            return map.get(name);
+        }
+
+        public String getValue() {
+            return value;
+        }
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+
+
+    }
+
 
     private String programStep = "";
+    private float timeOrPercent = 0;
     private SerialService serialServiceProtocolPrinter = null;
     private List<ProfileSyncedListener> profileSyncedListeners;
 
@@ -93,6 +143,14 @@ public class Autoclave extends Observable {
         this.currentProgramCounter = currentProgramCounter;
     }
 
+
+    public float getTimeOrPercent() {
+        return timeOrPercent;
+    }
+
+    public void setTimeOrPercent(float timeOrPercent) {
+        this.timeOrPercent = timeOrPercent;
+    }
 
     private boolean preheat = false;
 
@@ -158,6 +216,7 @@ public class Autoclave extends Observable {
                     false,
                     false,
                     false,
+                    false,
                     10,
                     121f,
                     10);
@@ -209,8 +268,11 @@ public class Autoclave extends Observable {
         return secondsSinceStart;
     }
 
-    public String getProgramStep() {
-        return programStep;
+    public PROGRAM_STEPS getProgramStep() {
+        PROGRAM_STEPS program_step = PROGRAM_STEPS.valueFor(programStep);
+        if(program_step==null)
+            return PROGRAM_STEPS.NOT_DEFINED;
+        return program_step;
     }
 
     public void setProgramStep(String programStep) {
@@ -358,7 +420,6 @@ public class Autoclave extends Observable {
 
     private Autoclave() {
         data = new AutoclaveData();
-        updateSimulatedPrograms();
         controller = new Controller("unknown", "unknown", "unknown", "unknown", 0, "unknown");
         profileSyncedListeners = new ArrayList<>();
     }
@@ -387,6 +448,7 @@ public class Autoclave extends Observable {
                     false,
                     false,
                     false,
+                    false,
                     10,
                     121f,
                     10));
@@ -406,6 +468,7 @@ public class Autoclave extends Observable {
                     false,
                     null,
                     2,
+                    false,
                     false,
                     false,
                     false,
@@ -431,6 +494,7 @@ public class Autoclave extends Observable {
                     false,
                     false,
                     false,
+                    false,
                     10,
                     121f,
                     10));
@@ -450,6 +514,7 @@ public class Autoclave extends Observable {
                     false,
                     null,
                     1,
+                    false,
                     false,
                     false,
                     false,
@@ -474,7 +539,7 @@ public class Autoclave extends Observable {
                     1,
                     false,
                     false,
-                    false,
+                    false,false,
                     10,
                     121f,
                     10));
@@ -496,7 +561,7 @@ public class Autoclave extends Observable {
                     1,
                     false,
                     false,
-                    false,
+                    false,false,
                     10,
                     121f,
                     10));
@@ -519,6 +584,7 @@ public class Autoclave extends Observable {
                     false,
                     false,
                     false,
+                    false,
                     10,
                     121f,
                     10));
@@ -538,6 +604,7 @@ public class Autoclave extends Observable {
                     true,
                     null,
                     1,
+                    false,
                     false,
                     false,
                     false,
@@ -564,6 +631,7 @@ public class Autoclave extends Observable {
                     false,
                     false,
                     false,
+                    false,
                     10,
                     121f,
                     10));
@@ -583,6 +651,7 @@ public class Autoclave extends Observable {
                     false,
                     null,
                     2,
+                    false,
                     false,
                     false,
                     false,
@@ -608,6 +677,7 @@ public class Autoclave extends Observable {
                     false,
                     false,
                     false,
+                    false,
                     10,
                     121f,
                     10));
@@ -627,6 +697,7 @@ public class Autoclave extends Observable {
                     false,
                     null,
                     1,
+                    false,
                     false,
                     false,
                     false,
@@ -652,6 +723,7 @@ public class Autoclave extends Observable {
                     false,
                     false,
                     false,
+                    false,
                     10,
                     121f,
                     10));
@@ -671,6 +743,7 @@ public class Autoclave extends Observable {
                     false,
                     null,
                     1,
+                    false,
                     false,
                     false,
                     false,
@@ -696,6 +769,7 @@ public class Autoclave extends Observable {
                     false,
                     false,
                     false,
+                    false,
                     10,
                     121f,
                     10));
@@ -715,6 +789,7 @@ public class Autoclave extends Observable {
                     false,
                     null,
                     1,
+                    false,
                     false,
                     false,
                     false,
@@ -740,6 +815,7 @@ public class Autoclave extends Observable {
                     false,
                     false,
                     false,
+                    false,
                     10,
                     121f,
                     10));
@@ -759,6 +835,7 @@ public class Autoclave extends Observable {
                     false,
                     null,
                     1,
+                    false,
                     false,
                     false,
                     false,
@@ -784,6 +861,7 @@ public class Autoclave extends Observable {
                     false,
                     false,
                     false,
+                    false,
                     10,
                     121f,
                     10));
@@ -803,6 +881,7 @@ public class Autoclave extends Observable {
                     false,
                     null,
                     1,
+                    false,
                     false,
                     false,
                     false,

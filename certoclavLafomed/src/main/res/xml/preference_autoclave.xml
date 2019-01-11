@@ -12,9 +12,9 @@
             android:summary="%s"
             android:title="@string/preferences_autoclave_model" />
 
-
-        <EditTextPreference
-            android:key="preferences_autoclave_parameter_2"
+        <Preference
+            android:key="preferences_autoclave_parameter_std_assign"
+            android:summary="@string/preferences_autoclave_std_program_summary"
             android:title="@string/preferences_autoclave_std_program" />
 
         <EditTextPreference
@@ -27,6 +27,16 @@
             android:key="preferences_autoclave_parameter_4"
             android:enabled="false"
             android:title="@string/preferences_autoclave_pcb_serial" />
+
+        <EditTextPreference
+            android:inputType="number"
+            android:key="preferences_autoclave_parameter_71"
+            android:title="@string/preferences_autoclave_setpoint_hours_review" />
+
+        <EditTextPreference
+            android:inputType="number"
+            android:key="preferences_autoclave_parameter_72"
+            android:title="@string/preferences_autoclave_setpoint_filter_cycle" />
 
         <EditTextPreference
             android:inputType="number"
@@ -50,9 +60,6 @@
             android:key="preferences_autoclave_parameter_98"
             android:title="@string/preferences_autoclave_number_filter_cycle" />
 
-        <CheckBoxPreference
-            android:key="preferences_autoclave_parameter_6"
-            android:title="@string/preferences_autoclave_is_home_mode" />
 
         <CheckBoxPreference
             android:key="preferences_autoclave_parameter_9"

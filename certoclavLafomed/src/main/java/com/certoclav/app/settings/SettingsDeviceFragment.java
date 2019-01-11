@@ -9,11 +9,9 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StatFs;
-import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
@@ -43,6 +41,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
 
 
 public class SettingsDeviceFragment extends PreferenceFragment implements SensorDataListener {
@@ -55,143 +54,147 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences_device);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
+        try {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
 //Device Key
-        String deviceKey = "-";
-        if (Autoclave.getInstance().getController() != null) {
-            if (Autoclave.getInstance().getController().getSavetyKey() != null) {
-                deviceKey = Autoclave.getInstance().getController().getSavetyKey();
+            String deviceKey = "-";
+            if (Autoclave.getInstance().getController() != null) {
+                if (Autoclave.getInstance().getController().getSavetyKey() != null) {
+                    deviceKey = Autoclave.getInstance().getController().getSavetyKey();
+                }
             }
-        }
 
-        findPreference(AppConstants.PREFERENCE_KEY_DEVICE_KEY).setSummary(deviceKey);
+            findPreference(AppConstants.PREFERENCE_KEY_DEVICE_KEY).setSummary(deviceKey);
 
 //Check for updates
-        findPreference(AppConstants.PREFERENCE_KEY_SOFTWARE_UPDATE).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            findPreference(AppConstants.PREFERENCE_KEY_SOFTWARE_UPDATE).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
 
-                if (ApplicationController.getInstance().isNetworkAvailable()) {
-                    List<String> downloadUrls = new ArrayList<String>();
-                    downloadUrls.add(AppConstants.DOWNLOAD_LINK);
-                    DownloadUtils downloadUtils = new DownloadUtils(getActivity());
-                    downloadUtils.Download(downloadUrls);
-                } else {
-                    Toast.makeText(getActivity(), getString(R.string.please_connect_to_internet), Toast.LENGTH_LONG).show();
+                    if (ApplicationController.getInstance().isNetworkAvailable()) {
+                        List<String> downloadUrls = new ArrayList<String>();
+                        downloadUrls.add(AppConstants.DOWNLOAD_LINK);
+                        DownloadUtils downloadUtils = new DownloadUtils(getActivity());
+                        downloadUtils.Download(downloadUrls);
+                    } else {
+                        Toasty.warning(getActivity(), getString(R.string.please_connect_to_internet), Toast.LENGTH_SHORT,true).show();
+                    }
+
+                    return false;
                 }
+            });
 
-                return false;
-            }
-        });
+            findPreference(AppConstants.PREFERENCE_KEY_ADMIN_PASSWORD).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
-        findPreference(AppConstants.PREFERENCE_KEY_ADMIN_PASSWORD).setOnPreferenceClickListener(new OnPreferenceClickListener() {
-
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                startActivity(new Intent(getActivity(), ChangeAdminPasswordAccountActivity.class));
-                return false;
-            }
-        });
-
-        //Install update from USB
-        findPreference(AppConstants.PREFERENCE_KEY_SOFTWARE_UPDATE_USB).setOnPreferenceClickListener(new OnPreferenceClickListener() {
-
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                preference.setEnabled(false);
-                ExportUtils exportUtils = new ExportUtils();
-                if (exportUtils.checkExternalMedia() == false) {
-                    Toast.makeText(getActivity(), getActivity().getString(R.string.can_not_read_usb_flash_disk), Toast.LENGTH_LONG).show();
-                } else {
-                    UpdateUtils updateUtils = new UpdateUtils(getActivity());
-                    updateUtils.installUpdateZip(UpdateUtils.SOURCE_USB);
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    startActivity(new Intent(getActivity(), ChangeAdminPasswordAccountActivity.class));
+                    return false;
                 }
-                preference.setEnabled(true);
-                return false;
-            }
-        });
+            });
 
+            //Install update from USB
+            findPreference(AppConstants.PREFERENCE_KEY_SOFTWARE_UPDATE_USB).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
-        //Install update from SDCARD
-        findPreference(AppConstants.PREFERENCE_KEY_SOFTWARE_UPDATE_SDCARD).setOnPreferenceClickListener(new OnPreferenceClickListener() {
-
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                preference.setEnabled(false);
-                ExportUtils exportUtils = new ExportUtils();
-                if (exportUtils.checkExternalSDCard() == false) {
-                    Toast.makeText(getActivity(), getActivity().getString(R.string.can_not_read_from_sd_card), Toast.LENGTH_LONG).show();
-                } else {
-                    UpdateUtils updateUtils = new UpdateUtils(getActivity());
-                    updateUtils.installUpdateZip(UpdateUtils.SOURCE_SDCARD);
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    preference.setEnabled(false);
+                    ExportUtils exportUtils = new ExportUtils();
+                    if (exportUtils.checkExternalMedia() == false) {
+                        Toasty.error(getActivity(), getActivity().getString(R.string.can_not_read_usb_flash_disk), Toast.LENGTH_LONG,true).show();
+                    } else {
+                        UpdateUtils updateUtils = new UpdateUtils(getActivity());
+                        updateUtils.installUpdateZip(UpdateUtils.SOURCE_USB);
+                    }
+                    preference.setEnabled(true);
+                    return false;
                 }
-                preference.setEnabled(true);
-                return false;
-            }
-        });
+            });
+
+
+            //Install update from SDCARD
+            findPreference(AppConstants.PREFERENCE_KEY_SOFTWARE_UPDATE_SDCARD).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    preference.setEnabled(false);
+                    ExportUtils exportUtils = new ExportUtils();
+                    if (exportUtils.checkExternalSDCard() == false) {
+                        Toasty.error(getActivity(), getActivity().getString(R.string.can_not_read_from_sd_card), Toast.LENGTH_LONG,true).show();
+                    } else {
+                        UpdateUtils updateUtils = new UpdateUtils(getActivity());
+                        updateUtils.installUpdateZip(UpdateUtils.SOURCE_SDCARD);
+                    }
+                    preference.setEnabled(true);
+                    return false;
+                }
+            });
 
 
 //Factory Reset
-        findPreference(AppConstants.PREFERENCE_KEY_RESET).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            findPreference(AppConstants.PREFERENCE_KEY_RESET).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                try {
-                    SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
-                            .setTitleText(getString(R.string.factory_reset))
-                            .setContentText(getString(R.string.do_you_really_want_to) + " " + getString(R.string.delete_all_data_))
-                            .setConfirmText(getString(R.string.yes))
-                            .setCancelText(getString(R.string.cancel))
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    if (!DatabaseService.getInstance().exportDB())
-                                        return;
-                                    sDialog.dismissWithAnimation();
-                                    if (AppConstants.TABLET_HAS_ROOT) {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    try {
+                        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                                .setTitleText(getString(R.string.factory_reset))
+                                .setContentText(getString(R.string.do_you_really_want_to) + " " + getString(R.string.delete_all_data_))
+                                .setConfirmText(getString(R.string.yes))
+                                .setCancelText(getString(R.string.cancel))
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        if (!DatabaseService.getInstance().exportDB())
+                                            return;
+                                        sDialog.dismissWithAnimation();
+                                        if (AppConstants.TABLET_HAS_ROOT) {
 
-                                        try {
+                                            try {
 
-                                            String command;
-                                            command = "pm clear com.certoclav.app";
-                                            Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", command});//, envp);
-                                            proc.waitFor();
+                                                String command;
+                                                command = "pm clear com.certoclav.app";
+                                                Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", command});//, envp);
+                                                proc.waitFor();
 
-                                        } catch (Exception ex) {
-                                            Log.e("SettingsDeviceFragment", "error clear app data");
-                                            Log.e("SettingsDeviceFragment", ex.toString());
+                                            } catch (Exception ex) {
+                                                Log.e("SettingsDeviceFragment", "error clear app data");
+                                                Log.e("SettingsDeviceFragment", ex.toString());
+                                            }
+                                        } else {
+                                            // closing Entire Application
+                                            Editor editor = getActivity().getSharedPreferences("clear_cache", Context.MODE_PRIVATE).edit();
+                                            editor.clear();
+                                            editor.commit();
+                                            ApplicationController.getInstance().clearApplicationData();
+                                            android.os.Process.killProcess(android.os.Process.myPid());
                                         }
-                                    } else {
-                                        // closing Entire Application
-                                        Editor editor = getActivity().getSharedPreferences("clear_cache", Context.MODE_PRIVATE).edit();
-                                        editor.clear();
-                                        editor.commit();
-                                        ApplicationController.getInstance().clearApplicationData();
-                                        android.os.Process.killProcess(android.os.Process.myPid());
                                     }
-                                }
-                            }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                    sweetAlertDialog.dismissWithAnimation();
-                                }
-                            });
-                    sweetAlertDialog.setCanceledOnTouchOutside(true);
-                    sweetAlertDialog.setCancelable(true);
-                    sweetAlertDialog.show();
+                                }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        sweetAlertDialog.dismissWithAnimation();
+                                    }
+                                });
+                        sweetAlertDialog.setCanceledOnTouchOutside(true);
+                        sweetAlertDialog.setCancelable(true);
+                        sweetAlertDialog.show();
 
 
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    return false;
                 }
-
-
-                return false;
-            }
-        });
+            });
+        } catch (Exception e) {
+            getActivity().finish();
+            Toasty.warning(getContext(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT,
+                    true).show();
+        }
 
 
     }
@@ -202,77 +205,81 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
         Autoclave.getInstance().setOnSensorDataListener(this);
 //show date and time
 
-
-        findPreference(AppConstants.PREFERENCE_KEY_DATE).setOnPreferenceClickListener(new OnPreferenceClickListener() {
-
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                //Toast.makeText(getActivity(), getActivity().getString(R.string.please_use_secondary_lcd_screen_to_change_the_time), Toast.LENGTH_LONG).show();
-                setTimeAndDate(true);
-                return false;
-            }
-        });
-
-
-        //Storage
-        findPreference(AppConstants.PREFERENCE_KEY_STORAGE)
-                .setSummary(getString(R.string.free_memory) + ": "
-                        + Long.toString(FreeMemory())
-                        + " MB");
-        //Software Version
-        PackageInfo pInfo;
         try {
-            pInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
-            String version = pInfo.versionName + " (" + pInfo.versionCode + ")";
-            findPreference(AppConstants.PREFERENCE_KEY_VERSION).setSummary(version);
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
-        }
 
 
-        //serial number
-        try {
-            findPreference(AppConstants.PREFERENCE_KEY_SERIAL_NUMBER).setSummary(Autoclave.getInstance().getController().getSerialnumber());
-        } catch (Exception e) {
+            findPreference(AppConstants.PREFERENCE_KEY_DATE).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    //Toast.makeText(getActivity(), getActivity().getString(R.string.please_use_secondary_lcd_screen_to_change_the_time), Toast.LENGTH_LONG).show();
+                    setTimeAndDate(true);
+                    return false;
+                }
+            });
+
+
+            //Storage
+            findPreference(AppConstants.PREFERENCE_KEY_STORAGE)
+                    .setSummary(getString(R.string.free_memory) + ": "
+                            + Long.toString(FreeMemory())
+                            + " MB");
+            //Software Version
+            PackageInfo pInfo;
             try {
-                findPreference(AppConstants.PREFERENCE_KEY_SERIAL_NUMBER).setSummary(getString(R.string.please_connect_to_autoclave_first));
-            } catch (Exception e1) {
-                e1.printStackTrace();
+                pInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
+                String version = pInfo.versionName + " (" + pInfo.versionCode + ")";
+                findPreference(AppConstants.PREFERENCE_KEY_VERSION).setSummary(version);
+            } catch (NameNotFoundException e) {
+                e.printStackTrace();
             }
-        }
 
-        //firmware version
-        try {
-            findPreference(AppConstants.PREFERENCE_KEY_FIRMWARE_VERSION).setSummary(Autoclave.getInstance().getController().getFirmwareVersion());
-        } catch (Exception e) {
+
+            //serial number
             try {
-                findPreference(AppConstants.PREFERENCE_KEY_FIRMWARE_VERSION).setSummary(getString(R.string.please_connect_to_autoclave_first));
-            } catch (Exception e1) {
-                e1.printStackTrace();
+                findPreference(AppConstants.PREFERENCE_KEY_SERIAL_NUMBER).setSummary(Autoclave.getInstance().getController().getSerialnumber());
+            } catch (Exception e) {
+                try {
+                    findPreference(AppConstants.PREFERENCE_KEY_SERIAL_NUMBER).setSummary(getString(R.string.please_connect_to_autoclave_first));
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
             }
-        }
 
-        //cycle number
-        try {
-            findPreference(AppConstants.PREFERENCE_KEY_CYCLE_NUMBER).setSummary(getString(R.string.total_cycles_) + " " + Autoclave.getInstance().getController().getCycleNumber());
-        } catch (Exception e) {
+            //firmware version
             try {
-                findPreference(AppConstants.PREFERENCE_KEY_CYCLE_NUMBER).setSummary(getString(R.string.please_connect_to_autoclave_first));
-            } catch (Exception e1) {
-                e1.printStackTrace();
+                findPreference(AppConstants.PREFERENCE_KEY_FIRMWARE_VERSION).setSummary(Autoclave.getInstance().getController().getFirmwareVersion());
+            } catch (Exception e) {
+                try {
+                    findPreference(AppConstants.PREFERENCE_KEY_FIRMWARE_VERSION).setSummary(getString(R.string.please_connect_to_autoclave_first));
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
             }
-        }
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        if ((!Autoclave.getInstance().getUser().isAdmin() || Autoclave.getInstance().getState() == AutoclaveState.LOCKED) &&
-                prefs.getBoolean(ApplicationController.getContext().getString(R.string.preferences_lockout_device),
-                        ApplicationController.getContext().getResources().getBoolean(R.bool.preferences_lockout_device))) {
-            Toast.makeText(getActivity(), R.string.these_settings_are_locked_by_the_admin, Toast.LENGTH_SHORT).show();
-            getPreferenceScreen().setEnabled(false);
-        } else {
-            getPreferenceScreen().setEnabled(true);
-        }
+            //cycle number
+            try {
+                findPreference(AppConstants.PREFERENCE_KEY_CYCLE_NUMBER).setSummary(getString(R.string.total_cycles_) + " " + Autoclave.getInstance().getController().getCycleNumber());
+            } catch (Exception e) {
+                try {
+                    findPreference(AppConstants.PREFERENCE_KEY_CYCLE_NUMBER).setSummary(getString(R.string.please_connect_to_autoclave_first));
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
 
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            if ((!Autoclave.getInstance().getUser().isAdmin() || Autoclave.getInstance().getState() == AutoclaveState.LOCKED) &&
+                    prefs.getBoolean(ApplicationController.getContext().getString(R.string.preferences_lockout_device),
+                            ApplicationController.getContext().getResources().getBoolean(R.bool.preferences_lockout_device))) {
+                Toasty.warning(getActivity(), getString(R.string.these_settings_are_locked_by_the_admin), Toast.LENGTH_SHORT).show();
+                getPreferenceScreen().setEnabled(false);
+            } else {
+                getPreferenceScreen().setEnabled(true);
+            }
+        } catch (Exception e) {
+            getActivity().finish();
+        }
 
         super.onResume();
     }

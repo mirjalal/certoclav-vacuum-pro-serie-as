@@ -50,7 +50,6 @@ public class LogToFile {
 			buf.flush();
 			buf.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

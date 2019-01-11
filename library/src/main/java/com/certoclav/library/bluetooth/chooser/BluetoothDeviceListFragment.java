@@ -114,8 +114,7 @@ public class BluetoothDeviceListFragment extends Fragment {
 		                    	if(bluetoothStateListener != null){
 		                    		bluetoothStateListener.onStateChanged(BluetoothState.STATE_CONNECTED);
 		                    	}
-		                    	//TODO callback via listener	   			 		
-			   			 		
+
 		                    } else if(state == BluetoothState.STATE_CONNECTING) {
 		    	            	for(int i = 0; i< mDeviceAdapter.getCount(); i++){
 		    	            		if(mDeviceAdapter.getItem(i).getAddress().equals(address)){

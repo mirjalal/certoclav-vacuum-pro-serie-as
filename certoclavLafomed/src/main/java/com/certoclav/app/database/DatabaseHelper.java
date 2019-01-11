@@ -25,7 +25,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     // name of the database file for your application -- change to something appropriate for your app
     public static final String DATABASE_NAME = "helloAndroid.db";
     // any time you make changes to your database objects, you may have to increase the database version
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
 
     // the DAO object we use to access the SimpleData table
@@ -85,6 +85,37 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        } else if (oldVersion < 4) {
+
+            try {
+                Log.i(DatabaseHelper.class.getName(), "onCreate");
+                TableUtils.dropTable(connectionSource, User.class, true);
+                TableUtils.dropTable(connectionSource, Profile.class, true);
+                TableUtils.dropTable(connectionSource, Protocol.class, true);
+                TableUtils.dropTable(connectionSource, ProtocolEntry.class, true);
+                TableUtils.dropTable(connectionSource, Message.class, true);
+                TableUtils.dropTable(connectionSource, Controller.class, true);
+                TableUtils.dropTable(connectionSource, Video.class, true);
+                TableUtils.dropTable(connectionSource, UserController.class, true);
+                TableUtils.dropTable(connectionSource, AuditLog.class, true);
+                TableUtils.dropTable(connectionSource, DeletedProfileModel.class, true);
+
+                TableUtils.createTable(connectionSource, User.class);
+                TableUtils.createTable(connectionSource, Profile.class);
+                TableUtils.createTable(connectionSource, Protocol.class);
+                TableUtils.createTable(connectionSource, ProtocolEntry.class);
+                TableUtils.createTable(connectionSource, Message.class);
+                TableUtils.createTable(connectionSource, Controller.class);
+                TableUtils.createTable(connectionSource, Video.class);
+                TableUtils.createTable(connectionSource, UserController.class);
+                TableUtils.createTable(connectionSource, AuditLog.class);
+                TableUtils.createTable(connectionSource, DeletedProfileModel.class);
+
+            } catch (SQLException e) {
+                Log.e(DatabaseHelper.class.getName(), "Can't create database", e);
+                throw new RuntimeException(e);
+            }
+
         }
     }
 

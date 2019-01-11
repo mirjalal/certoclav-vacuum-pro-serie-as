@@ -16,7 +16,7 @@ import java.util.List;
 public class AutoclaveModelManager implements MyCallback {
 
     private static AutoclaveModelManager manager;
-    private Integer[] parametersForAdmin = new Integer[]{1, 2, 3, 4, 94, 95, 96, 98};
+    private Integer[] parametersForAdmin = new Integer[]{1, 2, 3, 4,71,72, 94, 95, 96, 98};
     private int currentSentParameterId = 1;
 
     private AutoclaveModelManager() {
@@ -37,7 +37,6 @@ public class AutoclaveModelManager implements MyCallback {
         if (serialNumber == null) {
             return null;
         }
-        ReadAndParseSerialService.getInstance().removeCallback(this);
         return serialNumber.getValue().toString();
     }
 
@@ -127,6 +126,7 @@ public class AutoclaveModelManager implements MyCallback {
         if (requestId == ReadAndParseSerialService.HANDLER_MSG_ACK_GET_PARAMETER) {
             if (((AutoclaveParameter) response).getParameterId() == 1) {
                 model = (AutoclaveParameter) response;
+                ReadAndParseSerialService.getInstance().getParameter(3);
             }
             if (((AutoclaveParameter) response).getParameterId() == 3) {
                 serialNumber = (AutoclaveParameter) response;

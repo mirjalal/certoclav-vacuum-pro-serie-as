@@ -62,7 +62,6 @@ public class CloudDatabase {
             jsonObjectCondition.put("conditions", jsonArrayCondition);
             body.put("condition", jsonObjectCondition);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return postUtil.postToCertocloud(body.toString(), CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_POST_CONDITIONS_UPDATE, true);

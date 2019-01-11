@@ -17,20 +17,14 @@ import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.adapters.ProgramAdapter;
 import com.certoclav.app.database.DatabaseService;
-import com.certoclav.app.database.DeletedProfileModel;
 import com.certoclav.app.database.Profile;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.MyCallback;
 import com.certoclav.app.util.ProfileSyncedListener;
-import com.certoclav.library.certocloud.CertocloudConstants;
-import com.certoclav.library.certocloud.DeleteTask;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class SterilisationFragment extends Fragment implements ProfileSyncedListener {
 
@@ -116,7 +110,6 @@ public class SterilisationFragment extends Fragment implements ProfileSyncedList
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        // TODO Auto-generated method stub
         switch (item.getItemId()) {
             case CONTEXT_MENU_EDIT: {
                 // Edit Action
@@ -168,8 +161,9 @@ public class SterilisationFragment extends Fragment implements ProfileSyncedList
 
     @Override
     public void onProfileSynced() {
-        if (programAdapter != null)
+        if (programAdapter != null) {
             programAdapter.notifyDataSetChanged();
+        }
     }
 }
 

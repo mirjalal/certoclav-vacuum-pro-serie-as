@@ -187,7 +187,6 @@ public class BluetoothService   {
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			 			Log.e("BluetoothService","ConnectTask execution start");
@@ -242,7 +241,6 @@ public class BluetoothService   {
 		protected void onPostExecute(Boolean result) {
 			super.onPostExecute(result);
 			Log.e("BluetoothService","ConnectTask OnPostExecute: " + Boolean.toString(result));
-			// TODO Auto-generated method stub
 			if(result){
 				
 				//initInAndOutStream(mmSocket, mmDevice);

@@ -276,6 +276,7 @@
     <string name="program_finished_successfully">Programm erfolgreich abgeschlossen</string>
     <string name="steam">Dampf</string>
     <string name="media">Medium</string>
+    <string name="media_2">Medium 2</string>
     <string name="press">Druck</string>
     <string name="vent">ENTLÜFTE</string>
     <string name="media_temperature">Mediumtemperatur</string>

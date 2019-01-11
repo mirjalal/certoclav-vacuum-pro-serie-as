@@ -30,6 +30,7 @@
     <bool name="preferences_lockout_language">false</bool>
     <bool name="preferences_lockout_notifications">false</bool>
     <bool name="preferences_lockout_sterilization">false</bool>
+    <bool name="preferences_lockout_autoclave">false</bool>
     <bool name="preferences_lockout_calibration">false</bool>
     <bool name="preferences_lockout_glp">false</bool>
     <bool name="preferences_lockout_service">false</bool>

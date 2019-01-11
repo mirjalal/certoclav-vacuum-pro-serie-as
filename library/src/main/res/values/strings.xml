@@ -289,6 +289,7 @@
     <string name="program_finished_successfully">program finished successfully</string>
     <string name="steam">STEAM</string>
     <string name="media">MEDIA</string>
+    <string name="media_2">MEDIA 2</string>
     <string name="press">PRESS</string>
     <string name="vent">VENT</string>
     <string name="media_temperature">Media temperature</string>

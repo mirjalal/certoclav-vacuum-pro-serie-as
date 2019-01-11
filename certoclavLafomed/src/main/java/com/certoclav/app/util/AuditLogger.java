@@ -40,6 +40,7 @@ public class AuditLogger {
     public static final int ACTION_LOGOUT = 16;//R.string.audit_action_logout;
     public static final int ACTION_ACTIVATED = 17;//R.string.audit_action_activated;
     public static final int ACTION_PREF_CHANGED = 18;//R.string.audit_action_pref_changed;
+    public static final int ACTION_PROGRAM_FINISHED_MAINTAIN_TEMP = 19;//R.string.audit_action_program_finished_maintain;
 
 
     //Object Names
@@ -79,6 +80,7 @@ public class AuditLogger {
         map.put(ACTION_PROGRAM_INDICATOR_CHANGED, R.string.audit_action_program_indicator_changed);
         map.put(ACTION_PROGRAM_CANCELED, R.string.audit_action_program_canceled);
         map.put(ACTION_PROGRAM_FINISHED, R.string.audit_action_program_finished);
+        map.put(ACTION_PROGRAM_FINISHED_MAINTAIN_TEMP, R.string.audit_action_program_finished_maintain);
         map.put(ACTION_PROGRAM_FAILED, R.string.audit_action_program_failed);
         map.put(ACTION_FAILED_LOGIN, R.string.audit_action_failed_to_login);
         map.put(ACTION_SUCCESS_LOGIN, R.string.audit_action_success_to_login);

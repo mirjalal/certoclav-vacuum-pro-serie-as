@@ -159,6 +159,9 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
 
 
         findPreference(AppConstants.PREFERENCE_KEY_CHOOSE_SERVER).setOnPreferenceClickListener(this);
+        findPreference(AppConstants.PREFERENCE_KEY_CHOOSE_SERVER).setEnabled(
+                Autoclave.getInstance().getUser().isAdmin() && Autoclave.getInstance().getState() != AutoclaveState.LOCKED
+        );
         updateServerSummary();
         //register Listeners
         prefs.registerOnSharedPreferenceChangeListener(this);

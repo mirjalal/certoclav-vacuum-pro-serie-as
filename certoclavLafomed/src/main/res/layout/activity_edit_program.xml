@@ -69,15 +69,23 @@
                     <CheckBox
                         android:id="@+id/checkboxIdLiquidProgram"
                         android:layout_width="match_parent"
+                        android:checked="true"
                         android:layout_height="wrap_content"
                         android:text="@string/is_liquid_program" />
 
 
                     <CheckBox
-                        android:id="@+id/checkboxIsContByFlexProbe"
+                        android:id="@+id/checkboxIsContByFlexProbe1"
+                        android:layout_width="match_parent"
+
+                        android:layout_height="wrap_content"
+                        android:text="@string/is_cont_by_flex_probe_1" />
+
+                    <CheckBox
+                        android:id="@+id/checkboxIsContByFlexProbe2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/is_cont_by_flex_probe" />
+                        android:text="@string/is_cont_by_flex_probe_2" />
 
 
                     <CheckBox
@@ -85,6 +93,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/is_maintain_final_temp" />
+
                     <CheckBox
                         android:id="@+id/checkboxIsF0FunctionEnabled"
                         android:layout_width="match_parent"
@@ -147,6 +156,7 @@
                             tools:ignore="HardcodedText" />
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/linearLayoutSterilisation"
                         android:layout_width="match_parent"

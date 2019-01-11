@@ -6,38 +6,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/monitor_countdown_bar_background"
-        android:layout_width="300dp"
-        android:layout_height="5dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="#254061"
-        android:visibility="gone" />
+    <!--<FrameLayout-->
+    <!--android:id="@+id/monitor_countdown_bar_background"-->
+    <!--android:layout_width="300dp"-->
+    <!--android:layout_height="5dp"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:background="#254061"-->
+    <!--android:visibility="gone" />-->
 
-    <FrameLayout
-        android:id="@+id/monitor_countdown_bar"
-        android:layout_width="100dp"
-        android:layout_height="5dp"
-        android:layout_alignLeft="@+id/monitor_countdown_bar_background"
-        android:layout_alignParentBottom="true"
-        android:background="#4BACC6"
-        android:visibility="gone" />
+    <!--<FrameLayout-->
+    <!--android:id="@+id/monitor_countdown_bar"-->
+    <!--android:layout_width="100dp"-->
+    <!--android:layout_height="5dp"-->
+    <!--android:layout_alignLeft="@+id/monitor_countdown_bar_background"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:background="#4BACC6"-->
+    <!--android:visibility="gone" />-->
 
     <TextView
         android:id="@+id/monitor_countdown_number"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/monitor_countdown_bar"
-        android:layout_alignLeft="@+id/monitor_countdown_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text="00:00:00"
-        android:textSize="60dp"
-        android:textStyle="bold"
         android:textColor="#666666"
+        android:textSize="40sp"
+        android:textStyle="bold"
         tools:ignore="HardcodedText"></TextView>
+
+    <TextView
+        android:id="@+id/monitor_countdown_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="00:00:00"
+        android:textColor="#666666"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText"></TextView>
+
+    <ProgressBar
+        android:id="@+id/progressBarF0Function"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:scaleY="6"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginTop="10dp"
+        android:max="1000"
+        android:minHeight="20dp"
+        android:layout_height="30dp" />
 
 
 </LinearLayout>

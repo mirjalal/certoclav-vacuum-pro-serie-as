@@ -68,6 +68,10 @@ public class CertocloudConstants {
     public static String getServerUrl() {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(ApplicationController.getContext());
         String ip = pref.getString(PREFERENCE_KEY_SERVER_IP, CertocloudConstants.SERVER_URL);
+		ip = ip.trim();
+        if(!(ip.contains("https://") || ip.contains("http://")))
+        	ip = "http://"+ip;
+
         String port = pref.getString(PREFERENCE_KEY_SERVER_PORT, null);
         return ip + ((port != null && port.length() > 0) ? (":" + port) : "");
     }

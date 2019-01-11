@@ -49,14 +49,15 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     public static final int INDEX_DAT_PRESSURE_OPTIONAL = 9;
     public static final int INDEX_DAT_DIGITAL = 10;
     public static final int INDEX_DAT_PROGRAM_STEP = 11;
-    public static final int INDEX_DAT_ERRORCODE = 12;
-    public static final int INDEX_DAT_DEBUG_INPUT = 13;
-    public static final int INDEX_DAT_DEBUG_OUTPUT = 14;
-    public static final int INDEX_DAT_CHECKSUM = 15;
-    public static final int NUMBER_OF_DAT_RESPONSE_PARAMETERS = 16;
-    public static final int NUMBER_OF_PROGRAM_RESPONSE_PARAMETERS = 14;
+    public static final int INDEX_DAT_TIME_OR_PERCENT = 12;
+    public static final int INDEX_DAT_ERRORCODE = 13;
+    public static final int INDEX_DAT_DEBUG_INPUT = 14;
+    public static final int INDEX_DAT_DEBUG_OUTPUT = 15;
+    public static final int INDEX_DAT_CHECKSUM = 16;
+    public static final int NUMBER_OF_DAT_RESPONSE_PARAMETERS = 17;
+    public static final int NUMBER_OF_PROGRAM_RESPONSE_PARAMETERS = 15;
     private static Context mContext;
-    private int delayForGetData = 100;
+    private int delayForGetData = 1000;
     //Errors
     public static final int ERROR_NOT_DEFINED = -1;
     public static final int ERROR_CHECKSUM_WRONG = 0;
@@ -69,14 +70,15 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     public static final int INDEX_PROGRAM_FINAL_TEMP = 3;
     public static final int INDEX_PROGRAM_IS_MAINTAIN = 4;
     public static final int INDEX_PROGRAM_IS_LIQUID_PROGRAM = 5;
-    public static final int INDEX_PROGRAM_IS_CONT_BY_FLEX_PROBE= 6;
-    public static final int INDEX_PROGRAM_DRYING_TIME = 7;
-    public static final int INDEX_PROGRAM_STERILIZATION_TIME = 8;
-    public static final int INDEX_PROGRAM_PULSE_VACUUM = 9;
-    public static final int INDEX_PROGRAM_IS_F0_ENABLED = 10;
-    public static final int INDEX_PROGRAM_F0_VALUE = 11;
-    public static final int INDEX_PROGRAM_Z_VALUE = 12;
-    public static final int INDEX_PROGRAM_CHECKSUM = 13;
+    public static final int INDEX_PROGRAM_IS_CONT_BY_FLEX_PROBE_1 = 6;
+    public static final int INDEX_PROGRAM_IS_CONT_BY_FLEX_PROBE_2 = 7;
+    public static final int INDEX_PROGRAM_DRYING_TIME = 8;
+    public static final int INDEX_PROGRAM_STERILIZATION_TIME = 9;
+    public static final int INDEX_PROGRAM_PULSE_VACUUM = 10;
+    public static final int INDEX_PROGRAM_IS_F0_ENABLED = 11;
+    public static final int INDEX_PROGRAM_F0_VALUE = 12;
+    public static final int INDEX_PROGRAM_Z_VALUE = 13;
+    public static final int INDEX_PROGRAM_CHECKSUM = 14;
     Double offsetSteam = 0d;
     private int currentCommand = -1;
 
@@ -114,13 +116,32 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                 } else {
 
                     if (commandQueue.size() == 0) {
-                        commandSent(COMMANDS.CREATE(COMMANDS.GET_DATA));
+//                        commandSent(COMMANDS.CREATE(COMMANDS.GET_DATA));
                         serialService.sendMessage(COMMANDS.CREATE(COMMANDS.GET_DATA));
-                    } else
-                        commandQueue.clear();
+                    }
                 }
                 handlerGetData.removeCallbacks(this);
                 handlerGetData.postDelayed(this, delayForGetData);
+            } catch (Exception e) {
+                e.printStackTrace();
+                runnableGetDataIsAlive = false;
+            }
+        }
+    };
+
+    private Runnable runnableOtherCommands = new Runnable() {
+        @Override
+        public void run() {
+            try {
+
+                handlerGetData.removeCallbacks(runnableGetData);
+                commandSent(commandQueue.get(0));
+                serialService.sendMessage(commandQueue.get(0));
+                handler.postDelayed(runnableTimeout, 4000);
+                Log.e("Serialservice", "CREATE: " + commandQueue.get(0));
+                commandQueue.remove(0);
+                handlerGetData.postDelayed(runnableGetData, delayForGetData);
+
             } catch (Exception e) {
                 e.printStackTrace();
                 runnableGetDataIsAlive = false;
@@ -140,11 +161,11 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         //Checksum will add automatically, shouldn't add to end of the commands
         final static String NEWLINE = "\n";
         final static String START = "CMD_STAR %s,";
-        final static String CMD_STOP = "CMD_STOP";
+        final static String CMD_STOP = "CMD_STOP %d,";
         final static String CMD_FLASH_USB = "CMD_STOP";
         final static String GET_DATA = "GET_DATA";
         final static String GET_PROGRAM = "GET_PROG %d,";
-        final static String SET_PROGRAM = "SET_PROG %d,%s,%f,%d,%d,%d,%d,%d,%d,%d,%d,%f,%f,";
+        final static String SET_PROGRAM = "SET_PROG %d,%s,%.1f,%.1f,%d,%d,%d,%d,%d,%d,%d,%d,%.1f,%.1f,";
         final static String GET_PROGRAMS = "GET_PROGS";
         final static String GET_PARAS = "GET_PARAS";
         final static String CMD_UTF = "CMD_UTF";
@@ -188,24 +209,17 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     private void sendCommand(String command) {
 
         commandQueue.add(command);
-        if(AutoclaveModelManager.getInstance().getModel()==null){
+        if (AutoclaveModelManager.getInstance().getModel() == null) {
             commandQueue.clear();
             commandQueue.add(COMMANDS.CREATE(COMMANDS.GET_PARAMETER, 1));
-        }else if(AutoclaveModelManager.getInstance().getSerialNumber()==null){
+        } else if (AutoclaveModelManager.getInstance().getSerialNumber() == null) {
             commandQueue.clear();
             commandQueue.add(COMMANDS.CREATE(COMMANDS.GET_PARAMETER, 3));
         }
 
+        if (commandQueue.size() == 1)
+            handler.post(runnableOtherCommands);
 
-        if (commandQueue.size() > 0) {
-            commandSent(commandQueue.get(0));
-            serialService.sendMessage(commandQueue.get(0));
-            handler.postDelayed(runnableTimeout, 4000);
-            Log.e("Serialservice", "CREATE: " + commandQueue.get(0));
-            commandQueue.remove(0);
-            handlerGetData.removeCallbacks(runnableGetData);
-            handlerGetData.postDelayed(runnableGetData, 5000);
-        }
     }
 
 
@@ -236,8 +250,8 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         sendCommand(COMMANDS.CREATE(COMMANDS.CONFIRM_ERROR));
     }
 
-    public void sendStopCommand() {
-        sendCommand(COMMANDS.CREATE(COMMANDS.CMD_STOP));
+    public void sendStopCommand(boolean isForce) {
+        sendCommand(COMMANDS.CREATE(COMMANDS.CMD_STOP, isForce ? 1 : 0));
     }
 
     public void sendGetUserProgramCommand() {
@@ -283,12 +297,13 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     public void setProgram(Profile profile) {
         sendCommand(COMMANDS.CREATE(COMMANDS.SET_PROGRAM,
                 profile.getIndex(),
-                profile.getName(),
+                profile.getName().replaceAll(" ", "_"),
                 profile.getSterilisationTemperature(),
                 profile.getFinalTemp(),
                 profile.isMaintainEnabled() ? 1 : 0,
                 profile.isLiquidProgram() ? 1 : 0,
-                profile.isContByFlexProbe() ? 1 : 0,
+                profile.isContByFlexProbe1Enabled() ? 1 : 0,
+                profile.isContByFlexProbe2Enabled() ? 1 : 0,
                 profile.getDryTime(),
                 profile.getSterilisationTime(),
                 profile.getVacuumTimes(),
@@ -323,6 +338,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 
     //data parsed from GET_DATA
     private int cycleNumber = 0;
+    private float timeOrPercent = 0f;
     boolean[] digitalData = new boolean[AppConstants.NUMBER_OF_DIGITAL_BITS];
     private String errorCode = "00000000";
     private String date = "";
@@ -354,6 +370,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                     Autoclave.getInstance().setErrorCode(errorCode);
                     Autoclave.getInstance().setDate(date);
                     Autoclave.getInstance().setTime(time);
+                    Autoclave.getInstance().setTimeOrPercent(timeOrPercent);
                     Autoclave.getInstance().setIndexOfRunningProgram(indexOfRunningProgram);
                     Autoclave.getInstance().setMicrocontrollerReachable(true);
                     Autoclave.getInstance().getController().setCycleNumber(cycleNumber);
@@ -442,6 +459,8 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     public void onMessageReceived(String message) {
         responseRead(message);
 
+        if (commandQueue.size() > 0)
+            handler.post(runnableOtherCommands);
         //Wait 1 seconds before sending GET_DATA command after sending other commands
         handlerGetData.removeCallbacks(runnableGetData);
         handlerGetData.postDelayed(runnableGetData, delayForGetData);
@@ -453,7 +472,6 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
             Log.e("ReadAndParse", "error transform to utf-8");
         }
         Log.e("ReadAndParse", "received: " + message);
-        //TODO if need add a checksum error
         if (AppConstants.CHECK_CHECKSUM && !checkChecksum(message)) {
             com.certoclav.app.model.Log.e("Checksum failed!\n" + message);
             Message mesg = new Message();
@@ -477,7 +495,6 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         Log.e("Delay:", delayForGetData + " " + response[0]);
         try {
             switch (response[0]) {
-                //TODO prase 2
                 case "ACK_ADJU":
                     //ACK_ADJU -1.0,0.0,0.0,00,-0.1
                     //           0   1   2   3   4
@@ -499,7 +516,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                     handler.sendEmptyMessage(HANDLER_MSG_CALIBRATION);
                     break;
                 case RESPONSES.ACK_STAR:
-                    delayForGetData = 100;
+                    delayForGetData = 1000;
                     handlerGetData.removeCallbacks(runnableGetData);
                     handlerGetData.postDelayed(runnableGetData, delayForGetData);
                     if (responseParameters[0] != null && responseParameters[0].equals("1"))
@@ -510,7 +527,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                                         " (" + mContext.getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() + ")");
                     break;
                 case RESPONSES.ACK_STOP:
-                    delayForGetData = 100;
+                    delayForGetData = 1000;
                     handlerGetData.removeCallbacks(runnableGetData);
                     handlerGetData.postDelayed(runnableGetData, delayForGetData);
                     if (responseParameters[0] != null && responseParameters[0].equals("1"))
@@ -527,6 +544,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                         time = responseParameters[INDEX_DAT_TIME];
                         indexOfRunningProgram = Integer.parseInt(responseParameters[INDEX_DAT_PROGRAM_INDEX]);
                         cycleNumber = Integer.parseInt(responseParameters[INDEX_DAT_CYCLE]);
+                        timeOrPercent = Float.parseFloat(responseParameters[INDEX_DAT_TIME_OR_PERCENT]);
                         temperatures[0] = Float.parseFloat(responseParameters[INDEX_DAT_TEMP_STEAM]);
                         temperatures[1] = Float.parseFloat(responseParameters[INDEX_DAT_TEMP_MEDIA]);
                         temperatures[2] = Float.parseFloat(responseParameters[INDEX_DAT_TEMP_OPTIONAL_1]);
@@ -552,7 +570,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                             errorCode = "00000000";
                         }
 
-                        delayForGetData = isProgramRunning || (errorCode != null && !errorCode.equals("00000000")) ? 100 : 5000;
+                        delayForGetData = isProgramRunning || (errorCode != null && !errorCode.equals("00000000")) ? 1000 : 2000;
 
                         String checksum = responseParameters[INDEX_DAT_CHECKSUM];
 
@@ -590,7 +608,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 
 
                     handlerGetData.removeCallbacks(runnableGetData);
-                    handlerGetData.postDelayed(runnableGetData, 1000);
+                    handlerGetData.postDelayed(runnableGetData, delayForGetData);
 
 
                     if (responseParameters.length == 2 && Integer.valueOf(responseParameters[0]) == 1) {
@@ -607,7 +625,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 
 
                     handlerGetData.removeCallbacks(runnableGetData);
-                    handlerGetData.postDelayed(runnableGetData, 1000);
+                    handlerGetData.postDelayed(runnableGetData, delayForGetData);
 
 
                     if (responseParameters.length == 2) {
@@ -622,7 +640,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                 case RESPONSES.ACK_PROGS:
 
                     handlerGetData.removeCallbacks(runnableGetData);
-                    handlerGetData.postDelayed(runnableGetData, 1000);
+                    handlerGetData.postDelayed(runnableGetData, delayForGetData);
                     String[] parametersParameters = response[1].split(";");
                     List<Profile> programs = new ArrayList<>();
                     for (String program : parametersParameters) {
@@ -658,7 +676,8 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                                     Integer.valueOf(responseParameters[INDEX_PROGRAM_NUM]),
                                     responseParameters[INDEX_PROGRAM_IS_F0_ENABLED].equals("1"),
                                     responseParameters[INDEX_PROGRAM_IS_MAINTAIN].equals("1"),
-                                    responseParameters[INDEX_PROGRAM_IS_CONT_BY_FLEX_PROBE].equals("1"),
+                                    responseParameters[INDEX_PROGRAM_IS_CONT_BY_FLEX_PROBE_1].equals("1"),
+                                    responseParameters[INDEX_PROGRAM_IS_CONT_BY_FLEX_PROBE_2].equals("1"),
                                     Integer.valueOf(responseParameters[INDEX_PROGRAM_FINAL_TEMP]),
                                     Float.valueOf(responseParameters[INDEX_PROGRAM_F0_VALUE]),
                                     Float.valueOf(responseParameters[INDEX_PROGRAM_Z_VALUE])
@@ -678,7 +697,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                 case RESPONSES.ACK_PARA:
 
                     handlerGetData.removeCallbacks(runnableGetData);
-                    handlerGetData.postDelayed(runnableGetData, 1000);
+                    handlerGetData.postDelayed(runnableGetData, delayForGetData);
 
                     if (responseParameters.length == 2) {
                         msg = new Message();
@@ -698,7 +717,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                 case RESPONSES.ACK_PARAS:
 
                     handlerGetData.removeCallbacks(runnableGetData);
-                    handlerGetData.postDelayed(runnableGetData, 1000);
+                    handlerGetData.postDelayed(runnableGetData, delayForGetData);
                     parametersParameters = response[1].split(";");
                     List<AutoclaveParameter> parameters = new ArrayList<>();
                     for (String parameter : parametersParameters) {
@@ -789,7 +808,6 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         digitalData[AppConstants.DIGITAL_WATER_LVL_LOW_INDEX] = isWaterLevelSourceLow;
         digitalData[AppConstants.DIGITAL_WATER_LVL_FULL_INDEX] = isWaterLevelBinFull;
         digitalData[AppConstants.DIGITAL_FAIL_WATER_QUALITY] = isWaterQualityBad;
-        //TODO simulate manaul stop error
         //digitalData[AppConstants.DIGITAL_FAIL_STOPPED_BY_USER] = isStopedByUser;
         indexOfRunningProgram = 1;
         try {
@@ -859,11 +877,13 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     }
 
     private void commandSent(String message) {
+        Log.e("COMMANDS SENT",message);
         for (SerialReadWriteListener listener : listeners)
             listener.onWrote(message);
     }
 
     private void responseRead(String message) {
+        Log.e("RECEIVE",message);
         for (SerialReadWriteListener listener : listeners)
             listener.onRead(message);
     }
