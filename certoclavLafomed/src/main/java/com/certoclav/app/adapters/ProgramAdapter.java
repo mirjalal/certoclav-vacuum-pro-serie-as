@@ -25,6 +25,7 @@ import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.monitor.MonitorActivity;
 import com.certoclav.app.sterilisationassistant.AssistantActivity;
+import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.certocloud.CloudUser;
 
@@ -175,6 +176,16 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
             SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
                     .setTitleText(mContext.getString(R.string.permission_denied))
                     .setContentText(mContext.getString(R.string.admin_user_cant_start_a_program_and_info))
+                    .setConfirmText(mContext.getString(R.string.ok));
+            sweetAlertDialog.show();
+            return;
+        }
+
+        if (Autoclave.getInstance().getProgramStep() == Autoclave.PROGRAM_STEPS.PRE_HEATING
+                && AutoclaveModelManager.getInstance().isWarmingUpEnabled()) {
+            SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText(mContext.getString(R.string.can_not_start_program))
+                    .setContentText(mContext.getString(R.string.can_not_start_program_please_wait_warming_up_finished))
                     .setConfirmText(mContext.getString(R.string.ok));
             sweetAlertDialog.show();
             return;

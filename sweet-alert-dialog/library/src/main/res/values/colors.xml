@@ -8,6 +8,7 @@
     <color name="blue_btn_bg_color">#AEDEF4</color>
     <color name="blue_btn_bg_pressed_color">#96BFD2</color>
     <color name="green_btn_bg_color">#44DE44</color>
+    <color name="green_btn_bg_color_disabled">#3344DE44</color>
     <color name="green_btn_bg_pressed_color">#66BF66</color>
     <color name="red_btn_bg_color">#DD6B55</color>
     <color name="red_btn_bg_pressed_color">#CD5B55</color>

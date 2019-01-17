@@ -54,6 +54,9 @@ import com.crashlytics.android.Crashlytics;
 
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import cn.pedant.SweetAlert.ProgressHelper;
@@ -147,12 +150,12 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         setContentView(R.layout.login_activity);
         modelManager = AutoclaveModelManager.getInstance();
 
-//        try {
-//            if (new Date().after(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse("2018-10-15T09:27:37Z")))
-//                finish();
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            if (new Date().after(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse("2019-07-15T09:27:37Z")))
+                finish();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         serverConfigs = ServerConfigs.getInstance(this);
         AuditLogger.init();
         Fabric.with(this, new Crashlytics());
@@ -300,10 +303,12 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 
                         @Override
                         protected Boolean doInBackground(String... params) {
-                            if (BCrypt.checkpw(params[0], params[1])
-                                    || params[0].toString().equals(AppConstants.DEFAULT_CLOUD_ADMIN_PASSWORD)
-                                    || params[0].toString().equals(AppConstants.DEFAULT_SUPER_ADMIN_PASSWORD)
-                                    || Helper.checkAdminPassword(getApplicationContext(), params[0])) {
+                            User selectedUser = listUsers.get(Integer.valueOf(params[2]));
+                            if ((!selectedUser.isAdmin() && BCrypt.checkpw(params[0], params[1]))
+                                    || params[0].equals(AppConstants.DEFAULT_CLOUD_ADMIN_PASSWORD)
+                                    || params[0].equals(AppConstants.DEFAULT_SUPER_ADMIN_PASSWORD)
+                                    || (selectedUser.isAdmin() &&
+                                    Helper.checkAdminPassword(getApplicationContext(), params[0]))) {
 
                                 DatabaseService databaseService = DatabaseService.getInstance();
 
@@ -311,7 +316,6 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                                 // if the user trys to log in into this
                                 // Controller the first time, then save him into
                                 // the UserController Table.
-                                User selectedUser = listUsers.get(Integer.valueOf(params[2]));
 
 
                                 return true;

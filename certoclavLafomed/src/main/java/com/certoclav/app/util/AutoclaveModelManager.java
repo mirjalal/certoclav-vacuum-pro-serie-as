@@ -16,7 +16,7 @@ import java.util.List;
 public class AutoclaveModelManager implements MyCallback {
 
     private static AutoclaveModelManager manager;
-    private Integer[] parametersForAdmin = new Integer[]{1, 2, 3, 4,71,72, 94, 95, 96, 98};
+    private Integer[] parametersForAdmin = new Integer[]{1, 2, 3, 4, 71, 72, 94, 95, 96, 98};
     private int currentSentParameterId = 1;
 
     private AutoclaveModelManager() {
@@ -60,6 +60,11 @@ public class AutoclaveModelManager implements MyCallback {
         }
     }
 
+
+    public Pair<Float, Float> getWarmingUpTempRange() {
+        return new Pair<>(0f, 199f);
+    }
+
     public Pair<Integer, Integer> getSterilizationTimeRange() {
         switch (model.getValue().toString()) {
             case "AEB":
@@ -86,6 +91,21 @@ public class AutoclaveModelManager implements MyCallback {
         }
         //No Vacuum Phase exists
         return null;
+    }
+
+    //Here, for PD model, when the autoclave starts, the first stage is warning-up which doesn't
+    // allow to users to start a program during the stage
+    public boolean isWarmingUpEnabled() {
+        switch (getModelName()) {
+            case "AHSB":
+            case "TLVPD":
+            case "AEB":
+                return true;
+            case "TLVFA":
+            case "TLV":
+        }
+        //No Vacuum Phase exists
+        return false;
     }
 
     public List<Integer> getAdminParameters() {

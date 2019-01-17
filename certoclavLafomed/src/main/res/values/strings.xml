@@ -812,7 +812,7 @@
     <string name="program_step_f0_function_desc">F0 Value: %1$.1f °C, Z value: %2$.1f °C</string>
     <string name="program_step_dry_desc">%1$d minutes</string>
     <string name="program_step_vacuum_desc">%1$d times</string>
-    <string name="program_step_final_temp_desc">Keep temperature at %1$d °C</string>
+    <string name="program_step_final_temp_desc">Keep temperature at %1$.1f °C</string>
     <string name="temperature_title">TEMPERATURE</string>
     <string name="vacuum_pulse_times">times</string>
     <string name="drying_time_minutes">minutes</string>
@@ -852,6 +852,7 @@
     <string name="preferences_autoclave_starting_pressure">Starting Pressure</string>
     <string name="preferences_autoclave_cooling_pressure">Cooling Pressure</string>
     <string name="preferences_autoclave_warm_up_temp">Warm-up Temperature</string>
+    <string name="preferences_autoclave_warm_up_temp_range">Warm-up Temperature should be between %1$.2f and %2$.2f ℃</string>
     <string name="preferences_autoclave_number_cycle">Cycle number</string>
     <string name="preferences_autoclave_number_hours">Number of hours</string>
     <string name="preferences_autoclave_number_review_hours">Number of review hours</string>
@@ -908,6 +909,10 @@
     <string name="current_program_step_ventilation_up_desc">VENTILATION</string>
     <string name="current_program_step_stabilization_desc">STABILIZATION</string>
     <string name="current_program_step_cooling_down_desc">COOLING DOWN</string>
+    <string name="can_not_start_program">Warming up</string>
+    <string name="can_not_start_program_please_wait_warming_up_finished">Can\'t start a program during warming up the autoclave. Please wait.</string>
+    <string name="can_not_stop_program">CAN\'T STOP PROGRAM</string>
+    <string name="can_not_stop_program_please_wait_door_closing">Can\'t stop the program please wait till the door locked.  (%1$d </string>
 
 
 </resources>

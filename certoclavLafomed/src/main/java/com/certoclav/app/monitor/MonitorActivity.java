@@ -33,7 +33,9 @@ import com.certoclav.app.listener.AlertListener;
 import com.certoclav.app.listener.AutoclaveStateListener;
 import com.certoclav.app.listener.NavigationbarListener;
 import com.certoclav.app.listener.ProfileListener;
+import com.certoclav.app.listener.SensorDataListener;
 import com.certoclav.app.model.Autoclave;
+import com.certoclav.app.model.AutoclaveData;
 import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
@@ -74,6 +76,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
     private Button buttonStop;
     private TextView textSteps;
     private TextView textCycleCount;
+    private SweetAlertDialog sweetAlertDialogCanNotStop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,7 +156,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
         buttonStop.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
 
                 if (Autoclave.getInstance().getState().equals(AutoclaveState.NOT_RUNNING)) {
                     showStartNowOrLaterProgramDialog();
@@ -161,6 +164,49 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                         && Autoclave.getInstance().getProgramStep() != Autoclave.PROGRAM_STEPS.MAINTAIN_TEMP) {
                     //do nothing
                 } else {
+
+                    if (Autoclave.getInstance().getState().equals(AutoclaveState.RUNNING) &&
+                            !Autoclave.getInstance().isDoorLocked()) {
+                        final SensorDataListener sensorDataListener = new SensorDataListener() {
+                            @Override
+                            public void onSensorDataChange(AutoclaveData data) {
+                                if (sweetAlertDialogCanNotStop != null && sweetAlertDialogCanNotStop.isShowing()) {
+                                    int percent = (int) ((data.getPress().getCurrentValue() * 100f) / -0.3);
+                                    percent = Math.min(percent, 100);
+                                    sweetAlertDialogCanNotStop.setContentText(
+                                            getString(R.string.can_not_stop_program_please_wait_door_closing,
+                                                    percent)+" % )");
+                                    sweetAlertDialogCanNotStop.setConfirmButtonEnable(data.isDoorLocked());
+                                }
+                            }
+                        };
+                        sweetAlertDialogCanNotStop = new SweetAlertDialog(MonitorActivity.this, SweetAlertDialog.WARNING_TYPE)
+                                .setTitleText(getString(R.string.can_not_stop_program))
+                                .setContentText(getString(R.string.can_not_stop_program_please_wait_door_closing, 0))
+                                .setConfirmText(getString(R.string.stop_program))
+                                .setCancelText(getString(R.string.cancel))
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        v.callOnClick();
+                                        sweetAlertDialog.dismissWithAnimation();
+                                        Autoclave.getInstance().removeOnSensorDataListener(sensorDataListener);
+                                    }
+                                })
+                                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        sweetAlertDialog.dismiss();
+                                        Autoclave.getInstance().removeOnSensorDataListener(sensorDataListener);
+                                    }
+                                });
+
+                        Autoclave.getInstance().setOnSensorDataListener(sensorDataListener);
+                        sweetAlertDialogCanNotStop.show();
+                        sweetAlertDialogCanNotStop.setConfirmButtonEnable(false);
+                        return;
+
+                    }
                     Log.e("MonitorActivity", "sendStopCommand");
                     if (Autoclave.getInstance().getState().equals(AutoclaveState.RUNNING)
                             || Autoclave.getInstance().getProgramStep() == Autoclave.PROGRAM_STEPS.MAINTAIN_TEMP) {
@@ -170,7 +216,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                                 R.string.stop_program);
                         String dialogContentText = getString(
                                 Autoclave.getInstance().getProgramStep() == Autoclave.PROGRAM_STEPS.MAINTAIN_TEMP ?
-                                        R.string.do_you_really_want_to_stop_maintain_temp:
+                                        R.string.do_you_really_want_to_stop_maintain_temp :
                                         R.string.do_you_really_want_to_stop_the_running_program_);
 
 
@@ -312,6 +358,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                     textState.setText(getString(R.string.success_sterilization_and_maintain_temp,
                             Autoclave.getInstance().getProfile().getFinalTemp()));
                     buttonStop.setText(getString(R.string.stop_maintain_temp));
+                    buttonStop.setEnabled(true);
                 } else {
                     buttonStop.setEnabled(false);
                     buttonStop.setText(getString(R.string.please_open_door));

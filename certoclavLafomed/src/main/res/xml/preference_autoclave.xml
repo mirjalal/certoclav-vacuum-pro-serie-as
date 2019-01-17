@@ -126,7 +126,7 @@
 
         <EditTextPreference
             android:inputType="numberDecimal"
-            android:key="preferences_autoclave_parameter_97"
+            android:key="preferences_autoclave_parameter_99"
             android:title="@string/preferences_autoclave_warm_up_temp" />
 
     </PreferenceCategory>

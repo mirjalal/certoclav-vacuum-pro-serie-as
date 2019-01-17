@@ -140,11 +140,31 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
         }
 
         if (!manager.isWarmUpTempExistsInParameters()) {
-            Preference preference = findPreference("preferences_autoclave_parameter_97");
+            Preference preference = findPreference("preferences_autoclave_parameter_99");
             if (preference != null) {
                 PreferenceCategory preferenceRoot = (PreferenceCategory) findPreference("pref_key_calibration_category");
                 preferenceRoot.removePreference(preference);
             }
+        }else{
+            findPreference("preferences_autoclave_parameter_99")
+                    .setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    float val = Float.parseFloat(newValue.toString());
+                    if ((val >= manager.getWarmingUpTempRange().first) && (val <= manager.getWarmingUpTempRange().second)) {
+                        return true;
+                    }
+                    else {
+                        // invalid you can show invalid message
+                        Toasty.error(getContext(),
+                                getString(R.string.preferences_autoclave_warm_up_temp_range,
+                                        manager.getWarmingUpTempRange().first,
+                                        manager.getWarmingUpTempRange().second),
+                                Toast.LENGTH_SHORT, true).show();
+                        return false;
+                    }
+                }
+            });
         }
 
 

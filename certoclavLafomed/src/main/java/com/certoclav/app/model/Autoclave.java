@@ -44,9 +44,11 @@ public class Autoclave extends Observable {
     private SerialService serialServiceLabelPrinter = null;
     private ArrayList<String> listContent = new ArrayList<String>();
     private boolean isDebugMode;
+    private boolean isDoorLocked;
     private String[] debugData;
 
     public enum PROGRAM_STEPS{
+        PRE_HEATING("PH"),
         WARMING_UP("SW"),
         VACUUM_PULSE_1("SF11"),
         VACUUM_PULSE_1_("SF12"),
@@ -408,6 +410,15 @@ public class Autoclave extends Observable {
         for (AutoclaveStateListener listener : autoclaveStateListeners) {
             listener.onAutoclaveStateChange(state);
         }
+    }
+
+
+    public void setDoorLocked(boolean doorLocked) {
+        isDoorLocked = doorLocked;
+    }
+
+    public boolean isDoorLocked() {
+        return isDoorLocked;
     }
 
     private Date mLastSelfTest = null;//Date

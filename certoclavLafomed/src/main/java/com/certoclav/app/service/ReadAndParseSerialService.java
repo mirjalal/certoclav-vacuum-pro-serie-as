@@ -366,6 +366,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                             digitalData);
 
                     Autoclave.getInstance().setDebugData(debugData);
+                    Autoclave.getInstance().setDoorLocked(digitalData[AppConstants.DIGITAL_DOOR_LOCKED_INDEX]);
                     Autoclave.getInstance().setProgramStep(programStep);
                     Autoclave.getInstance().setErrorCode(errorCode);
                     Autoclave.getInstance().setDate(date);
