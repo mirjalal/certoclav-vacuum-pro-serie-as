@@ -83,10 +83,11 @@ public class MonitorCountdownFragment extends Fragment implements SensorDataList
             if (Autoclave.getInstance().getProfile().isF0Enabled()) {
                 loadingBar.setProgress((int)(timeLeftSeconds*10));
             } else {
+                int timeLeftSecondsInt = (int)timeLeftSeconds;
                 timeLeft.setText(String.format("%02d:%02d:%02d",
-                        (timeLeftSeconds / 60 / 60) % 24,
-                        (timeLeftSeconds / 60) % 60,
-                        timeLeftSeconds % 60));
+                        (timeLeftSecondsInt / 60 / 60) % 24,
+                        (timeLeftSecondsInt / 60) % 60,
+                        timeLeftSecondsInt % 60));
             }
 
             //loadingBar.getLayoutParams().width = 300 - (3* ((monitorService.getRemainingTime()*100) / monitorService.getAbsoluteTime(Autoclave.getInstance().getProfile())));

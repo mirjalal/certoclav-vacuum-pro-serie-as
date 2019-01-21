@@ -913,6 +913,8 @@
     <string name="can_not_start_program_please_wait_warming_up_finished">Can\'t start a program during warming up the autoclave. Please wait.</string>
     <string name="can_not_stop_program">CAN\'T STOP PROGRAM</string>
     <string name="can_not_stop_program_please_wait_door_closing">Can\'t stop the program please wait till the door locked.  (%1$d </string>
+    <string name="can_not_start_program_please_open_to_read_atmospheric_pressure">Can not start the program. Open door to read atmospheric pressure.</string>
+    <string name="atmospheric_pressure">Atmospheric pressure</string>
 
 
 </resources>

@@ -181,6 +181,15 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
             return;
         }
 
+        if (Autoclave.getInstance().getProgramStep() == Autoclave.PROGRAM_STEPS.ATMOSPHERIC_PRESSURE) {
+            SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText(mContext.getString(R.string.atmospheric_pressure))
+                    .setContentText(mContext.getString(R.string.can_not_start_program_please_open_to_read_atmospheric_pressure))
+                    .setConfirmText(mContext.getString(R.string.ok));
+            sweetAlertDialog.show();
+            return;
+        }
+
         if (Autoclave.getInstance().getProgramStep() == Autoclave.PROGRAM_STEPS.PRE_HEATING
                 && AutoclaveModelManager.getInstance().isWarmingUpEnabled()) {
             SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
