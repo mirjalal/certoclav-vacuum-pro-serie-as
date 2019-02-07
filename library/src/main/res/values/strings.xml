@@ -137,7 +137,7 @@
     <string name="minutes_remaining">minutes remaining</string>
     <string name="no_notifications">NO NOTIFICATIONS</string>
     <string name="temperature_in_c">Temperature in °C</string>
-    <string name="sterilisation">STERILISATION</string>
+    <string name="sterilisation">STERILIZING</string>
     <string name="logging">LOGGING</string>
     <string name="information">INFORMATION</string>
     <string name="intro_account_created">account created</string>

@@ -380,13 +380,9 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         progressBar.setVisibility(View.GONE);
         textViewLogin.setVisibility(View.VISIBLE);
         CloudUser.getInstance().setLoggedIn(false);
-
-
         AutoclaveMonitor.getInstance();
         Autoclave.getInstance().setOnControllerInfoListener(this);
-
         refreshUI();
-
     }
 
     private void refreshUI() {
@@ -612,6 +608,9 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                 break;
             case PostUtil.RETURN_ERROR_UNAUTHORISED_MAIL:
                 loginFailedMessage = getString(R.string.email_does_not_exist_please_create_a_certocloud_account_with_this_email_first_);
+                break;
+            case PostUtil.RETURN_ERROR_NO_DEVICE:
+                loginFailedMessage = getString(R.string.device_doesnt_exists);
                 break;
             case PostUtil.RETURN_ERROR_UNKNOWN_HOST:
                 loginFailedMessage = getString(R.string.not_able_to_connect_to_certocloud_);

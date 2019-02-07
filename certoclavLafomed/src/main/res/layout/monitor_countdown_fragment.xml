@@ -49,17 +49,38 @@
         android:textStyle="bold"
         tools:ignore="HardcodedText"></TextView>
 
-    <ProgressBar
-        android:id="@+id/progressBarF0Function"
-        style="?android:attr/progressBarStyleHorizontal"
+
+    <RelativeLayout
+        android:id="@+id/progressBarF0FunctionLayout"
         android:layout_width="match_parent"
-        android:scaleY="6"
+        android:layout_height="30dp"
         android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
         android:layout_marginTop="10dp"
-        android:max="1000"
         android:minHeight="20dp"
-        android:layout_height="30dp" />
+        android:layout_marginRight="60dp">
+
+        <ProgressBar
+            android:id="@+id/progressBarF0Function"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:max="1000"
+            android:progress="500"
+            android:scaleY="6" />
+
+        <TextView
+            android:id="@+id/progressBarF0FunctionText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:text="20"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:layout_alignTop="@id/progressBarF0Function"
+            android:layout_alignRight="@id/progressBarF0Function"
+            android:layout_alignBottom="@id/progressBarF0Function" />
+    </RelativeLayout>
 
 
 </LinearLayout>

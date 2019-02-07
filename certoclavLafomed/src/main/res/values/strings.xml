@@ -136,7 +136,7 @@
     <string name="minutes_remaining"> </string>
     <string name="no_notifications">NO NOTIFICATIONS</string>
     <string name="temperature_in_c">Temperature in °C</string>
-    <string name="sterilisation">STERILIZATION</string>
+    <string name="sterilisation">STERILIZING</string>
     <string name="logging">LOGGING</string>
     <string name="information">INFORMATION</string>
     <string name="intro_account_created">account created</string>
@@ -270,6 +270,7 @@
     <string name="timout_during_login_please_check_internet_availability_">Timout during login. Please check internet availability.\n</string>
     <string name="password_not_correct_">Password not correct.\n</string>
     <string name="email_does_not_exist_please_create_a_certocloud_account_with_this_email_first_">Email does not exist. Please create a RaypaCloud account with this email first.\n</string>
+    <string name="device_doesnt_exists">This device doesn\'t exist\n</string>
     <string name="not_able_to_connect_to_certocloud_">Not able to connect to RaypaCloud.\n</string>
     <string name="login_notification_offline">Autoclave is in offline mode\nNo RaypaCloud, automatic backups, remote control, support and software updates available</string>
     <string name="do_you_want_to_enable_network_communication">Do you want to enable network communication</string>
@@ -487,7 +488,7 @@
     <string name="power_loss_during_record">Power loss during record</string>
     <string name="kpa">kPa</string>
     <string name="choose_server">CHOOSE SERVER</string>
-    <string name="certoclav_server">RaypaCloud Server</string>
+    <string name="certoclav_server">RaypaCloud</string>
     <string name="manual_server">Add a server manually</string>
     <string name="search_server">Add a server from local network</string>
     <string name="selected">Selected</string>
@@ -812,7 +813,7 @@
     <string name="program_step_f0_function_desc">F0 Value: %1$.1f °C, Z value: %2$.1f °C</string>
     <string name="program_step_dry_desc">%1$d minutes</string>
     <string name="program_step_vacuum_desc">%1$d times</string>
-    <string name="program_step_final_temp_desc">Keep temperature at %1$.1f °C</string>
+    <string name="program_step_final_temp_desc">%1$.1f °C</string>
     <string name="temperature_title">TEMPERATURE</string>
     <string name="vacuum_pulse_times">times</string>
     <string name="drying_time_minutes">minutes</string>
@@ -884,6 +885,7 @@
     <string name="f0_value_title">F0 Value</string>
     <string name="z_value_title">Z Value</string>
     <string name="please_open_door">PLEASE OPEN DOOR</string>
+    <string name="please_wait_door_unlocking">DOOR IS UNLOCKING...</string>
     <string name="is_cont_by_flex_probe_1">Enable Flex Probe Control 1</string>
     <string name="is_cont_by_flex_probe_2">Enable Flex Probe Control 2</string>
     <string name="is_maintain_final_temp">Maintain final temperature</string>
@@ -906,8 +908,8 @@
     <string name="current_program_step_discharging_desc">DISCHARGING</string>
     <string name="current_program_step_leveling_desc">LEVELING</string>
     <string name="current_program_step_warming_up_desc">WARMING UP</string>
-    <string name="current_program_step_ventilation_up_desc">VENTILATION</string>
-    <string name="current_program_step_stabilization_desc">STABILIZATION</string>
+    <string name="current_program_step_ventilation_up_desc">VENTILATING</string>
+    <string name="current_program_step_stabilization_desc">STABILIZING</string>
     <string name="current_program_step_cooling_down_desc">COOLING DOWN</string>
     <string name="can_not_start_program">Warming up</string>
     <string name="can_not_start_program_please_wait_warming_up_finished">Can\'t start a program during warming up the autoclave. Please wait.</string>

@@ -2,7 +2,6 @@ package com.certoclav.app.database;
 
 
 import android.content.SharedPreferences;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 
 import com.certoclav.app.AppConstants;
@@ -10,11 +9,6 @@ import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.library.application.ApplicationController;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 
 /**
  * A simple demonstration object we are creating and persisting to the database.
@@ -85,19 +79,18 @@ public class Controller {
     public String getSavetyKey() {
 
 
-
         if (AppConstants.isIoSimulated) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ApplicationController.getContext());
             switch (prefs.getString(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL, "TLV-50")) {
                 case "AHS-75-B":
                     return "FF000003957204831";
-                case "TLV-50PD":
+                case "TLV-50-PD":
                     return "FF000003957204832";
-                case "TLV-75FA":
+                case "TLV-75-FA":
                     return "FF000003957204833";
             }
             return AppConstants.SIMULATED_SAVETY_KEY;
-        }else{
+        } else {
             return AutoclaveModelManager.getInstance().getSerialNumber();
         }
 
@@ -162,39 +155,11 @@ public class Controller {
             }
             return model;
         }
-        //Find the directory for the SD Card using the API
-        //*Don't* hardcode "/sdcard"
-        File sdcard = Environment.getExternalStorageDirectory();
-
-        //Get the text file
-        File file = new File(sdcard, "key.txt");
-
-        //Read text from file
-        StringBuilder serial = new StringBuilder();
-
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String line;
-
-            if ((line = br.readLine()) != null) {
-                if ((line = br.readLine()) != null)
-                    serial.append(line);
-            }
-            br.close();
-        } catch (IOException e) {
-            return "";
-        }
-
-
-        return serial.toString();
+        return AutoclaveModelManager.getInstance().getPCBSerialNumber();
     }
 
     public String getDeviceModel() {
-        if (AppConstants.isIoSimulated == true) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ApplicationController.getContext());
-            return prefs.getString(AppConstants.PREFERENCE_KEY_AUTOCLAVE_MODEL, "TLV-50");
-        }
-        return AppConstants.MODEL;
+        return AutoclaveModelManager.getInstance().getModel();
     }
 
 

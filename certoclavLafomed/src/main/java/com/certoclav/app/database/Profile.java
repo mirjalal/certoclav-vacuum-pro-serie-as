@@ -277,7 +277,7 @@ public class Profile {
                    boolean isMaintainEnabled,
                    boolean isContByFlexProbe1,
                    boolean isContByFlexProbe2,
-                   int finalTemp,
+                   float finalTemp,
                    float f0Value,
                    float zValue) {
         this.cloudId = cloudId;

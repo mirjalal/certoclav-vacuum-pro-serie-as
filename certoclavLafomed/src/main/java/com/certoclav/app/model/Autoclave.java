@@ -47,7 +47,7 @@ public class Autoclave extends Observable {
     private boolean isDoorLocked;
     private String[] debugData;
 
-    public enum PROGRAM_STEPS{
+    public enum PROGRAM_STEPS {
         ATMOSPHERIC_PRESSURE("PA"),
         PRE_HEATING("PH"),
         WARMING_UP("SW"),
@@ -70,10 +70,13 @@ public class Autoclave extends Observable {
         NOT_DEFINED("-1");
 
         private String value;
+
         PROGRAM_STEPS(final String value) {
             this.value = value;
         }
+
         private static final Map<String, PROGRAM_STEPS> map = new HashMap<>();
+
         static {
             for (PROGRAM_STEPS en : values()) {
                 map.put(en.value, en);
@@ -87,11 +90,11 @@ public class Autoclave extends Observable {
         public String getValue() {
             return value;
         }
+
         @Override
         public String toString() {
             return this.getValue();
         }
-
 
 
     }
@@ -221,8 +224,8 @@ public class Autoclave extends Observable {
                     false,
                     false,
                     10,
-                    121f,
-                    10);
+                    5f,
+                    10f);
         }
         return profilesFromAutoclave.get(profilesFromAutoclave.indexOf(new Profile(index)));
     }
@@ -273,7 +276,7 @@ public class Autoclave extends Observable {
 
     public PROGRAM_STEPS getProgramStep() {
         PROGRAM_STEPS program_step = PROGRAM_STEPS.valueFor(programStep);
-        if(program_step==null)
+        if (program_step == null)
             return PROGRAM_STEPS.NOT_DEFINED;
         return program_step;
     }
@@ -551,7 +554,7 @@ public class Autoclave extends Observable {
                     1,
                     false,
                     false,
-                    false,false,
+                    false, false,
                     10,
                     121f,
                     10));
@@ -573,7 +576,7 @@ public class Autoclave extends Observable {
                     1,
                     false,
                     false,
-                    false,false,
+                    false, false,
                     10,
                     121f,
                     10));
@@ -1261,13 +1264,14 @@ public class Autoclave extends Observable {
     }
 
     public void setDebugData(String[] debugData) {
-        if (this.debugData ==null || (!debugData[0].equals(this.debugData[0]) || !debugData[1].equals(this.debugData[1]))) {
-            this.debugData = debugData;
+        if (debugData == null) return;
+        if (this.debugData == null || (!debugData[0].equals(this.debugData[0]) || !debugData[1].equals(this.debugData[1]))) {
+            this.debugData = new String[]{debugData[0], debugData[1]};
             for (ProtocolListener listener : protocolListeners)
                 listener.onDebugChanged();
             return;
         }
-        this.debugData = debugData;
+        this.debugData = new String[]{debugData[0], debugData[1]};
     }
 
     public String[] getDebugData() {

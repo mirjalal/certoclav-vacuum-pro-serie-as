@@ -56,8 +56,10 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     public static final int INDEX_DAT_CHECKSUM = 16;
     public static final int NUMBER_OF_DAT_RESPONSE_PARAMETERS = 17;
     public static final int NUMBER_OF_PROGRAM_RESPONSE_PARAMETERS = 15;
+    private static final int DELAY_PROGRAM_RUNNING = 600;
+    private static final int DELAY_PROGRAM_NOT_RUNNING = 800;
     private static Context mContext;
-    private int delayForGetData = 1000;
+    private int delayForGetData = DELAY_PROGRAM_RUNNING;
     //Errors
     public static final int ERROR_NOT_DEFINED = -1;
     public static final int ERROR_CHECKSUM_WRONG = 0;
@@ -215,6 +217,9 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         } else if (AutoclaveModelManager.getInstance().getSerialNumber() == null) {
             commandQueue.clear();
             commandQueue.add(COMMANDS.CREATE(COMMANDS.GET_PARAMETER, 3));
+        }  else if (AutoclaveModelManager.getInstance().getPCBSerialNumber() == null) {
+            commandQueue.clear();
+            commandQueue.add(COMMANDS.CREATE(COMMANDS.GET_PARAMETER, 4));
         }
 
         if (commandQueue.size() == 1)
@@ -517,7 +522,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                     handler.sendEmptyMessage(HANDLER_MSG_CALIBRATION);
                     break;
                 case RESPONSES.ACK_STAR:
-                    delayForGetData = 1000;
+                    delayForGetData = DELAY_PROGRAM_RUNNING;
                     handlerGetData.removeCallbacks(runnableGetData);
                     handlerGetData.postDelayed(runnableGetData, delayForGetData);
                     if (responseParameters[0] != null && responseParameters[0].equals("1"))
@@ -528,7 +533,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                                         " (" + mContext.getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() + ")");
                     break;
                 case RESPONSES.ACK_STOP:
-                    delayForGetData = 1000;
+                    delayForGetData = DELAY_PROGRAM_RUNNING;
                     handlerGetData.removeCallbacks(runnableGetData);
                     handlerGetData.postDelayed(runnableGetData, delayForGetData);
                     if (responseParameters[0] != null && responseParameters[0].equals("1"))
@@ -571,7 +576,8 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                             errorCode = "00000000";
                         }
 
-                        delayForGetData = isProgramRunning || (errorCode != null && !errorCode.equals("00000000")) ? 1000 : 2000;
+                        delayForGetData = isProgramRunning || (errorCode != null &&
+                                !errorCode.equals("00000000")) ? DELAY_PROGRAM_RUNNING : DELAY_PROGRAM_NOT_RUNNING;
 
                         String checksum = responseParameters[INDEX_DAT_CHECKSUM];
 
@@ -679,7 +685,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                                     responseParameters[INDEX_PROGRAM_IS_MAINTAIN].equals("1"),
                                     responseParameters[INDEX_PROGRAM_IS_CONT_BY_FLEX_PROBE_1].equals("1"),
                                     responseParameters[INDEX_PROGRAM_IS_CONT_BY_FLEX_PROBE_2].equals("1"),
-                                    Integer.valueOf(responseParameters[INDEX_PROGRAM_FINAL_TEMP]),
+                                    Float.valueOf(responseParameters[INDEX_PROGRAM_FINAL_TEMP]),
                                     Float.valueOf(responseParameters[INDEX_PROGRAM_F0_VALUE]),
                                     Float.valueOf(responseParameters[INDEX_PROGRAM_Z_VALUE])
                             );
@@ -744,6 +750,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
             }
         } catch (Exception e) {
             Log.e("onMessageReceived", e.toString());
+            e.printStackTrace();
         }
 
 

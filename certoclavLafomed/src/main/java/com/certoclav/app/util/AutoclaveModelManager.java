@@ -26,12 +26,12 @@ public class AutoclaveModelManager implements MyCallback {
     public static AutoclaveModelManager getInstance() {
         if (manager == null)
             manager = new AutoclaveModelManager();
-
         return manager;
     }
 
     private AutoclaveParameter model;
     private AutoclaveParameter serialNumber;
+    private AutoclaveParameter pcbSerialNumber;
 
     public String getSerialNumber() {
         if (serialNumber == null) {
@@ -39,6 +39,14 @@ public class AutoclaveModelManager implements MyCallback {
         }
         return serialNumber.getValue().toString();
     }
+
+    public String getPCBSerialNumber() {
+        if (pcbSerialNumber == null) {
+            return null;
+        }
+        return pcbSerialNumber.getValue().toString();
+    }
+
 
     public void setSerialNumber(AutoclaveParameter serialNumber) {
         this.serialNumber = serialNumber;
@@ -150,6 +158,11 @@ public class AutoclaveModelManager implements MyCallback {
             }
             if (((AutoclaveParameter) response).getParameterId() == 3) {
                 serialNumber = (AutoclaveParameter) response;
+                ReadAndParseSerialService.getInstance().getParameter(4);
+            }
+
+            if (((AutoclaveParameter) response).getParameterId() == 4) {
+                pcbSerialNumber = (AutoclaveParameter) response;
             }
         }
     }

@@ -27,6 +27,7 @@ public class PostUtil {
 	public static final int RETURN_ERROR_UNKNOWN_HOST = 2;
 	public static final int RETURN_ERROR_UNAUTHORISED_PASSWORD = 401; //equals returned responsecode
 	public static final int RETURN_ERROR_UNAUTHORISED_MAIL = 404;//equals returned responsecode
+	public static final int RETURN_ERROR_NO_DEVICE = 405;//equals returned responsecode
 	public static final int RETURN_ERROR_ACCOUNT_NOT_ACTIVATED = 403;//equals returned responsecode
 	public static final int RETURN_ERROR = 4;
 	public static final int RETURN_UNKNOWN = 5;

@@ -87,11 +87,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
         if (AppConstants.APPLICATION_DEBUGGING_MODE == true) {
             navigationbar.setSettingsVisible();
         }
-
-
         textSteps = findViewById(R.id.monitor_text_steps);
-
-
         textCycleCount = findViewById(R.id.monitor_text_cycle_count);
         textProgram = findViewById(R.id.monitor_text_programname);
         textState = findViewById(R.id.monitor_text_state);
@@ -175,7 +171,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                                     percent = Math.min(percent, 100);
                                     sweetAlertDialogCanNotStop.setContentText(
                                             getString(R.string.can_not_stop_program_please_wait_door_closing,
-                                                    percent)+" % )");
+                                                    percent) + " % )");
                                     sweetAlertDialogCanNotStop.setConfirmButtonEnable(data.isDoorLocked());
                                 }
                             }
@@ -348,9 +344,14 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 navigationbar.showButtonBack();
                 break;
             case PROGRAM_FINISHED:
+
+                buttonStop.setText(getString(Autoclave.getInstance().isDoorLocked() ?
+                        R.string.please_wait_door_unlocking :
+                        R.string.please_open_door));
+
                 if (currentProgramStep == Autoclave.getInstance().getProgramStep())
                     break;
-                //TODO Show stop if the program is in maintain temperature mode
+
                 currentProgramStep = Autoclave.getInstance().getProgramStep();
 
                 buttonStop.setVisibility(View.VISIBLE);
@@ -361,7 +362,8 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                     buttonStop.setEnabled(true);
                 } else {
                     buttonStop.setEnabled(false);
-                    buttonStop.setText(getString(R.string.please_open_door));
+                    if (Autoclave.getInstance().isDoorLocked())
+                        buttonStop.setText(getString(R.string.please_wait_door_unlocking));
                     textState.setText(R.string.state_finished);
                     navigationbar.showButtonBack();
                 }
