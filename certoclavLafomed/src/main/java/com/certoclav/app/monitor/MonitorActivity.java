@@ -343,6 +343,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 textState.setText(R.string.state_prepare_to_run);
                 navigationbar.showButtonBack();
                 break;
+            case DOOR_UNLOCKED:
             case PROGRAM_FINISHED:
 
                 buttonStop.setText(getString(Autoclave.getInstance().isDoorLocked() ?
@@ -390,62 +391,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 buttonStop.setText(R.string.stop);
                 textState.setText(R.string.state_running);
                 textState.append(" (");
-                switch (Autoclave.getInstance().getProgramStep()) {
-                    case VACUUM_PULSE_1:
-                    case VACUUM_PULSE_1_:
-                        textState.append(getString(R.string.current_program_step_vacuum_desc, 1,
-                                Autoclave.getInstance().getProfile().getVacuumTimes()));
-                        break;
-                    case VACUUM_PULSE_2:
-                    case VACUUM_PULSE_2_:
-                        textState.append(getString(R.string.current_program_step_vacuum_desc, 2,
-                                Autoclave.getInstance().getProfile().getVacuumTimes()));
-                        break;
-                    case VACUUM_PULSE_3:
-                    case VACUUM_PULSE_3_:
-                        textState.append(getString(R.string.current_program_step_vacuum_desc, 3,
-                                Autoclave.getInstance().getProfile().getVacuumTimes()));
-                        break;
-                    case HEATING:
-                        textState.append(getString(R.string.current_program_step_heating_desc,
-                                Autoclave.getInstance().getProfile().getSterilisationTemperature()));
-                        break;
-                    case STERILIZATION:
-                        textState.append(getString(R.string.sterilisation));
-                        break;
-                    case DRYING:
-                        textState.append(getString(R.string.current_program_step_drying_desc));
-                        break;
-                    case DISCHARGE:
-                        textState.append(getString(R.string.current_program_step_discharging_desc));
-                        break;
-                    case LEVELING:
-                        textState.append(getString(R.string.current_program_step_leveling_desc));
-                        break;
-                    case WARMING_UP:
-                        textState.append(getString(R.string.current_program_step_warming_up_desc));
-                        break;
-                    case VENTILATION:
-                        textState.append(getString(R.string.current_program_step_ventilation_up_desc));
-                        break;
-                    case MAINTAIN_TEMP:
-                        textState.append(getString(R.string.success_sterilization_and_maintain_temp,
-                                Autoclave.getInstance().getProfile().getFinalTemp()));
-                        break;
-                    case STABILIZATION:
-                        textState.append(getString(R.string.current_program_step_stabilization_desc));
-                        break;
-                    case COOLING_DOWN:
-                        textState.append(getString(R.string.current_program_step_cooling_down_desc));
-                        break;
-                    case FINISHED:
-                        textState.append(getString(R.string.state_finished));
-                        break;
-                    case NOT_DEFINED:
-                        textState.append("---");
-                        break;
-
-                }
+                textState.append(Helper.getStateText());
                 textState.append(")");
 
                 navigationbar.hideButtonBack();

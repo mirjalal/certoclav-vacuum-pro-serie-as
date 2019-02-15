@@ -283,6 +283,10 @@ public class Autoclave extends Observable {
 
     public void setProgramStep(String programStep) {
 
+        //If Step doesn't change it means that state also hasn't changed
+        if(this.programStep.equals(programStep))
+            return;
+
         this.programStep = programStep;
         for (AutoclaveStateListener listener : autoclaveStateListeners) {
             listener.onAutoclaveStateChange(getState()); //maybe this causes to problems because state didnt change but observers called

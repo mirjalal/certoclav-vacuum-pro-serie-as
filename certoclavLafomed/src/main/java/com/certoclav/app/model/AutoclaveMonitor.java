@@ -470,6 +470,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
                 break;
 
+            case DOOR_UNLOCKED:
             case PROGRAM_FINISHED:
 
                 if (Autoclave.getInstance().getCurrentProgramCounter() < Autoclave.getInstance().getProgramsInRowTotal()) {
@@ -477,6 +478,9 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                 } else {
                     if (Autoclave.getInstance().getData().isDoorClosed() == false) {//autoklav wurde ge?ffnet
                         Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);
+                    } else if (Autoclave.getInstance().getData().isDoorLocked() == false &&
+                            Autoclave.getInstance().getState() != AutoclaveState.DOOR_UNLOCKED) {//autoklav wurde ge?ffnet
+                        Autoclave.getInstance().setState(AutoclaveState.DOOR_UNLOCKED);
                     }
                 }
 

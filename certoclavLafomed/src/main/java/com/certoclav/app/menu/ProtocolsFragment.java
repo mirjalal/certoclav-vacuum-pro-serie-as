@@ -651,7 +651,7 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
+        if (isVisibleToUser && Autoclave.getInstance().isOnlineMode(getContext())) {
             Intent intent5 = new Intent(ApplicationController.getContext(), PostProtocolsService.class);
             getActivity().startService(intent5);
         } else {

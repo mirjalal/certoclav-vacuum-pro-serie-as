@@ -3,6 +3,7 @@ package com.certoclav.app.service;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.certoclav.app.R;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
@@ -44,7 +45,7 @@ public class CloudSocketThread extends Thread implements SocketEventListener {
         try {
             SocketService.getInstance().setOnSocketEventListener(this);
             SocketService.getInstance().setDeviceKey("");
-            if(Autoclave.getInstance().getController().getSavetyKey() ==null) {
+            if (Autoclave.getInstance().getController().getSavetyKey() == null) {
                 endThread();
                 return;
             }
@@ -124,31 +125,59 @@ public class CloudSocketThread extends Thread implements SocketEventListener {
                         JSONObject jsonLiveMessageDataObj = new JSONObject();
 
 
-                        jsonLiveMessageDataObj.put("Total cycles", cycleNumber);
+                        jsonLiveMessageDataObj.put(AppController.getInstance().
+                                getApplicationContext().getString(R.string.cycle), cycleNumber);
 
                         if (Autoclave.getInstance().getState() != AutoclaveState.LOCKED) {
-
-                            jsonLiveMessageDataObj.put("User", Autoclave.getInstance().getUser().getEmail());
-                        } else {
-                            //		jsonLiveMessageDataObj.put("User", "No user signed in");
+                            jsonLiveMessageDataObj.put(AppController.getInstance().
+                                            getApplicationContext().getString(R.string.user_lower)
+                                    , Autoclave.getInstance().getUser().getEmail());
                         }
-
 
                         if (!errorMessage.equals("")) {
-                            jsonLiveMessageDataObj.put("Warning", errorMessage);
+                            jsonLiveMessageDataObj.put(AppController.getInstance().
+                                            getApplicationContext().getString(R.string.warning_lower)
+                                    , errorMessage);
                         }
-                        jsonLiveMessageDataObj.put("STATUS", Autoclave.getInstance().getState().toString().replace("_", " "));
+                        jsonLiveMessageDataObj.put(AppController.getInstance().
+                                        getApplicationContext().getString(R.string.status)
+                                , Autoclave.getInstance().getState().toString().replace("_", " "));
+
+                        if (Autoclave.getInstance().getState() == AutoclaveState.RUNNING) {
+                            jsonLiveMessageDataObj.put(AppController.getInstance().
+                                            getApplicationContext().getString(R.string.stage)
+                                    , Helper.getStateText());
+                        }
                         //jsonLiveMessageDataObj.put("Time", Calendar.getInstance().getTime().toGMTString().replace(" GMT", ""));
 
                         if (Autoclave.getInstance().getState() != AutoclaveState.NOT_RUNNING && Autoclave.getInstance().getState() != AutoclaveState.LOCKED) {
-                            jsonLiveMessageDataObj.put("Program", profileName);
+                            jsonLiveMessageDataObj.put(AppController.getInstance().
+                                            getApplicationContext().getString(R.string.program_lower)
+                                    , profileName);
                             //if(Autoclave.getInstance().getProfile().getIsMediaSensor()){
                             //	jsonLiveMessageDataObj.put("Media temperature", Autoclave.getInstance().getData().getTemp2().getValueString() + " ℃");
                             //}else{
-                            jsonLiveMessageDataObj.put("Vessel temperature", Autoclave.getInstance().getData().getTemp1().getValueString() + " \u2103");
+                            jsonLiveMessageDataObj.put(AppController.getInstance().
+                                            getApplicationContext().getString(R.string.vessel_temperature)
+                                    , Autoclave.getInstance().getData().getTemp1().getValueString() + " \u2103");
+
+
+                            jsonLiveMessageDataObj.put(AppController.getInstance().
+                                            getApplicationContext().getString(R.string.media_lower),
+                                    Autoclave.getInstance().getData().getTemp2().getValueString() + " \u2103");
+
+                            if (Autoclave.getInstance().getProfile() != null &&
+                                    Autoclave.getInstance().getProfile().isContByFlexProbe2Enabled())
+                                jsonLiveMessageDataObj.put(AppController.getInstance().
+                                                getApplicationContext().getString(R.string.media_2_lower),
+                                        Autoclave.getInstance().getData().getTemp3().getValueString() + " \u2103");
                             //}
-                            jsonLiveMessageDataObj.put("Pressure", Autoclave.getInstance().getData().getPress().getCurrentValue() + " bar");
-                            jsonLiveMessageDataObj.put("Time since start", timeSinceStartString);
+                            jsonLiveMessageDataObj.put(AppController.getInstance().
+                                            getApplicationContext().getString(R.string.pressure_lower)
+                                    , Autoclave.getInstance().getData().getPress().getCurrentValue() + " bar");
+                            jsonLiveMessageDataObj.put(AppController.getInstance().
+                                            getApplicationContext().getString(R.string.time_since_start)
+                                    , timeSinceStartString);
                         }
                         jsonLiveMessageObj.put("data", jsonLiveMessageDataObj);
                         Log.e("CloudSocketThread", "sending: " + jsonLiveMessageObj.toString().replace("{", "[").replace("}", "]"));
@@ -223,6 +252,26 @@ public class CloudSocketThread extends Thread implements SocketEventListener {
             handler.post(new Runnable() {
                 public void run() {
                     Helper.getCloudPrograms(AppController.getContext());
+                }
+            });
+        } else if (eventIdentifier.equals(SocketService.EVENT_GET_LIVE_DEBUG)) {
+            Log.e("Received", "Get Live Debug");
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
+                public void run() {
+
+                    if(Autoclave.getInstance().getState() != AutoclaveState.RUNNING) {
+                        JSONObject content = new JSONObject();
+                        try {
+                            content.put("isRunning", false);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        SocketService.getInstance().getSocket().emit(SocketService.EVENT_SEND_LIVE_DEBUG,
+                                content);
+                    }else{
+                        Helper.uploadLiveDebug(AppController.getContext());
+                    }
                 }
             });
         }

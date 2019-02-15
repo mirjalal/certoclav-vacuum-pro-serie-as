@@ -917,6 +917,17 @@
     <string name="can_not_stop_program_please_wait_door_closing">Can\'t stop the program please wait till the door locked.  (%1$d </string>
     <string name="can_not_start_program_please_open_to_read_atmospheric_pressure">Can not start the program. Open door to read atmospheric pressure.</string>
     <string name="atmospheric_pressure">Atmospheric pressure</string>
+    <string name="vessel_temperature_2">Vessel temperature 2</string>
+    <string name="vessel_temperature">Vessel temperature</string>
+    <string name="pressure_lower">Pressure</string>
+    <string name="time_since_start">Duration</string>
+    <string name="program_lower">Program</string>
+    <string name="status">Status</string>
+    <string name="warning_lower">Warning</string>
+    <string name="user_lower">User</string>
+    <string name="stage">Stage</string>
+    <string name="media_lower">Media</string>
+    <string name="media_2_lower">Media 2</string>
 
 
 </resources>

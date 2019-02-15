@@ -15,6 +15,8 @@ public class SocketService {
     public static final String EVENT_REGISTER = "register";
     public static final String EVENT_START_SEND = "server:get";
     public static final String EVENT_PROGRAM_EDIT = "server:get:edit";
+    public static final String EVENT_GET_LIVE_DEBUG = "server:get:livedebug";
+    public static final String EVENT_SEND_LIVE_DEBUG = "android:give:livedebug";
 
     private static SocketService instance;
 
@@ -93,17 +95,26 @@ public class SocketService {
                                 listener.onSocketEvent(EVENT_PROGRAM_EDIT, args);
                             Log.e("SocketService", "SOCKET EVENT_START_SEND");
                         }
-                    }).on(Socket.EVENT_MESSAGE, new Emitter.Listener() {
+                    })
+                    .on(EVENT_GET_LIVE_DEBUG, new Emitter.Listener() {
+                        @Override
+                        public void call(Object... args) {
+                            if (listener != null)
+                                listener.onSocketEvent(EVENT_GET_LIVE_DEBUG, args);
+                            Log.e("SocketService", "SOCKET EVENT_START_SEND");
+                        }
+                    }).
+                    on(Socket.EVENT_MESSAGE, new Emitter.Listener() {
 
-                @Override
-                public void call(Object... args) {
-                    if (listener != null)
-                        listener.onSocketEvent(Socket.EVENT_MESSAGE, args);
-                    Log.e("SocketService", "SOCKET EVENT_MESSAGE");
+                        @Override
+                        public void call(Object... args) {
+                            if (listener != null)
+                                listener.onSocketEvent(Socket.EVENT_MESSAGE, args);
+                            Log.e("SocketService", "SOCKET EVENT_MESSAGE");
 
-                }
+                        }
 
-            }).on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
+                    }).on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
 
                 @Override
                 public void call(Object... args) {

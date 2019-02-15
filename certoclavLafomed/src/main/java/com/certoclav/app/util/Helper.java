@@ -546,6 +546,10 @@ public class Helper {
         return drawable;
     }
 
+    public static void uploadLiveDebug(final Context context) {
+
+    }
+
     public static void getCloudPrograms(final Context context) {
         final SweetAlertDialog barProgressDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
         barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
@@ -592,7 +596,7 @@ public class Helper {
 
                 //Check are there any deleted profile in cloud, setting name to VOID means disable
                 // the profile in the autoclave
-                for(Profile deletedProfiles:oldProfiles){
+                for (Profile deletedProfiles : oldProfiles) {
                     deletedProfiles.setName("VOID");
                     ReadAndParseSerialService.getInstance().setProgram(deletedProfiles);
                 }
@@ -655,8 +659,8 @@ public class Helper {
                     onError(null, requestId);
                     return;
                 }
-                if(AutoclaveModelManager.getInstance().getSerialNumber()==null
-                        || AutoclaveModelManager.getInstance().getModel()==null){
+                if (AutoclaveModelManager.getInstance().getSerialNumber() == null
+                        || AutoclaveModelManager.getInstance().getModel() == null) {
                     onError(null, requestId);
                     return;
                 }
@@ -671,7 +675,7 @@ public class Helper {
                         profile.setRecentUsedDate(oldProfiles.get(oldProfiles.indexOf(profile)).getRecentUsedDate());
                     }
                     //Set Description
-                    profile.setDescription(getProfileDesc(profile,context));
+                    profile.setDescription(getProfileDesc(profile, context));
                     Autoclave.getInstance().getProfilesFromAutoclave().add(profile);
                     syncProgramWithCloud(profile);
                 }
@@ -912,7 +916,7 @@ public class Helper {
                     programJsonObject.put("is_from_android", true);
                     programJsonObject.put("deviceKey", Autoclave.getInstance()
                             .getController().getSavetyKey());
-                    programJsonObject.put("model",AutoclaveModelManager.getInstance().getModel());
+                    programJsonObject.put("model", AutoclaveModelManager.getInstance().getModel());
 
 
                     JSONObject programWrapper = new JSONObject();
@@ -924,7 +928,7 @@ public class Helper {
                     PostUtil postUtil = new PostUtil();
                     Response response = postUtil.postToCertocloud(body,
                             CertocloudConstants.getServerUrl() +
-                            CertocloudConstants.REST_API_POST_PROFILE, false);
+                                    CertocloudConstants.REST_API_POST_PROFILE, false);
 
                     Log.e("Response", response.toString());
 
@@ -950,8 +954,8 @@ public class Helper {
         });
     }
 
-    public static void askConfirmation(Context context,String title, String content, final SweetAlertDialog.OnSweetClickListener onConfirm,
-                                       SweetAlertDialog.OnCancelListener onCancel){
+    public static void askConfirmation(Context context, String title, String content, final SweetAlertDialog.OnSweetClickListener onConfirm,
+                                       SweetAlertDialog.OnCancelListener onCancel) {
         final SweetAlertDialog dialogConfirmation = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
         dialogConfirmation.showCancelButton(true);
         dialogConfirmation.setCancelText(context.getString(R.string.cancel));
@@ -966,7 +970,7 @@ public class Helper {
 
     }
 
-    public static String getProfileDesc(Profile profile, Context context){
+    public static String getProfileDesc(Profile profile, Context context) {
         StringBuilder sbuilder = new StringBuilder();
         if (profile.getSterilisationTemperature() != 0) {
             sbuilder.append(profile.getSterilisationTemperature())
@@ -982,7 +986,7 @@ public class Helper {
             sbuilder.append(profile.getSterilisationTime())
                     .append(" " + context.getString(R.string.min))
                     .append("\n");
-        }else{
+        } else {
             sbuilder.append("\n");
         }
         if (profile.getVacuumTimes() != 0) {
@@ -1028,5 +1032,61 @@ public class Helper {
         }
 
         return sbuilder.toString();
+    }
+
+    public static String getStateText() {
+        Context context = AppController.getContext();
+        switch (Autoclave.getInstance().getProgramStep()) {
+            case VACUUM_PULSE_1:
+            case VACUUM_PULSE_1_:
+                return context.getString(R.string.current_program_step_vacuum_desc, 1,
+                        Autoclave.getInstance().getProfile().getVacuumTimes());
+            case VACUUM_PULSE_2:
+            case VACUUM_PULSE_2_:
+                return context.getString(R.string.current_program_step_vacuum_desc, 2,
+                        Autoclave.getInstance().getProfile().getVacuumTimes());
+
+            case VACUUM_PULSE_3:
+            case VACUUM_PULSE_3_:
+                return context.getString(R.string.current_program_step_vacuum_desc, 3,
+                        Autoclave.getInstance().getProfile().getVacuumTimes());
+
+            case HEATING:
+                return context.getString(R.string.current_program_step_heating_desc,
+                        Autoclave.getInstance().getProfile().getSterilisationTemperature());
+
+            case STERILIZATION:
+                return context.getString(R.string.sterilisation);
+
+            case DRYING:
+                return context.getString(R.string.current_program_step_drying_desc);
+
+            case DISCHARGE:
+                return context.getString(R.string.current_program_step_discharging_desc);
+
+            case LEVELING:
+                return context.getString(R.string.current_program_step_leveling_desc);
+
+            case WARMING_UP:
+                return context.getString(R.string.current_program_step_warming_up_desc);
+
+            case VENTILATION:
+                return context.getString(R.string.current_program_step_ventilation_up_desc);
+
+            case MAINTAIN_TEMP:
+                return context.getString(R.string.success_sterilization_and_maintain_temp,
+                        Autoclave.getInstance().getProfile().getFinalTemp());
+
+            case STABILIZATION:
+                return context.getString(R.string.current_program_step_stabilization_desc);
+
+            case COOLING_DOWN:
+                return context.getString(R.string.current_program_step_cooling_down_desc);
+            case FINISHED:
+                return context.getString(R.string.state_finished);
+            case NOT_DEFINED:
+                return "---";
+        }
+        return "---";
     }
 }

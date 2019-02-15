@@ -3,6 +3,7 @@ package com.certoclav.app.model;
 public enum AutoclaveState {
 	LOCKED,//<=> no user logged in
 	NOT_RUNNING,
+	DOOR_UNLOCKED,
 	PREPARE_TO_RUN,
 	RUNNING,
 	RUN_CANCELED,
