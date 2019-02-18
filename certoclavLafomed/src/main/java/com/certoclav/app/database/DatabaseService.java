@@ -5,10 +5,8 @@ import android.database.SQLException;
 import android.os.Environment;
 import android.util.Log;
 
-import com.certoclav.app.AppConstants;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.util.AuditLogger;
-import com.certoclav.app.util.Helper;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.bcrypt.BCrypt;
 import com.certoclav.library.certocloud.CloudUser;
@@ -27,7 +25,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -574,9 +571,7 @@ public class DatabaseService {
         if (isProtcolExists(protocol.getCloudId()))
             return -1;
         try {
-            int x = protocolDao.create(protocol);
-            return x;
-
+            return protocolDao.create(protocol);
         } catch (java.sql.SQLException e) {
             e.printStackTrace();
         }

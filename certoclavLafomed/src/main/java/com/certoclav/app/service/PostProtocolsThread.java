@@ -7,6 +7,7 @@ import com.certoclav.app.database.Protocol;
 import com.certoclav.app.database.ProtocolEntry;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveState;
+import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.ServerConfigs;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.certocloud.CertocloudConstants;
@@ -44,7 +45,7 @@ public class PostProtocolsThread extends Thread {
         try {
             //upload new protocols to certocloud every 60 seconds
             if (Autoclave.getInstance().getState() == AutoclaveState.NOT_RUNNING) {
-                if ((ApplicationController.getInstance().isNetworkAvailable()|| ServerConfigs.getInstance(ApplicationController.getContext()).getUrl() != null) && !CloudUser.getInstance().getToken().isEmpty()) {
+                if ((ApplicationController.getInstance().isNetworkAvailable() || ServerConfigs.getInstance(ApplicationController.getContext()).getUrl() != null) && !CloudUser.getInstance().getToken().isEmpty()) {
                     List<Protocol> protocols = databaseService.getProtocolsWhereNotUploaded();
                     if (protocols != null) {
                         for (Protocol protocol : protocols) {
@@ -53,6 +54,7 @@ public class PostProtocolsThread extends Thread {
                             //PROTOCOL-ENTRYS ARRAY
                             JSONArray entryJSONArray = new JSONArray();
                             Date startTime = protocol.getStartTime();
+                            Date lastEntry = null;
                             for (ProtocolEntry protocolEntry : protocol.getProtocolEntry()) {
                                 JSONObject entryJSONObject = new JSONObject();
                                 entryJSONObject.put("ts", String.format(Locale.US, "%.2f", ((float) (protocolEntry.getTimestamp().getTime() - startTime.getTime())) / (1000.0 * 60.0)));
@@ -62,6 +64,7 @@ public class PostProtocolsThread extends Thread {
                                 entryJSONObject.put("mtmp", String.format(Locale.US, "%.2f", protocolEntry.getMediaTemperature()));
                                 entryJSONObject.put("input", protocolEntry.getDebugInput());
                                 entryJSONObject.put("output", protocolEntry.getDebugOutput());
+                                lastEntry = protocolEntry.getTimestamp();
                                 entryJSONArray.put(entryJSONObject);
                             }
 
@@ -79,7 +82,7 @@ public class PostProtocolsThread extends Thread {
                             programJsonObject.put("lidopen", false);
                             programJsonObject.put("tbuffer", 0);
                             programJsonObject.put("title", protocol.getProfileName());
-                            programJsonObject.put("note", protocol.getProfileDescription() + "\n" + generateProfileDescription(protocol));
+                            programJsonObject.put("note", protocol.getProfileDescription() + "\n" + Helper.generateProfileDescription(protocol));
                             programJsonObject.put("commands", jsonCommandArray);
 
                             JSONArray programJsonArray = new JSONArray();
@@ -90,23 +93,29 @@ public class PostProtocolsThread extends Thread {
                             jsonProtocolObject.put("devicekey", Autoclave.getInstance().getController().getSavetyKey());
                             jsonProtocolObject.put("program", programJsonArray);
                             jsonProtocolObject.put("start", protocol.getStartTime().getTime());
-                            jsonProtocolObject.put("end", protocol.getEndTime().getTime());
+                            if (protocol.getEndTime() != null)
+                                jsonProtocolObject.put("end", protocol.getEndTime().getTime());
+                            else if (lastEntry != null)
+                                jsonProtocolObject.put("end", lastEntry.getTime());
+                            else
+                                jsonProtocolObject.put("end", protocol.getStartTime().getTime());
+
                             jsonProtocolObject.put("cycle", protocol.getZyklusNumber());
-                                                            /*
-												        	 *  The cloud will interpret the error codes as following:
-												        	 * 	0 Successfully completed
-															 *	6 Heater error
-															 *	8 Temperature overshoot error
-															 *	10 Temperature sensor broken error
-															 *	13 Temperature unsteadiness error
-															 *	14 Program cancelled by error
-															 *	15 Program cancelled by user
-															 *	16 Connection lost error
-												        	 */
+                            /*
+                             *  The cloud will interpret the error codes as following:
+                             * 	0 Successfully completed
+                             *	6 Heater error
+                             *	8 Temperature overshoot error
+                             *	10 Temperature sensor broken error
+                             *	13 Temperature unsteadiness error
+                             *	14 Program cancelled by error
+                             *	15 Program cancelled by user
+                             *	16 Connection lost error
+                             */
                             int errorCodeCloud = 0;
-                            try{
+                            try {
                                 errorCodeCloud = protocol.getErrorCode();
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 errorCodeCloud = 15;
                             }
                             //switch (protocol.getErrorCode()) {
@@ -133,7 +142,7 @@ public class PostProtocolsThread extends Thread {
 
                             //POST the Json object to CertoCloud
                             PostUtil postUtil = new PostUtil();
-                            Response response = postUtil.postToCertocloud(body, CertocloudConstants.getServerUrl()+ CertocloudConstants.REST_API_POST_PROTOCOLS, true);
+                            Response response = postUtil.postToCertocloud(body, CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_POST_PROTOCOLS, true);
 
                             if (response.getStatus() == PostUtil.RETURN_OK) {
 
@@ -154,64 +163,12 @@ public class PostProtocolsThread extends Thread {
             Thread.sleep(60000);
 
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
 
     }
 
-    public String generateProfileDescription(Protocol protocol) {
-
-        try {
-            StringBuilder sbuilder = new StringBuilder();
-            if (protocol.getVacuumTimes() != 0) {
-                sbuilder.append("\r\nVacuum times: ")
-                        .append(protocol.getVacuumTimes())
-                        .append("\r\n");
-            }
-
-            if (protocol.getSterilisationTemperature() != 0) {
-                sbuilder.append("Sterilisation temperature: ")
-                        .append(protocol.getSterilisationTemperature())
-                        .append(" °C")
-                        .append("\r\n");
-            }
-
-            if (protocol.getSterilisationPressure() != 0) {
-                sbuilder.append("Sterilisation pressure: ")
-                        .append(roundFloat( (protocol.getSterilisationPressure() * 0.01f) + 1f).toString())
-                        .append(" bar")
-                        .append("\r\n");
-            }
-
-            if (protocol.getSterilisationTime() != 0) {
-                sbuilder.append("Sterilisation holding time: ")
-                        .append(protocol.getSterilisationTime())
-                        .append(" min")
-                        .append("\r\n");
-            }
-
-            if (protocol.getVacuumPersistTemperature() != 0) {
-                sbuilder.append("Vacuum persist temperature: ")
-                        .append(protocol.getVacuumPersistTemperature())
-                        .append(" °C")
-                        .append("\r\n");
-            }
-            if (protocol.getVacuumPersistTime() != 0) {
-                sbuilder.append("Vacuum persist time: ")
-                        .append(protocol.getVacuumPersistTime())
-                        .append(" min")
-                        .append("\r\n");
-            }
-            if (protocol.getDryTime() != 0) {
-                sbuilder.append("Drying time: ")
-                        .append(protocol.getDryTime())
-                        .append(" min");
-            }
-            return sbuilder.toString();
-        } catch (Exception e) {
-            return "";
-        }
-    }
 
     public void endThread() {
         //	runFlag = false;
@@ -219,9 +176,4 @@ public class PostProtocolsThread extends Thread {
         //wenn runflag false ist, dann l�uft die run() Methode zu ende und der Thread wird zerst�rt.
     }
 
-    private Double roundFloat(float f){
-        int tempnumber = (int) (f*100);
-        Double roundedfloat = (double) ((double)tempnumber/100.0);
-        return roundedfloat;
-    }
 }

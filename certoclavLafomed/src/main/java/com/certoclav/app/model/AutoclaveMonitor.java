@@ -397,6 +397,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                                 false);
                         Autoclave.getInstance().setProtocol(protocol);
                         int retval = databaseService.insertProtocol(protocol);
+                        protocol.setInsertedId(retval);
 
                         dateAtProgramStart = new Date(Autoclave.getInstance().getDateObject().getTime() - 2000);
 
