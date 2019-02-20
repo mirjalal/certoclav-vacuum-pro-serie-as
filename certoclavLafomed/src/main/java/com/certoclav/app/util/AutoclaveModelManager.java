@@ -20,7 +20,11 @@ public class AutoclaveModelManager implements MyCallback {
     private int currentSentParameterId = 1;
 
     private AutoclaveModelManager() {
-        ReadAndParseSerialService.getInstance().addCallback(this);
+        try {
+            ReadAndParseSerialService.getInstance().addCallback(this);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public static AutoclaveModelManager getInstance() {

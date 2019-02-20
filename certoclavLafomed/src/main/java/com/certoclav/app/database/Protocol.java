@@ -36,16 +36,6 @@ public class Protocol {
     @DatabaseField(generatedId = true, columnName = FIELD_PROTOCOL_ID)
     private int protocol_id;
 
-    private int insertedId;
-
-    public void setInsertedId(int insertedId) {
-        this.insertedId = insertedId;
-    }
-
-    public int getInsertedId() {
-        return insertedId;
-    }
-
     @DatabaseField(columnName = "zyklusNumber")
     @SerializedName("cycle")
     private int zyklusNumber;

@@ -82,8 +82,12 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
         }catch (Exception e){
             finish();
         }
-        navigationbar.showNavigationBar();
-        navigationbar.setTabSterilisationEnabled();
+        try {
+            navigationbar.showNavigationBar();
+            navigationbar.setTabSterilisationEnabled();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
 
         fragmentList.add(INDEX_INFORMATION, new InformationFragment());

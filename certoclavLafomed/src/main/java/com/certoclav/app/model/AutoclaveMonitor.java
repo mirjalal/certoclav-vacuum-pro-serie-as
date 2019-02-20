@@ -396,8 +396,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                                 ERROR_CODE_CONNECTION_LOST,
                                 false);
                         Autoclave.getInstance().setProtocol(protocol);
-                        int retval = databaseService.insertProtocol(protocol);
-                        protocol.setInsertedId(retval);
+                        databaseService.insertProtocol(protocol);
 
                         dateAtProgramStart = new Date(Autoclave.getInstance().getDateObject().getTime() - 2000);
 
