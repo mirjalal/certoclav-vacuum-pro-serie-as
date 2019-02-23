@@ -133,6 +133,7 @@ public class PostProtocolsThread extends Thread {
                             //        break;
                             //}
                             jsonProtocolObject.put("errcode", errorCodeCloud);
+                            jsonProtocolObject.put("temp_unit", protocol.getTemperatureUnit());
                             jsonProtocolObject.put("entries", entryJSONArray);
 
                             JSONObject jsonProtocolWrapper = new JSONObject();

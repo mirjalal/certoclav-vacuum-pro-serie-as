@@ -2,7 +2,6 @@ package com.certoclav.app.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -24,6 +23,8 @@ import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.app.util.MyCallback;
 import com.certoclav.library.application.ApplicationController;
 
+import es.dmoral.toasty.Toasty;
+
 
 /**
  * A fragment representing a single Item detail screen. This fragment is
@@ -40,6 +41,10 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
     private int currentOffsetReadParameter = AppConstants.PARAM_OFFSET_STEAM;
     private int failCount = 0;
     private final int MAX_FAIL_COUNT = 5;
+    private double offsetTemp1;
+    private double offsetMedia;
+    private double offsetPress;
+    private double offsetPress2;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -74,30 +79,46 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
             @Override
             public void onClick(View v) {
                 try {
-                    Double offsetTemp1 = Double.parseDouble(editOffsetSteamSensor.getText().toString());
-                    Double offsetMedia = Double.parseDouble(editOffsetMedia.getText().toString());
-                    Double offsetPress = Double.parseDouble(editOffsetPress.getText().toString());
-                    Double offsetPress2 = Double.parseDouble(editOffsetPress.getText().toString());
+                    offsetTemp1 = 0.0;
+                    if (editOffsetSteamSensor.getText().length() > 0)
+                        offsetTemp1 = Double.parseDouble(editOffsetSteamSensor.getText().toString());
 
-                    if (offsetTemp1 > -3 && offsetTemp1 < 3) {
-                        if ((offsetPress > -20 && offsetPress < 20) || (offsetPress2 > -20 && offsetPress2 < 20)) {
-                            if (offsetMedia > -3 && offsetMedia < 3) {
-//                                        ReadAndParseSerialService.getInstance().sendPutAdjustParameterCommand(offsetTemp1, offsetTemp2, offsetTemp3, offsetPress, offsetMedia);
-//                                        ReadAndParseSerialService.getInstance().sendGetAdjustParameterCommand();
-                                ReadAndParseSerialService.getInstance().setParameter(currentOffsetReadParameter = AppConstants.PARAM_OFFSET_STEAM, offsetTemp1);
-                                Toast.makeText(getActivity(), "Parameters saved", Toast.LENGTH_LONG).show();
-                            } else {
-                                Toast.makeText(getActivity(), "Please enter valid offset for media sensor", Toast.LENGTH_LONG).show();
-                            }
-                        } else {
-                            Toast.makeText(getActivity(), "Please enter valid offset for pressure sensor", Toast.LENGTH_LONG).show();
-                        }
-                    } else {
-                        Toast.makeText(getActivity(), "Please enter valid offset for steam generator sensor", Toast.LENGTH_LONG).show();
+                    offsetMedia = 0.0;
+                    if (editOffsetMedia.getText().length() > 0)
+                        offsetMedia = Double.parseDouble(editOffsetMedia.getText().toString());
+
+                    offsetPress = 0.0;
+                    if (editOffsetPress.getText().length() > 0)
+                        offsetPress = Double.parseDouble(editOffsetPress.getText().toString());
+
+                    offsetPress2 = 0.0;
+                    if (editOffsetPress.getText().length() > 0)
+                        offsetPress2 = Double.parseDouble(editOffsetPress.getText().toString());
+
+                    if (offsetTemp1 < -3 && offsetTemp1 > 3) {
+                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_steam_sensor), Toast.LENGTH_SHORT, true).show();
+                        return;
                     }
+
+                    if (offsetPress < -20 && offsetPress > 20) {
+                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_pressure_sensor_1), Toast.LENGTH_SHORT, true).show();
+                        return;
+                    }
+
+                    if (offsetPress2 < -20 && offsetPress2 > 20) {
+                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_pressure_sensor_2), Toast.LENGTH_SHORT, true).show();
+                        return;
+                    }
+                    if (offsetMedia < -3 && offsetMedia > 3) {
+                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_media_sensor), Toast.LENGTH_SHORT, true).show();
+                        return;
+                    }
+
+                    ReadAndParseSerialService.getInstance().setParameter(currentOffsetReadParameter = AppConstants.PARAM_OFFSET_STEAM, offsetTemp1);
+
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(getActivity(), "Please enter valid data", Toast.LENGTH_LONG).show();
+                    Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_data), Toast.LENGTH_SHORT, true).show();
                 }
 
             }
@@ -109,14 +130,6 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
 
     @Override
     public void onResume() {
-        ReadAndParseSerialService.getInstance().addCallback(this);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ReadAndParseSerialService.getInstance().getParameter(AppConstants.PARAM_OFFSET_STEAM);
-            }
-        }, 2000);
-
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         if ((!Autoclave.getInstance().getUser().isAdmin() || Autoclave.getInstance().getState() == AutoclaveState.LOCKED) &&
@@ -134,6 +147,8 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
             editOffsetPress2.setEnabled(true);
             editOffsetMedia.setEnabled(true);
             buttonApply.setEnabled(true);
+            ReadAndParseSerialService.getInstance().addCallback(this);
+            ReadAndParseSerialService.getInstance().getParameter(AppConstants.PARAM_OFFSET_STEAM);
         }
         super.onResume();
     }
@@ -184,10 +199,6 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
             else
                 onCalibrationParameterReceived();
         } else if (requestId == ReadAndParseSerialService.HANDLER_MSG_ACK_SET_PARAMETER) {
-            Double offsetTemp1 = Double.parseDouble(editOffsetSteamSensor.getText().toString());
-            Double offsetMedia = Double.parseDouble(editOffsetMedia.getText().toString());
-            Double offsetPress = Double.parseDouble(editOffsetPress.getText().toString());
-            Double offsetPress2 = Double.parseDouble(editOffsetPress2.getText().toString());
 
             switch (currentOffsetReadParameter) {
                 case AppConstants.PARAM_OFFSET_STEAM:
@@ -204,6 +215,7 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
                     break;
                 case AppConstants.PARAM_OFFSET_PRESSURE_2:
                     ReadAndParseSerialService.getInstance().getParameter(AppConstants.PARAM_OFFSET_STEAM);
+                    Toasty.success(getActivity(), getString(R.string.calibration_parameters_saved), Toast.LENGTH_SHORT, true).show();
                     break;
             }
         }
@@ -215,9 +227,9 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
             if (failCount++ < MAX_FAIL_COUNT)
                 ReadAndParseSerialService.getInstance().getParameter(currentOffsetReadParameter);
             else
-                Toast.makeText(getContext(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                Toasty.warning(getContext(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT,true).show();
         } else {
-            Toast.makeText(getContext(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+            Toasty.warning(getContext(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT,true).show();
         }
     }
 

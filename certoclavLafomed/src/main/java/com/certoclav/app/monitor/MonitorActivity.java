@@ -40,6 +40,7 @@ import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.app.model.Error;
+import com.certoclav.app.service.PostProtocolsService;
 import com.certoclav.app.settings.SettingsActivity;
 import com.certoclav.app.util.AuditLogger;
 import com.certoclav.app.util.Helper;
@@ -377,6 +378,10 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                         AuditLogger.OBJECT_EMPTY,
                         Autoclave.getInstance().getProfile().getName() + " (" + getString(R.string.cycle) + " "
                                 + Autoclave.getInstance().getController().getCycleNumber() + ")");
+
+                Intent intent5 = new Intent(ApplicationController.getContext(), PostProtocolsService.class);
+                startService(intent5);
+
                 if (currentProgramStep == Autoclave.PROGRAM_STEPS.FINISHED) {
                     askForIndicator();
                 }

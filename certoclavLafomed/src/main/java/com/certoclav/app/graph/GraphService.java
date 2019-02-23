@@ -11,10 +11,10 @@ import com.certoclav.app.database.ProtocolEntry;
 import com.certoclav.app.listener.SensorDataListener;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveData;
+import com.certoclav.app.util.Helper;
 import com.certoclav.library.graph.LineGraph;
 import com.certoclav.library.graph.Point;
 import com.certoclav.library.graph.ProfileGraph;
-import com.j256.ormlite.dao.ForeignCollection;
 
 import org.achartengine.GraphicalView;
 
@@ -24,13 +24,13 @@ import java.util.Collection;
 public class GraphService implements SensorDataListener {
 
     private GraphicalView view;
-    private LineGraph runningGraph = new LineGraph();
+    private LineGraph runningGraph = new LineGraph(Helper.getTemperatureUnitText(null));
 
 
-    private LineGraph graphTemp1 = new LineGraph();
-    private LineGraph graphTemp2 = new LineGraph();
-    private LineGraph graphTemp3 = new LineGraph();
-    private LineGraph graphPressure = new LineGraph();
+    private LineGraph graphTemp1 = new LineGraph(Helper.getTemperatureUnitText(null));
+    private LineGraph graphTemp2 = new LineGraph(Helper.getTemperatureUnitText(null));
+    private LineGraph graphTemp3 = new LineGraph(Helper.getTemperatureUnitText(null));
+    private LineGraph graphPressure = new LineGraph(Helper.getTemperatureUnitText(null));
     private GraphicalView viewTemp1;
     private GraphicalView viewTemp2;
     private GraphicalView viewTemp3;
@@ -157,7 +157,7 @@ public class GraphService implements SensorDataListener {
 
     private LineGraph getProtocolGraph(Protocol protocol) {
 
-        LineGraph protocolGraph = new LineGraph();
+        LineGraph protocolGraph = new LineGraph(Helper.getTemperatureUnitText(null));
 
         try {
 
@@ -201,7 +201,7 @@ public class GraphService implements SensorDataListener {
             protocolGraph.setRange(range);
 
         } catch (Exception e) {
-            protocolGraph = new LineGraph();
+            protocolGraph = new LineGraph(Helper.getTemperatureUnitText(null));
 
         }
 

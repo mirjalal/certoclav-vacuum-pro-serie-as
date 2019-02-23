@@ -275,8 +275,6 @@
     <string name="media_2">MEDIUM 2</string>
     <string name="press">DRUCK</string>
     <string name="vent">ENTLÜFTE</string>
-
-    <string name="media_temperature">Mediumtemperatur</string>
     <string name="pressure">Druck</string>
     
     <string name="total_cycles_of_the_autoclave">Anzahl der bisher durchgeführten Zyklen</string>

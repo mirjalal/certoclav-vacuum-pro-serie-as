@@ -106,18 +106,18 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
                     }
                 });
 
-        findPreference("preferences_autoclave_parameter_reset_filter_hours")
+        findPreference("preferences_autoclave_parameter_reset_filter_cycle")
                 .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                         Helper.askConfirmation(getContext(), getString(R.string.reset), getString(R.string.do_you_really_want_to_reset_format,
-                                getString(R.string.preferences_autoclave_filter_hours)), new SweetAlertDialog.OnSweetClickListener() {
+                                getString(R.string.preferences_autoclave_filter_cycle)), new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
                                 sDialog.dismissWithAnimation();
                                 ReadAndParseSerialService.getInstance().setParameter(86, "1");
                                 AuditLogger.addAuditLog(AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CLICKED,
-                                        "preferences_autoclave_parameter_reset_filter_hours".hashCode(), "");
+                                        "preferences_autoclave_parameter_reset_filter_cycle".hashCode(), "");
                             }
                         }, null);
                         return false;
@@ -145,30 +145,29 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
                 PreferenceCategory preferenceRoot = (PreferenceCategory) findPreference("pref_key_calibration_category");
                 preferenceRoot.removePreference(preference);
             }
-        }else{
+        } else {
             findPreference("preferences_autoclave_parameter_99")
                     .setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    float val = Float.parseFloat(newValue.toString());
-                    if ((val >= manager.getWarmingUpTempRange().first) && (val <= manager.getWarmingUpTempRange().second)) {
-                        return true;
-                    }
-                    else {
-                        // invalid you can show invalid message
-                        Toasty.error(getContext(),
-                                getString(R.string.preferences_autoclave_warm_up_temp_range,
-                                        manager.getWarmingUpTempRange().first,
-                                        manager.getWarmingUpTempRange().second),
-                                Toast.LENGTH_SHORT, true).show();
-                        return false;
-                    }
-                }
-            });
+                        @Override
+                        public boolean onPreferenceChange(Preference preference, Object newValue) {
+                            float val = Float.parseFloat(newValue.toString());
+                            if ((val >= manager.getWarmingUpTempRange().first) && (val <= manager.getWarmingUpTempRange().second)) {
+                                return true;
+                            } else {
+                                // invalid you can show invalid message
+                                Toasty.error(getContext(),
+                                        getString(R.string.preferences_autoclave_warm_up_temp_range,
+                                                manager.getWarmingUpTempRange().first,
+                                                manager.getWarmingUpTempRange().second),
+                                        Toast.LENGTH_SHORT, true).show();
+                                return false;
+                            }
+                        }
+                    });
         }
 
 
-        if (!CloudUser.getInstance().isSuperAdmin())
+        if (!CloudUser.getInstance().isSuperAdmin()) {
             for (Integer parameterId : manager.getAdminParameters()) {
                 Preference preference = findPreference("preferences_autoclave_parameter_" + parameterId);
 
@@ -182,6 +181,12 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
                 if (root.getPreferenceCount() == 0)
                     root.setShouldDisableView(false);
             }
+        }
+        //Enable editable of parameter Number review hours
+        //Enable editable of parameter Number Filter Cycle
+        findPreference("preferences_autoclave_parameter_96").setEnabled(CloudUser.getInstance().isSuperAdmin());
+        findPreference("preferences_autoclave_parameter_98").setEnabled(CloudUser.getInstance().isSuperAdmin());
+
     }
 
     @Override
@@ -254,6 +259,16 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
                     if (parameter.getParameterId() == 3) {
                         AutoclaveModelManager.getInstance().setSerialNumber(parameter);
                         updatePreferences();
+                    }
+
+                    if (parameter.getParameterId() == 8) {
+
+                        if (!AutoclaveModelManager.getInstance().getTemperatureUnit().equals(parameter.getValue().toString())) {
+                            AutoclaveModelManager.getInstance().setTemperatureSymbol(parameter);
+                            Helper.getPrograms(getActivity());
+                        } else {
+                            AutoclaveModelManager.getInstance().setTemperatureSymbol(parameter);
+                        }
                     }
 
                     key = "preferences_autoclave_parameter_" + parameter.getParameterId();

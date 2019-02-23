@@ -3,7 +3,6 @@ package com.certoclav.app.activities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.LayoutRes;
@@ -22,6 +21,7 @@ import com.certoclav.app.listener.SensorDataListener;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveData;
 import com.certoclav.app.util.AuditLogger;
+import com.certoclav.app.util.Helper;
 
 public class CertoclavSuperActivity extends FragmentActivity implements SensorDataListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private TextView textSteam = null;
@@ -42,7 +42,6 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
 //            ((ViewGroup) findViewById(R.id.fragment_debugger_uart).getParent()).removeView(findViewById(R.id.fragment_debugger_uart));
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-        ((AudioManager) this.getSystemService(Context.AUDIO_SERVICE)).setRingerMode(AudioManager.RINGER_MODE_SILENT);
 
     }
 
@@ -71,9 +70,9 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
                     Autoclave.getInstance().getProfile().isContByFlexProbe2Enabled()?View.VISIBLE:View.GONE);
 
             textPressure.setText(getString(R.string.pressure) + ": " + data.getPress().getValueString() + " " + getString(R.string.bar));
-            textSteam.setText(getString(R.string.steam) + ": " + data.getTemp1().getValueString() + " " + getString(R.string._c));
-            textMedia.setText(getString(R.string.media) + ": " + data.getTemp2().getValueString() + " " + getString(R.string._c));
-            textMedia2.setText(getString(R.string.media_2) + ": " + data.getTemp3().getValueString() + " " + getString(R.string._c));
+            textSteam.setText(getString(R.string.steam) + ": " + data.getTemp1().getValueString() + " " + Helper.getTemperatureUnitText(null));
+            textMedia.setText(getString(R.string.media) + ": " + data.getTemp2().getValueString() + " " + Helper.getTemperatureUnitText(null));
+            textMedia2.setText(getString(R.string.media_2) + ": " + data.getTemp3().getValueString() + " " + Helper.getTemperatureUnitText(null));
         } catch (Exception e) {
             e.printStackTrace();
         }

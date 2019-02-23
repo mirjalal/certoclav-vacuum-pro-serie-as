@@ -64,10 +64,8 @@ public class CloudSocketThread extends Thread implements SocketEventListener {
             //}
             if (counterSendLiveDataToServer > 0) {
                 counterSendLiveDataToServer--;
-                Log.e("MainActivity", "Counter: " + counterSendLiveDataToServer);
                 if (SocketService.getInstance().getSocket().connected()) {
                     jsonLiveMessageObj = new JSONObject();
-                    Log.e("MainActivity", "Sending data");
 
                     String timeSinceStartString = "";
                     try {

@@ -10,23 +10,16 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 import android.support.v4.preference.PreferenceFragment;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.database.DatabaseService;
-import com.certoclav.app.database.Profile;
 import com.certoclav.app.database.Protocol;
 import com.certoclav.app.database.ProtocolEntry;
 import com.certoclav.app.listener.UserProgramListener;
@@ -35,7 +28,6 @@ import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.ErrorModel;
-import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.MyCallback;
 import com.certoclav.app.util.ServerConfigs;
@@ -68,94 +60,7 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.preference_sterilization);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
-        //Edit user defined program
-        ((Preference) findPreference(AppConstants.PREFREENCE_KEY_USER_DEFINED)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
-
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                try {
-                    final SweetAlertDialog dialog = new SweetAlertDialog(getActivity(), R.layout.dialog_edit_program, SweetAlertDialog.WARNING_TYPE);
-                    dialog.setContentView(R.layout.dialog_edit_program);
-                    dialog.setTitle(R.string.edit_custom_program);
-                    dialog.setCancelable(true);
-                    dialog.setCanceledOnTouchOutside(true);
-                    final UserProgramListener userProgramReceivedListener = new UserProgramListener() {
-
-                        @Override
-                        public void onUserProgramReceived() {
-                           // Profile profile = Autoclave.getInstance().getUserDefinedProgram();
-                           // ((TextView) dialog.findViewById(R.id.dialog_program_edit_vacuum_times)).setText(Integer.toString(profile.getVacuumTimes()));
-                           // ((TextView) dialog.findViewById(R.id.dialog_program_edit_sterilizationtemperature)).setText(Float.toString(profile.getSterilisationTemperature()));
-                           // ((TextView) dialog.findViewById(R.id.dialog_program_edit_sterilizationtime)).setText(Integer.toString(profile.getSterilisationTime()));
-                           // ((TextView) dialog.findViewById(R.id.dialog_program_edit_dryingtime)).setText(Integer.toString(profile.getDryTime()));
-
-
-                        }
-                    };
-
-                    Autoclave.getInstance().setOnUserProgramListener(userProgramReceivedListener);
-
-                    ReadAndParseSerialService.getInstance().sendGetUserProgramCommand();
-
-                    Button dialogButtonCancel = (Button) dialog.findViewById(R.id.dialog_program_button_cancel);
-                    dialogButtonCancel.setOnClickListener(new OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
-                            Autoclave.getInstance().removeOnUserProgramListener(userProgramReceivedListener);
-                            dialog.dismissWithAnimation();
-                        }
-                    });
-                    Button dialogButtonApply = (Button) dialog.findViewById(R.id.dialog_program_button_apply);
-                    // if button is clicked, close the custom dialog
-                    dialogButtonApply.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            try {
-                                Integer vacuumTimes = Integer.parseInt(((TextView) dialog.findViewById(R.id.dialog_program_edit_vacuum_times)).getText().toString());
-                                Integer sterilizationTemp = Integer.parseInt(((TextView) dialog.findViewById(R.id.dialog_program_edit_sterilizationtemperature)).getText().toString());
-                                Integer sterilizationTime = Integer.parseInt(((TextView) dialog.findViewById(R.id.dialog_program_edit_sterilizationtime)).getText().toString());
-                                Integer dryingTime = Integer.parseInt(((TextView) dialog.findViewById(R.id.dialog_program_edit_dryingtime)).getText().toString());
-                                if (vacuumTimes >= 1 && vacuumTimes <= 10) {
-                                    if (sterilizationTemp >= 105 && sterilizationTemp <= 134) {
-                                        if (sterilizationTime >= 4 && sterilizationTime <= 60) {
-                                            if (dryingTime >= 1 && dryingTime <= 25) {
-                                                ReadAndParseSerialService.getInstance().sendPutUserProgramCommand(vacuumTimes, sterilizationTemp, sterilizationTime, dryingTime);
-                                                ReadAndParseSerialService.getInstance().sendGetUserProgramCommand();
-                                                Toast.makeText(getActivity(), R.string.program_saved, Toast.LENGTH_LONG).show();
-                                                Autoclave.getInstance().removeOnUserProgramListener(userProgramReceivedListener);
-                                                dialog.dismissWithAnimation();
-                                            } else {
-                                                Toast.makeText(getActivity(), getString(R.string.please_enter_a_valid_drying_time), Toast.LENGTH_LONG).show();
-                                            }
-                                        } else {
-                                            Toast.makeText(getActivity(), getString(R.string.please_enter_a_valid_sterilization_time), Toast.LENGTH_LONG).show();
-                                        }
-                                    } else {
-                                        Toast.makeText(getActivity(), getString(R.string.please_enter_a_valid_sterilization_temperature), Toast.LENGTH_LONG).show();
-                                    }
-                                } else {
-                                    Toast.makeText(getActivity(), getString(R.string.please_enter_a_valid_number_of_vacuum_times), Toast.LENGTH_LONG).show();
-                                }
-                            } catch (Exception e) {
-
-                                Toast.makeText(getActivity(), getString(R.string.please_enter_a_valid_data), Toast.LENGTH_LONG).show();
-
-                            }
-
-                        }
-                    });
-
-                    dialog.show();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return false;
-            }
-        });
-
+        
         //upload protocols to USB
         ((Preference) findPreference(AppConstants.PREFERENCE_KEY_EXPORT_USB)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 

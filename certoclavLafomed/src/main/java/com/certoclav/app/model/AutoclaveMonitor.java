@@ -20,8 +20,10 @@ import com.certoclav.app.listener.SensorDataListener;
 import com.certoclav.app.monitor.MonitorActivity;
 import com.certoclav.app.monitor.MonitorNotificationActivity;
 import com.certoclav.app.service.CloudSocketService;
+import com.certoclav.app.service.PostProtocolsService;
 import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.app.util.AuditLogger;
+import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.bcrypt.BCrypt;
 import com.certoclav.library.certocloud.CloudDatabase;
@@ -213,16 +215,18 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
         //check if read services are still running
         if ((System.nanoTime() - nanoTimeAtLastServiceCheck) > (1000000000L * 3)) { //3 seconds past
             nanoTimeAtLastServiceCheck = System.nanoTime();
+
             Intent intent2 = new Intent(ApplicationController.getContext(), CloudSocketService.class);
-            ApplicationController.getContext().startService(intent2);
+            if (Autoclave.getInstance().isOnlineMode(ApplicationController.getContext())) {
+                ApplicationController.getContext().startService(intent2);
+            } else {
+                ApplicationController.getContext().stopService(intent2);
+            }
+
             ReadAndParseSerialService.getInstance().checkGetDataRunnableIsAlive();
         }
 
         updateErrorList();
-        Log.e("MONITOR", "State: " + Autoclave.getInstance().getState().toString() + secondsSinceStart
-                + "\nnumErrors:" + errorList.size()
-                + "\nisDoorClosed() " + Autoclave.getInstance().getData().isDoorClosed()
-                + "\nisDoorLocked" + Autoclave.getInstance().getData().isDoorLocked());
         if (errorList.size() > 0) {
             Log.e("MONITOR", "Error: " + errorList.get(0).getMsg());
         }
@@ -394,7 +398,8 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                                 Autoclave.getInstance().getUser(),
                                 Autoclave.getInstance().getProfile(),
                                 ERROR_CODE_CONNECTION_LOST,
-                                false);
+                                false,
+                                AutoclaveModelManager.getInstance().getTemperatureUnit());
                         Autoclave.getInstance().setProtocol(protocol);
                         databaseService.insertProtocol(protocol);
 
@@ -684,6 +689,9 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
         databaseService.updateProtocolEndTime(Autoclave.getInstance().getProtocol().getProtocol_id(), Autoclave.getInstance().getDateObject());
         databaseService.updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(), errorCode);
         Autoclave.getInstance().getProtocol().setErrorCode(errorCode);
+
+        Intent intent5 = new Intent(ApplicationController.getContext(), PostProtocolsService.class);
+        ApplicationController.getContext().startService(intent5);
     }
 
 
@@ -772,6 +780,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                 case Condition.ID_IF_SUCCESSFUL:
                     Log.e("AutoclaveMonitor", "check state " + state.toString());
                     if (state == AutoclaveState.PROGRAM_FINISHED) {
+
                         Log.e("AutoclaveMonitor", "Try to send notifications now");
                         try {
                             if (condition.getEmailAddress().isEmpty() == false) {
@@ -823,8 +832,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
         try {
             String binary = String.format("%32s", new BigInteger(Autoclave.getInstance().getErrorCode(), 16).toString(2)).replace(" ", "0");
-            Log.e("error_hex" + Autoclave.getInstance().getErrorCode());
-            Log.e("error_binary" + binary);
+
             errorList = new ArrayList<>();
             int errorcode = 0;
             for (int i = 0; i < 32; i++)

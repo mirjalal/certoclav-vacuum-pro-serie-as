@@ -144,7 +144,8 @@ public class Helper {
                             Autoclave.getInstance().getUser(),
                             protocol.getProgram(),
                             protocol.getErrorCode(), // power loss
-                            true);
+                            true,
+                            AutoclaveModelManager.getInstance().getTemperatureUnit());
 
                     databaseService.insertProtocol(temp);
                     Calendar calendar = Calendar.getInstance();
@@ -223,7 +224,8 @@ public class Helper {
                         Autoclave.getInstance().getUser(),
                         protocol.getProgram(),
                         protocol.getErrorCode(), // power loss
-                        true);
+                        true,
+                        AutoclaveModelManager.getInstance().getTemperatureUnit());
 
                 databaseService.insertProtocol(temp);
                 Calendar calendar = Calendar.getInstance();
@@ -564,7 +566,7 @@ public class Helper {
                         entryJSONObject.put("ts", String.format(Locale.US, "%.2f", ((float) (protocolEntry.getTimestamp().getTime() - startTime.getTime())) / (1000.0 * 60.0)));
                         entryJSONObject.put("tmp", String.format(Locale.US, "%.2f", protocolEntry.getTemperature()));
                         entryJSONObject.put("mtmp", String.format(Locale.US, "%.2f", protocolEntry.getMediaTemperature()));
-                        entryJSONObject.put("prs", String.format(Locale.US, "%.2f", protocolEntry.getPressure() ));
+                        entryJSONObject.put("prs", String.format(Locale.US, "%.2f", protocolEntry.getPressure()));
                         entryJSONObject.put("mtmp", String.format(Locale.US, "%.2f", protocolEntry.getMediaTemperature()));
                         entryJSONObject.put("input", protocolEntry.getDebugInput());
                         entryJSONObject.put("output", protocolEntry.getDebugOutput());
@@ -597,7 +599,7 @@ public class Helper {
                     jsonProtocolObject.put("devicekey", Autoclave.getInstance().getController().getSavetyKey());
                     jsonProtocolObject.put("program", programJsonArray);
                     jsonProtocolObject.put("start", protocol.getStartTime().getTime());
-                    jsonProtocolObject.put("end",lastEntry.getTime());
+                    jsonProtocolObject.put("end", lastEntry.getTime());
                     jsonProtocolObject.put("cycle", protocol.getZyklusNumber());
                     /*
                      *  The cloud will interpret the error codes as following:
@@ -631,6 +633,7 @@ public class Helper {
                     //        break;
                     //}
                     jsonProtocolObject.put("errcode", errorCodeCloud);
+                    jsonProtocolObject.put("temp_unit", protocol.getTemperatureUnit());
                     jsonProtocolObject.put("entries", entryJSONArray);
 
                     JSONObject jsonProtocolWrapper = new JSONObject();
@@ -654,7 +657,7 @@ public class Helper {
                         JSONObject content = new JSONObject();
                         try {
                             content.put("isRunning", true);
-                            content.put("device_key",AutoclaveModelManager.getInstance().getSerialNumber());
+                            content.put("device_key", AutoclaveModelManager.getInstance().getSerialNumber());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -1098,7 +1101,7 @@ public class Helper {
         StringBuilder sbuilder = new StringBuilder();
         if (profile.getSterilisationTemperature() != 0) {
             sbuilder.append(profile.getSterilisationTemperature())
-                    .append(" " + "\u2103")
+                    .append(" " +getTemperatureUnitText(null))
                     .append("\t");
         }
         if (profile.getSterilisationPressure() != 0) {
@@ -1143,7 +1146,8 @@ public class Helper {
                     .append("\n");
         }
         if (profile.isMaintainEnabled()) {
-            sbuilder.append(context.getString(R.string.maintain_final_temp_format, profile.getFinalTemp()))
+            sbuilder.append(context.getString(R.string.maintain_final_temp_format, profile.getFinalTemp(),
+                    getTemperatureUnitText(null)))
                     .append("\n");
         }
         if (profile.isContByFlexProbe1Enabled()) {
@@ -1227,7 +1231,7 @@ public class Helper {
             if (protocol.getSterilisationTemperature() != 0) {
                 sbuilder.append("Sterilisation temperature: ")
                         .append(protocol.getSterilisationTemperature())
-                        .append(" °C")
+                        .append(Helper.getTemperatureUnitText(protocol.getTemperatureUnit()))
                         .append("\r\n");
             }
 
@@ -1248,7 +1252,7 @@ public class Helper {
             if (protocol.getVacuumPersistTemperature() != 0) {
                 sbuilder.append("Vacuum persist temperature: ")
                         .append(protocol.getVacuumPersistTemperature())
-                        .append(" °C")
+                        .append(Helper.getTemperatureUnitText(protocol.getTemperatureUnit()))
                         .append("\r\n");
             }
             if (protocol.getVacuumPersistTime() != 0) {
@@ -1273,5 +1277,14 @@ public class Helper {
         int tempnumber = (int) (f * 100);
         Double roundedfloat = (double) ((double) tempnumber / 100.0);
         return roundedfloat;
+    }
+
+    public static String getTemperatureUnitText(String unit) {
+        if (unit == null)
+            return AppController.getContext().getString(AutoclaveModelManager.getInstance().
+                    getTemperatureUnit().equals("F") ? R.string.fahrenheit : R.string.celcius);
+
+        return AppController.getContext().getString((unit != null && unit.equals("F"))
+                ? R.string.fahrenheit : R.string.celcius);
     }
 }

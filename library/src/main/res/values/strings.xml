@@ -142,6 +142,8 @@
     <string name="information">INFORMATION</string>
     <string name="intro_account_created">account created</string>
     <string name="temperature">Temperature</string>
+    <string name="steam_temperature">Steam [%1$s]</string>
+    <string name="media_temperature">Media [%1$s]</string>
     <string name="time_in_minutes">Time in minutes</string>
     <string name="settings">SETTINGS</string>
     <string name="do_you_really_want_to_start">Do you really want to start</string>
@@ -292,7 +294,6 @@
     <string name="media_2">MEDIA 2</string>
     <string name="press">PRESS</string>
     <string name="vent">VENT</string>
-    <string name="media_temperature">Media temperature</string>
     <string name="pressure">PRESSURE</string>
     <string name="total_cycles_of_the_autoclave">Total cycles of the autoclave</string>
     <string name="total_cycles_">Total cycles:</string>

@@ -16,9 +16,8 @@ import java.util.List;
 public class AutoclaveModelManager implements MyCallback {
 
     private static AutoclaveModelManager manager;
-    private Integer[] parametersForAdmin = new Integer[]{1, 2, 3, 4, 71, 72, 94, 95, 96, 98};
+    private Integer[] parametersForAdmin = new Integer[]{1, 2, 3, 4, 71, 72, 94, 95};
     private int currentSentParameterId = 1;
-
     private AutoclaveModelManager() {
         try {
             ReadAndParseSerialService.getInstance().addCallback(this);
@@ -33,9 +32,11 @@ public class AutoclaveModelManager implements MyCallback {
         return manager;
     }
 
+
     private AutoclaveParameter model;
     private AutoclaveParameter serialNumber;
     private AutoclaveParameter pcbSerialNumber;
+    private AutoclaveParameter temperatureSymbol;
 
     public String getSerialNumber() {
         if (serialNumber == null) {
@@ -51,6 +52,13 @@ public class AutoclaveModelManager implements MyCallback {
         return pcbSerialNumber.getValue().toString();
     }
 
+    public String getTemperatureUnit() {
+        return temperatureSymbol!=null?temperatureSymbol.getValue().toString():"C";
+    }
+
+    public void setTemperatureSymbol(AutoclaveParameter temperatureSymbol) {
+        this.temperatureSymbol = temperatureSymbol;
+    }
 
     public void setSerialNumber(AutoclaveParameter serialNumber) {
         this.serialNumber = serialNumber;
@@ -167,6 +175,11 @@ public class AutoclaveModelManager implements MyCallback {
 
             if (((AutoclaveParameter) response).getParameterId() == 4) {
                 pcbSerialNumber = (AutoclaveParameter) response;
+                ReadAndParseSerialService.getInstance().getParameter(8);
+            }
+
+            if (((AutoclaveParameter) response).getParameterId() == 8) {
+                temperatureSymbol = (AutoclaveParameter) response;
             }
         }
     }
