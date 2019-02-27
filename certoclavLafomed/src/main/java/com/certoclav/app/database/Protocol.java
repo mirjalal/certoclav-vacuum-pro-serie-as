@@ -112,7 +112,7 @@ public class Protocol {
 
 
     public String getTemperatureUnit() {
-        return temperatureUnit==null?"C":"F";
+        return temperatureUnit==null?"C":temperatureUnit;
     }
 
     public Profile getProgram() {

@@ -44,7 +44,7 @@ public class PostProtocolsThread extends Thread {
 
         try {
             //upload new protocols to certocloud every 60 seconds
-            if (Autoclave.getInstance().getState() == AutoclaveState.NOT_RUNNING) {
+            if (Autoclave.getInstance().getState() != AutoclaveState.RUNNING) {
                 if ((ApplicationController.getInstance().isNetworkAvailable() || ServerConfigs.getInstance(ApplicationController.getContext()).getUrl() != null) && !CloudUser.getInstance().getToken().isEmpty()) {
                     List<Protocol> protocols = databaseService.getProtocolsWhereNotUploaded();
                     if (protocols != null) {
@@ -160,8 +160,6 @@ public class PostProtocolsThread extends Thread {
                 }
 
             }
-
-            Thread.sleep(60000);
 
         } catch (Exception e) {
             e.printStackTrace();
