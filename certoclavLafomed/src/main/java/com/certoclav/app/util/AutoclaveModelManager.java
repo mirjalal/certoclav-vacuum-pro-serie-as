@@ -142,7 +142,11 @@ public class AutoclaveModelManager implements MyCallback {
     }
 
     private String getModelName() {
-        return model.getValue().toString().toUpperCase().replaceAll("\\d", "").replaceAll("-", "");
+        try {
+            return model.getValue().toString().toUpperCase().replaceAll("\\d", "").replaceAll("-", "");
+        }catch (Exception e){
+            return "NA";
+        }
     }
 
     public void setModel(AutoclaveParameter model) {
