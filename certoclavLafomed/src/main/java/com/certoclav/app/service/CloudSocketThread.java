@@ -9,6 +9,7 @@ import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.Log;
 import com.certoclav.app.util.AppController;
+import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.app.util.Helper;
 import com.certoclav.library.certocloud.SocketService;
 import com.certoclav.library.certocloud.SocketService.SocketEventListener;
@@ -63,10 +64,8 @@ public class CloudSocketThread extends Thread implements SocketEventListener {
             //}
             if (counterSendLiveDataToServer > 0) {
                 counterSendLiveDataToServer--;
-                Log.e("MainActivity", "Counter: " + counterSendLiveDataToServer);
                 if (SocketService.getInstance().getSocket().connected()) {
                     jsonLiveMessageObj = new JSONObject();
-                    Log.e("MainActivity", "Sending data");
 
                     String timeSinceStartString = "";
                     try {
@@ -264,6 +263,7 @@ public class CloudSocketThread extends Thread implements SocketEventListener {
                         JSONObject content = new JSONObject();
                         try {
                             content.put("isRunning", false);
+                            content.put("device_key",AutoclaveModelManager.getInstance().getSerialNumber());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

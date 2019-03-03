@@ -32,11 +32,13 @@ public class LineGraph {
 	public static final int TYPE_STEAM = 0;
 	public static final int TYPE_MEDIA = 1;
 	public static final int TYPE_PRESS = 2;
+	private String temperatureUnit;
 
 
 	
-	public LineGraph()
+	public LineGraph(String temperatureUnit)
 	{
+		this.temperatureUnit = temperatureUnit;
 
 		// Add both time series to the multiple series dataset
 		multiDataset.addSeries(timeSeriesSteam);
@@ -122,8 +124,8 @@ public class LineGraph {
 	{
 		multiRenderer.setXTitle(context.getString(R.string.time_in_minutes));
 		//multiRenderer.setYTitle(context.getString(R.string.temperature_in_c));
-		timeSeriesSteam.setTitle(context.getString(R.string.temperature));
-		timeSeriesMedia.setTitle(context.getString(R.string.media_temperature));
+		timeSeriesSteam.setTitle(context.getString(R.string.steam_temperature, temperatureUnit));
+		timeSeriesMedia.setTitle(context.getString(R.string.media_temperature, temperatureUnit));
 		timeSeriesPressure.setTitle(context.getString(R.string.pressure)+" [bar]");
 		
 		//view =  ChartFactory.getCubeLineChartView(context, mDataset, renderer, 0.3f);

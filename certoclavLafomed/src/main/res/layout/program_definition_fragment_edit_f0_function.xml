@@ -73,6 +73,7 @@
                 android:inputType="numberDecimal|numberSigned" />
 
             <TextView
+                android:id="@+id/program_definition_edit_z_value_unit"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginLeft="20dp"

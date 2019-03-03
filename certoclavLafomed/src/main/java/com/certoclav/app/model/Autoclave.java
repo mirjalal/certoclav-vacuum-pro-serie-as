@@ -1131,7 +1131,6 @@ public class Autoclave extends Observable {
             hour = Integer.parseInt(sTime[0]);
             minute = Integer.parseInt(sTime[1]);
             second = Integer.parseInt(sTime[2]);
-            Log.e("Autoclave", " " + year + " " + month + " " + day + " " + hour + " " + minute + " " + second);
             dDate = new Date(year - 1900, month - 1, day, hour, minute, second);
         } catch (Exception e) {
             Log.e("Autoclave", "error generating date object from string" + e.toString());

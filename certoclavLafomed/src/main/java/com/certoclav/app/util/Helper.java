@@ -33,8 +33,10 @@ import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.certocloud.CertocloudConstants;
 import com.certoclav.library.certocloud.PostUtil;
+import com.certoclav.library.certocloud.SocketService;
 import com.certoclav.library.util.Response;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
@@ -142,7 +144,8 @@ public class Helper {
                             Autoclave.getInstance().getUser(),
                             protocol.getProgram(),
                             protocol.getErrorCode(), // power loss
-                            true);
+                            true,
+                            AutoclaveModelManager.getInstance().getTemperatureUnit());
 
                     databaseService.insertProtocol(temp);
                     Calendar calendar = Calendar.getInstance();
@@ -221,7 +224,8 @@ public class Helper {
                         Autoclave.getInstance().getUser(),
                         protocol.getProgram(),
                         protocol.getErrorCode(), // power loss
-                        true);
+                        true,
+                        AutoclaveModelManager.getInstance().getTemperatureUnit());
 
                 databaseService.insertProtocol(temp);
                 Calendar calendar = Calendar.getInstance();
@@ -547,7 +551,131 @@ public class Helper {
     }
 
     public static void uploadLiveDebug(final Context context) {
+        Needle.onBackgroundThread().execute(new UiRelatedTask<Boolean>() {
+            @Override
+            protected Boolean doWork() {
 
+                try {
+                    Protocol protocol = DatabaseService.getInstance().getProtocolById(Autoclave.getInstance().getProtocol().getProtocol_id());
+                    //PROTOCOL-ENTRYS ARRAY
+                    JSONArray entryJSONArray = new JSONArray();
+                    Date startTime = protocol.getStartTime();
+                    Date lastEntry = null;
+                    for (ProtocolEntry protocolEntry : protocol.getProtocolEntry()) {
+                        if(protocolEntry.getTimestamp().getTime() < startTime.getTime())continue;
+                        JSONObject entryJSONObject = new JSONObject();
+                        entryJSONObject.put("ts", String.format(Locale.US, "%.2f", ((float) (protocolEntry.getTimestamp().getTime() - startTime.getTime())) / (1000.0 * 60.0)));
+                        entryJSONObject.put("tmp", String.format(Locale.US, "%.2f", protocolEntry.getTemperature()));
+                        entryJSONObject.put("mtmp", String.format(Locale.US, "%.2f", protocolEntry.getMediaTemperature()));
+                        entryJSONObject.put("prs", String.format(Locale.US, "%.2f", protocolEntry.getPressure()));
+                        entryJSONObject.put("mtmp", String.format(Locale.US, "%.2f", protocolEntry.getMediaTemperature()));
+                        entryJSONObject.put("input", protocolEntry.getDebugInput());
+                        entryJSONObject.put("output", protocolEntry.getDebugOutput());
+                        lastEntry = protocolEntry.getTimestamp();
+                        entryJSONArray.put(entryJSONObject);
+                    }
+
+                    //PROGRAM OBJECT
+                    //COMMANDS-ARRAY of Program
+                    JSONArray jsonCommandArray = new JSONArray();
+                    JSONObject commandJSONObject = new JSONObject();
+                    jsonCommandArray.put(commandJSONObject);
+
+
+                    // PROGRAM parameters
+                    JSONObject programJsonObject = new JSONObject();
+                    programJsonObject.put("msensor", false);
+                    programJsonObject.put("vent", false);
+                    programJsonObject.put("lidopen", false);
+                    programJsonObject.put("tbuffer", 0);
+                    programJsonObject.put("title", protocol.getProfileName());
+                    programJsonObject.put("note", protocol.getProfileDescription() + "\n" + generateProfileDescription(protocol));
+                    programJsonObject.put("commands", jsonCommandArray);
+
+                    JSONArray programJsonArray = new JSONArray();
+                    programJsonArray.put(programJsonObject);
+
+
+                    JSONObject jsonProtocolObject = new JSONObject();
+                    jsonProtocolObject.put("devicekey", Autoclave.getInstance().getController().getSavetyKey());
+                    jsonProtocolObject.put("program", programJsonArray);
+                    jsonProtocolObject.put("start", protocol.getStartTime().getTime());
+                    jsonProtocolObject.put("end", lastEntry.getTime());
+                    jsonProtocolObject.put("cycle", protocol.getZyklusNumber());
+                    /*
+                     *  The cloud will interpret the error codes as following:
+                     * 	0 Successfully completed
+                     *	6 Heater error
+                     *	8 Temperature overshoot error
+                     *	10 Temperature sensor broken error
+                     *	13 Temperature unsteadiness error
+                     *	14 Program cancelled by error
+                     *	15 Program cancelled by user
+                     *	16 Connection lost error
+                     */
+                    int errorCodeCloud = 0;
+                    try {
+                        errorCodeCloud = protocol.getErrorCode();
+                    } catch (Exception e) {
+                        errorCodeCloud = 15;
+                    }
+                    //switch (protocol.getErrorCode()) {
+                    //    case 1:
+                    //        errorCodeCloud = 14;
+                    //        break;
+                    //    case 2:
+                    //        errorCodeCloud = 15;
+                    //        break;
+                    //    case 3:
+                    //        errorCodeCloud = 16;
+                    //        break;
+                    //    case -1:
+                    //        errorCodeCloud = 15;
+                    //        break;
+                    //}
+                    jsonProtocolObject.put("errcode", errorCodeCloud);
+                    jsonProtocolObject.put("temp_unit", protocol.getTemperatureUnit());
+                    jsonProtocolObject.put("entries", entryJSONArray);
+
+                    JSONObject jsonProtocolWrapper = new JSONObject();
+                    jsonProtocolWrapper.put("protocol", jsonProtocolObject);
+                    String body = jsonProtocolWrapper.toString();
+
+
+                    //POST the Json object to CertoCloud
+                    PostUtil postUtil = new PostUtil();
+                    Response response = postUtil.postToCertocloud(body,
+                            CertocloudConstants.getServerUrl() +
+                                    CertocloudConstants.REST_API_POST_PROTOCOL_LIVE, true);
+
+                    if (response.getStatus() == PostUtil.RETURN_OK) {
+
+                        JSONObject json = new JSONObject(postUtil.getResponseBody());//in json is saved the result
+                        JSONObject protocolJSONObject = json.getJSONObject("message");
+                        String cloudId = protocolJSONObject.getString("_id");
+                        Log.e("PostProtocolThread", "parsedCloudId: " + cloudId);
+
+                        JSONObject content = new JSONObject();
+                        try {
+                            content.put("isRunning", true);
+                            content.put("device_key", AutoclaveModelManager.getInstance().getSerialNumber());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        SocketService.getInstance().getSocket().emit(SocketService.EVENT_SEND_LIVE_DEBUG,
+                                content);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return false;
+            }
+
+            @Override
+            protected void thenDoUiRelatedWork(Boolean aBoolean) {
+
+            }
+        });
     }
 
     public static void getCloudPrograms(final Context context) {
@@ -974,7 +1102,7 @@ public class Helper {
         StringBuilder sbuilder = new StringBuilder();
         if (profile.getSterilisationTemperature() != 0) {
             sbuilder.append(profile.getSterilisationTemperature())
-                    .append(" " + "\u2103")
+                    .append(" " +getTemperatureUnitText(null))
                     .append("\t");
         }
         if (profile.getSterilisationPressure() != 0) {
@@ -1019,7 +1147,8 @@ public class Helper {
                     .append("\n");
         }
         if (profile.isMaintainEnabled()) {
-            sbuilder.append(context.getString(R.string.maintain_final_temp_format, profile.getFinalTemp()))
+            sbuilder.append(context.getString(R.string.maintain_final_temp_format, profile.getFinalTemp(),
+                    getTemperatureUnitText(null)))
                     .append("\n");
         }
         if (profile.isContByFlexProbe1Enabled()) {
@@ -1088,5 +1217,75 @@ public class Helper {
                 return "---";
         }
         return "---";
+    }
+
+    public static String generateProfileDescription(Protocol protocol) {
+
+        try {
+            StringBuilder sbuilder = new StringBuilder();
+            if (protocol.getVacuumTimes() != 0) {
+                sbuilder.append("\r\nVacuum times: ")
+                        .append(protocol.getVacuumTimes())
+                        .append("\r\n");
+            }
+
+            if (protocol.getSterilisationTemperature() != 0) {
+                sbuilder.append("Sterilisation temperature: ")
+                        .append(protocol.getSterilisationTemperature())
+                        .append(Helper.getTemperatureUnitText(protocol.getTemperatureUnit()))
+                        .append("\r\n");
+            }
+
+            if (protocol.getSterilisationPressure() != 0) {
+                sbuilder.append("Sterilisation pressure: ")
+                        .append(roundFloat((protocol.getSterilisationPressure() * 0.01f) + 1f).toString())
+                        .append(" bar")
+                        .append("\r\n");
+            }
+
+            if (protocol.getSterilisationTime() != 0) {
+                sbuilder.append("Sterilisation holding time: ")
+                        .append(protocol.getSterilisationTime())
+                        .append(" min")
+                        .append("\r\n");
+            }
+
+            if (protocol.getVacuumPersistTemperature() != 0) {
+                sbuilder.append("Vacuum persist temperature: ")
+                        .append(protocol.getVacuumPersistTemperature())
+                        .append(Helper.getTemperatureUnitText(protocol.getTemperatureUnit()))
+                        .append("\r\n");
+            }
+            if (protocol.getVacuumPersistTime() != 0) {
+                sbuilder.append("Vacuum persist time: ")
+                        .append(protocol.getVacuumPersistTime())
+                        .append(" min")
+                        .append("\r\n");
+            }
+            if (protocol.getDryTime() != 0) {
+                sbuilder.append("Drying time: ")
+                        .append(protocol.getDryTime())
+                        .append(" min");
+            }
+            return sbuilder.toString();
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+
+    public static Double roundFloat(float f) {
+        int tempnumber = (int) (f * 100);
+        Double roundedfloat = (double) ((double) tempnumber / 100.0);
+        return roundedfloat;
+    }
+
+    public static String getTemperatureUnitText(String unit) {
+        if (unit == null)
+            return AppController.getContext().getString(AutoclaveModelManager.getInstance().
+                    getTemperatureUnit().equals("F") ? R.string.fahrenheit : R.string.celcius);
+
+        return AppController.getContext().getString((unit != null && unit.equals("F"))
+                ? R.string.fahrenheit : R.string.celcius);
     }
 }

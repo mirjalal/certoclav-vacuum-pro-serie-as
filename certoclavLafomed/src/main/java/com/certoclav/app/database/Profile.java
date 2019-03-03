@@ -411,6 +411,11 @@ public class Profile {
     public boolean equals(Object obj) {
         return ((Profile) obj).getIndex() == getIndex();
     }
+
+    //Vacuum Test and BD Test is not editable, their index is 1 and 2.
+    public boolean isEditable(){
+        return index!=1 && index!=2;
+    }
 }
 
 

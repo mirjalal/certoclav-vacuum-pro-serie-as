@@ -118,6 +118,10 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
         }
         viewHolder.imageViewMenu.setVisibility(isLocked ? View.GONE : View.VISIBLE);
 
+        if(!getItem(position).isEditable()){
+            viewHolder.imageViewMenu.setVisibility(View.GONE);
+        }
+
         viewHolder.cardView.setTag(position);
         viewHolder.imageViewMenu.setTag(position);
 
@@ -136,7 +140,9 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
         final ImageView imageViewCloud;
         Profile item;
 
-        ViewHolder(TextView firstLine, TextView textDuration, CardView cardView, ImageView imageViewMenu,
+
+
+        ViewHolder( TextView firstLine, TextView textDuration, CardView cardView, ImageView imageViewMenu,
                    ImageView imageViewCloud, final SterilisationFragment fragment, final ProgramAdapter adapter) {
             this.firstLine = firstLine;
             this.textDuration = textDuration;
@@ -147,7 +153,7 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
             cardView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    if (!adapter.isLocked)
+                    if (!adapter.isLocked && item.isEditable())
                         fragment.onLongClick(v);
                     return false;
                 }

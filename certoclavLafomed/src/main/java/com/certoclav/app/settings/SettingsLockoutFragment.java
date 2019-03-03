@@ -25,14 +25,18 @@ public class SettingsLockoutFragment extends PreferenceFragment {
     @Override
     public void onResume() {
         super.onResume();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        try {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             if (!Autoclave.getInstance().getUser().isAdmin() &&
                     prefs.getBoolean(ApplicationController.getContext().getString(R.string.preferences_lockout_glp),
-                    ApplicationController.getContext().getResources().getBoolean(R.bool.preferences_lockout_glp))) {
+                            ApplicationController.getContext().getResources().getBoolean(R.bool.preferences_lockout_glp))) {
                 Toast.makeText(getActivity(), R.string.these_settings_are_locked_by_the_admin, Toast.LENGTH_SHORT).show();
                 getPreferenceScreen().setEnabled(false);
             } else {
                 getPreferenceScreen().setEnabled(true);
             }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.certoclav.app.service;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -107,6 +108,9 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     private Boolean runnableGetDataIsAlive = false;
     private List<SerialReadWriteListener> listeners;
 
+    //the last called get data
+    long lastGetDataCalled = 0;
+
 
     private Runnable runnableGetData = new Runnable() {
         @Override
@@ -124,6 +128,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                 }
                 handlerGetData.removeCallbacks(this);
                 handlerGetData.postDelayed(this, delayForGetData);
+                lastGetDataCalled = System.currentTimeMillis();
             } catch (Exception e) {
                 e.printStackTrace();
                 runnableGetDataIsAlive = false;
@@ -138,11 +143,11 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 
                 handlerGetData.removeCallbacks(runnableGetData);
                 commandSent(commandQueue.get(0));
+//                handlerGetData.postDelayed(runnableGetData, 2000);
                 serialService.sendMessage(commandQueue.get(0));
                 handler.postDelayed(runnableTimeout, 4000);
                 Log.e("Serialservice", "CREATE: " + commandQueue.get(0));
                 commandQueue.remove(0);
-                handlerGetData.postDelayed(runnableGetData, delayForGetData);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -217,13 +222,16 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         } else if (AutoclaveModelManager.getInstance().getSerialNumber() == null) {
             commandQueue.clear();
             commandQueue.add(COMMANDS.CREATE(COMMANDS.GET_PARAMETER, 3));
-        }  else if (AutoclaveModelManager.getInstance().getPCBSerialNumber() == null) {
+        } else if (AutoclaveModelManager.getInstance().getPCBSerialNumber() == null) {
             commandQueue.clear();
             commandQueue.add(COMMANDS.CREATE(COMMANDS.GET_PARAMETER, 4));
         }
 
+        handler.removeCallbacks(runnableOtherCommands);
+        handlerGetData.removeCallbacks(runnableGetData);
+        handler.removeCallbacks(runnableTimeout);
         if (commandQueue.size() == 1)
-            handler.post(runnableOtherCommands);
+            handler.postDelayed(runnableOtherCommands,500);
 
     }
 
@@ -231,8 +239,9 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     public void checkGetDataRunnableIsAlive() {
 
         Log.e("ReadAndParse", "runnableIsAlive: " + runnableGetDataIsAlive);
-        if (runnableGetDataIsAlive == false) {
-            //      handlerGetData.postDelayed(runnableGetData, 1000);
+        if (System.currentTimeMillis() - lastGetDataCalled > 10000) {
+            handlerGetData.removeCallbacks(runnableGetData);
+            handlerGetData.post(runnableGetData);
         }
 
     }
@@ -465,8 +474,9 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     public void onMessageReceived(String message) {
         responseRead(message);
 
+        handler.removeCallbacks(runnableOtherCommands);
         if (commandQueue.size() > 0)
-            handler.post(runnableOtherCommands);
+            handler.postDelayed(runnableOtherCommands, 500);
         //Wait 1 seconds before sending GET_DATA command after sending other commands
         handlerGetData.removeCallbacks(runnableGetData);
         handlerGetData.postDelayed(runnableGetData, delayForGetData);
@@ -497,8 +507,6 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
             Log.e("ReadAndParseSerial", "exception parsing response");
             return;
         }
-
-        Log.e("Delay:", delayForGetData + " " + response[0]);
         try {
             switch (response[0]) {
                 case "ACK_ADJU":
@@ -542,6 +550,9 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                                 AuditLogger.OBJECT_EMPTY,
                                 Autoclave.getInstance().getProfile().getName() +
                                         " (" + mContext.getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() + ")");
+
+                    Intent intent5 = new Intent(ApplicationController.getContext(), PostProtocolsService.class);
+                    ApplicationController.getContext().startService(intent5);
                     break;
                 case RESPONSES.ACK_DATA:
 
@@ -594,19 +605,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                         programStep = responseParameters[INDEX_DAT_PROGRAM_STEP];
                         // digitalData[AppConstants.DIGITAL_FAIL_WATER_QUALITY]
                         handler.sendEmptyMessage(HANDLER_MSG_DATA);
-                        Log.e("ReadAndParseService", "temp: " + temperatures[0] + "\n" +
-                                "closed: " + isDoorClosed + "\n" +
-                                "locked: " + isDoorLocked + "\n" +
-                                "finished: " + isProgramFinished + "\n" +
-                                "running: " + isProgramRunning + "\n" +
-                                "isWaterLevelLow: " + isWaterLevelSourceLow + "\n" +
-                                "isBinFull: " + isWaterLevelBinFull + "\n" +
-                                "errorCode: " + errorCode + "\n" +
-                                "press: " + pressures[0] + " and " + pressures[1] + "\n" +
-                                "cylce: " + cycleNumber + "\n" +
-                                "date: " + date + "\n" +
-                                "time: " + time + "\n" +
-                                "index of program: " + indexOfRunningProgram + "\n");
+
                     }
 
                     break;
@@ -885,13 +884,12 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     }
 
     private void commandSent(String message) {
-        Log.e("COMMANDS SENT",message);
+        Log.e("COMMANDS SENT", message);
         for (SerialReadWriteListener listener : listeners)
             listener.onWrote(message);
     }
 
     private void responseRead(String message) {
-        Log.e("RECEIVE",message);
         for (SerialReadWriteListener listener : listeners)
             listener.onRead(message);
     }

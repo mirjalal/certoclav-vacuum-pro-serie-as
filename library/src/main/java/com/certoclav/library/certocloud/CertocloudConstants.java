@@ -40,6 +40,7 @@ public class CertocloudConstants {
 	 * Routes that can be accessed only by autheticated users
 	 */
 	public final static String REST_API_POST_PROTOCOLS = "/api/protocols/";//, devices.getAll);
+	public final static String REST_API_POST_PROTOCOL_LIVE = "/api/livedebug/";//, devices.getAll);
 	public final static String REST_API_GET_DEVICES = "/api/devices/";//, devices.getAll);
 	public final static String REST_API_GET_CONDITIONS = "/api/conditions/"; //+safetykey
 	public final static String REST_API_GET_IEMS = "/api/balanceitem/"; //+safetykey
