@@ -56,11 +56,13 @@ public class PostProtocolsThread extends Thread {
                             Date startTime = protocol.getStartTime();
                             Date lastEntry = null;
                             for (ProtocolEntry protocolEntry : protocol.getProtocolEntry()) {
+                                if (protocolEntry.getTimestamp().getTime() < startTime.getTime())
+                                    continue;
                                 JSONObject entryJSONObject = new JSONObject();
                                 entryJSONObject.put("ts", String.format(Locale.US, "%.2f", ((float) (protocolEntry.getTimestamp().getTime() - startTime.getTime())) / (1000.0 * 60.0)));
                                 entryJSONObject.put("tmp", String.format(Locale.US, "%.2f", protocolEntry.getTemperature()));
                                 entryJSONObject.put("mtmp", String.format(Locale.US, "%.2f", protocolEntry.getMediaTemperature()));
-                                entryJSONObject.put("prs", String.format(Locale.US, "%.2f", protocolEntry.getPressure() ));
+                                entryJSONObject.put("prs", String.format(Locale.US, "%.2f", protocolEntry.getPressure()));
                                 entryJSONObject.put("mtmp", String.format(Locale.US, "%.2f", protocolEntry.getMediaTemperature()));
                                 entryJSONObject.put("input", protocolEntry.getDebugInput());
                                 entryJSONObject.put("output", protocolEntry.getDebugOutput());
