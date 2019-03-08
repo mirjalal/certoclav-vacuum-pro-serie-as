@@ -567,11 +567,12 @@ public class Helper {
                         entryJSONObject.put("ts", String.format(Locale.US, "%.2f", ((float) (protocolEntry.getTimestamp().getTime() - startTime.getTime())) / (1000.0 * 60.0)));
                         entryJSONObject.put("tmp", String.format(Locale.US, "%.2f", protocolEntry.getTemperature()));
                         entryJSONObject.put("mtmp", String.format(Locale.US, "%.2f", protocolEntry.getMediaTemperature()));
+                        entryJSONObject.put("mtmp_2", String.format(Locale.US, "%.2f", protocolEntry.getMediaTemperature2()));
                         entryJSONObject.put("prs", String.format(Locale.US, "%.2f", protocolEntry.getPressure()));
-                        entryJSONObject.put("mtmp", String.format(Locale.US, "%.2f", protocolEntry.getMediaTemperature()));
                         entryJSONObject.put("input", protocolEntry.getDebugInput());
                         entryJSONObject.put("output", protocolEntry.getDebugOutput());
-                        lastEntry = protocolEntry.getTimestamp();
+                        if(lastEntry==null || lastEntry.before(protocolEntry.getTimestamp()))
+                            lastEntry = protocolEntry.getTimestamp();
                         entryJSONArray.put(entryJSONObject);
                     }
 
@@ -1028,6 +1029,11 @@ public class Helper {
                     JSONObject sterlizationTime = new JSONObject();
                     sterlizationTime.put("h", profile.getSterilisationTime() / 60);
                     sterlizationTime.put("m", profile.getSterilisationTime() % 60);
+
+                    JSONObject dryTime = new JSONObject();
+                    dryTime.put("h", profile.getDryTime() / 60);
+                    dryTime.put("m", profile.getDryTime() % 60);
+
                     programJsonObject.put("title", profile.getName());
                     programJsonObject.put("note", profile.getDescription());
                     programJsonObject.put("id", profile.getIndex());
@@ -1039,6 +1045,7 @@ public class Helper {
                     programJsonObject.put("final_temp", profile.getFinalTemp());
                     programJsonObject.put("use_f_function", profile.isF0Enabled());
                     programJsonObject.put("dur", sterlizationTime);
+                    programJsonObject.put("dry_dur", dryTime);
                     programJsonObject.put("f0_value", profile.getF0Value());
                     programJsonObject.put("z_value", profile.getzValue());
                     programJsonObject.put("is_from_android", true);

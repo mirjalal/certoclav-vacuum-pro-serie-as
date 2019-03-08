@@ -42,12 +42,25 @@ public class ProtocolEntry {
     @SerializedName("mtmp")
     private float mediaTemperature;
 
+
+    @DatabaseField(columnName = "media_temp_2")
+    @SerializedName("mtmp_2")
+    private float mediaTemperature2 = -100f;
+
     public float getMediaTemperature() {
         return mediaTemperature;
     }
 
     public void setMediaTemperature(float mediaTemperature) {
         this.mediaTemperature = mediaTemperature;
+    }
+
+    public float getMediaTemperature2() {
+        return mediaTemperature2;
+    }
+
+    public void setMediaTemperature2(float mediaTemperature2) {
+        this.mediaTemperature2 = mediaTemperature2;
     }
 
     @DatabaseField(columnName = "pressure")
@@ -98,6 +111,10 @@ public class ProtocolEntry {
         return pressure;
     }
 
+    public float getPressureInkPa() {
+        return pressure*100;
+    }
+
     public void setPressure(float pressure) {
         this.pressure = pressure;
     }
@@ -116,10 +133,11 @@ public class ProtocolEntry {
         // needed by ormlite
     }
 
-    public ProtocolEntry(Date timeStamp, float temperature, float mediaTemperature, float pressure, Protocol protocol, String debugInput, String debugOutput) {
+    public ProtocolEntry(Date timeStamp, float temperature, float mediaTemperature, float mediaTemperature2, float pressure, Protocol protocol, String debugInput, String debugOutput) {
         this.timestamp = timeStamp;
         this.temperature = temperature;
         this.mediaTemperature = mediaTemperature;
+        this.mediaTemperature2 = mediaTemperature2;
         this.pressure = pressure;
         this.protocol = protocol;
         this.debugInput = debugInput;

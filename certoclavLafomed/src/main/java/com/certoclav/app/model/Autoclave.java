@@ -1071,8 +1071,8 @@ public class Autoclave extends Observable {
 
         data.getTemp1().setCurrentValue(temperatures[0]);
         data.getTemp2().setCurrentValue(temperatures[1]);
-        data.getTemp3().setCurrentValue(temperatures[2]);
-        data.getTemp4().setCurrentValue(temperatures[3]);
+        data.getTemp3().setCurrentValue(temperatures[3]);
+        data.getTemp4().setCurrentValue(temperatures[2]);
         data.getPress().setCurrentValue(pressures[0]);
         data.getPress2().setCurrentValue(pressures[1]);
 

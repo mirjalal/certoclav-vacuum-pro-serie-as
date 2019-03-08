@@ -10,6 +10,7 @@ import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.support.v4.preference.PreferenceFragment;
+import android.util.Pair;
 import android.widget.Toast;
 
 import com.certoclav.app.R;
@@ -203,10 +204,29 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
         Preference connectionPref = findPreference(key);
         if (!(connectionPref instanceof CheckBoxPreference)) {
             connectionPref.setSummary(sharedPreferences.getString(key, ""));
-            if (sharedPreferences.contains(key))
+            if (sharedPreferences.contains(key)) {
+                int id = Integer.valueOf(key.replace("preferences_autoclave_parameter_", ""));
+                Pair<Float, Float> range = AutoclaveModelManager.getInstance().getParamterRange(id);
+                if (range != null) {
+                    boolean isInRange = false;
+                    try {
+                        float value = Float.valueOf(sharedPreferences.getString(key, ""));
+                        isInRange = value >= range.first && value <= range.second;
+                    } catch (Exception e) {
+                        isInRange = false;
+                    }
+                    if (!isInRange) {
+                        Toasty.error(getActivity(), getString(R.string.parameter_range, range.first, range.second),
+                                Toast.LENGTH_SHORT, true).show();
+                        ReadAndParseSerialService.getInstance().getParameters();
+                        return;
+                    }
+
+                }
                 ReadAndParseSerialService.getInstance().setParameter(
-                        Integer.valueOf(key.replace("preferences_autoclave_parameter_", "")),
+                        id,
                         sharedPreferences.getString(key, ""));
+            }
         } else {
             if (sharedPreferences.contains(key))
                 ReadAndParseSerialService.getInstance().setParameter(
@@ -219,8 +239,6 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
     @Override
     public void onResume() {
         isParameterLoaded = false;
-        getPreferenceScreen().getSharedPreferences()
-                .registerOnSharedPreferenceChangeListener(this);
         ReadAndParseSerialService.getInstance().addCallback(this);
         ReadAndParseSerialService.getInstance().getParameters();
 
@@ -242,7 +260,8 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
 
     @Override
     public void onSuccess(Object response, int requestId) {
-
+        getPreferenceScreen().getSharedPreferences()
+                .unregisterOnSharedPreferenceChangeListener(this);
         try {
             if (requestId == ReadAndParseSerialService.HANDLER_MSG_ACK_GET_PARAMETERS) {
                 List<AutoclaveParameter> parameters = (List<AutoclaveParameter>) response;
@@ -294,6 +313,7 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
                 }
                 //Parameters are loaded, then enable the preference to be editable
                 isParameterLoaded = true;
+
             } else if (requestId == ReadAndParseSerialService.HANDLER_MSG_ACK_SET_PARAMETER) {
                 if (!(response instanceof Integer) || Integer.valueOf(response.toString()) == 0) {
                     Toasty.warning(getContext(), getString(R.string.something_went_wrong_try_again), Toast.LENGTH_SHORT, true).show();
@@ -315,6 +335,9 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
         } catch (Exception e) {
             e.printStackTrace();
             onError(null, -1);
+        } finally {
+            getPreferenceScreen().getSharedPreferences()
+                    .registerOnSharedPreferenceChangeListener(this);
         }
     }
 

@@ -144,6 +144,7 @@
     <string name="temperature">Temperature</string>
     <string name="steam_temperature">Steam [%1$s]</string>
     <string name="media_temperature">Media [%1$s]</string>
+    <string name="media_temperature_2">Media 2[%1$s]</string>
     <string name="time_in_minutes">Time in minutes</string>
     <string name="settings">SETTINGS</string>
     <string name="do_you_really_want_to_start">Do you really want to start</string>

@@ -1,6 +1,7 @@
 package com.certoclav.app.settings;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,7 @@ import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.app.util.MyCallback;
 import com.certoclav.library.application.ApplicationController;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 
 
@@ -45,6 +47,8 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
     private double offsetMedia;
     private double offsetPress;
     private double offsetPress2;
+    private boolean isLocked;
+    private SweetAlertDialog barProgressDialog;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -114,6 +118,14 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
                         return;
                     }
 
+                    barProgressDialog= new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
+                    barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                    barProgressDialog.setTitleText(getString(R.string.saving));
+                    barProgressDialog.setContentText(null);
+                    barProgressDialog.showCancelButton(false);
+                    barProgressDialog.setCancelable(false);
+                    barProgressDialog.setCanceledOnTouchOutside(false);
+                    barProgressDialog.show();
                     ReadAndParseSerialService.getInstance().setParameter(currentOffsetReadParameter = AppConstants.PARAM_OFFSET_STEAM, offsetTemp1);
 
                 } catch (Exception e) {
@@ -136,20 +148,29 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
                 prefs.getBoolean(ApplicationController.getContext().getString(R.string.preferences_lockout_language),
                         ApplicationController.getContext().getResources().getBoolean(R.bool.preferences_lockout_language))) {
             Toast.makeText(getActivity(), R.string.these_settings_are_locked_by_the_admin, Toast.LENGTH_SHORT).show();
-            editOffsetSteamSensor.setEnabled(false);
-            editOffsetPress.setEnabled(false);
-            editOffsetPress2.setEnabled(false);
-            editOffsetMedia.setEnabled(false);
-            buttonApply.setEnabled(false);
+            isLocked = true;
         } else {
-            editOffsetSteamSensor.setEnabled(true);
-            editOffsetPress.setEnabled(true);
-            editOffsetPress2.setEnabled(true);
-            editOffsetMedia.setEnabled(true);
-            buttonApply.setEnabled(true);
-            ReadAndParseSerialService.getInstance().addCallback(this);
-            ReadAndParseSerialService.getInstance().getParameter(AppConstants.PARAM_OFFSET_STEAM);
+            isLocked = false;
         }
+
+        editOffsetSteamSensor.setEnabled(false);
+        editOffsetPress.setEnabled(false);
+        editOffsetPress2.setEnabled(false);
+        editOffsetMedia.setEnabled(false);
+        buttonApply.setEnabled(false);
+
+        ReadAndParseSerialService.getInstance().addCallback(this);
+        ReadAndParseSerialService.getInstance().getParameter(AppConstants.PARAM_OFFSET_STEAM);
+
+        barProgressDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
+        barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        barProgressDialog.setTitleText(getString(R.string.loading));
+        barProgressDialog.setContentText(null);
+        barProgressDialog.showCancelButton(false);
+        barProgressDialog.setCancelable(false);
+        barProgressDialog.setCanceledOnTouchOutside(false);
+        barProgressDialog.show();
+
         super.onResume();
     }
 
@@ -163,10 +184,19 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
 
     @Override
     public void onCalibrationParameterReceived() {
+
+        if(!isLocked) {
+            editOffsetSteamSensor.setEnabled(true);
+            editOffsetPress.setEnabled(true);
+            editOffsetPress2.setEnabled(true);
+            editOffsetMedia.setEnabled(true);
+            buttonApply.setEnabled(true);
+        }
         editOffsetSteamSensor.setText(Autoclave.getInstance().getData().getTemp1().getOffset().toString());
         editOffsetPress.setText(Autoclave.getInstance().getData().getPress().getOffset().toString());
         editOffsetPress2.setText(Autoclave.getInstance().getData().getPress2().getOffset().toString());
         editOffsetMedia.setText(Autoclave.getInstance().getData().getTemp2().getOffset().toString());
+        barProgressDialog.dismissWithAnimation();
 
     }
 
@@ -216,6 +246,7 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
                 case AppConstants.PARAM_OFFSET_PRESSURE_2:
                     ReadAndParseSerialService.getInstance().getParameter(AppConstants.PARAM_OFFSET_STEAM);
                     Toasty.success(getActivity(), getString(R.string.calibration_parameters_saved), Toast.LENGTH_SHORT, true).show();
+                    barProgressDialog.dismissWithAnimation();
                     break;
             }
         }
@@ -226,9 +257,12 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
         if (requestId == ReadAndParseSerialService.HANDLER_MSG_ACK_GET_PARAMETER) {
             if (failCount++ < MAX_FAIL_COUNT)
                 ReadAndParseSerialService.getInstance().getParameter(currentOffsetReadParameter);
-            else
-                Toasty.warning(getContext(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT,true).show();
+            else {
+                barProgressDialog.dismissWithAnimation();
+                Toasty.warning(getContext(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT, true).show();
+            }
         } else {
+            barProgressDialog.dismissWithAnimation();
             Toasty.warning(getContext(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT,true).show();
         }
     }

@@ -85,11 +85,17 @@ public class GraphService implements SensorDataListener {
 
                                         Point p = new Point(roundFloat((float) (secondsSinceStart / 60.0)), roundFloat((float) (Autoclave.getInstance().getData().getTemp1().getCurrentValue())));
                                         runningGraph.addNewPoints(p, LineGraph.TYPE_STEAM);
-                                        if (AppConstants.IS_CERTOASSISTANT == false) {
+                                        if (Autoclave.getInstance().getProfile().isContByFlexProbe1Enabled()) {
                                             Point p2 = new Point(roundFloat((float) (secondsSinceStart / 60.0)), roundFloat((float) (Autoclave.getInstance().getData().getTemp2().getCurrentValue())));
                                             runningGraph.addNewPoints(p2, LineGraph.TYPE_MEDIA);
                                         }
-                                        Point p3 = new Point(roundFloat((float) (secondsSinceStart / 60.0)), roundFloat((float) (Autoclave.getInstance().getData().getPress().getCurrentValue())));
+
+                                        if (Autoclave.getInstance().getProfile().isContByFlexProbe2Enabled()) {
+                                            Point p2 = new Point(roundFloat((float) (secondsSinceStart / 60.0)), roundFloat((float) (Autoclave.getInstance().getData().getTemp3().getCurrentValue())));
+                                            runningGraph.addNewPoints(p2, LineGraph.TYPE_MEDIA_2);
+                                        }
+
+                                        Point p3 = new Point(roundFloat((float) (secondsSinceStart / 60.0)), roundFloat((float) (Autoclave.getInstance().getData().getPress().getCurrentValue()*100)));
                                         runningGraph.addNewPoints(p3, LineGraph.TYPE_PRESS);
                                         double[] range = new double[4];
                                         range[0] = 0;
@@ -180,13 +186,20 @@ public class GraphService implements SensorDataListener {
                 if (pastSeconds - timeLastPoint > 30) {
 
                     Point p = new Point(roundFloat((float) (pastSeconds / 60.0)), roundFloat(entry.getTemperature()));
-                    Log.e("seconds gettemperature", roundFloat((float) (pastSeconds / 60.0)) + " " + roundFloat(entry.getTemperature()));
                     protocolGraph.addNewPoints(p, LineGraph.TYPE_STEAM);
-                    Point p2 = new Point(roundFloat((float) (pastSeconds / 60.0)), roundFloat((float) (entry.getPressure())));
+
+                    Point p2 = new Point(roundFloat((float) (pastSeconds / 60.0)), roundFloat((float) (entry.getPressureInkPa())));
                     protocolGraph.addNewPoints(p2, LineGraph.TYPE_PRESS);
-                    if (AppConstants.IS_CERTOASSISTANT == false) {
+
+
+                    if (protocol.isContByFlexProbe1()) {
                         Point p3 = new Point(roundFloat((float) (pastSeconds / 60.0)), roundFloat(entry.getMediaTemperature()));
                         protocolGraph.addNewPoints(p3, LineGraph.TYPE_MEDIA);
+                    }
+
+                    if(protocol.isContByFlexProbe2()){
+                        Point p3 = new Point(roundFloat((float) (pastSeconds / 60.0)), roundFloat(entry.getMediaTemperature2()));
+                        protocolGraph.addNewPoints(p3, LineGraph.TYPE_MEDIA_2);
                     }
 
                     timeLastPoint = pastSeconds;

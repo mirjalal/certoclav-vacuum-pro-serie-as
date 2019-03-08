@@ -62,8 +62,8 @@ public class PostProtocolsThread extends Thread {
                                 entryJSONObject.put("ts", String.format(Locale.US, "%.2f", ((float) (protocolEntry.getTimestamp().getTime() - startTime.getTime())) / (1000.0 * 60.0)));
                                 entryJSONObject.put("tmp", String.format(Locale.US, "%.2f", protocolEntry.getTemperature()));
                                 entryJSONObject.put("mtmp", String.format(Locale.US, "%.2f", protocolEntry.getMediaTemperature()));
+                                entryJSONObject.put("mtmp_2", String.format(Locale.US, "%.2f", protocolEntry.getMediaTemperature2()));
                                 entryJSONObject.put("prs", String.format(Locale.US, "%.2f", protocolEntry.getPressure()));
-                                entryJSONObject.put("mtmp", String.format(Locale.US, "%.2f", protocolEntry.getMediaTemperature()));
                                 entryJSONObject.put("input", protocolEntry.getDebugInput());
                                 entryJSONObject.put("output", protocolEntry.getDebugOutput());
                                 lastEntry = protocolEntry.getTimestamp();
@@ -135,6 +135,8 @@ public class PostProtocolsThread extends Thread {
                             //        break;
                             //}
                             jsonProtocolObject.put("errcode", errorCodeCloud);
+                            jsonProtocolObject.put("is_cont_by_flex_probe_1", protocol.isContByFlexProbe1());
+                            jsonProtocolObject.put("is_cont_by_flex_probe_2", protocol.isContByFlexProbe2());
                             jsonProtocolObject.put("temp_unit", protocol.getTemperatureUnit());
                             jsonProtocolObject.put("entries", entryJSONArray);
 

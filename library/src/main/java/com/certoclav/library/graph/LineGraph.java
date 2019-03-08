@@ -21,16 +21,19 @@ public class LineGraph {
 	private GraphicalView view;
 	private TimeSeries timeSeriesSteam = new TimeSeries("Steam temperature"); 
 	private TimeSeries timeSeriesMedia = new TimeSeries("Media temperature");
+	private TimeSeries timeSeriesMedia2 = new TimeSeries("Media 2 temperature");
 	private TimeSeries timeSeriesPressure = new TimeSeries("Pressure [bar]");
 	private XYMultipleSeriesDataset multiDataset = new XYMultipleSeriesDataset();
 	
 	private XYSeriesRenderer rendererForSeriesSteam = new XYSeriesRenderer(); // This will be used to customize line 1
 	private XYSeriesRenderer rendererForSeriesMedia = new XYSeriesRenderer(); // This will be used to customize line 2
+	private XYSeriesRenderer rendererForSeriesMedia2 = new XYSeriesRenderer(); // This will be used to customize line 3
 	private XYSeriesRenderer rendererForSeriesPressure = new XYSeriesRenderer(); // This will be used to customize line 2
 	
 	private XYMultipleSeriesRenderer multiRenderer = new XYMultipleSeriesRenderer(); // Holds a collection of XYSeriesRenderer and customizes the graph
 	public static final int TYPE_STEAM = 0;
 	public static final int TYPE_MEDIA = 1;
+	public static final int TYPE_MEDIA_2 = 3;
 	public static final int TYPE_PRESS = 2;
 	private String temperatureUnit;
 
@@ -43,6 +46,7 @@ public class LineGraph {
 		// Add both time series to the multiple series dataset
 		multiDataset.addSeries(timeSeriesSteam);
 		multiDataset.addSeries(timeSeriesMedia);
+		multiDataset.addSeries(timeSeriesMedia2);
 		multiDataset.addSeries(timeSeriesPressure);
 		
 		
@@ -62,10 +66,20 @@ public class LineGraph {
 		rendererForSeriesMedia.setColor(Color.RED);//Farbe des Graphen (linie)
 		rendererForSeriesMedia.setPointStyle(PointStyle.SQUARE);
 		rendererForSeriesMedia.setLineWidth(5);
-		rendererForSeriesMedia.setDisplayChartValues(false);
+		rendererForSeriesMedia.setDisplayChartValues(true);
 		rendererForSeriesMedia.setChartValuesTextSize(12);
 		rendererForSeriesMedia.setChartValuesSpacing(3);
 	    rendererForSeriesMedia.setFillPoints(true);
+
+
+		// Customization time for line 2!
+		rendererForSeriesMedia2.setColor(Color.CYAN);//Farbe des Graphen (linie)
+		rendererForSeriesMedia2.setPointStyle(PointStyle.SQUARE);
+		rendererForSeriesMedia2.setLineWidth(5);
+		rendererForSeriesMedia2.setDisplayChartValues(true);
+		rendererForSeriesMedia2.setChartValuesTextSize(12);
+		rendererForSeriesMedia2.setChartValuesSpacing(3);
+		rendererForSeriesMedia2.setFillPoints(true);
 //		rendererForSeriesMedia.setGradientEnabled(true);
 //		rendererForSeriesMedia.setFillBelowLine(true);
 	//	rendererForSeriesMedia.setFillBelowLineColor(Color.RED);//fl?che unter graph
@@ -117,6 +131,7 @@ public class LineGraph {
 		// Add single renderer to multiple renderer
 		multiRenderer.addSeriesRenderer(rendererForSeriesSteam);	
 		multiRenderer.addSeriesRenderer(rendererForSeriesMedia);
+		multiRenderer.addSeriesRenderer(rendererForSeriesMedia2);
 		multiRenderer.addSeriesRenderer(rendererForSeriesPressure);
 	}
 	
@@ -126,7 +141,8 @@ public class LineGraph {
 		//multiRenderer.setYTitle(context.getString(R.string.temperature_in_c));
 		timeSeriesSteam.setTitle(context.getString(R.string.steam_temperature, temperatureUnit));
 		timeSeriesMedia.setTitle(context.getString(R.string.media_temperature, temperatureUnit));
-		timeSeriesPressure.setTitle(context.getString(R.string.pressure)+" [bar]");
+		timeSeriesMedia2.setTitle(context.getString(R.string.media_temperature_2, temperatureUnit));
+		timeSeriesPressure.setTitle(context.getString(R.string.pressure)+" [kPa]");
 		
 		//view =  ChartFactory.getCubeLineChartView(context, mDataset, renderer, 0.3f);
 		view = ChartFactory.getLineChartView(context, multiDataset, multiRenderer);
@@ -170,8 +186,13 @@ public class LineGraph {
 		if(type == TYPE_MEDIA){
 			timeSeriesMedia.add(p.getX(), p.getY());	
 		}
+
+		if(type == TYPE_MEDIA_2){
+			timeSeriesMedia2.add(p.getX(), p.getY());
+		}
+
 		if(type == TYPE_PRESS){
-			timeSeriesPressure.add(p.getX(), p.getY());	
+			timeSeriesPressure.add(p.getX(), p.getY());
 		}
 	}
 	
@@ -187,7 +208,8 @@ public class LineGraph {
 		timeSeriesSteam.clear();
 		timeSeriesPressure.clear();
 		timeSeriesMedia.clear();
-		
+		timeSeriesMedia2.clear();
+
 	}
 
 	public void enableZoom() {
