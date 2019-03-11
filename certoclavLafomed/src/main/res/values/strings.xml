@@ -49,6 +49,7 @@
     <string name="state_running">RUNNING</string>
     <string name="state_cancelled">CANCELLED</string>
     <string name="state_wait_for_code">WAIT FOR CODE</string>
+    <string name="state_stopping">STOPPING</string>
     <string name="state_unknown">UNKNOWN</string>
     <string name="title_introduction">FIRST STEPS</string>
     <string name="settings_language">Language</string>

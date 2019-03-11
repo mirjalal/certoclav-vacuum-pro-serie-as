@@ -383,7 +383,6 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                             pressures,
                             digitalData);
 
-                    Autoclave.getInstance().setDebugData(debugData);
                     Autoclave.getInstance().setDoorLocked(digitalData[AppConstants.DIGITAL_DOOR_LOCKED_INDEX]);
                     Autoclave.getInstance().setProgramStep(programStep);
                     Autoclave.getInstance().setErrorCode(errorCode);
@@ -394,6 +393,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                     Autoclave.getInstance().setMicrocontrollerReachable(true);
                     Autoclave.getInstance().getController().setCycleNumber(cycleNumber);
                     Autoclave.getInstance().getController().setFirmwareVersion(firmwareVersion);
+                    Autoclave.getInstance().setDebugData(debugData);
 
                     break;
                 case HANDLER_MSG_CALIBRATION:

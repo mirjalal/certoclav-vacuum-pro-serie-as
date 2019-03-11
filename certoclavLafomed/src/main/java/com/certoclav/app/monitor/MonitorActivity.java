@@ -413,12 +413,20 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
 
                 break;
             case WAITING_FOR_CONFIRMATION:
-                buttonStop.setVisibility(View.INVISIBLE);
-                if (AppConstants.IS_CERTOASSISTANT) {
-                    buttonStop.setVisibility(View.GONE);
+                buttonStop.setVisibility(View.VISIBLE);
+                buttonStop.setText(getString(Autoclave.getInstance().isDoorLocked() ?
+                        R.string.please_wait_door_unlocking :
+                        R.string.please_open_door));
+                buttonStop.setEnabled(false);
+                if(Autoclave.getInstance().getData().isProgramRunning()){
+                    textState.setText(R.string.state_stopping);
+                    textState.append(" (");
+                    textState.append(Helper.getStateText());
+                    textState.append(")");
+                }else{
+                    textState.setText(R.string.state_finished);
                 }
-                textState.setText(R.string.state_wait_for_code);
-                navigationbar.showButtonBack();
+                navigationbar.hideButtonBack();
                 break;
             default:
                 buttonStop.setVisibility(View.INVISIBLE);

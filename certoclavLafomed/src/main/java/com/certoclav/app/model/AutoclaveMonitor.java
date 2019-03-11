@@ -243,7 +243,9 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
             long diffInMs = Autoclave.getInstance().getDateObject().getTime() - dateAtProgramStart.getTime();
             secondsSinceStart = TimeUnit.MILLISECONDS.toSeconds(diffInMs);
         } else {
-            secondsSinceStart = 0;
+            if (Autoclave.getInstance().getState() == AutoclaveState.NOT_RUNNING
+                    || Autoclave.getInstance().getState() == AutoclaveState.PREPARE_TO_RUN)
+                secondsSinceStart = 0;
         }
         Autoclave.getInstance().setSecondsSinceStart(secondsSinceStart);
 
@@ -506,8 +508,13 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
             case WAITING_FOR_CONFIRMATION:
 
-                if (Autoclave.getInstance().getErrorCode().equals("00000000") && !Autoclave.getInstance().getData().isProgramRunning())
+                if (Autoclave.getInstance().getErrorCode().equals("00000000")
+                        && !Autoclave.getInstance().getData().isProgramRunning()
+                        && !Autoclave.getInstance().isDoorLocked()
+                        && !Autoclave.getInstance().getData().isDoorClosed())
                     Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);
+                else
+                    Autoclave.getInstance().setState(AutoclaveState.WAITING_FOR_CONFIRMATION);
                /* if (mCodeEntered == true || Autoclave.getInstance().getData().isDoorClosed() == false || Autoclave.getInstance().getData().isDoorLocked() == false) {
                     Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);
                     mCodeEntered = false;
