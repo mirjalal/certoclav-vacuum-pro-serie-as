@@ -126,7 +126,7 @@ public class Autoclave extends Observable {
     public SerialService getSerialsServiceInternalPrinter() {
         if (serialServiceInternalPrinter == null) {
             if(AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH)){
-                serialServiceInternalPrinter = new SerialService("/dev/ttyS4", 9600);//COM4
+                serialServiceInternalPrinter = new SerialService("/dev/ttyS0", 9600);//COM4
             }
             else{
                 serialServiceInternalPrinter = new SerialService("/dev/ttyS4", 9600);
@@ -318,7 +318,7 @@ public class Autoclave extends Observable {
     public SerialService getSerialsService() {
         if (serialService == null) {
             if(AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH)){
-                serialService = new SerialService("/dev/ttymxc3", 9600);
+                serialService = new SerialService("/dev/ttyUSB0", 38400);
             }else {
                 serialService = new SerialService("/dev/ttymxc3", 9600);
             }
@@ -329,7 +329,7 @@ public class Autoclave extends Observable {
     public SerialService getSerialsServiceLabelPrinter() {
         if (serialServiceLabelPrinter == null) {
             if(AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH)){
-                serialServiceLabelPrinter = new SerialService("/dev/ttyS0", 9600);//COM0
+                serialServiceLabelPrinter = new SerialService("/dev/ttyS4", 9600);//COM0
             }else {
                 serialServiceLabelPrinter = new SerialService("/dev/ttymxc1", 9600);//COM2
             }
