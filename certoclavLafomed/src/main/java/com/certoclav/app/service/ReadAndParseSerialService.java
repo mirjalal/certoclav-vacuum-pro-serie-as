@@ -230,7 +230,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         handler.removeCallbacks(runnableOtherCommands);
         handlerGetData.removeCallbacks(runnableGetData);
         handler.removeCallbacks(runnableTimeout);
-        if (commandQueue.size() == 1)
+        if (commandQueue.size() >0)
             handler.postDelayed(runnableOtherCommands,500);
 
     }
@@ -240,8 +240,12 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 
         Log.e("ReadAndParse", "runnableIsAlive: " + runnableGetDataIsAlive);
         if (System.currentTimeMillis() - lastGetDataCalled > 10000) {
-            handlerGetData.removeCallbacks(runnableGetData);
-            handlerGetData.post(runnableGetData);
+            if(commandQueue.size()>0){
+                sendCommand(commandQueue.remove(0));
+            }else {
+                handlerGetData.removeCallbacks(runnableGetData);
+                handlerGetData.post(runnableGetData);
+            }
         }
 
     }
@@ -379,7 +383,6 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                             pressures,
                             digitalData);
 
-                    Autoclave.getInstance().setDebugData(debugData);
                     Autoclave.getInstance().setDoorLocked(digitalData[AppConstants.DIGITAL_DOOR_LOCKED_INDEX]);
                     Autoclave.getInstance().setProgramStep(programStep);
                     Autoclave.getInstance().setErrorCode(errorCode);
@@ -390,6 +393,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                     Autoclave.getInstance().setMicrocontrollerReachable(true);
                     Autoclave.getInstance().getController().setCycleNumber(cycleNumber);
                     Autoclave.getInstance().getController().setFirmwareVersion(firmwareVersion);
+                    Autoclave.getInstance().setDebugData(debugData);
 
                     break;
                 case HANDLER_MSG_CALIBRATION:

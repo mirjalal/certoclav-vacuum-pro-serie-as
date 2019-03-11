@@ -49,6 +49,7 @@
     <string name="state_running">RUNNING</string>
     <string name="state_cancelled">CANCELLED</string>
     <string name="state_wait_for_code">WAIT FOR CODE</string>
+    <string name="state_stopping">STOPPING</string>
     <string name="state_unknown">UNKNOWN</string>
     <string name="title_introduction">FIRST STEPS</string>
     <string name="settings_language">Language</string>
@@ -92,6 +93,7 @@
     <string name="minutes_at">MINUTES AT</string>
     <string name="warning">WARNING</string>
     <string name="title_define_a_new_program">DEFINE A NEW PROGRAM</string>
+    <string name="title_edit_a_program">EDIT THE PROGRAM</string>
     <string name="default_program_name">New Program</string>
     <string name="step">STEP</string>
     <string name="add_new_step">ADD NEW STEP</string>
@@ -897,7 +899,10 @@
     <string name="sterilization_temp_range">Sterilization temperature should be between %1$.2f and %2$.2f %3$sf</string>
     <string name="sterilization_time_range">Sterilization time should be between %1$d and %2$d minute(s)</string>
     <string name="vacuum_pulse_range">Number of Vacuum pulse should be between %1$d and %2$d</string>
+    <string name="parameter_range">The value of the parameter should be between %1$.1f and %2$.1f</string>
     <string name="dry_time_range">Drying Time should be between %1$d and %2$d minute(s)</string>
+    <string name="z_value_range">Z Value should be between %1$.1f and %2$.1f ℃</string>
+    <string name="f0_value_range">F0 Value should be between %1$.1f and %2$.1f</string>
     <string name="reset">Reset</string>
     <string name="do_you_really_want_to_reset_format">Do you really want to reset %1$s</string>
     <string name="do_you_really_want_to_assign_programs">Do you want to assign programs to model and delete the rest.</string>
@@ -937,6 +942,7 @@
     <string name="calibration_not_valid_pressure_sensor_2">Please enter valid offset for steam generator sensor 2</string>
     <string name="calibration_not_valid_steam_sensor">Please enter valid offset for steam sensor</string>
     <string name="calibration_not_valid_data">Please enter valid data</string>
+    <string name="saving">Saving...</string>
 
 
 </resources>

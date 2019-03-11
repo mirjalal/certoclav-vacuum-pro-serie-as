@@ -113,6 +113,23 @@ public class AutoclaveModelManager implements MyCallback {
         return null;
     }
 
+    public Pair<Float, Float> getParamterRange(int paramterId) {
+        switch (paramterId) {
+            case 3:
+                return new Pair<>(0f, 99999f);
+            case 27:
+                return new Pair<>(50f, 95f);
+            case 42:
+                return new Pair<>(0f, 2f);
+            case 97:
+                return new Pair<>(30f, 70f);
+            case 98:
+                return new Pair<>(0f, 100f);
+        }
+        //No Range
+        return null;
+    }
+
     //Here, for PD model, when the autoclave starts, the first stage is warning-up which doesn't
     // allow to users to start a program during the stage
     public boolean isWarmingUpEnabled() {
