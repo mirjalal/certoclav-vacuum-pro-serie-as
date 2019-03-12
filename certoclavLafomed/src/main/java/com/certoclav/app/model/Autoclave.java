@@ -67,6 +67,10 @@ public class Autoclave extends Observable {
         FINISHED("SE"),
         COOLING_DOWN("SC"),
         MAINTAIN_TEMP("SM"),
+        START_PROCESS("VI"),
+        EMPTY_WAIT("VW"),
+        EMPTY_TEST("VT"),
+        V_LEVELING("VL"),
         NOT_DEFINED("-1");
 
         private String value;

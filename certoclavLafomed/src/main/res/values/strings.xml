@@ -143,8 +143,8 @@
     <string name="information">INFORMATION</string>
     <string name="intro_account_created">account created</string>
     <string name="temperature">Steam [℃]</string>
-    <string name="celcius">℃</string>
-    <string name="fahrenheit">°F</string>
+    <string name="celcius">\u2103</string>
+    <string name="fahrenheit">\u2109</string>
     <string name="time_in_minutes">Time [min]</string>
     <string name="settings">SETTINGS</string>
     <string name="do_you_really_want_to_start">Do you really want to start</string>
@@ -943,6 +943,9 @@
     <string name="calibration_not_valid_steam_sensor">Please enter valid offset for steam sensor</string>
     <string name="calibration_not_valid_data">Please enter valid data</string>
     <string name="saving">Saving...</string>
+    <string name="state_start_process">START PROCESS</string>
+    <string name="state_empty_wait">EMPTY WAIT</string>
+    <string name="state_empty_test">EMPTY TEST</string>
 
 
 </resources>

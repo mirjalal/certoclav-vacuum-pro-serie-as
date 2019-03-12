@@ -635,6 +635,8 @@ public class Helper {
                     //        break;
                     //}
                     jsonProtocolObject.put("errcode", errorCodeCloud);
+                    jsonProtocolObject.put("is_cont_by_flex_probe_1", protocol.isContByFlexProbe1());
+                    jsonProtocolObject.put("is_cont_by_flex_probe_2", protocol.isContByFlexProbe2());
                     jsonProtocolObject.put("temp_unit", protocol.getTemperatureUnit());
                     jsonProtocolObject.put("entries", entryJSONArray);
 
@@ -1110,12 +1112,12 @@ public class Helper {
         if (profile.getSterilisationTemperature() != 0) {
             sbuilder.append(profile.getSterilisationTemperature())
                     .append(" " + getTemperatureUnitText(null))
-                    .append("\t");
+                    .append(" ");
         }
         if (profile.getSterilisationPressure() != 0) {
             sbuilder.append(Float.toString(profile.getSterilisationPressure()))
                     .append(" " + context.getString(R.string.bar))
-                    .append("\t");
+                    .append(" ");
         }
         if (profile.getSterilisationTime() != 0 && !profile.isF0Enabled()) {
             sbuilder.append(profile.getSterilisationTime())
@@ -1132,7 +1134,7 @@ public class Helper {
         if (profile.getVacuumPersistTemperature() != 0) {
             sbuilder.append(context.getString(R.string.vacuum_persist_temperature) + " ")
                     .append(profile.getVacuumPersistTemperature())
-                    .append(" " + "\u2103")
+                    .append(" " + getTemperatureUnitText(null))
                     .append("\n");
         }
         if (profile.getVacuumPersistTime() != 0) {
@@ -1220,6 +1222,14 @@ public class Helper {
                 return context.getString(R.string.current_program_step_cooling_down_desc);
             case FINISHED:
                 return context.getString(R.string.state_finished);
+            case START_PROCESS:
+                return context.getString(R.string.state_start_process);
+            case EMPTY_WAIT:
+                return context.getString(R.string.state_empty_wait);
+            case EMPTY_TEST:
+                return context.getString(R.string.state_empty_test);
+            case V_LEVELING:
+                return context.getString(R.string.current_program_step_leveling_desc);
             case NOT_DEFINED:
                 return "---";
         }
@@ -1289,10 +1299,10 @@ public class Helper {
 
     public static String getTemperatureUnitText(String unit) {
         if (unit == null)
-            return AppController.getContext().getString(AutoclaveModelManager.getInstance().
-                    getTemperatureUnit().equals("F") ? R.string.fahrenheit : R.string.celcius);
+            return AutoclaveModelManager.getInstance().
+                    getTemperatureUnit().equals("F") ? "\u2109" : "\u2103";
 
-        return AppController.getContext().getString((unit != null && unit.equals("F"))
-                ? R.string.fahrenheit : R.string.celcius);
+        return (unit != null && unit.equals("F"))
+                ? "\u2109" : "\u2103";
     }
 }

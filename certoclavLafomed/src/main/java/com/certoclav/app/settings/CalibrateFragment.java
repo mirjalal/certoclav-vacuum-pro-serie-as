@@ -179,6 +179,8 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
     public void onPause() {
         Autoclave.getInstance().removeOnCalibrationListener(this);
         ReadAndParseSerialService.getInstance().removeCallback(this);
+        if(barProgressDialog!=null)
+            barProgressDialog.dismiss();
         super.onPause();
     }
 
