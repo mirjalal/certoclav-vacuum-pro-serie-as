@@ -37,6 +37,7 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
 
     private EditText editOffsetSteamSensor = null;
     private EditText editOffsetMedia = null;
+    private EditText editOffsetMedia2 = null;
     private EditText editOffsetPress = null;
     private EditText editOffsetPress2;
     private Button buttonApply = null;
@@ -45,6 +46,7 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
     private final int MAX_FAIL_COUNT = 5;
     private double offsetTemp1;
     private double offsetMedia;
+    private double offsetMedia2;
     private double offsetPress;
     private double offsetPress2;
     private boolean isLocked;
@@ -71,11 +73,13 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
         editOffsetPress = rootView.findViewById(R.id.parameter_press_coeff1);
         editOffsetPress2 = rootView.findViewById(R.id.parameter_press_2_coeff1);
         editOffsetMedia = rootView.findViewById(R.id.parameter_media_coeff1);
+        editOffsetMedia2 = rootView.findViewById(R.id.parameter_media_2_coeff1);
 
         editOffsetSteamSensor.setText("");
         editOffsetPress.setText("");
         editOffsetPress2.setText("");
         editOffsetMedia.setText("");
+        editOffsetMedia2.setText("");
 
         buttonApply = rootView.findViewById(R.id.parameter_button_apply);
         buttonApply.setOnClickListener(new OnClickListener() {
@@ -91,6 +95,10 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
                     if (editOffsetMedia.getText().length() > 0)
                         offsetMedia = Double.parseDouble(editOffsetMedia.getText().toString());
 
+                    offsetMedia2 = 0.0;
+                    if (editOffsetMedia2.getText().length() > 0)
+                        offsetMedia2 = Double.parseDouble(editOffsetMedia2.getText().toString());
+
                     offsetPress = 0.0;
                     if (editOffsetPress.getText().length() > 0)
                         offsetPress = Double.parseDouble(editOffsetPress.getText().toString());
@@ -99,22 +107,27 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
                     if (editOffsetPress.getText().length() > 0)
                         offsetPress2 = Double.parseDouble(editOffsetPress.getText().toString());
 
-                    if (offsetTemp1 < -3 && offsetTemp1 > 3) {
+                    if (offsetTemp1 < -3 || offsetTemp1 > 3) {
                         Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_steam_sensor), Toast.LENGTH_SHORT, true).show();
                         return;
                     }
 
-                    if (offsetPress < -20 && offsetPress > 20) {
+                    if (offsetPress < -20 || offsetPress > 20) {
                         Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_pressure_sensor_1), Toast.LENGTH_SHORT, true).show();
                         return;
                     }
 
-                    if (offsetPress2 < -20 && offsetPress2 > 20) {
+                    if (offsetPress2 < -20 || offsetPress2 > 20) {
                         Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_pressure_sensor_2), Toast.LENGTH_SHORT, true).show();
                         return;
                     }
-                    if (offsetMedia < -3 && offsetMedia > 3) {
+                    if (offsetMedia < -3 || offsetMedia > 3) {
                         Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_media_sensor), Toast.LENGTH_SHORT, true).show();
+                        return;
+                    }
+
+                    if (offsetMedia2 < -3 || offsetMedia2 > 3) {
+                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_media_2_sensor), Toast.LENGTH_SHORT, true).show();
                         return;
                     }
 
@@ -157,6 +170,7 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
         editOffsetPress.setEnabled(false);
         editOffsetPress2.setEnabled(false);
         editOffsetMedia.setEnabled(false);
+        editOffsetMedia2.setEnabled(false);
         buttonApply.setEnabled(false);
 
         ReadAndParseSerialService.getInstance().addCallback(this);
@@ -192,12 +206,14 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
             editOffsetPress.setEnabled(true);
             editOffsetPress2.setEnabled(true);
             editOffsetMedia.setEnabled(true);
+            editOffsetMedia2.setEnabled(true);
             buttonApply.setEnabled(true);
         }
         editOffsetSteamSensor.setText(Autoclave.getInstance().getData().getTemp1().getOffset().toString());
         editOffsetPress.setText(Autoclave.getInstance().getData().getPress().getOffset().toString());
         editOffsetPress2.setText(Autoclave.getInstance().getData().getPress2().getOffset().toString());
         editOffsetMedia.setText(Autoclave.getInstance().getData().getTemp2().getOffset().toString());
+        editOffsetMedia2.setText(Autoclave.getInstance().getData().getTemp3().getOffset().toString());
         barProgressDialog.dismissWithAnimation();
 
     }
@@ -215,6 +231,10 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
                     break;
                 case AppConstants.PARAM_OFFSET_MEDIA:
                     Autoclave.getInstance().getData().getTemp2().setOffset(Double.valueOf(parameter.getValue().toString()));
+                    currentOffsetReadParameter = AppConstants.PARAM_OFFSET_MEDIA_2;
+                    break;
+                case AppConstants.PARAM_OFFSET_MEDIA_2:
+                    Autoclave.getInstance().getData().getTemp3().setOffset(Double.valueOf(parameter.getValue().toString()));
                     currentOffsetReadParameter = AppConstants.PARAM_OFFSET_PRESSURE_1;
                     break;
                 case AppConstants.PARAM_OFFSET_PRESSURE_1:
@@ -238,6 +258,10 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
                     ReadAndParseSerialService.getInstance().setParameter(AppConstants.PARAM_OFFSET_MEDIA, offsetMedia);
                     break;
                 case AppConstants.PARAM_OFFSET_MEDIA:
+                    currentOffsetReadParameter = AppConstants.PARAM_OFFSET_MEDIA_2;
+                    ReadAndParseSerialService.getInstance().setParameter(AppConstants.PARAM_OFFSET_MEDIA_2, offsetMedia2);
+                    break;
+                case AppConstants.PARAM_OFFSET_MEDIA_2:
                     currentOffsetReadParameter = AppConstants.PARAM_OFFSET_PRESSURE_1;
                     ReadAndParseSerialService.getInstance().setParameter(AppConstants.PARAM_OFFSET_PRESSURE_1, offsetPress);
                     break;

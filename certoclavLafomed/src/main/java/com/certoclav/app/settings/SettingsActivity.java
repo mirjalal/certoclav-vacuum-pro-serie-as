@@ -5,11 +5,7 @@ import android.support.v4.app.Fragment;
 
 import com.certoclav.app.R;
 import com.certoclav.app.activities.CertoclavSuperActivity;
-import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
-import com.certoclav.app.util.AuditLogger;
-
-import java.util.Locale;
 
 /**
  * An activity representing a list of Items. This activity has different
@@ -32,14 +28,16 @@ public class SettingsActivity extends CertoclavSuperActivity implements ItemList
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
-
+    private boolean isAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isAdmin = getIntent().getBooleanExtra("isAdmin",false);
         setContentView(R.layout.settings_activity); //ItemListFragment, sont nix
         CertoclavNavigationbarClean navigationbar = new CertoclavNavigationbarClean(this);
         navigationbar.setHeadText(getString(R.string.settings));
+
 
 
         //((ItemListFragment) getSupportFragmentManager().findFragmentById(R.id.item_list)).setActivateOnItemClick(true);
@@ -59,5 +57,9 @@ public class SettingsActivity extends CertoclavSuperActivity implements ItemList
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
     }
 }

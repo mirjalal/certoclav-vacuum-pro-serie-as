@@ -249,6 +249,7 @@ public interface AppConstants {
     //Parameters
     int PARAM_OFFSET_STEAM = 36;
     int PARAM_OFFSET_MEDIA = 37;
+    int PARAM_OFFSET_MEDIA_2 = 39;
     int PARAM_OFFSET_PRESSURE_1 = 45;
     int PARAM_OFFSET_PRESSURE_2 = 46;
 

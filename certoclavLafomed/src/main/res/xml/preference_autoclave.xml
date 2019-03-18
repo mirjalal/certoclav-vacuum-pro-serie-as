@@ -100,7 +100,7 @@
             android:inputType="numberDecimal"
             android:key="preferences_autoclave_parameter_27"
             android:title="@string/preferences_autoclave_final_temperature" />
-
+<!--
         <EditTextPreference
             android:inputType="numberDecimal|numberSigned"
             android:key="preferences_autoclave_parameter_36"
@@ -109,22 +109,22 @@
         <EditTextPreference
             android:inputType="numberDecimal|numberSigned"
             android:key="preferences_autoclave_parameter_37"
-            android:title="@string/preferences_autoclave_offset_probe_2" />
+            android:title="@string/preferences_autoclave_offset_probe_2" />-->
 
         <EditTextPreference
             android:inputType="numberDecimal"
             android:key="preferences_autoclave_parameter_42"
             android:title="@string/preferences_autoclave_cooling_pressure" />
 
-        <EditTextPreference
-            android:inputType="numberDecimal|numberSigned"
-            android:key="preferences_autoclave_parameter_45"
-            android:title="@string/preferences_autoclave_offset_pressure_probe_1" />
+        <!--<EditTextPreference-->
+            <!--android:inputType="numberDecimal|numberSigned"-->
+            <!--android:key="preferences_autoclave_parameter_45"-->
+            <!--android:title="@string/preferences_autoclave_offset_pressure_probe_1" />-->
 
-        <EditTextPreference
-            android:inputType="numberDecimal|numberSigned"
-            android:key="preferences_autoclave_parameter_46"
-            android:title="@string/preferences_autoclave_offset_pressure_probe_2" />
+        <!--<EditTextPreference-->
+            <!--android:inputType="numberDecimal|numberSigned"-->
+            <!--android:key="preferences_autoclave_parameter_46"-->
+            <!--android:title="@string/preferences_autoclave_offset_pressure_probe_2" />-->
 
         <EditTextPreference
             android:inputType="numberDecimal"

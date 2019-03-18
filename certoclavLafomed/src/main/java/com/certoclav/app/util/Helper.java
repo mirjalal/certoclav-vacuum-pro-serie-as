@@ -1,6 +1,7 @@
 package com.certoclav.app.util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.content.res.XmlResourceParser;
@@ -16,6 +17,10 @@ import android.os.Looper;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
@@ -30,6 +35,7 @@ import com.certoclav.app.responsemodels.DeviceProgramsResponseModel;
 import com.certoclav.app.responsemodels.UserProtocolResponseModel;
 import com.certoclav.app.responsemodels.UserProtocolsResponseModel;
 import com.certoclav.app.service.ReadAndParseSerialService;
+import com.certoclav.app.settings.SettingsActivity;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.certocloud.CertocloudConstants;
 import com.certoclav.library.certocloud.PostUtil;
@@ -65,6 +71,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
 import needle.Needle;
 import needle.UiRelatedTask;
 
@@ -571,7 +578,7 @@ public class Helper {
                         entryJSONObject.put("prs", String.format(Locale.US, "%.2f", protocolEntry.getPressure()));
                         entryJSONObject.put("input", protocolEntry.getDebugInput());
                         entryJSONObject.put("output", protocolEntry.getDebugOutput());
-                        if(lastEntry==null || lastEntry.before(protocolEntry.getTimestamp()))
+                        if (lastEntry == null || lastEntry.before(protocolEntry.getTimestamp()))
                             lastEntry = protocolEntry.getTimestamp();
                         entryJSONArray.put(entryJSONObject);
                     }
@@ -831,6 +838,9 @@ public class Helper {
                     barProgressDialog.setTitleText(context.getString(R.string.failed));
                     barProgressDialog.setContentText(context.getString(R.string.something_went_wrong_try_again));
                     barProgressDialog.setConfirmText(context.getString(R.string.try_again));
+                    barProgressDialog.setCancelText(context.getString(R.string.settings));
+                    barProgressDialog.showCancelButton(true);
+
                 } else {
                     ReadAndParseSerialService.getInstance().getPrograms();
                     if (runnableTimeout != null) {
@@ -861,6 +871,8 @@ public class Helper {
                     barProgressDialog.setTitleText(context.getString(R.string.failed));
                     barProgressDialog.setContentText(context.getString(R.string.something_went_wrong_try_again));
                     barProgressDialog.setConfirmText(context.getString(R.string.try_again));
+                    barProgressDialog.setCancelText(context.getString(R.string.settings));
+                    barProgressDialog.showCancelButton(true);
                 } else {
                     ReadAndParseSerialService.getInstance().getPrograms();
                     if (runnableTimeout != null) {
@@ -873,12 +885,54 @@ public class Helper {
         ReadAndParseSerialService.getInstance().addCallback(callbackProfile);
 
 
+        barProgressDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                final SweetAlertDialog dialog = new SweetAlertDialog(context, R.layout.dialog_admin_password, SweetAlertDialog.WARNING_TYPE);
+                dialog.setContentView(R.layout.dialog_admin_password);
+                dialog.setTitle(R.string.register_new_user);
+                dialog.setCancelable(true);
+                dialog.setCanceledOnTouchOutside(true);
+                final EditText editTextPassword = dialog.findViewById(R.id.editTextPassword);
+                Button buttonLogin = (Button) dialog
+                        .findViewById(R.id.dialogButtonLogin);
+                Button buttonCancel = (Button) dialog
+                        .findViewById(R.id.dialogButtonCancel);
+                buttonLogin.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (Helper.checkAdminPassword(context, editTextPassword.getText().toString())) {
+                            Intent intent2 = new Intent(context, SettingsActivity.class);
+                            intent2.putExtra("isAdmin",true);
+                            context.startActivity(intent2);
+                            dialog.dismiss();
+                        } else {
+                            Toasty.error(context, context.getString(R.string.admin_password_wrong), Toast.LENGTH_SHORT, true).show();
+                        }
+                    }
+                });
+
+                buttonCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismissWithAnimation();
+                    }
+                });
+
+                dialog.show();
+
+            }
+
+        });
+
         barProgressDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
             @Override
             public void onClick(SweetAlertDialog sweetAlertDialog) {
                 ReadAndParseSerialService.getInstance().addCallback(callbackProfile);
                 barProgressDialog.setConfirmText(null);
                 barProgressDialog.setCancelText(null);
+                barProgressDialog.showCancelButton(false);
                 barProgressDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
                 barProgressDialog.setContentText(null);
                 barProgressDialog.setTitleText(context.getString(R.string.loading));

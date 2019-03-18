@@ -124,6 +124,8 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                     if (commandQueue.size() == 0) {
 //                        commandSent(COMMANDS.CREATE(COMMANDS.GET_DATA));
                         serialService.sendMessage(COMMANDS.CREATE(COMMANDS.GET_DATA));
+                        commandSent(COMMANDS.CREATE(COMMANDS.GET_DATA));
+
                     }
                 }
                 handlerGetData.removeCallbacks(this);

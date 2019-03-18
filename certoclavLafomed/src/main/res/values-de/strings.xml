@@ -353,7 +353,9 @@
     <string name="create_a_new_program_from_template">Erstelle ein neues Programm von Vorlage</string>
     <string name="offset_of_steam_generator_sensor_c_">Offset Dampfgeneratorfühler [°C/°F]</string>
     <string name="offset_of_media_sensor_c_">Offset Medienfühler [°C/°F]</string>
+    <string name="offset_of_media_2_sensor_c_">Offset Medienfühler 2 [°C/°F]</string>
     <string name="offset_of_pressure_sensor_kpa_">Offset Drucksensor [bar]</string>
+    <string name="offset_of_pressure_sensor_2_kpa_">Offset Drucksensor 2[bar]</string>
     <string name="if_maintenance_is_required_please_notify_me">Falls Wartung nötig ist, benachrichtigen Sie mich</string>
     <string name="by_phone">per Telefon</string>
     <string name="email_address">per E-Mail</string>
@@ -379,10 +381,11 @@
     <string name="online_account">Online Account</string>
     <string name="certotrace_load_documentation">RaypaTrace Beladungsmanagement</string>
     <string name="enable_autoclave_load_docmentation">Aktivierung des RaypaTrace Beladungsmanagement. Strichcodescanner und Labeldrucker benötigt.</string>
-    <string name="header_time">Zeit [min]</string>
-    <string name="header_temp">Kammer [°C/°F]</string>
-    <string name="header_media_temp">Medium [°C/°F]</string>
-    <string name="header_pressure">Druck [bar]</string>
+    <string name="header_time">Zeit\n[hh:mm:ss]</string>
+    <string name="header_temp">Kammer\n[%1$s]</string>
+    <string name="header_media_temp">Medium\n[%1$s]</string>
+    <string name="header_media_temp_2">Medium 2\n[%1$s]</string>
+    <string name="header_pressure">Druck\n[bar]</string>
     <string name="download_protocols_from_cloud">Lade Protokolle von RaypaCloud</string>
     <string name="cur_password">Aktuelles Passwort</string>
     <string name="password_confirm">Wiederhole Passwort</string>

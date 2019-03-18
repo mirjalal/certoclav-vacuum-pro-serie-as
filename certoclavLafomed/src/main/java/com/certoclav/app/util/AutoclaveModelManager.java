@@ -18,10 +18,11 @@ public class AutoclaveModelManager implements MyCallback {
     private static AutoclaveModelManager manager;
     private Integer[] parametersForAdmin = new Integer[]{1, 2, 3, 4, 71, 72, 94, 95};
     private int currentSentParameterId = 1;
+
     private AutoclaveModelManager() {
         try {
             ReadAndParseSerialService.getInstance().addCallback(this);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -53,7 +54,7 @@ public class AutoclaveModelManager implements MyCallback {
     }
 
     public String getTemperatureUnit() {
-        return temperatureSymbol!=null?temperatureSymbol.getValue().toString():"C";
+        return temperatureSymbol != null ? temperatureSymbol.getValue().toString() : "C";
     }
 
     public void setTemperatureSymbol(AutoclaveParameter temperatureSymbol) {
@@ -121,10 +122,19 @@ public class AutoclaveModelManager implements MyCallback {
                 return new Pair<>(50f, 95f);
             case 42:
                 return new Pair<>(0f, 2f);
-            case 97:
-                return new Pair<>(30f, 70f);
             case 98:
                 return new Pair<>(0f, 100f);
+            case 40:
+                if(getModelName().contains("TLV"))
+                        return new Pair<>(100f, 140f);
+                return new Pair<>(0f, 140f);
+            case 99:
+                switch (getModelName()) {
+                    case "TLVPD":
+                        return new Pair<>(20f, 90f);
+                    default:
+                        return new Pair<>(30f, 80f);
+                }
         }
         //No Range
         return null;

@@ -7,8 +7,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.certoclav.app.R;
+import com.certoclav.app.database.Protocol;
 import com.certoclav.app.database.ProtocolEntry;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,9 +19,18 @@ import java.util.List;
 public class MyProtocolEntryRecyclerViewAdapter extends RecyclerView.Adapter<MyProtocolEntryRecyclerViewAdapter.ViewHolder> {
 
     private final List<ProtocolEntry> mValues;
+    private Protocol protocol;
 
-    public MyProtocolEntryRecyclerViewAdapter(List<ProtocolEntry> items) {
-        mValues = items;
+    public MyProtocolEntryRecyclerViewAdapter(List<ProtocolEntry> items, Protocol protocol) {
+        mValues = new ArrayList<>();
+        long lastdate =0;
+        for(ProtocolEntry entry:items){
+            if(lastdate<(entry.getTimestamp().getTime()-19*1000)) {
+                mValues.add(entry);
+                lastdate = entry.getTimestamp().getTime();
+            }
+        }
+        this.protocol = protocol;
     }
 
     @Override
@@ -32,9 +43,15 @@ public class MyProtocolEntryRecyclerViewAdapter extends RecyclerView.Adapter<MyP
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.time.setText(holder.mItem.getTimeStampWithMin());
+        holder.time.setText(holder.mItem.getFormatedTime());
         holder.temperature.setText(roundFloat(mValues.get(position).getTemperature()) + "");
-        holder.mediaTemperature.setText(roundFloat(mValues.get(position).getMediaTemperature()) + "");
+
+        holder.mediaTemperature.setVisibility(protocol.isContByFlexProbe1() ? View.VISIBLE : View.GONE);
+        holder.mediaTemperature2.setVisibility(protocol.isContByFlexProbe2() ? View.VISIBLE : View.GONE);
+        if (protocol.isContByFlexProbe2())
+            holder.mediaTemperature2.setText(roundFloat(mValues.get(position).getMediaTemperature2()) + "");
+        if (protocol.isContByFlexProbe1())
+            holder.mediaTemperature.setText(roundFloat(mValues.get(position).getMediaTemperature()) + "");
         holder.pressure.setText(roundFloat(mValues.get(position).getPressure()).toString());
 
     }
@@ -49,6 +66,7 @@ public class MyProtocolEntryRecyclerViewAdapter extends RecyclerView.Adapter<MyP
         public final TextView time;
         public final TextView temperature;
         public final TextView mediaTemperature;
+        public final TextView mediaTemperature2;
         public final TextView pressure;
         public ProtocolEntry mItem;
 
@@ -58,6 +76,7 @@ public class MyProtocolEntryRecyclerViewAdapter extends RecyclerView.Adapter<MyP
             time = (TextView) view.findViewById(R.id.time);
             temperature = (TextView) view.findViewById(R.id.temperature);
             mediaTemperature = (TextView) view.findViewById(R.id.mediaTemperature);
+            mediaTemperature2 = (TextView) view.findViewById(R.id.mediaTemperature2);
             pressure = (TextView) view.findViewById(R.id.pressure);
         }
 
@@ -68,12 +87,11 @@ public class MyProtocolEntryRecyclerViewAdapter extends RecyclerView.Adapter<MyP
     }
 
 
-    private Double roundFloat(float f){
-        int tempnumber = (int) (f*100);
-        Double roundedfloat = (double) ((double)tempnumber/100.0);
+    private Double roundFloat(float f) {
+        int tempnumber = (int) (f * 100);
+        Double roundedfloat = (double) ((double) tempnumber / 100.0);
         return roundedfloat;
     }
-
 
 
 }

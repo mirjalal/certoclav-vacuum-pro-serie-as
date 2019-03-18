@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -41,6 +42,7 @@ import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.monitor.CertoTraceListFragment;
 import com.certoclav.app.monitor.MonitorListFragment;
 import com.certoclav.app.service.PostProtocolsService;
+import com.certoclav.app.util.AuditLogger;
 import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.LabelPrinterUtils;
 import com.certoclav.app.util.MyCallback;
@@ -83,6 +85,7 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
     private SweetAlertDialog pDialog;
     private View buttonDownload;
     private int graphListTraceButtonState = 0;
+    private boolean isVisibleToUser;
 
 
     @Override
@@ -152,8 +155,10 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1,
                                     int pos, long arg3) {
-                aktPosition = pos;
-                selectProtocol(pos);
+                if(isVisibleToUser) {
+                    aktPosition = pos;
+                    selectProtocol(pos);
+                }
             }
         });
 
@@ -237,7 +242,9 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
                                     barProgressDialog.setTitleText(getActivity().getString(R.string.adding));
                                 else {
                                     protocolAdapter.updateProtocol(aktPosition, databaseService.getProtocolByCloudId(protocolAdapter.getItem(aktPosition).getCloudId()));
-                                    selectProtocol(aktPosition);
+
+                                    if (isVisible())
+                                        selectProtocol(aktPosition);
                                     barProgressDialog.setTitleText(getActivity().getString(R.string.download_success));
                                     barProgressDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                                     view.setEnabled(true);
@@ -651,11 +658,8 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && Autoclave.getInstance().isOnlineMode(getContext())) {
-            Intent intent5 = new Intent(ApplicationController.getContext(), PostProtocolsService.class);
-            getActivity().startService(intent5);
-        } else {
-        }
+        this.isVisibleToUser = isVisibleToUser;
+       startProtocolSync();
     }
 
 
@@ -672,6 +676,11 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
         protocolAdapter.notifyDataSetChanged();
 
         Protocol protocol = protocolAdapter.getItem(pos);
+
+        if (protocol.getErrorCode() == AutoclaveMonitor.ERROR_CODE_INDICATOR_NOT_COMPLETED) {
+            askForIndicator(protocol);
+        }
+
         buttonDownload.setVisibility(protocol == null || !protocol.isUploaded()
                 || (protocol.getProtocolEntry() != null && protocol.getProtocolEntry().size() > 0)
                 || !Autoclave.getInstance().isOnlineMode(getActivity())
@@ -679,7 +688,10 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
 
         textError.setText(AutoclaveMonitor.getInstance().getErrorString(protocol.getErrorCode()));
         ((View) textError.getParent()).setVisibility(View.VISIBLE);
-        textError.setTextColor(getResources().getColor(protocol.getErrorCode() == 0 ? R.color.success_color : R.color.error_color));
+        textError.setTextColor(getResources().getColor(protocol.getErrorCode() == 0 ||
+                protocol.getErrorCode() == AutoclaveMonitor.ERROR_CODE_INDICATOR_SUCCESS ?
+                R.color.success_color :
+                R.color.error_color));
         textError.setVisibility(View.VISIBLE);
 
 
@@ -727,5 +739,84 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
         }
     }
 
+    private void startProtocolSync(){
+        if (isVisibleToUser && Autoclave.getInstance().isOnlineMode(getContext())) {
+            Intent intent5 = new Intent(ApplicationController.getContext(), PostProtocolsService.class);
+            getActivity().startService(intent5);
+        }
+    }
+
+    private void askForIndicator(final Protocol protocol) {
+        if (!PreferenceManager.getDefaultSharedPreferences(ApplicationController.getContext()).getBoolean(AppConstants.PREFERENCE_KEY_INDICATOR_TEST, false))
+            return;
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(getString(R.string.title_indicator_test))
+                .setContentText(getString(R.string.is_indicator_ready))
+                .setConfirmText(getString(R.string.later))
+                .setCancelText(getString(R.string.yes))
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        askForIndicatorStatus(protocol);
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                })
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                                AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
+                                AuditLogger.OBJECT_EMPTY,
+                                getString(R.string.later));
+                        DatabaseService.getInstance().updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(), AutoclaveMonitor.ERROR_CODE_INDICATOR_NOT_COMPLETED);
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                });
+        sweetAlertDialog.setCanceledOnTouchOutside(false);
+        sweetAlertDialog.setCancelable(false);
+        sweetAlertDialog.show();
+    }
+
+    private void askForIndicatorStatus(final Protocol protocol) {
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                .setTitleText(getString(R.string.title_indicator_test))
+                .setContentText(getString(R.string.is_indicator_passed))
+                .setConfirmText(getString(R.string.passed))
+                .setCancelText(getString(R.string.failed))
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                                AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
+                                AuditLogger.OBJECT_EMPTY,
+                                getString(R.string.failed));
+                        protocol.setErrorCode(AutoclaveMonitor.ERROR_CODE_INDICATOR_FAILED);
+                        selectProtocol(aktPosition);
+                        DatabaseService.getInstance().updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(), AutoclaveMonitor.ERROR_CODE_INDICATOR_FAILED);
+                        sweetAlertDialog.dismissWithAnimation();
+                        startProtocolSync();
+                    }
+                })
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                                AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
+                                AuditLogger.OBJECT_EMPTY,
+                                getString(R.string.success));
+                        protocol.setErrorCode(AutoclaveMonitor.ERROR_CODE_INDICATOR_SUCCESS);
+                        selectProtocol(aktPosition);
+                        DatabaseService.getInstance().updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(), AutoclaveMonitor.ERROR_CODE_INDICATOR_SUCCESS);
+                        sweetAlertDialog.dismissWithAnimation();
+                        startProtocolSync();
+                    }
+                })
+                .setCustomImage(R.drawable.ic_indicator);
+        sweetAlertDialog.setCanceledOnTouchOutside(false);
+        sweetAlertDialog.setCancelable(false);
+        sweetAlertDialog.show();
+    }
 }
+
+
 

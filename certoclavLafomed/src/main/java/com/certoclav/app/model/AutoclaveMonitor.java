@@ -49,6 +49,8 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
     public static final int ERROR_CODE_SUCCESSFULL = 0;
     public static final int ERROR_CODE_INDICATOR_FAILED = 50;
+    public static final int ERROR_CODE_INDICATOR_SUCCESS = 51;
+    public static final int ERROR_CODE_INDICATOR_NOT_COMPLETED = 52;
     public static final int ERROR_CODE_CONNECTION_LOST = -2;
     public static final int ERROR_CODE_CANCELLED_BY_ERROR = -3;
     public static final int ERROR_CODE_POWER_LOSS = -4;
@@ -141,6 +143,8 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
         errorMap.put(ERROR_CODE_CANCELLED_BY_ERROR, mContext.getString(R.string.cycle_cancelled_because_of_error));
         errorMap.put(ERROR_CODE_POWER_LOSS, mContext.getString(R.string.power_loss_during_record));
         errorMap.put(ERROR_CODE_INDICATOR_FAILED, mContext.getString(R.string.indicator_failed));
+        errorMap.put(ERROR_CODE_INDICATOR_SUCCESS, mContext.getString(R.string.indicator_success));
+        errorMap.put(ERROR_CODE_INDICATOR_NOT_COMPLETED, mContext.getString(R.string.indicator_not_completed));
         errorMap.put(WATER_FLOATING_SYSTEM_FAILURE, "WATER FLOATING SYSTEM FAILURE");
         errorMap.put(FILLING_WATER_TIME_EXCEEDED, "FILLING WATER TIME EXCEEDED");
         errorMap.put(REFILLING_WATER_FAILURE, "REFILLING WATER FAILURE");

@@ -112,7 +112,7 @@ public class ProtocolEntry {
     }
 
     public float getPressureInkPa() {
-        return pressure*100;
+        return pressure * 100;
     }
 
     public void setPressure(float pressure) {
@@ -171,6 +171,17 @@ public class ProtocolEntry {
     public String getFormatedTimeStampShort() {
 
         return new SimpleDateFormat("kk:mm:ss").format(timestamp);
+
+    }
+
+    public String getFormatedTime() {
+        long totalSecs =
+                (getTimestamp().getTime() -
+                        getProtocol().getStartTime().getTime()) / 1000;
+        long hours = totalSecs / 3600;
+        long minutes = (totalSecs % 3600) / 60;
+        long seconds = totalSecs % 60;
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
 
     }
 

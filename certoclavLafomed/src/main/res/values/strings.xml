@@ -396,7 +396,9 @@
     <string name="create_a_new_program_from_template">Create a new program from template</string>
     <string name="offset_of_steam_generator_sensor_c_">Offset of steam generator sensor [°C/°F]</string>
     <string name="offset_of_media_sensor_c_">Offset of media sensor [°C/°F]</string>
+    <string name="offset_of_media_2_sensor_c_">Offset of media 2 sensor [°C/°F]</string>
     <string name="offset_of_pressure_sensor_kpa_">Offset of pressure sensor [bar]</string>
+    <string name="offset_of_pressure_sensor_2_kpa_">Offset of pressure sensor 2[bar]</string>
     <string name="if_maintenance_is_required_please_notify_me">If maintenance is required, please notify me</string>
     <string name="by_phone">by phone</string>
     <string name="email_address">email address</string>
@@ -464,10 +466,11 @@
     <string name="bar">bar</string>
     <string name="_c">°C</string>
 
-    <string name="header_time">TimeStamp [min]</string>
-    <string name="header_temp">Chamber temp. [°C/°F]</string>
-    <string name="header_media_temp">Media temp. [°C/°F]</string>
-    <string name="header_pressure">Pressure [bar]</string>
+    <string name="header_time">TimeStamp\n[hh:mm:ss]</string>
+    <string name="header_temp">Chamber temp.\n[%1$s]</string>
+    <string name="header_media_temp">Media temp.\n[%1$s]</string>
+    <string name="header_media_temp_2">Media 2 temp.\n[%1$s]</string>
+    <string name="header_pressure">Pressure\n[bar]</string>
     <string name="download_protocols_from_cloud">Download Protocols from RaypaCloud</string>
     <string name="cur_password">Currrent Password</string>
     <string name="password_confirm">Confirm Password</string>
@@ -638,9 +641,12 @@
     <string name="enable_autoclave_indicator_check">After sterilization, the user will be asked for the status of the steam indicator</string>
     <string name="title_indicator_test">Batch control</string>
     <string name="is_indicator_passed">Is the sterilization indicator passed?</string>
+    <string name="is_indicator_ready">Do you want to add the sterilization indicator status?</string>
     <string name="failed">Failed</string>
     <string name="passed">Passed</string>
     <string name="indicator_failed">Batch control negative</string>
+    <string name="indicator_success">Batch control positive</string>
+    <string name="indicator_not_completed">Batch control not completed</string>
     <string name="permission_denied">Permission Denied</string>
     <string name="admin_user_cant_start_a_program_and_info">Admin user can\'t start a program. Change user to start a program.</string>
 
@@ -852,7 +858,7 @@
     <string name="preferences_autoclave_offset_probe_2">Offset Probe 2</string>
     <string name="preferences_autoclave_offset_pressure_probe_1">Offset Pressure Probe 1</string>
     <string name="preferences_autoclave_offset_pressure_probe_2">Offset Pressure Probe 2</string>
-    <string name="preferences_autoclave_setpoint_temperature">Setpoint tempereature F</string>
+    <string name="preferences_autoclave_setpoint_temperature">Setpoint temperature F</string>
     <string name="preferences_autoclave_setpoint_hours_review">Setpoint Hours Review</string>
     <string name="preferences_autoclave_setpoint_filter_cycle">Setpoint Filter Cycle</string>
     <string name="preferences_autoclave_starting_pressure">Starting Pressure</string>
@@ -929,6 +935,8 @@
     <string name="vessel_temperature">Vessel temperature</string>
     <string name="pressure_lower">Pressure</string>
     <string name="time_since_start">Duration</string>
+    <string name="time_left_f">F Function:</string>
+    <string name="time_left">Countdown:</string>
     <string name="program_lower">Program</string>
     <string name="status">Status</string>
     <string name="warning_lower">Warning</string>
@@ -938,6 +946,7 @@
     <string name="media_2_lower">Media 2</string>
     <string name="calibration_parameters_saved">Parameters saved</string>
     <string name="calibration_not_valid_media_sensor">Please enter valid offset for media sensor</string>
+    <string name="calibration_not_valid_media_2_sensor">Please enter valid offset for media 2 sensor</string>
     <string name="calibration_not_valid_pressure_sensor_1">Please enter valid offset for pressure sensor</string>
     <string name="calibration_not_valid_pressure_sensor_2">Please enter valid offset for steam generator sensor 2</string>
     <string name="calibration_not_valid_steam_sensor">Please enter valid offset for steam sensor</string>
@@ -946,6 +955,7 @@
     <string name="state_start_process">START PROCESS</string>
     <string name="state_empty_wait">EMPTY WAIT</string>
     <string name="state_empty_test">EMPTY TEST</string>
+    <string name="later">LATER</string>
 
 
 </resources>

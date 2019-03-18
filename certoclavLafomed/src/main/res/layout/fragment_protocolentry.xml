@@ -41,6 +41,16 @@
             android:textAppearance="?attr/textAppearanceListItem" />
 
         <TextView
+            android:id="@+id/mediaTemperature2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textAppearance="?attr/textAppearanceListItem" />
+
+        <TextView
             android:id="@+id/pressure"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

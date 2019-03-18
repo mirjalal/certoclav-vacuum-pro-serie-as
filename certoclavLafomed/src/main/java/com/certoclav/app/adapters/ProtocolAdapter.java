@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.certoclav.app.R;
 import com.certoclav.app.database.Profile;
 import com.certoclav.app.database.Protocol;
+import com.certoclav.app.model.AutoclaveMonitor;
 
 import java.util.List;
 
@@ -77,7 +78,7 @@ public class ProtocolAdapter extends ArrayAdapter<Protocol> {
             programName.setText(getItem(position).getProfileName());
 
 
-            if (getItem(position).getErrorCode() != 0) {
+            if (getItem(position).getErrorCode() != 0 && getItem(position).getErrorCode() != AutoclaveMonitor.ERROR_CODE_INDICATOR_SUCCESS) {
                 programName.setTextColor(Color.parseColor("#D60000")); //if error
             } else {
                 programName.setTextColor(Color.parseColor("#006600"));//if no error

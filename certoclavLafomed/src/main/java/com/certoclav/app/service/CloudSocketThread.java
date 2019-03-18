@@ -177,6 +177,19 @@ public class CloudSocketThread extends Thread implements SocketEventListener {
                             jsonLiveMessageDataObj.put(AppController.getInstance().
                                             getApplicationContext().getString(R.string.time_since_start)
                                     , timeSinceStartString);
+
+                            float timeLeftSeconds = Autoclave.getInstance().getTimeOrPercent();
+
+                            jsonLiveMessageDataObj.put(AppController.getInstance().
+                                            getApplicationContext().getString(Autoclave.getInstance().getProfile().isF0Enabled()?
+                                            R.string.time_left_f:
+                                            R.string.time_left)
+                                    , Autoclave.getInstance().getProfile().isF0Enabled()?
+                                            String.format("%.1f",timeLeftSeconds)+ "%":
+                                            (String.format("%02d:%02d:%02d",
+                                    (((int)timeLeftSeconds) / 60 / 60) % 24,
+                                    (((int)timeLeftSeconds) / 60) % 60,
+                                                    ((int)timeLeftSeconds) % 60)));
                         }
                         jsonLiveMessageObj.put("data", jsonLiveMessageDataObj);
                         Log.e("CloudSocketThread", "sending: " + jsonLiveMessageObj.toString().replace("{", "[").replace("}", "]"));

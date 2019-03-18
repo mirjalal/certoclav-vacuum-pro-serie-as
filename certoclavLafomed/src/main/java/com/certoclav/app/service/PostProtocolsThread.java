@@ -6,6 +6,7 @@ import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.Protocol;
 import com.certoclav.app.database.ProtocolEntry;
 import com.certoclav.app.model.Autoclave;
+import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.ServerConfigs;
@@ -50,7 +51,9 @@ public class PostProtocolsThread extends Thread {
                     if (protocols != null) {
                         for (Protocol protocol : protocols) {
                             Log.e("AutoclaveMonitor", "protocol is not uploaded yet");
-
+                            if(protocol.getErrorCode() == AutoclaveMonitor.ERROR_CODE_INDICATOR_NOT_COMPLETED){
+                                continue;
+                            }
                             //PROTOCOL-ENTRYS ARRAY
                             JSONArray entryJSONArray = new JSONArray();
                             Date startTime = protocol.getStartTime();

@@ -346,7 +346,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 break;
             case DOOR_UNLOCKED:
             case PROGRAM_FINISHED:
-
+                buttonStop.setEnabled(false);
                 buttonStop.setText(getString(Autoclave.getInstance().isDoorLocked() ?
                         R.string.please_wait_door_unlocking :
                         R.string.please_open_door));
@@ -362,14 +362,9 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                             Autoclave.getInstance().getProfile().getFinalTemp()));
                     buttonStop.setText(getString(R.string.stop_maintain_temp));
                     buttonStop.setEnabled(true);
-                } else {
-                    buttonStop.setEnabled(false);
-                    if (Autoclave.getInstance().isDoorLocked())
-                        buttonStop.setText(getString(R.string.please_wait_door_unlocking));
+                }else{
                     textState.setText(R.string.state_finished);
-                    navigationbar.showButtonBack();
                 }
-
 
                 AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
                         currentProgramStep == Autoclave.PROGRAM_STEPS.MAINTAIN_TEMP ?
@@ -379,11 +374,11 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                         Autoclave.getInstance().getProfile().getName() + " (" + getString(R.string.cycle) + " "
                                 + Autoclave.getInstance().getController().getCycleNumber() + ")");
 
-                Intent intent5 = new Intent(ApplicationController.getContext(), PostProtocolsService.class);
-                startService(intent5);
 
                 if (currentProgramStep == Autoclave.PROGRAM_STEPS.FINISHED) {
                     askForIndicator();
+                }else{
+                  startProtocolSync();
                 }
 
                 break;
@@ -668,9 +663,45 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
         }
     }
 
+    private void startProtocolSync(){
+        if ( Autoclave.getInstance().isOnlineMode(this)) {
+            Intent intent5 = new Intent(this, PostProtocolsService.class);
+            startService(intent5);
+        }
+    }
     private void askForIndicator() {
         if (!PreferenceManager.getDefaultSharedPreferences(ApplicationController.getContext()).getBoolean(AppConstants.PREFERENCE_KEY_INDICATOR_TEST, false))
             return;
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(getString(R.string.title_indicator_test))
+                .setContentText(getString(R.string.is_indicator_ready))
+                .setConfirmText(getString(R.string.later))
+                .setCancelText(getString(R.string.yes))
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                       askForIndicatorStatus();
+                       sweetAlertDialog.dismissWithAnimation();
+                    }
+                })
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                                AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
+                                AuditLogger.OBJECT_EMPTY,
+                                getString(R.string.later));
+                        DatabaseService.getInstance().updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(),
+                                AutoclaveMonitor.ERROR_CODE_INDICATOR_NOT_COMPLETED);
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                });
+        sweetAlertDialog.setCanceledOnTouchOutside(false);
+        sweetAlertDialog.setCancelable(false);
+        sweetAlertDialog.show();
+    }
+
+    private void askForIndicatorStatus() {
         SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
                 .setTitleText(getString(R.string.title_indicator_test))
                 .setContentText(getString(R.string.is_indicator_passed))
@@ -685,6 +716,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                                 getString(R.string.failed));
                         DatabaseService.getInstance().updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(), AutoclaveMonitor.ERROR_CODE_INDICATOR_FAILED);
                         sweetAlertDialog.dismissWithAnimation();
+                        startProtocolSync();
                     }
                 })
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -694,6 +726,9 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                                 AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
                                 AuditLogger.OBJECT_EMPTY,
                                 getString(R.string.success));
+                        DatabaseService.getInstance().updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(), AutoclaveMonitor.ERROR_CODE_INDICATOR_SUCCESS);
+                        sweetAlertDialog.dismissWithAnimation();
+                        startProtocolSync();
                     }
                 })
                 .setCustomImage(R.drawable.ic_indicator);
