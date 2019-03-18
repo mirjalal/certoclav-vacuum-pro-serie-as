@@ -451,10 +451,11 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     private int counter = 0;
 
     private ReadAndParseSerialService() {
+
         String serialPathAutoclave = "";
         int serialBaudAutoclave = 9600;
         if (AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH)) {
-            serialPathAutoclave = "/dev/ttyS4";
+            serialPathAutoclave = "/dev/ttyUSB0";
         } else {
             serialPathAutoclave = "/dev/ttymxc3";
         }
@@ -466,6 +467,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 
         listeners = new ArrayList<>();
         serialService = new SerialService(serialPathAutoclave, serialBaudAutoclave);
+       // serialService = Autoclave.getInstance().getSerialsService();
         handlerGetData.post(runnableGetData);
 
 //        serialThread.start();
