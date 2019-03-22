@@ -456,7 +456,9 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         int serialBaudAutoclave = 9600;
         if (AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH)) {
             serialPathAutoclave = "/dev/ttyUSB0";
-        } else {
+        } else if (AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH_RS_232)) {
+            serialPathAutoclave = "/dev/ttyS4";
+        }else{
             serialPathAutoclave = "/dev/ttymxc3";
         }
         if (AppConstants.MODEL_CURRENT.equals(AppConstants.MODEL_RAYPA_TLV)) {

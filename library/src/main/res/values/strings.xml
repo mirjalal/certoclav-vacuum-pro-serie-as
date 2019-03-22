@@ -243,7 +243,7 @@
     <string name="create_new">Create new</string>
     <string name="connection_lost_to_controller">Connection lost to controller</string>
     <string name="trying_to_connect_">Trying to connect...</string>
-    <string name="autoclave_serial_number">Autoclave Serial Number</string>
+    <string name="autoclave_serial_number">PCB Serial Number</string>
     <string name="an_error_occured_during_login_please_try_again_later_">An error occurred during login. Please try again later.\n</string>
     <string name="timout_during_login_please_check_internet_availability_">Timout during login. Please check internet availability.\n</string>
     <string name="password_not_correct_">Password not correct.\n</string>

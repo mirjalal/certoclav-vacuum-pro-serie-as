@@ -124,7 +124,7 @@
             android:background="@drawable/edittext_selector"
             android:gravity="center"
             android:hint="0"
-            android:inputType="numberSigned"
+            android:inputType="numberSigned|numberDecimal"
             android:textSize="20sp" />
 
 
@@ -155,7 +155,7 @@
             android:background="@drawable/edittext_selector"
             android:gravity="center"
             android:hint="0"
-            android:inputType="numberSigned"
+            android:inputType="numberSigned|numberDecimal"
             android:textSize="20sp" />
 
 

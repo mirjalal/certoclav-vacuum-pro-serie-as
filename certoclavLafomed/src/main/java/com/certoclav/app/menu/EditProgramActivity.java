@@ -61,6 +61,8 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
     private TextView programStepVacuumDescription;
     private TextView programStepFinalTempDescription;
     private View linearLayoutF0Function;
+    private View linearLayoutFinalTemp;
+    private View linearLayoutDry;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -88,6 +90,8 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
         programStepVacuumDescription = findViewById(R.id.program_step_vacuum_description);
         programStepFinalTempDescription = findViewById(R.id.program_step_final_temp_description);
 
+        linearLayoutDry = findViewById(R.id.linearLayoutDry);
+
         checkboxIsContByFlexProbe1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -99,6 +103,8 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 checkboxIsContByFlexProbe1.setEnabled(b);
                 checkboxIsContByFlexProbe2.setEnabled(b && checkboxIsContByFlexProbe1.isChecked());
+
+                linearLayoutDry.setVisibility(b?View.GONE:View.VISIBLE);
             }
         });
 
@@ -109,7 +115,9 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
 
         findViewById(R.id.linearLayoutDry).setOnClickListener(this);
         findViewById(R.id.linearLayoutVacuum).setOnClickListener(this);
-        findViewById(R.id.linearLayoutFinalTemp).setOnClickListener(this);
+        linearLayoutFinalTemp = findViewById(R.id.linearLayoutFinalTemp);
+        linearLayoutFinalTemp.setOnClickListener(this);
+
 
         navigationbar = new CertoclavNavigationbarClean(this);
         navigationbar.setHeadText(getString(R.string.title_define_a_new_program));
@@ -139,7 +147,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
 
 //        newProfile.setName(s.toString());
 //        refreshGraphAndList();
-
+        linearLayoutDry.setVisibility(checkboxIdLiquidProgram.isChecked()?View.GONE:View.VISIBLE);
 
     }
 
@@ -329,6 +337,12 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
 
         navigationbar.setNavigationbarListener(this);
         newProfile = Autoclave.getInstance().getProfileByIndex(programIndex);
+
+        if(linearLayoutFinalTemp!=null)
+            linearLayoutFinalTemp.setVisibility(AutoclaveModelManager.getInstance().isFinalTempExistsInProgramEdit()?
+                    View.VISIBLE:
+                    View.GONE);
+
 //        newProfile.setLocal(true);
         checkboxIsF0FunctionProgram.setOnCheckedChangeListener(null);
         refreshGraphAndList(false);
@@ -340,7 +354,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
                 linearLayoutF0Function.setVisibility(isChecked ? View.VISIBLE : View.GONE);
                 if (!checkboxIsF0FunctionProgram.isChecked())
                     programStepSterilisationDescription.setText(getString(R.string.program_step_sterlisation_desc,
-                            newProfile.getSterilisationTime(), newProfile.getSterilisationTemperature()));
+                            newProfile.getSterilisationTime(), newProfile.getSterilisationTemperature(),Helper.getTemperatureUnitText(null)));
                 else
                     programStepSterilisationDescription.setText(getString(R.string.program_step_sterlisation_desc_f0,
                             newProfile.getSterilisationTemperature(),

@@ -269,7 +269,7 @@
     <string name="create_new">Create new</string>
     <string name="connection_lost_to_controller">Connection lost to controller</string>
     <string name="trying_to_connect_">Trying to connect...</string>
-    <string name="autoclave_serial_number">Autoclave Serial Number</string>
+    <string name="autoclave_serial_number">PCB Serial Number</string>
     <string name="an_error_occured_during_login_please_try_again_later_">An error occured during login. Please try again later.\n</string>
     <string name="timout_during_login_please_check_internet_availability_">Timout during login. Please check internet availability.\n</string>
     <string name="password_not_correct_">Password not correct.\n</string>
@@ -945,16 +945,16 @@
     <string name="media_lower">Media</string>
     <string name="media_2_lower">Media 2</string>
     <string name="calibration_parameters_saved">Parameters saved</string>
-    <string name="calibration_not_valid_media_sensor">Please enter valid offset for media sensor</string>
-    <string name="calibration_not_valid_media_2_sensor">Please enter valid offset for media 2 sensor</string>
-    <string name="calibration_not_valid_pressure_sensor_1">Please enter valid offset for pressure sensor</string>
-    <string name="calibration_not_valid_pressure_sensor_2">Please enter valid offset for steam generator sensor 2</string>
-    <string name="calibration_not_valid_steam_sensor">Please enter valid offset for steam sensor</string>
+    <string name="calibration_not_valid_media_sensor">Please enter valid offset for media sensor [%1$.1f-%2$+.1f]</string>
+    <string name="calibration_not_valid_media_2_sensor">Please enter valid offset for media 2 sensor [%1$.1f-%2$+.1f]</string>
+    <string name="calibration_not_valid_pressure_sensor_1">Please enter valid offset for pressure sensor [%1$.1f-%2$+.1f]</string>
+    <string name="calibration_not_valid_pressure_sensor_2">Please enter valid offset for steam generator sensor 2 [%1$.1f-%2$+.1f]</string>
+    <string name="calibration_not_valid_steam_sensor">Please enter valid offset for steam sensor [%1$.1f-%2$+.1f]</string>
     <string name="calibration_not_valid_data">Please enter valid data</string>
     <string name="saving">Saving...</string>
-    <string name="state_start_process">START PROCESS</string>
-    <string name="state_empty_wait">EMPTY WAIT</string>
-    <string name="state_empty_test">EMPTY TEST</string>
+    <string name="state_start_process">STARTING PROCESS</string>
+    <string name="state_empty_wait">STABILIZING TIME</string>
+    <string name="state_empty_test">TESTING TIME</string>
     <string name="later">LATER</string>
 
 

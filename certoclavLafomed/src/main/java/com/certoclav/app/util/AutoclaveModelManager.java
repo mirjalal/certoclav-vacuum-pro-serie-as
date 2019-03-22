@@ -172,6 +172,10 @@ public class AutoclaveModelManager implements MyCallback {
         return Arrays.asList(new String[]{"AEB", "AHSB", "TLVPD"}).contains(getModelName());
     }
 
+    public boolean isFinalTempExistsInProgramEdit() {
+        return Arrays.asList(new String[]{"TLV", "TLVFA"}).contains(getModelName());
+    }
+
     public boolean isWarmUpTempExistsInParameters() {
         return Arrays.asList(new String[]{"AEB", "AHSB", "TLVPD"}).contains(getModelName());
     }

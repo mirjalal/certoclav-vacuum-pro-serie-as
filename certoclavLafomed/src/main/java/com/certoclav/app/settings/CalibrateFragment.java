@@ -105,29 +105,29 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
 
                     offsetPress2 = 0.0;
                     if (editOffsetPress.getText().length() > 0)
-                        offsetPress2 = Double.parseDouble(editOffsetPress.getText().toString());
+                        offsetPress2 = Double.parseDouble(editOffsetPress2.getText().toString());
 
-                    if (offsetTemp1 < -3 || offsetTemp1 > 3) {
-                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_steam_sensor), Toast.LENGTH_SHORT, true).show();
+                    if (offsetTemp1 < -10 || offsetTemp1 > 10) {
+                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_steam_sensor, -10f,10f), Toast.LENGTH_SHORT, true).show();
                         return;
                     }
 
-                    if (offsetPress < -20 || offsetPress > 20) {
-                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_pressure_sensor_1), Toast.LENGTH_SHORT, true).show();
+                    if (offsetPress < -1 || offsetPress > 1) {
+                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_pressure_sensor_1,-1f,1f), Toast.LENGTH_SHORT, true).show();
                         return;
                     }
 
-                    if (offsetPress2 < -20 || offsetPress2 > 20) {
-                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_pressure_sensor_2), Toast.LENGTH_SHORT, true).show();
+                    if (offsetPress2 < -1 || offsetPress2 > 1) {
+                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_pressure_sensor_2,-1f,1f), Toast.LENGTH_SHORT, true).show();
                         return;
                     }
-                    if (offsetMedia < -3 || offsetMedia > 3) {
-                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_media_sensor), Toast.LENGTH_SHORT, true).show();
+                    if (offsetMedia < -10 || offsetMedia > 10) {
+                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_media_sensor,-10f,10f), Toast.LENGTH_SHORT, true).show();
                         return;
                     }
 
-                    if (offsetMedia2 < -3 || offsetMedia2 > 3) {
-                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_media_2_sensor), Toast.LENGTH_SHORT, true).show();
+                    if (offsetMedia2 < -10 || offsetMedia2 > 10) {
+                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_media_2_sensor,-10f,10f), Toast.LENGTH_SHORT, true).show();
                         return;
                     }
 

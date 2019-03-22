@@ -37,12 +37,13 @@ public interface AppConstants {
     String TABLET_TYPE_SAMSUNGT113W = "samsungt113w";
     String TABLET_TYPE_LILLIPUT = "lilliput2"; //android 4.3
     String TABLET_TYPE_FAYTECH = "faytech";
+    String TABLET_TYPE_FAYTECH_RS_232 = "faytech_rs_232";
     String MODEL_LAFOMED = "lafomed_v3"; //first autoclave with media sensor
     String MODEL_RAYPA_TLV = "raypa_tlv"; //TLV autoclave series from Raypa
 
     /*TABLET AND AUTOCLAVE SELECTION*/
 
-    String TABLET_TYPE = TABLET_TYPE_FAYTECH;//TABLET_TYPE_LILLIPUT
+    String TABLET_TYPE = TABLET_TYPE_FAYTECH;//TABLET_TYPE_FAYTECH_RS_232;//TABLET_TYPE_LILLIPUT
     String MODEL_CURRENT = MODEL_RAYPA_TLV;
     Boolean isIoSimulated = false;
     String MODEL = "TLV-150FA";

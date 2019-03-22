@@ -231,7 +231,7 @@
     <string name="create_new">Konto erstellen</string>
     <string name="connection_lost_to_controller">Verbindung zur Steuerung unerbrochen</string>
     <string name="trying_to_connect_">Verbindungsaufbau...</string>
-    <string name="autoclave_serial_number">Autoklav Seriennummer</string>
+    <string name="autoclave_serial_number">PCB Seriennummer</string>
     <string name="an_error_occured_during_login_please_try_again_later_">Ein fehler ist während des Logins aufgetreten. Bitte versuchen Sie es später erneut.\n</string>
     <string name="timout_during_login_please_check_internet_availability_">Timeout während des Logins. Bitte überprüfen Sie Ihre Internetverbindung.\n</string>
     <string name="password_not_correct_">Passwort nicht korrekt.\n</string>
