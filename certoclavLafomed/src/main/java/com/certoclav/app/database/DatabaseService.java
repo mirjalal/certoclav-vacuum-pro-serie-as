@@ -639,6 +639,22 @@ public class DatabaseService {
         return null;
     }
 
+    public User getUserByUsername(String username) {
+        try {
+            List<User> users = userDao.queryBuilder().where().eq(User.FIELD_USER_EMAIL, username).query();
+            if(users.size()>0)
+                return users.get(0);
+            return null;
+        } catch (SQLException e) {
+            Log.e(TAG, "Database exception", e);
+        } catch (Exception e) {
+            Log.e(TAG, "Database exception", e);
+        }
+
+        return null;
+    }
+
+
     public List<User> getUserByCloudId(String userId) {
         try {
             return userDao.queryBuilder().where().eq(User.FIELD_USER_CLOUD_ID, userId).query();

@@ -75,7 +75,7 @@ public class ExportUtils {
 
 
 		try {
-			File root = new File(rootFolder + "/udisk/");
+			File root = new File(rootFolder + "/udisk3/");
 			Log.e("Export Utils", "\nExternal file system root: " + root);
 
 			// See http://stackoverflow.com/questions/3551821/android-write-to-sd-card-folder
@@ -93,6 +93,7 @@ public class ExportUtils {
 			pw.close();
 			f.close();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 
@@ -111,12 +112,12 @@ public class ExportUtils {
 		// Find the root of the external storage.
 		// See http://developer.android.com/guide/topics/data/data-  storage.html#filesExternal
 
-		File root = new File(rootFolder + "/udisk/");
+		File root = new File(rootFolder + "/udisk3/");
 		Log.e("Export Utils", "\nExternal file system root: " + root);
 
 		// See http://stackoverflow.com/questions/3551821/android-write-to-sd-card-folder
 
-		File dir = new File(root.getAbsolutePath() + "/Certoclav protocols");
+		File dir = new File(root.getAbsolutePath() + "/Raypa protocols");
 		dir.mkdirs();
 		File file = new File(dir, filename + "." + filetype); // for example protocol123.txt
 

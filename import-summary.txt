@@ -1,9 +1,8 @@
 ECLIPSE ANDROID PROJECT IMPORT SUMMARY
 ======================================
 
- * Project
-   MainActivity:C:\Users\musaq\Documents\CertoClav\Projects\Ethernet\.classpath:
-   
+ * Project MainActivity:C:\Users\musaq\Documents\CertoClav\Projects\CertoClav
+   Pro\Ethernet\.classpath:
    Could not resolve source path src in project MainActivity: ignored. The
    project may not compile if the given source path provided source code.
 
@@ -15,8 +14,8 @@ due to bugs, placing projects in directories containing spaces in the
 path, or characters like ", ' and &, have had issues. We're working to
 eliminate these bugs, but to save yourself headaches you may want to
 move your project to a location where this is not a problem.
-C:\Users\musaq\Documents\worspaces\Profile Downloader\CertoclavLafomed1
-                                          -                            
+C:\Users\musaq\Documents\CertoClav\Projects\CertoClav Pro\certoclav-vacuum-pro-serie-as
+                                                     -                                 
 
 Ignored Files:
 --------------

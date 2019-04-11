@@ -786,13 +786,16 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
                 .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                        AuditLogger.addAuditLog(Autoclave.getInstance().getUser(),
+                                AuditLogger.SCEEN_EMPTY,
                                 AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
                                 AuditLogger.OBJECT_EMPTY,
                                 getString(R.string.failed));
                         protocol.setErrorCode(AutoclaveMonitor.ERROR_CODE_INDICATOR_FAILED);
                         selectProtocol(aktPosition);
-                        DatabaseService.getInstance().updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(), AutoclaveMonitor.ERROR_CODE_INDICATOR_FAILED);
+                        DatabaseService.getInstance().updateProtocolErrorCode(
+                                protocol.getProtocol_id(),
+                                AutoclaveMonitor.ERROR_CODE_INDICATOR_FAILED);
                         sweetAlertDialog.dismissWithAnimation();
                         startProtocolSync();
                     }
@@ -800,13 +803,16 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                        AuditLogger.addAuditLog(Autoclave.getInstance().getUser(),
+                                AuditLogger.SCEEN_EMPTY,
                                 AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
                                 AuditLogger.OBJECT_EMPTY,
                                 getString(R.string.success));
                         protocol.setErrorCode(AutoclaveMonitor.ERROR_CODE_INDICATOR_SUCCESS);
                         selectProtocol(aktPosition);
-                        DatabaseService.getInstance().updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(), AutoclaveMonitor.ERROR_CODE_INDICATOR_SUCCESS);
+                        DatabaseService.getInstance().updateProtocolErrorCode(
+                                protocol.getProtocol_id(),
+                                AutoclaveMonitor.ERROR_CODE_INDICATOR_SUCCESS);
                         sweetAlertDialog.dismissWithAnimation();
                         startProtocolSync();
                     }

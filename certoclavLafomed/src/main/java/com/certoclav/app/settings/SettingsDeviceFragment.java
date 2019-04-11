@@ -15,6 +15,7 @@ import android.os.StatFs;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.v4.preference.PreferenceFragment;
 import android.util.Log;
 import android.widget.DatePicker;
@@ -42,6 +43,8 @@ import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class SettingsDeviceFragment extends PreferenceFragment implements SensorDataListener {
@@ -79,7 +82,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                         DownloadUtils downloadUtils = new DownloadUtils(getActivity());
                         downloadUtils.Download(downloadUrls);
                     } else {
-                        Toasty.warning(getActivity(), getString(R.string.please_connect_to_internet), Toast.LENGTH_SHORT,true).show();
+                        Toasty.warning(getActivity(), getString(R.string.please_connect_to_internet), Toast.LENGTH_SHORT, true).show();
                     }
 
                     return false;
@@ -103,7 +106,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                     preference.setEnabled(false);
                     ExportUtils exportUtils = new ExportUtils();
                     if (exportUtils.checkExternalMedia() == false) {
-                        Toasty.error(getActivity(), getActivity().getString(R.string.can_not_read_usb_flash_disk), Toast.LENGTH_LONG,true).show();
+                        Toasty.error(getActivity(), getActivity().getString(R.string.can_not_read_usb_flash_disk), Toast.LENGTH_LONG, true).show();
                     } else {
                         UpdateUtils updateUtils = new UpdateUtils(getActivity());
                         updateUtils.installUpdateZip(UpdateUtils.SOURCE_USB);
@@ -122,7 +125,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                     preference.setEnabled(false);
                     ExportUtils exportUtils = new ExportUtils();
                     if (exportUtils.checkExternalSDCard() == false) {
-                        Toasty.error(getActivity(), getActivity().getString(R.string.can_not_read_from_sd_card), Toast.LENGTH_LONG,true).show();
+                        Toasty.error(getActivity(), getActivity().getString(R.string.can_not_read_from_sd_card), Toast.LENGTH_LONG, true).show();
                     } else {
                         UpdateUtils updateUtils = new UpdateUtils(getActivity());
                         updateUtils.installUpdateZip(UpdateUtils.SOURCE_SDCARD);
@@ -213,7 +216,11 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     //Toast.makeText(getActivity(), getActivity().getString(R.string.please_use_secondary_lcd_screen_to_change_the_time), Toast.LENGTH_LONG).show();
-                    setTimeAndDate(true);
+//                    setTimeAndDate(true);
+                    Intent intent = new Intent(Settings.ACTION_DATE_SETTINGS);
+                    intent.putExtra("extra_prefs_show_button_bar", true);
+                    startActivityForResult(intent, 0);
+
                     return false;
                 }
             });
@@ -314,6 +321,21 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                 .append(" ")
                 .append(Autoclave.getInstance().getTime()));
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == 0) {
+            // Make sure the request was successful
+
+            // The user picked a contact.
+            // The Intent's data Uri identifies which contact was selected.
+            Calendar calendar = Calendar.getInstance();
+            // Do something with the contact here (bigger example below)
+            ReadAndParseSerialService.getInstance().setParameter(93, new SimpleDateFormat("yyMMddhhmmss").format(calendar.getTime()));
+
+        }
     }
 
     private void setTimeAndDate(boolean isDate) {

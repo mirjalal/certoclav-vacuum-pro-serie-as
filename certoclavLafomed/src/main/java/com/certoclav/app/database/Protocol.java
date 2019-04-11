@@ -121,7 +121,7 @@ public class Protocol {
 
 
     public String getTemperatureUnit() {
-        return temperatureUnit==null?"C":temperatureUnit;
+        return temperatureUnit == null ? "C" : temperatureUnit;
     }
 
     public Profile getProgram() {
@@ -242,11 +242,11 @@ public class Protocol {
 
 
     public Boolean isContByFlexProbe1() {
-        return isContByFlexProbe1;
+        return isContByFlexProbe1 != null && isContByFlexProbe1;
     }
 
     public Boolean isContByFlexProbe2() {
-        return isContByFlexProbe1 && isContByFlexProbe2;
+        return isContByFlexProbe1 != null && isContByFlexProbe2 != null && isContByFlexProbe1 && isContByFlexProbe2;
     }
 
     //Protocol can be selected (protocoloverview.java)
@@ -440,8 +440,6 @@ public class Protocol {
     public List<ProtocolEntry> getProtocolEntries() {
         return protocolEntries;
     }
-
-
 
 
 }

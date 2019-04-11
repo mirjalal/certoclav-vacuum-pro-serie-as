@@ -21,6 +21,7 @@ import com.certoclav.app.listener.SensorDataListener;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveData;
 import com.certoclav.app.util.AuditLogger;
+import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.app.util.Helper;
 
 public class CertoclavSuperActivity extends FragmentActivity implements SensorDataListener, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -66,11 +67,11 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
                 textMedia.setVisibility(View.GONE);
             }
 
-            textMedia2.setVisibility(Autoclave.getInstance().getProfile()!=null &&
-                    Autoclave.getInstance().getProfile().isContByFlexProbe2Enabled()?View.VISIBLE:View.GONE);
+            textMedia2.setVisibility(Autoclave.getInstance().getProfile() != null &&
+                    Autoclave.getInstance().getProfile().isContByFlexProbe2Enabled() ? View.VISIBLE : View.GONE);
 
-            textMedia.setVisibility(Autoclave.getInstance().getProfile()==null ||
-                    Autoclave.getInstance().getProfile().isContByFlexProbe1Enabled()?View.VISIBLE:View.GONE);
+            textMedia.setVisibility(Autoclave.getInstance().getProfile() == null ||
+                    Autoclave.getInstance().getProfile().isContByFlexProbe1Enabled() ? View.VISIBLE : View.GONE);
 
             textPressure.setText(getString(R.string.pressure) + ": " + data.getPress().getValueString() + " " + getString(R.string.bar));
             textSteam.setText(getString(R.string.steam) + ": " + data.getTemp1().getValueString() + " " + Helper.getTemperatureUnitText(null));
@@ -114,6 +115,8 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
+        if (AutoclaveModelManager.getInstance().getParametersSkipForAuditLog().contains(key))
+            return;
 
         if (sharedPreferences.getAll().get(key) instanceof Boolean) {
             AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_PREF_CHANGED,

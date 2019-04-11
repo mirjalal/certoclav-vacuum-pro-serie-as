@@ -26,6 +26,7 @@ public class CertocloudConstants {
 	 * Routes that can be accessed by everyone
 	 */
 	public final static String SERVER_URL = "https://raypacloudapi.herokuapp.com";//www.ng-certocloud.rhcloud.com";
+	public final static String SERVER_CERTOCLOUD_URL = "https://api.certocloud.com";//www.ng-certocloud.rhcloud.com";
 	public final static String REST_API_POST_LOGIN = "/login";// auth.login);
 	public final static String REST_API_POST_SIGNUP = "/signup";// auth.signup);
 	public final static String REST_API_POST_SIGNUP_EXIST = "/signup/exist";// auth.userExist);
@@ -33,6 +34,8 @@ public class CertocloudConstants {
 	public final static String REST_API_POST_SIGNUP_ACTIVATE = "/signup/activate";// auth.userExist);
 	public final static String REST_API_POST_SIGNUP_RESEND_KEY = "/signup/resend";//
 	public final static String REST_API_GET_USER = "/getuser";// auth.login);
+	public final static String REST_API_GET_LICENSE_COUNT = "/license/count";// auth.login);
+	public final static String REST_API_ACTICATE_AUTOCLAVE = "/license/activate";// auth.login);
 
 
 	/** 

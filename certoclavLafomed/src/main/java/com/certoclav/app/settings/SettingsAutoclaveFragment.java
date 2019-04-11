@@ -273,6 +273,9 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
                     //Autoclave Model
                     if (parameter.getParameterId() == 1) {
                         AutoclaveModelManager.getInstance().setModel(parameter);
+                        SharedPreferences sharedPreferences = getPreferenceManager().getSharedPreferences();
+                        sharedPreferences.edit().putString("preferences_glp_autoclave_name",
+                                "Raypa "+parameter.getValue()+" Autoclave").commit();
                         updatePreferences();
                     }
                     if (parameter.getParameterId() == 3) {
@@ -321,6 +324,8 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
                     ReadAndParseSerialService.getInstance().getParameters();
                     Toasty.success(getContext(), getString(R.string.changes_successfully_saved), Toast.LENGTH_SHORT, true).show();
                 }
+            }else if (requestId == ReadAndParseSerialService.HANDLER_MSG_ACK_GET_PARAMETER) {
+                ReadAndParseSerialService.getInstance().getParameters();
             } else if (requestId == ReadAndParseSerialService.HANDLER_MSG_CMD_UTF) {
                 boolean isSuccess = response instanceof Integer && Integer.valueOf(response.toString()) == 1;
                 final SweetAlertDialog barProgressDialog = new SweetAlertDialog(getContext(),

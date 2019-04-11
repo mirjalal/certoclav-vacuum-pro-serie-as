@@ -73,7 +73,7 @@ public class ESCPos {
         resetToDefault();
         String SPACING = "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n";
         StringBuilder sb = new StringBuilder();
-        sb.append("10 ").append("CertoClav Vacuum Pro").append("\n");
+        sb.append("10 ").append("Raypa").append("\n");
         sb.append(SPACING);
         sb.append("15 ").append("Program").append(": ").append(protocol.getProfileName().replace("\u00B0", "")).append("\n");
         sb.append("20 ").append("Program load/details").append(":").append("\n");

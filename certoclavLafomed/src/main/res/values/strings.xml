@@ -958,4 +958,16 @@
     <string name="later">LATER</string>
 
 
+    <!-- License Management-->
+    <string name="welcome_text">Welcome to RaypaControl</string>
+    <string name="welcome_settings"><![CDATA[1. Press <b>Settings</b> button to change the settings of autoclave.]]> </string>
+    <string name="welcome_activate"><![CDATA[2. Press <b>Next</b> button to activate the autoclave.]]></string>
+    <string name="dialog_activate_title_text">Please check the information of the autoclave before the activation.</string>
+    <string name="no_license_key">You don\'t have license key. Please contract with CertoClav to get the license keys.</string>
+    <string name="license_count">License Count</string>
+    <string name="next">NEXT</string>
+    <string name="no_license_key_title">No License Key</string>
+    <string name="no_ethernet_app">Please install Ethernat app to manage the LAN configuration</string>
+
+
 </resources>

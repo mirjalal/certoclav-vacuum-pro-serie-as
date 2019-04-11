@@ -301,9 +301,9 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
                         ExportUtils expUtils = new ExportUtils();
                         boolean success = false;
                         if (target_id == EXPORT_TARGET_USB) {
-                            success = expUtils.writeToExtUsbFile("Certoclav protocols", filename, "txt", sb.toString());
+                            success = expUtils.writeToExtUsbFile("Raypa protocols", filename, "txt", sb.toString());
                         } else {
-                            success = expUtils.writeToExtSDFile("Certoclav protocols", filename, "txt", sb.toString());
+                            success = expUtils.writeToExtSDFile("Raypa protocols", filename, "txt", sb.toString());
                         }
                         if (success == false) {
                             return false;

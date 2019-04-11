@@ -44,6 +44,7 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
 
 
 public class SettingsNetworkFragment extends PreferenceFragment implements WifiListener, OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener, View.OnClickListener, CompoundButton.OnCheckedChangeListener {
@@ -144,9 +145,23 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
         if (AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH)) {
             // startNetworkSettings();
         } else {
-            PackageManager pm = getActivity().getPackageManager();
-            Intent launchIntent = pm.getLaunchIntentForPackage("com.fsl.ethernet");
-            getActivity().startActivity(launchIntent);
+            try {
+                Intent intent = new Intent("android.settings.ETHERNET_SETTINGS");
+                intent.putExtra("extra_prefs_show_button_bar", true);
+                startActivityForResult(intent, 0);
+            } catch (Exception e) {
+                Toasty.warning(getActivity(), getString(R.string.no_ethernet_app, Toast.LENGTH_SHORT, true)).show();
+
+            }
+
+//            try {
+//                PackageManager pm = getActivity().getPackageManager();
+//                Intent launchIntent = pm.getLaunchIntentForPackage("android.net.ethernet");
+//                launchIntent.putExtra("extra_prefs_show_button_bar", true);
+//                getActivity().startActivity(launchIntent);
+//            } catch (Exception e) {
+//                Toasty.warning(getActivity(), getString(R.string.no_ethernet_app, Toast.LENGTH_SHORT, true)).show();
+//            }
         }
     }
 

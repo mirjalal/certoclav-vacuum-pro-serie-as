@@ -11,6 +11,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.certoclav.app.license.LicenseCountModel;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.responsemodels.DeviceProgramsResponseModel;
@@ -60,6 +61,23 @@ public class Requests {
         headers.put("username", username);
 
         sendRequest(url, myCallback, requestId, null, headers, null, UserInfoResponseModel.class, null, Request.Method.GET);
+    }
+
+
+    public void getLicenseCount(MyCallback myCallback, int requestId) {
+        String url = Uri.parse(CertocloudConstants.SERVER_CERTOCLOUD_URL + CertocloudConstants.REST_API_GET_LICENSE_COUNT)
+                .buildUpon()
+                .build().toString();
+
+        sendRequest(url, myCallback, requestId, null, null, null, LicenseCountModel.class, null, Request.Method.POST);
+    }
+
+    public void activateAutoclave(MyCallback myCallback, int requestId) {
+        String url = Uri.parse(CertocloudConstants.SERVER_CERTOCLOUD_URL + CertocloudConstants.REST_API_GET_LICENSE_COUNT)
+                .buildUpon()
+                .build().toString();
+
+        sendRequest(url, myCallback, requestId, null, null, null, LicenseCountModel.class, null, Request.Method.POST);
     }
 
     public void getUserProtocols(MyCallback myCallback, int requestId) {

@@ -1,7 +1,6 @@
 package com.certoclav.app.database;
 
 import com.certoclav.app.util.AuditLogger;
-import com.certoclav.app.util.Helper;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -27,6 +26,7 @@ public class AuditLog {
         this.value = value;
         this.screenId = screenId;
         this.email = user.getEmail();
+        this.createdDate = new Date();
     }
 
 
@@ -37,6 +37,7 @@ public class AuditLog {
         this.value = value;
         this.screenId = screenId;
         this.email = email;
+        this.createdDate = new Date();
     }
 
 
@@ -71,8 +72,7 @@ public class AuditLog {
     @DatabaseField(columnName = FIELD_USER_EMAIL)
     private String email;
 
-    @DatabaseField(columnName = FIELD_DATE, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL",
-            readOnly = true, canBeNull = false, dataType = DataType.DATE_STRING,
+    @DatabaseField(columnName = FIELD_DATE,canBeNull = false, dataType = DataType.DATE_STRING,
             format = "yyyy-MM-dd hh:mm:ss")
     private Date createdDate;
 

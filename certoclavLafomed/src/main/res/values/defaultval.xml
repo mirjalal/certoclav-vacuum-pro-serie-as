@@ -17,7 +17,7 @@
     <bool name="preferences_print_date">true</bool>
     <bool name="preferences_print_autoclave_serial_number">true</bool>
     <bool name="preferences_print_user_name">true</bool>
-    <string name="preferences_print_autoclave_name_value">CertoClav Vacuum Pro</string>
+    <string name="preferences_print_autoclave_name_value">Raypa Autoclave</string>
 
 
     //Lockout options

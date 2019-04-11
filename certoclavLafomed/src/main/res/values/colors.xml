@@ -29,4 +29,5 @@
     <color name="program_item_info_color">#777777</color>
     <color name="information_tab_item_bg">#ffffff</color>
     <color name="raypa_dark_color">#666666</color>
+    <color name="raypa_black_light">#333333</color>
 </resources>

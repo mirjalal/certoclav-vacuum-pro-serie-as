@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.certoclav.app"
-    android:versionCode="70"
-    android:versionName="70">
+    android:versionCode="74"
+    android:versionName="74">
 
     <uses-sdk
         android:targetSdkVersion="26"
@@ -201,6 +201,19 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+
+
+
+
+        </activity>
+
+        <activity
+            android:name=".license.LicenseManagerActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateAlwaysHidden">
+
         </activity>
         <activity
             android:name=".menu.RegisterActivity"

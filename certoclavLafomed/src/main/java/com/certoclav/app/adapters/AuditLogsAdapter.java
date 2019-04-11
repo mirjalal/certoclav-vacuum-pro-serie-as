@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class AuditLogsAdapter extends ArrayAdapter<AuditLog> {
     private final Context mContext;
-    private SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy  hh:mm a");
+    private SimpleDateFormat format;
 
     static class ViewHolder {
         protected TextView textViewAuditLog;
@@ -42,7 +42,7 @@ public class AuditLogsAdapter extends ArrayAdapter<AuditLog> {
 
         super(context, R.layout.audit_logs_element, values);
         this.mContext = context;
-
+        format = new SimpleDateFormat("MMM dd, yyyy  hh:mm a");
     }
 
 
