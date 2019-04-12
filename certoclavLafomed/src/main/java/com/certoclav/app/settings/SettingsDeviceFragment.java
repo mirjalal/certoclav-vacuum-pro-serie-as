@@ -44,8 +44,6 @@ import java.util.List;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 
-import static android.app.Activity.RESULT_OK;
-
 
 public class SettingsDeviceFragment extends PreferenceFragment implements SensorDataListener {
 
@@ -333,7 +331,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
             // The Intent's data Uri identifies which contact was selected.
             Calendar calendar = Calendar.getInstance();
             // Do something with the contact here (bigger example below)
-            ReadAndParseSerialService.getInstance().setParameter(93, new SimpleDateFormat("yyMMddhhmmss").format(calendar.getTime()));
+            ReadAndParseSerialService.getInstance().setParameter(93, new SimpleDateFormat("yyMMddHHmmss").format(calendar.getTime()));
 
         }
     }

@@ -42,7 +42,7 @@ public class AuditLogsAdapter extends ArrayAdapter<AuditLog> {
 
         super(context, R.layout.audit_logs_element, values);
         this.mContext = context;
-        format = new SimpleDateFormat("MMM dd, yyyy  hh:mm a");
+        format = new SimpleDateFormat("MMM dd, yyyy  HH:mm");
     }
 
 

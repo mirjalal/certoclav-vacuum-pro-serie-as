@@ -73,7 +73,7 @@ public class AuditLog {
     private String email;
 
     @DatabaseField(columnName = FIELD_DATE,canBeNull = false, dataType = DataType.DATE_STRING,
-            format = "yyyy-MM-dd hh:mm:ss")
+            format = "yyyy-MM-dd HH:mm:ss")
     private Date createdDate;
 
     public int getAuditId() {

@@ -18,7 +18,8 @@ public class AutoclaveModelManager implements MyCallback {
     private static AutoclaveModelManager manager;
     private Integer[] parametersForAdmin = new Integer[]{1, 2, 3, 4, 71, 72, 94, 95};
     private String[] parametersSkipForAuditLog = new String[]{"preferences_autoclave_parameter_94",
-    "preferences_autoclave_parameter_95","preferences_autoclave_parameter_96"};
+    "preferences_autoclave_parameter_95","preferences_autoclave_parameter_96",
+    "preferences_autoclave_parameter_98"};
     private int currentSentParameterId = 1;
 
     private AutoclaveModelManager() {

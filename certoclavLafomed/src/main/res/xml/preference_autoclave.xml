@@ -144,7 +144,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory
+    <!--<PreferenceCategory
         android:key="pref_key_network_category"
         android:title="@string/pref_network_category">
 
@@ -173,7 +173,7 @@
             android:title="@string/preferences_autoclave_port" />
 
 
-    </PreferenceCategory>
+    </PreferenceCategory>-->
 
 
 </PreferenceScreen>
