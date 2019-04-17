@@ -116,22 +116,22 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 
 
             //Install update from SDCARD
-            findPreference(AppConstants.PREFERENCE_KEY_SOFTWARE_UPDATE_SDCARD).setOnPreferenceClickListener(new OnPreferenceClickListener() {
-
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    preference.setEnabled(false);
-                    ExportUtils exportUtils = new ExportUtils();
-                    if (exportUtils.checkExternalSDCard() == false) {
-                        Toasty.error(getActivity(), getActivity().getString(R.string.can_not_read_from_sd_card), Toast.LENGTH_LONG, true).show();
-                    } else {
-                        UpdateUtils updateUtils = new UpdateUtils(getActivity());
-                        updateUtils.installUpdateZip(UpdateUtils.SOURCE_SDCARD);
-                    }
-                    preference.setEnabled(true);
-                    return false;
-                }
-            });
+//            findPreference(AppConstants.PREFERENCE_KEY_SOFTWARE_UPDATE_SDCARD).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+//
+//                @Override
+//                public boolean onPreferenceClick(Preference preference) {
+//                    preference.setEnabled(false);
+//                    ExportUtils exportUtils = new ExportUtils();
+//                    if (exportUtils.checkExternalSDCard() == false) {
+//                        Toasty.error(getActivity(), getActivity().getString(R.string.can_not_read_from_sd_card), Toast.LENGTH_LONG, true).show();
+//                    } else {
+//                        UpdateUtils updateUtils = new UpdateUtils(getActivity());
+//                        updateUtils.installUpdateZip(UpdateUtils.SOURCE_SDCARD);
+//                    }
+//                    preference.setEnabled(true);
+//                    return false;
+//                }
+//            });
 
 
 //Factory Reset
@@ -241,37 +241,37 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 
 
             //serial number
-            try {
-                findPreference(AppConstants.PREFERENCE_KEY_SERIAL_NUMBER).setSummary(Autoclave.getInstance().getController().getSerialnumber());
-            } catch (Exception e) {
-                try {
-                    findPreference(AppConstants.PREFERENCE_KEY_SERIAL_NUMBER).setSummary(getString(R.string.please_connect_to_autoclave_first));
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
-            }
+//            try {
+//                findPreference(AppConstants.PREFERENCE_KEY_SERIAL_NUMBER).setSummary(Autoclave.getInstance().getController().getSerialnumber());
+//            } catch (Exception e) {
+//                try {
+//                    findPreference(AppConstants.PREFERENCE_KEY_SERIAL_NUMBER).setSummary(getString(R.string.please_connect_to_autoclave_first));
+//                } catch (Exception e1) {
+//                    e1.printStackTrace();
+//                }
+//            }
 
             //firmware version
-            try {
-                findPreference(AppConstants.PREFERENCE_KEY_FIRMWARE_VERSION).setSummary(Autoclave.getInstance().getController().getFirmwareVersion());
-            } catch (Exception e) {
-                try {
-                    findPreference(AppConstants.PREFERENCE_KEY_FIRMWARE_VERSION).setSummary(getString(R.string.please_connect_to_autoclave_first));
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
-            }
+//            try {
+//                findPreference(AppConstants.PREFERENCE_KEY_FIRMWARE_VERSION).setSummary(Autoclave.getInstance().getController().getFirmwareVersion());
+//            } catch (Exception e) {
+//                try {
+//                    findPreference(AppConstants.PREFERENCE_KEY_FIRMWARE_VERSION).setSummary(getString(R.string.please_connect_to_autoclave_first));
+//                } catch (Exception e1) {
+//                    e1.printStackTrace();
+//                }
+//            }
 
             //cycle number
-            try {
-                findPreference(AppConstants.PREFERENCE_KEY_CYCLE_NUMBER).setSummary(getString(R.string.total_cycles_) + " " + Autoclave.getInstance().getController().getCycleNumber());
-            } catch (Exception e) {
-                try {
-                    findPreference(AppConstants.PREFERENCE_KEY_CYCLE_NUMBER).setSummary(getString(R.string.please_connect_to_autoclave_first));
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
-            }
+//            try {
+//                findPreference(AppConstants.PREFERENCE_KEY_CYCLE_NUMBER).setSummary(getString(R.string.total_cycles_) + " " + Autoclave.getInstance().getController().getCycleNumber());
+//            } catch (Exception e) {
+//                try {
+//                    findPreference(AppConstants.PREFERENCE_KEY_CYCLE_NUMBER).setSummary(getString(R.string.please_connect_to_autoclave_first));
+//                } catch (Exception e1) {
+//                    e1.printStackTrace();
+//                }
+//            }
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             if ((!Autoclave.getInstance().getUser().isAdmin() || Autoclave.getInstance().getState() == AutoclaveState.LOCKED) &&

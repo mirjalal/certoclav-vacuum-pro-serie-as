@@ -7,7 +7,7 @@
         <ListPreference
             android:defaultValue="TLV-150-FA"
             android:entries="@array/autoclave_models"
-            android:entryValues="@array/autoclave_models"
+            android:entryValues="@array/autoclave_models_values"
             android:key="preferences_autoclave_parameter_1"
             android:summary="%s"
             android:title="@string/preferences_autoclave_model" />
@@ -28,15 +28,15 @@
             android:enabled="false"
             android:title="@string/preferences_autoclave_pcb_serial" />
 
-        <EditTextPreference
-            android:inputType="number"
-            android:key="preferences_autoclave_parameter_71"
-            android:title="@string/preferences_autoclave_setpoint_hours_review" />
+        <!--<EditTextPreference-->
+            <!--android:inputType="number"-->
+            <!--android:key="preferences_autoclave_parameter_71"-->
+            <!--android:title="@string/preferences_autoclave_setpoint_hours_review" />-->
 
-        <EditTextPreference
-            android:inputType="number"
-            android:key="preferences_autoclave_parameter_72"
-            android:title="@string/preferences_autoclave_setpoint_filter_cycle" />
+        <!--<EditTextPreference-->
+            <!--android:inputType="number"-->
+            <!--android:key="preferences_autoclave_parameter_72"-->
+            <!--android:title="@string/preferences_autoclave_setpoint_filter_cycle" />-->
 
         <EditTextPreference
             android:inputType="number"
@@ -60,27 +60,27 @@
             android:summary="@string/preferences_autoclave_updatable_summary"
             android:title="@string/preferences_autoclave_updatable" />
 
-        <EditTextPreference
-            android:inputType="number"
-            android:key="preferences_autoclave_parameter_96"
-            android:enabled="false"
-            android:title="@string/preferences_autoclave_number_review_hours" />
+        <!--<EditTextPreference-->
+            <!--android:inputType="number"-->
+            <!--android:key="preferences_autoclave_parameter_96"-->
+            <!--android:enabled="false"-->
+            <!--android:title="@string/preferences_autoclave_number_review_hours" />-->
 
-        <Preference
-            android:key="preferences_autoclave_parameter_reset_review_hours"
-            android:summary="@string/preferences_autoclave_reset_review_hours_summary"
-            android:title="@string/preferences_autoclave_reset_review_hours" />
+        <!--<Preference-->
+            <!--android:key="preferences_autoclave_parameter_reset_review_hours"-->
+            <!--android:summary="@string/preferences_autoclave_reset_review_hours_summary"-->
+            <!--android:title="@string/preferences_autoclave_reset_review_hours" />-->
 
-        <EditTextPreference
-            android:inputType="number"
-            android:key="preferences_autoclave_parameter_98"
-            android:enabled="false"
-            android:title="@string/preferences_autoclave_number_filter_cycle" />
+        <!--<EditTextPreference-->
+            <!--android:inputType="number"-->
+            <!--android:key="preferences_autoclave_parameter_98"-->
+            <!--android:enabled="false"-->
+            <!--android:title="@string/preferences_autoclave_number_filter_cycle" />-->
 
-        <Preference
-            android:key="preferences_autoclave_parameter_reset_filter_cycle"
-            android:summary="@string/preferences_autoclave_reset_filter_cycle_summary"
-            android:title="@string/preferences_autoclave_reset_filter_cycle" />
+        <!--<Preference-->
+            <!--android:key="preferences_autoclave_parameter_reset_filter_cycle"-->
+            <!--android:summary="@string/preferences_autoclave_reset_filter_cycle_summary"-->
+            <!--android:title="@string/preferences_autoclave_reset_filter_cycle" />-->
 
 
     </PreferenceCategory>

@@ -26,6 +26,7 @@ import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.activities.CertoclavSuperActivity;
 import com.certoclav.app.adapters.UserDropdownAdapter;
+import com.certoclav.app.database.AuditLog;
 import com.certoclav.app.database.Controller;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.User;
@@ -276,9 +277,9 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                         progressBar.setVisibility(View.VISIBLE);
                         textViewLogin.setVisibility(View.GONE);
 
-                        if (Helper.checkAdminPassword(getApplicationContext(), password)) {
-                            password = AppConstants.DEFAULT_CLOUD_ADMIN_PASSWORD;
-                        }
+//                        if (Helper.checkAdminPassword(getApplicationContext(), password)) {
+//                            password = AppConstants.DEFAULT_CLOUD_ADMIN_PASSWORD;
+//                        }
 
                         postUserLoginService = new PostUserLoginService();
                         postUserLoginService.setOnTaskFinishedListener(LoginActivity.this);
@@ -304,7 +305,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                         @Override
                         protected Boolean doInBackground(String... params) {
                             User selectedUser = listUsers.get(Integer.valueOf(params[2]));
-                            if ((!selectedUser.isAdmin() && BCrypt.checkpw(params[0], params[1]))
+                            if ((!selectedUser.getEmail().equals("Admin") && BCrypt.checkpw(params[0], params[1]))
                                     || params[0].equals(AppConstants.DEFAULT_CLOUD_ADMIN_PASSWORD)
                                     || params[0].equals(AppConstants.DEFAULT_SUPER_ADMIN_PASSWORD)
                                     || (selectedUser.isAdmin() &&

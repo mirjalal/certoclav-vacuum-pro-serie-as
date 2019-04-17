@@ -146,11 +146,11 @@ public class ItemListFragment extends ListFragment {
                     AddItem(getListView(), getActivity().getString(R.string.lockout),
                             R.drawable.ic_lock, R.drawable.ic_lock_selected,
                             new SettingsLockoutFragment());
-                if (isAdmin ||!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.SERVICE)
-                        || Autoclave.getInstance().getUser().isAdmin())
-                    AddItem(getListView(), "Service", R.drawable.ic_service_setttings,
-                            R.drawable.ic_service_setttings_selected,
-                            new SettingsServiceFragment());
+//                if (isAdmin ||!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.SERVICE)
+//                        || Autoclave.getInstance().getUser().isAdmin())
+//                    AddItem(getListView(), "Service", R.drawable.ic_service_setttings,
+//                            R.drawable.ic_service_setttings_selected,
+//                            new SettingsServiceFragment());
 
                 if (isAdmin ||!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.GLP)
                         || Autoclave.getInstance().getUser().isAdmin())

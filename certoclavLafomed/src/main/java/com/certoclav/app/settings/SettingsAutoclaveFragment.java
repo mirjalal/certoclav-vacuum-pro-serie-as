@@ -87,43 +87,43 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
             }
         });
 
-        findPreference("preferences_autoclave_parameter_reset_review_hours")
-                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-
-                        Helper.askConfirmation(getContext(), getString(R.string.reset), getString(R.string.do_you_really_want_to_reset_format,
-                                getString(R.string.preferences_autoclave_review_hours)), new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                sDialog.dismissWithAnimation();
-                                ReadAndParseSerialService.getInstance().setParameter(83, "1");
-                                AuditLogger.addAuditLog(AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CLICKED,
-                                        "preferences_autoclave_parameter_reset_review_hours".hashCode(), "");
-                            }
-                        }, null);
-
-                        return false;
-                    }
-                });
-
-        findPreference("preferences_autoclave_parameter_reset_filter_cycle")
-                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        Helper.askConfirmation(getContext(), getString(R.string.reset), getString(R.string.do_you_really_want_to_reset_format,
-                                getString(R.string.preferences_autoclave_filter_cycle)), new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                sDialog.dismissWithAnimation();
-                                ReadAndParseSerialService.getInstance().setParameter(86, "1");
-                                AuditLogger.addAuditLog(AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CLICKED,
-                                        "preferences_autoclave_parameter_reset_filter_cycle".hashCode(), "");
-                            }
-                        }, null);
-                        return false;
-                    }
-                });
+//        findPreference("preferences_autoclave_parameter_reset_review_hours")
+//                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+//                    @Override
+//                    public boolean onPreferenceClick(Preference preference) {
+//
+//                        Helper.askConfirmation(getContext(), getString(R.string.reset), getString(R.string.do_you_really_want_to_reset_format,
+//                                getString(R.string.preferences_autoclave_review_hours)), new SweetAlertDialog.OnSweetClickListener() {
+//                            @Override
+//                            public void onClick(SweetAlertDialog sDialog) {
+//                                sDialog.dismissWithAnimation();
+//                                ReadAndParseSerialService.getInstance().setParameter(83, "1");
+//                                AuditLogger.addAuditLog(AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CLICKED,
+//                                        "preferences_autoclave_parameter_reset_review_hours".hashCode(), "");
+//                            }
+//                        }, null);
+//
+//                        return false;
+//                    }
+//                });
+//
+//        findPreference("preferences_autoclave_parameter_reset_filter_cycle")
+//                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+//                    @Override
+//                    public boolean onPreferenceClick(Preference preference) {
+//                        Helper.askConfirmation(getContext(), getString(R.string.reset), getString(R.string.do_you_really_want_to_reset_format,
+//                                getString(R.string.preferences_autoclave_filter_cycle)), new SweetAlertDialog.OnSweetClickListener() {
+//                            @Override
+//                            public void onClick(SweetAlertDialog sDialog) {
+//                                sDialog.dismissWithAnimation();
+//                                ReadAndParseSerialService.getInstance().setParameter(86, "1");
+//                                AuditLogger.addAuditLog(AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CLICKED,
+//                                        "preferences_autoclave_parameter_reset_filter_cycle".hashCode(), "");
+//                            }
+//                        }, null);
+//                        return false;
+//                    }
+//                });
         if (!manager.isMaintaingingTempExistsInParameters()) {
             Preference preference = findPreference("preferences_autoclave_parameter_27");
             if (preference != null) {
@@ -177,16 +177,17 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
                     preference = findPreference("preferences_autoclave_parameter_std_assign");
 
                 if (preference == null) continue;
-                PreferenceCategory root = (PreferenceCategory) findPreference("pref_key_device_category");
-                root.removePreference(preference);
-                if (root.getPreferenceCount() == 0)
-                    root.setShouldDisableView(false);
+//                PreferenceCategory root = (PreferenceCategory) findPreference("pref_key_device_category");
+//                root.removePreference(preference);
+                preference.setEnabled(false);
+//                if (root.getPreferenceCount() == 0)
+//                    root.setShouldDisableView(false);
             }
         }
         //Enable editable of parameter Number review hours
         //Enable editable of parameter Number Filter Cycle
-        findPreference("preferences_autoclave_parameter_96").setEnabled(CloudUser.getInstance().isSuperAdmin());
-        findPreference("preferences_autoclave_parameter_98").setEnabled(CloudUser.getInstance().isSuperAdmin());
+//        findPreference("preferences_autoclave_parameter_96").setEnabled(CloudUser.getInstance().isSuperAdmin());
+//        findPreference("preferences_autoclave_parameter_98").setEnabled(CloudUser.getInstance().isSuperAdmin());
 
     }
 
@@ -275,7 +276,7 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
                         AutoclaveModelManager.getInstance().setModel(parameter);
                         SharedPreferences sharedPreferences = getPreferenceManager().getSharedPreferences();
                         sharedPreferences.edit().putString("preferences_glp_autoclave_name",
-                                "Raypa "+parameter.getValue()+" Autoclave").commit();
+                                "Raypa " + parameter.getValue() + " Autoclave").commit();
                         updatePreferences();
                     }
                     if (parameter.getParameterId() == 3) {
@@ -324,7 +325,7 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
                     ReadAndParseSerialService.getInstance().getParameters();
                     Toasty.success(getContext(), getString(R.string.changes_successfully_saved), Toast.LENGTH_SHORT, true).show();
                 }
-            }else if (requestId == ReadAndParseSerialService.HANDLER_MSG_ACK_GET_PARAMETER) {
+            } else if (requestId == ReadAndParseSerialService.HANDLER_MSG_ACK_GET_PARAMETER) {
                 ReadAndParseSerialService.getInstance().getParameters();
             } else if (requestId == ReadAndParseSerialService.HANDLER_MSG_CMD_UTF) {
                 boolean isSuccess = response instanceof Integer && Integer.valueOf(response.toString()) == 1;

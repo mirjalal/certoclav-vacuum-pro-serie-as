@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 
 import com.certoclav.app.R;
 import com.certoclav.app.activities.CertoclavSuperActivity;
+import com.certoclav.app.listener.NavigationbarListener;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 
 /**
@@ -22,7 +23,7 @@ import com.certoclav.app.model.CertoclavNavigationbarClean;
  * This activity also implements the required {@link ItemListFragment.Callbacks}
  * interface to listen for item selections.
  */
-public class SettingsActivity extends CertoclavSuperActivity implements ItemListFragment.Callbacks {
+public class SettingsActivity extends CertoclavSuperActivity implements ItemListFragment.Callbacks, NavigationbarListener {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -43,6 +44,11 @@ public class SettingsActivity extends CertoclavSuperActivity implements ItemList
         //((ItemListFragment) getSupportFragmentManager().findFragmentById(R.id.item_list)).setActivateOnItemClick(true);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isAdmin = getIntent().getBooleanExtra("isAdmin",false);
+    }
 
     /**
      * Callback method from {@link ItemListFragment.Callbacks} indicating that
@@ -51,7 +57,6 @@ public class SettingsActivity extends CertoclavSuperActivity implements ItemList
     @Override
     public void onItemSelected(long id, Fragment fragment) { //ItemListFragment ruft diese Funktion auf, falls ein Listenelement angeklickt wurde und �bergibt die id des Listenelements.
         getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragment).commit();
-
     }
 
     @Override
@@ -61,5 +66,10 @@ public class SettingsActivity extends CertoclavSuperActivity implements ItemList
 
     public boolean isAdmin() {
         return isAdmin;
+    }
+
+    @Override
+    public void onClickNavigationbarButton(int buttonId) {
+
     }
 }

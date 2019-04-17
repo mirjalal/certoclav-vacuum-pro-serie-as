@@ -7,12 +7,13 @@
     <Preference
         android:key="preferences_software_update_usb"
         android:title="@string/install_update_from_usb_flash_drive" />
-    <Preference
-        android:key="preferences_software_update_sdcard"
-        android:title="@string/install_update_from_external_sd_card" />
+    <!--<Preference-->
+        <!--android:key="preferences_software_update_sdcard"-->
+        <!--android:title="@string/install_update_from_external_sd_card" />-->
 
     <Preference
         android:key="preferences_storage"
+        android:enabled="false"
         android:title="@string/settings_storage" />
 
     <Preference
@@ -31,21 +32,23 @@
 
     <Preference
         android:key="preferences_device_key"
+        android:enabled="false"
         android:title="@string/settings_device_key_security_key" />
 
 
-    <Preference
-        android:key="preferences_autoclave_firmware_version"
-        android:title="@string/autoclave_firmware_version" />
-    <Preference
-        android:key="preferences_autoclave_serial_number"
-        android:title="@string/autoclave_serial_number" />
-    <Preference
-        android:key="preferences_cycle_number"
-        android:title="@string/total_cycles_of_the_autoclave" />
+    <!--<Preference-->
+        <!--android:key="preferences_autoclave_firmware_version"-->
+        <!--android:title="@string/autoclave_firmware_version" />-->
+    <!--<Preference-->
+        <!--android:key="preferences_autoclave_serial_number"-->
+        <!--android:title="@string/autoclave_serial_number" />-->
+    <!--<Preference-->
+        <!--android:key="preferences_cycle_number"-->
+        <!--android:title="@string/total_cycles_of_the_autoclave" />-->
 
     <Preference
         android:key="preferences_software_version"
+        android:enabled="false"
         android:title="@string/settings_software_version" />
 
     <CheckBoxPreference

@@ -20,6 +20,7 @@ import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.Profile;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.ErrorModel;
+import com.certoclav.app.util.AuditLogger;
 import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.MyCallback;
 import com.certoclav.app.util.ProfileSyncedListener;
@@ -120,8 +121,11 @@ public class SterilisationFragment extends Fragment implements ProfileSyncedList
             }
             break;
             case CONTEXT_MENU_DELETE: {
-                Profile profile = programAdapter.getItem(item.getGroupId());
+                final Profile profile = programAdapter.getItem(item.getGroupId());
 
+                AuditLogger.addAuditLog(Autoclave.getInstance().getUser(),
+                        AuditLogger.SCEEN_EMPTY, AuditLogger.ACTION_PROGRAM_DELETED,
+                        AuditLogger.OBJECT_EMPTY, profile.getName());
                 profile.setName(AppConstants.DELETED_PROFILE_NAME);
                 if (profile.getCloudId() != null && profile.getCloudId().length() > 0) {
 //                    db.insertDeletedProfile(new DeletedProfileModel(profile.getCloudId()));

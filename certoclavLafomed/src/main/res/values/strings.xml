@@ -539,6 +539,27 @@
     </string-array>
 
     <string-array name="autoclave_models">
+        <item>AE-50B</item>
+        <item>AE-75B</item>
+        <item>AE-110B</item>
+        <item>AE-150B</item>
+        <item>AHS-50B</item>
+        <item>AHS-75B</item>
+        <item>TLV-50</item>
+        <item>TLV-50FA</item>
+        <item>TLV-50PD</item>
+        <item>TLV-75</item>
+        <item>TLV-75FA</item>
+        <item>TLV-75PD</item>
+        <item>TLV-110</item>
+        <item>TLV-110FA</item>
+        <item>TLV-110PD</item>
+        <item>TLV-150</item>
+        <item>TLV-150FA</item>
+        <item>TLV-150PD</item>
+    </string-array>
+
+    <string-array name="autoclave_models_values">
         <item>AE-50-B</item>
         <item>AE-75-B</item>
         <item>AE-110-B</item>
@@ -787,6 +808,8 @@
     <string name="audit_action_user_created"><![CDATA[<b>%1$s</b> created <font color=\"#69B7F5\"><b>%3$s</b></font> user]]></string>
     <string name="audit_action_user_deleted"><![CDATA[<b>%1$s</b> deleted <font color=\"#69B7F5\"><b>%3$s</b></font> user]]></string>
     <string name="audit_action_program_started"><![CDATA[<b>%1$s</b> started <font color=\"#69B7F5\"><b>%3$s</b></font> program]]></string>
+    <string name="audit_action_program_edited"><![CDATA[<b>%1$s</b> edited <font color=\"#69B7F5\"><b>%3$s</b></font> program]]></string>
+    <string name="audit_action_program_deleted"><![CDATA[<b>%1$s</b> deleted <font color=\"#69B7F5\"><b>%3$s</b></font> program]]></string>
     <string name="audit_action_program_indicator_changed"><![CDATA[<b>%1$s</b> set indicator to <font color=\"#69B7F5\"><b>%3$s</b></font>]]></string>
     <string name="audit_action_program_canceled"><![CDATA[<b>%1$s</b> canceled <font color=\"#69B7F5\"><b>%3$s</b></font> program]]></string>
     <string name="audit_action_program_finished"><![CDATA[<font color=\"#69B7F5\"><b>%3$s</b></font> program finished.]]></string>
@@ -830,7 +853,6 @@
     <string name="drying_time_minutes">minutes</string>
 
 
-
     <!--Settings-->
     <string name="preferences_autoclave_model">Model</string>
     <string name="pref_device_settings">Device</string>
@@ -865,8 +887,8 @@
     <string name="preferences_autoclave_cooling_pressure">Cooling Pressure</string>
     <string name="preferences_autoclave_warm_up_temp">Warm-up Temperature</string>
     <string name="preferences_autoclave_warm_up_temp_range">Warm-up Temperature should be between %1$.2f and %2$.2f ℃</string>
-    <string name="preferences_autoclave_number_cycle">Cycle number</string>
-    <string name="preferences_autoclave_number_hours">Number of hours</string>
+    <string name="preferences_autoclave_number_cycle">Total Cycles</string>
+    <string name="preferences_autoclave_number_hours">Number of Minutes</string>
     <string name="preferences_autoclave_number_review_hours">Number of review hours</string>
     <string name="preferences_autoclave_number_filter_cycle">Number of filter cycles</string>
     <string name="pref_network_category">Network</string>
@@ -968,6 +990,7 @@
     <string name="next">NEXT</string>
     <string name="no_license_key_title">No License Key</string>
     <string name="no_ethernet_app">Please install Ethernat app to manage the LAN configuration</string>
+    <string name="admin">Admin</string>
 
 
 </resources>

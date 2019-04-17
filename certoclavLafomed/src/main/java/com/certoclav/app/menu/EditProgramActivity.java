@@ -27,6 +27,7 @@ import com.certoclav.app.listener.NavigationbarListener;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.app.model.ErrorModel;
+import com.certoclav.app.util.AuditLogger;
 import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.InputFilterMinMax;
@@ -104,7 +105,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
                 checkboxIsContByFlexProbe1.setEnabled(b);
                 checkboxIsContByFlexProbe2.setEnabled(b && checkboxIsContByFlexProbe1.isChecked());
 
-                linearLayoutDry.setVisibility(b?View.GONE:View.VISIBLE);
+                linearLayoutDry.setVisibility(b ? View.GONE : View.VISIBLE);
             }
         });
 
@@ -147,7 +148,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
 
 //        newProfile.setName(s.toString());
 //        refreshGraphAndList();
-        linearLayoutDry.setVisibility(checkboxIdLiquidProgram.isChecked()?View.GONE:View.VISIBLE);
+        linearLayoutDry.setVisibility(checkboxIdLiquidProgram.isChecked() ? View.GONE : View.VISIBLE);
 
     }
 
@@ -163,20 +164,20 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
         Calendar calendar = Calendar.getInstance();
         int vacuumTime = newProfile.getVacuumTimes();
         int temp = 20;
-        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp,temp, 0, protocol, "", ""));
+        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, temp, 0, protocol, "", ""));
         calendar.add(Calendar.MINUTE, 1);
-        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp,temp, 0, protocol, "", ""));
+        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, temp, 0, protocol, "", ""));
         for (int i = 0; i < vacuumTime - 1; i++) {
             calendar.add(Calendar.MINUTE, 5);
-            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp,temp, -0.84f, protocol, "", ""));
+            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, temp, -0.84f, protocol, "", ""));
             calendar.add(Calendar.MINUTE, 5);
             temp = 100;
-            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, temp,0.50f, protocol, "", ""));
+            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, temp, 0.50f, protocol, "", ""));
             temp = 60;
         }
 
         calendar.add(Calendar.MINUTE, 5);
-        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp,temp, -0.84f, protocol, "", ""));
+        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, temp, -0.84f, protocol, "", ""));
         calendar.add(Calendar.MINUTE, 7);
 
         temp = (int) newProfile.getSterilisationTemperature();
@@ -194,23 +195,23 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
 
         int pressurekpa = (int) (pressure);
 
-        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp,temp, pressurekpa, protocol, "", ""));
+        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, temp, pressurekpa, protocol, "", ""));
         calendar.add(Calendar.MINUTE, newProfile.getSterilisationTime());
-        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, temp,pressurekpa, protocol, "", ""));
+        entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, temp, pressurekpa, protocol, "", ""));
 
         if (newProfile.getDryTime() > 0) {
             calendar.add(Calendar.MINUTE, 5);
             temp = 67;
-            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp,temp, -0.84f, protocol, "", ""));
+            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, temp, -0.84f, protocol, "", ""));
             calendar.add(Calendar.MINUTE, newProfile.getDryTime());
             temp = 68;
-            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp,temp, -0.84f, protocol, "", ""));
+            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, temp, -0.84f, protocol, "", ""));
             calendar.add(Calendar.MINUTE, 1);
-            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp,temp, 0, protocol, "", ""));
+            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, temp, 0, protocol, "", ""));
         } else {
             calendar.add(Calendar.MINUTE, 5);
             temp = 67;
-            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp,temp, 0, protocol, "", ""));
+            entries.add(new ProtocolEntry(calendar.getTime(), temp, temp, temp, 0, protocol, "", ""));
         }
 
         graphFragment.setProtocol(protocol);
@@ -298,6 +299,9 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
                     @Override
                     public void onSuccess(Object response, int requestId) {
                         Toasty.success(getApplicationContext(), getString(R.string.program_saved), Toast.LENGTH_LONG, true).show();
+                        AuditLogger.addAuditLog(Autoclave.getInstance().getUser(),
+                                AuditLogger.SCEEN_EMPTY, AuditLogger.ACTION_PROGRAM_EDITED,
+                                AuditLogger.OBJECT_EMPTY, newProfile.getName());
                         setResult(RESULT_OK);
                         finish();
                     }
@@ -338,9 +342,9 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
         navigationbar.setNavigationbarListener(this);
         newProfile = Autoclave.getInstance().getProfileByIndex(programIndex);
 
-        if(linearLayoutFinalTemp!=null)
-            linearLayoutFinalTemp.setVisibility(AutoclaveModelManager.getInstance().isFinalTempExistsInProgramEdit()?
-                    View.VISIBLE:
+        if (linearLayoutFinalTemp != null)
+            linearLayoutFinalTemp.setVisibility(AutoclaveModelManager.getInstance().isFinalTempExistsInProgramEdit() ?
+                    View.VISIBLE :
                     View.GONE);
 
 //        newProfile.setLocal(true);
@@ -354,7 +358,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
                 linearLayoutF0Function.setVisibility(isChecked ? View.VISIBLE : View.GONE);
                 if (!checkboxIsF0FunctionProgram.isChecked())
                     programStepSterilisationDescription.setText(getString(R.string.program_step_sterlisation_desc,
-                            newProfile.getSterilisationTime(), newProfile.getSterilisationTemperature(),Helper.getTemperatureUnitText(null)));
+                            newProfile.getSterilisationTime(), newProfile.getSterilisationTemperature(), Helper.getTemperatureUnitText(null)));
                 else
                     programStepSterilisationDescription.setText(getString(R.string.program_step_sterlisation_desc_f0,
                             newProfile.getSterilisationTemperature(),
@@ -497,13 +501,13 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
             @Override
             public void onClick(View v) {
 
-                if(Float.valueOf(editZValue.getText().toString())<0.1 && Float.valueOf(editZValue.getText().toString())>100){
+                if (Float.valueOf(editZValue.getText().toString()) < 0.1 && Float.valueOf(editZValue.getText().toString()) > 100) {
                     Toasty.error(getApplicationContext(), getString(R.string.z_value_range, 0.1, 100.0),
                             Toast.LENGTH_SHORT, true).show();
                     return;
                 }
 
-                if(Float.valueOf(editLethalTemp.getText().toString())<0.1 && Float.valueOf(editLethalTemp.getText().toString())>100){
+                if (Float.valueOf(editLethalTemp.getText().toString()) < 0.1 && Float.valueOf(editLethalTemp.getText().toString()) > 100) {
                     Toasty.error(getApplicationContext(), getString(R.string.f0_value_range, 0.1, 100),
                             Toast.LENGTH_SHORT, true).show();
                     return;
@@ -574,7 +578,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
         dialog.show();
     }
 
-        private void showEditFinalTemp() {
+    private void showEditFinalTemp() {
 
         final SweetAlertDialog dialog = new SweetAlertDialog(this, R.layout.program_definition_vacuum_dry_dialog, SweetAlertDialog.WARNING_TYPE);
         dialog.setContentView(R.layout.program_definition_vacuum_dry_dialog);

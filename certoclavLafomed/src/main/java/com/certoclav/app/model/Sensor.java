@@ -6,10 +6,17 @@ public class Sensor {
 
     private float currentValue = 0;
     private Double offset = 0d;
+    private int floatingPointNumber;
 
 
     public Sensor() {
         super();
+        floatingPointNumber = 1;
+    }
+
+    public Sensor(int floatingPointNumber) {
+        super();
+        this.floatingPointNumber = floatingPointNumber;
     }
 
     public Double getOffset() {
@@ -30,7 +37,7 @@ public class Sensor {
 
 
     public String getValueString() {
-        return String.format(Locale.US,"%.2f", currentValue);
+        return String.format(Locale.US,"%."+floatingPointNumber+"f", currentValue);
     }
 
 

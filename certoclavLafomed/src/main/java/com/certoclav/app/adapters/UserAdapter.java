@@ -102,9 +102,13 @@ public class UserAdapter extends ArrayAdapter<User> {
             if (Autoclave.getInstance().getUser() != null && Autoclave.getInstance().getState() != AutoclaveState.LOCKED
                     && (getItem(position).getEmail().equals(Autoclave.getInstance().getUser().getEmail())
                     || Autoclave.getInstance().getUser().isAdmin())) {
-                if (getItem(position).getIsLocal() || Autoclave.getInstance().isOnlineMode(mContext))
-                    containerItems.addView(actionItemEdit);
-                containerItems.addView(actionItemDelete);
+                if ((getItem(position).getIsLocal() || Autoclave.getInstance().isOnlineMode(mContext)))
+                    if (!(getItem(position).getEmail().equalsIgnoreCase("admin") &&
+                            !Autoclave.getInstance().getUser().getEmail().equalsIgnoreCase("admin")))
+                        containerItems.addView(actionItemEdit);
+
+                if (!getItem(position).getEmail().equalsIgnoreCase("admin"))
+                    containerItems.addView(actionItemDelete);
             }
 
             /*if(Autoclave.getInstance().getUser() != null){

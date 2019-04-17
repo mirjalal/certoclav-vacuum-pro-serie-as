@@ -10,9 +10,9 @@
         android:key="preferences_export_usb"
         android:title="@string/export_protocols_to_usb_stick" />
 
-    <Preference
-        android:key="preferences_export_sdcard"
-        android:title="@string/export_protocols_to_micro_sd_card" />
+    <!--<Preference-->
+        <!--android:key="preferences_export_sdcard"-->
+        <!--android:title="@string/export_protocols_to_micro_sd_card" />-->
 
     <Preference
         android:key="preferences_download_protocols"

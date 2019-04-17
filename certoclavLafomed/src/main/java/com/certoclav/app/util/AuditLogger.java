@@ -41,6 +41,8 @@ public class AuditLogger {
     public static final int ACTION_ACTIVATED = 17;//R.string.audit_action_activated;
     public static final int ACTION_PREF_CHANGED = 18;//R.string.audit_action_pref_changed;
     public static final int ACTION_PROGRAM_FINISHED_MAINTAIN_TEMP = 19;//R.string.audit_action_program_finished_maintain;
+    public static final int ACTION_PROGRAM_EDITED = 31;//R.string.audit_action_program_edited;
+    public static final int ACTION_PROGRAM_DELETED = 32;//R.string.audit_action_program_edited;
 
 
     //Object Names
@@ -77,6 +79,8 @@ public class AuditLogger {
         map.put(ACTION_USER_CREATED, R.string.audit_action_user_created);
         map.put(ACTION_USER_DELETED, R.string.audit_action_user_deleted);
         map.put(ACTION_PROGRAM_STARTED, R.string.audit_action_program_started);
+        map.put(ACTION_PROGRAM_EDITED, R.string.audit_action_program_edited);
+        map.put(ACTION_PROGRAM_DELETED, R.string.audit_action_program_deleted);
         map.put(ACTION_PROGRAM_INDICATOR_CHANGED, R.string.audit_action_program_indicator_changed);
         map.put(ACTION_PROGRAM_CANCELED, R.string.audit_action_program_canceled);
         map.put(ACTION_PROGRAM_FINISHED, R.string.audit_action_program_finished);

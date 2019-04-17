@@ -8,8 +8,8 @@ public class AutoclaveData {
         temp2 = new Sensor();
         temp3 = new Sensor();
         temp4 = new Sensor();
-        press = new Sensor();
-        press2 = new Sensor();
+        press = new Sensor(2);
+        press2 = new Sensor(2);
     }
 
     //digitalData

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -20,14 +21,17 @@ import android.widget.Toast;
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.activities.CertoclavSuperActivity;
+import com.certoclav.app.button.CheckboxItem;
 import com.certoclav.app.button.EditTextItem;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.User;
 import com.certoclav.app.database.UserController;
+import com.certoclav.app.listener.NavigationbarListener;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.responsemodels.UserInfoResponseModel;
+import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.MyCallback;
 import com.certoclav.app.util.Requests;
 import com.certoclav.library.bcrypt.BCrypt;
@@ -42,8 +46,9 @@ import org.json.JSONObject;
 import java.util.Date;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
 
-public class RegisterCloudAccountActivity extends CertoclavSuperActivity implements MyCallback {
+public class RegisterCloudAccountActivity extends CertoclavSuperActivity implements MyCallback, NavigationbarListener {
 
 
     private LinearLayout linEditTextItemContainer;
@@ -57,9 +62,12 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
     private EditTextItem editFirstName;
     private EditTextItem editLastName;
     private EditTextItem editCurPasswordItem;
+    private CheckboxItem checkBoxIsAdmin;
 
     private User currentUser;
     private SweetAlertDialog pDialog;
+    private boolean isManual = true;
+    private CertoclavNavigationbarClean navigationbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,11 +79,26 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
             currentUser = db.getUserById(getIntent().getExtras().getInt(AppConstants.INTENT_EXTRA_USER_ID));
             Requests.getInstance().getUserInfo(currentUser.getEmail(), CloudUser.getInstance().getToken(), this, REQUEST_GET_USER);
         }
-        CertoclavNavigationbarClean navigationbar = new CertoclavNavigationbarClean(this);
+        navigationbar = new CertoclavNavigationbarClean(this);
         navigationbar.setHeadText(getString(currentUser != null ? R.string.edit_user : R.string.register_new_user));
 
 
+
         linEditTextItemContainer = (LinearLayout) findViewById(R.id.register_container_edit_text_items);
+
+        //Checkbox is Admin
+        checkBoxIsAdmin = (CheckboxItem) getLayoutInflater().inflate(R.layout.checkbox_item, linEditTextItemContainer, false);
+        checkBoxIsAdmin.setText(getString(R.string.admin));
+        checkBoxIsAdmin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (isManual)
+                    askForAdminPassword();
+                isManual = true;
+            }
+        });
+
+        linEditTextItemContainer.addView(checkBoxIsAdmin);
 
 
         editEmailItem = (EditTextItem) getLayoutInflater().inflate(R.layout.edit_text_item, linEditTextItemContainer, false);
@@ -282,21 +305,22 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                 if (currentUser == null)
                     for (User user : databaseService.getUsers()) {
                         if (editEmailItem.getText().equals(user.getEmail())) {
-                            Toast.makeText(RegisterCloudAccountActivity.this, getString(R.string.email_already_exists), Toast.LENGTH_LONG).show();
+                            Toasty.warning(RegisterCloudAccountActivity.this, getString(R.string.email_already_exists), Toast.LENGTH_SHORT, true).show();
                             return;
                         }
                     }
 
                 if (currentUser != null && (!editCurPasswordItem.hasValidString() || !editCurPasswordItem.hasValidString())) {
-                    Toast.makeText(RegisterCloudAccountActivity.this, getString(R.string.please_enter_password), Toast.LENGTH_LONG).show();
+                    Toasty.warning(RegisterCloudAccountActivity.this, getString(R.string.please_enter_password), Toast.LENGTH_SHORT, true).show();
                     return;
                 }
                 Log.e("RegisterActivity", "onclickRegisterButton");
-                if ((!editPasswordItem.hasValidString() || !editPasswordItemConfirm.hasValidString()) ||
-                        !editPasswordItem.getText().equals(editPasswordItemConfirm.getText())) {
-                    Toast.makeText(RegisterCloudAccountActivity.this, getString(R.string.passwords_do_not_match), Toast.LENGTH_LONG).show();
-                    return;
-                }
+                if (editPasswordItem.getText().length() > 0 || editPasswordItemConfirm.getText().length() > 0)
+                    if ((!editPasswordItem.hasValidString() || !editPasswordItemConfirm.hasValidString()) ||
+                            !editPasswordItem.getText().equals(editPasswordItemConfirm.getText())) {
+                        Toast.makeText(RegisterCloudAccountActivity.this, getString(R.string.passwords_do_not_match), Toast.LENGTH_LONG).show();
+                        return;
+                    }
                 if (!editEmailItem.hasValidString()) {
                     Toast.makeText(RegisterCloudAccountActivity.this, getString(R.string.please_enter_a_valid_email_address), Toast.LENGTH_LONG).show();
                     return;
@@ -317,6 +341,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                             jsonObjectRegister.put("lastname", params[4]);
                             jsonObjectRegister.put("mobile", params[5]);
                             jsonObjectRegister.put("cur_password", params[6]);
+                            jsonObjectRegister.put("is_admin", Boolean.valueOf(params[7]));
                         } catch (JSONException e) {
                             e.printStackTrace();
                             return null;
@@ -348,7 +373,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                                 "",
                                 "",
                                 new Date(),
-                                false,
+                                Boolean.valueOf(params[7]),
                                 false);
                         if (params[1] == null || params[1].isEmpty()) {
                             user.setPassword(currentUser.getPassword());
@@ -357,6 +382,9 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                         }
 
                         databaseService.insertUser(user);
+
+                        if (currentUser != null && currentUser.getEmail().equalsIgnoreCase(user.getEmail()))
+                            currentUser = user;
 
                         UserController userController = new UserController(user, Autoclave.getInstance().getController());
 
@@ -368,10 +396,14 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                     protected void onPostExecute(Response response) {
                         hideDialog();
                         if (response != null && response.isOK()) {
-                            Toast.makeText(getApplicationContext(), response.getMessage().isEmpty() ? getString(currentUser != null ? R.string.account_created : R.string.updated_successfully) : response.getMessage(),
-                                    Toast.LENGTH_SHORT).show();
-                            if (response.getStatus() == 200)
-                                finish();
+                            Toasty.success(getApplicationContext(), response.getMessage().isEmpty() ? getString(currentUser != null ? R.string.account_created : R.string.updated_successfully) : response.getMessage(),
+                                    Toast.LENGTH_SHORT, true).show();
+                            if (currentUser != null) {
+                                Autoclave.getInstance().setUser(currentUser);
+                            }
+                            if (response.getStatus() == 200) {
+                                onBackPressed();
+                            }
                         } else {
                             Toast.makeText(getApplicationContext(), (response == null || response.getMessage().isEmpty()) ? getString(R.string.sign_up_account_failed) : response.getMessage(),
                                     Toast.LENGTH_SHORT).show();
@@ -380,9 +412,18 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                     }
 
 
-                }.execute(editEmailItem.getText().toString(), editPasswordItem.getText().toString(),
-                        editPasswordItemConfirm.getText().toString(), editFirstName.getText(),
-                        editLastName.getText(), editMobile.getText(), editCurPasswordItem.getText());
+                }.execute(editEmailItem.getText(),
+                        editPasswordItem.getText().length() > 0 ?
+                                editPasswordItem.getText() :
+                                editCurPasswordItem.getText(),
+                        editPasswordItemConfirm.getText().length() > 0 ?
+                                editPasswordItemConfirm.getText() :
+                                editCurPasswordItem.getText(),
+                        editFirstName.getText(),
+                        editLastName.getText(),
+                        editMobile.getText(),
+                        editCurPasswordItem.getText(),
+                        checkBoxIsAdmin.isChecked() + "");
 
 
             }
@@ -433,6 +474,9 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                     editFirstName.setText(user.getFirstName());
                     editLastName.setText(user.getLastName());
                     editMobile.setText(user.getMobile());
+                    isManual = false;
+                    checkBoxIsAdmin.setChecked(user.isAdmin());
+                    isManual = true;
                 }
         }
     }
@@ -484,5 +528,60 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
     private void hideDialog() {
         if (pDialog.isShowing())
             pDialog.dismissWithAnimation();
+    }
+
+    private void askForAdminPassword() {
+        final SweetAlertDialog dialog = new SweetAlertDialog(this, R.layout.dialog_admin_password, SweetAlertDialog.WARNING_TYPE);
+        dialog.setContentView(R.layout.dialog_admin_password);
+        dialog.setTitle(R.string.register_new_user);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
+        final EditText editTextPassword = dialog.findViewById(R.id.editTextPassword);
+        Button buttonLogin = (Button) dialog
+                .findViewById(R.id.dialogButtonLogin);
+        Button buttonCancel = (Button) dialog
+                .findViewById(R.id.dialogButtonCancel);
+        buttonLogin.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Helper.checkAdminPassword(RegisterCloudAccountActivity.this, editTextPassword.getText().toString())) {
+                    dialog.dismiss();
+                } else {
+                    Toasty.error(RegisterCloudAccountActivity.this, getString(R.string.admin_password_wrong), Toast.LENGTH_SHORT, true).show();
+                }
+            }
+        });
+
+        buttonCancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isManual = false;
+                checkBoxIsAdmin.setChecked(!checkBoxIsAdmin.isChecked());
+                dialog.dismissWithAnimation();
+            }
+        });
+
+        dialog.show();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(navigationbar!=null)
+            navigationbar.setNavigationbarListener(this);
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(navigationbar!=null)
+            navigationbar.removeNavigationbarListener(this);
+    }
+
+    @Override
+    public void onClickNavigationbarButton(int buttonId) {
+        onBackPressed();
     }
 }

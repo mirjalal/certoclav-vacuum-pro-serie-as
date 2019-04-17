@@ -175,44 +175,44 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
 
 
         //upload protocols to SD
-        ((Preference) findPreference(AppConstants.PREFERENCE_KEY_EXPORT_SD)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
-
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-
-
-                ExportUtils exportUtils = new ExportUtils();
-
-
-                if (exportUtils.checkExternalSDCard()) { //check if usb flash drive is available
-                    uploadAllProtocolsTo(EXPORT_TARGET_SD);
-                } else {
-
-                    try {
-
-                        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
-                                .setTitleText(getString(R.string.no_sdcard))
-                                .setContentText(getString(R.string.no_sdcard_detected))
-                                .setConfirmText(getString(R.string.ok))
-                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sDialog) {
-                                        sDialog.dismissWithAnimation();
-                                    }
-                                });
-                        sweetAlertDialog.setCanceledOnTouchOutside(true);
-                        sweetAlertDialog.setCancelable(true);
-                        sweetAlertDialog.show();
-
-
-                    } catch (Exception e) {
-
-                    }
-                }
-                return false;
-
-            }
-        });
+//        ((Preference) findPreference(AppConstants.PREFERENCE_KEY_EXPORT_SD)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+//
+//            @Override
+//            public boolean onPreferenceClick(Preference preference) {
+//
+//
+//                ExportUtils exportUtils = new ExportUtils();
+//
+//
+//                if (exportUtils.checkExternalSDCard()) { //check if usb flash drive is available
+//                    uploadAllProtocolsTo(EXPORT_TARGET_SD);
+//                } else {
+//
+//                    try {
+//
+//                        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+//                                .setTitleText(getString(R.string.no_sdcard))
+//                                .setContentText(getString(R.string.no_sdcard_detected))
+//                                .setConfirmText(getString(R.string.ok))
+//                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                                    @Override
+//                                    public void onClick(SweetAlertDialog sDialog) {
+//                                        sDialog.dismissWithAnimation();
+//                                    }
+//                                });
+//                        sweetAlertDialog.setCanceledOnTouchOutside(true);
+//                        sweetAlertDialog.setCancelable(true);
+//                        sweetAlertDialog.show();
+//
+//
+//                    } catch (Exception e) {
+//
+//                    }
+//                }
+//                return false;
+//
+//            }
+//        });
 
         prefs.registerOnSharedPreferenceChangeListener(listener);
 

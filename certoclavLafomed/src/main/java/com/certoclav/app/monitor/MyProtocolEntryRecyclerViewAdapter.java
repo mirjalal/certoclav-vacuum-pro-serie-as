@@ -12,6 +12,7 @@ import com.certoclav.app.database.ProtocolEntry;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link ProtocolEntry} and makes a call to the
@@ -23,9 +24,9 @@ public class MyProtocolEntryRecyclerViewAdapter extends RecyclerView.Adapter<MyP
 
     public MyProtocolEntryRecyclerViewAdapter(List<ProtocolEntry> items, Protocol protocol) {
         mValues = new ArrayList<>();
-        long lastdate =0;
-        for(ProtocolEntry entry:items){
-            if(lastdate<(entry.getTimestamp().getTime()-19*1000)) {
+        long lastdate = 0;
+        for (ProtocolEntry entry : items) {
+            if (lastdate < (entry.getTimestamp().getTime() - 19 * 1000)) {
                 mValues.add(entry);
                 lastdate = entry.getTimestamp().getTime();
             }
@@ -52,7 +53,8 @@ public class MyProtocolEntryRecyclerViewAdapter extends RecyclerView.Adapter<MyP
             holder.mediaTemperature2.setText(roundFloat(mValues.get(position).getMediaTemperature2()) + "");
         if (protocol.isContByFlexProbe1())
             holder.mediaTemperature.setText(roundFloat(mValues.get(position).getMediaTemperature()) + "");
-        holder.pressure.setText(roundFloat(mValues.get(position).getPressure()).toString());
+//        holder.pressure.setText(roundFloat(mValues.get(position).getPressure()).toString());
+        holder.pressure.setText(String.format(Locale.US, "%.2f", mValues.get(position).getPressure()));
 
     }
 
