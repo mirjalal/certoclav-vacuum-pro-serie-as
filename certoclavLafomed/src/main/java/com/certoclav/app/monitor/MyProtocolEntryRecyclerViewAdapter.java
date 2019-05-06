@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.certoclav.app.R;
 import com.certoclav.app.database.Protocol;
 import com.certoclav.app.database.ProtocolEntry;
+import com.certoclav.app.util.Helper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,14 +46,16 @@ public class MyProtocolEntryRecyclerViewAdapter extends RecyclerView.Adapter<MyP
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.time.setText(holder.mItem.getFormatedTime());
-        holder.temperature.setText(roundFloat(mValues.get(position).getTemperature()) + "");
+        holder.temperature.setText(roundFloat(Helper.celsiusToCurrentUnit(mValues.get(position).getTemperature())).floatValue() + "");
 
         holder.mediaTemperature.setVisibility(protocol.isContByFlexProbe1() ? View.VISIBLE : View.GONE);
         holder.mediaTemperature2.setVisibility(protocol.isContByFlexProbe2() ? View.VISIBLE : View.GONE);
         if (protocol.isContByFlexProbe2())
-            holder.mediaTemperature2.setText(roundFloat(mValues.get(position).getMediaTemperature2()) + "");
+            holder.mediaTemperature2.setText(roundFloat(Helper.celsiusToCurrentUnit(
+                    mValues.get(position).getMediaTemperature2())).floatValue() + "");
         if (protocol.isContByFlexProbe1())
-            holder.mediaTemperature.setText(roundFloat(mValues.get(position).getMediaTemperature()) + "");
+            holder.mediaTemperature.setText(roundFloat(Helper.celsiusToCurrentUnit(
+                    mValues.get(position).getMediaTemperature())).floatValue() + "");
 //        holder.pressure.setText(roundFloat(mValues.get(position).getPressure()).toString());
         holder.pressure.setText(String.format(Locale.US, "%.2f", mValues.get(position).getPressure()));
 

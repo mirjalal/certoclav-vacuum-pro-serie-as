@@ -17,6 +17,7 @@ import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.model.Log;
 import com.certoclav.app.util.AuditLogger;
 import com.certoclav.app.util.AutoclaveModelManager;
+import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.MyCallback;
 import com.certoclav.library.application.ApplicationController;
 
@@ -184,7 +185,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 
         public static String CREATE(String command, Object... args) {
             if (command.lastIndexOf(",") == command.length() - 1) {
-                String commandFormatted = String.format(command, args);
+                String commandFormatted = String.format(Locale.US, command, args);
                 return commandFormatted + getChecksum(commandFormatted) + NEWLINE;
             }
             return command + NEWLINE;
@@ -232,8 +233,8 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         handler.removeCallbacks(runnableOtherCommands);
         handlerGetData.removeCallbacks(runnableGetData);
         handler.removeCallbacks(runnableTimeout);
-        if (commandQueue.size() >0)
-            handler.postDelayed(runnableOtherCommands,500);
+        if (commandQueue.size() > 0)
+            handler.postDelayed(runnableOtherCommands, 500);
 
     }
 
@@ -242,9 +243,9 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 
         Log.e("ReadAndParse", "runnableIsAlive: " + runnableGetDataIsAlive);
         if (System.currentTimeMillis() - lastGetDataCalled > 10000) {
-            if(commandQueue.size()>0){
+            if (commandQueue.size() > 0) {
                 sendCommand(commandQueue.remove(0));
-            }else {
+            } else {
                 handlerGetData.removeCallbacks(runnableGetData);
                 handlerGetData.post(runnableGetData);
             }
@@ -318,8 +319,8 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         sendCommand(COMMANDS.CREATE(COMMANDS.SET_PROGRAM,
                 profile.getIndex(),
                 profile.getName().replaceAll(" ", "_"),
-                profile.getSterilisationTemperature(),
-                profile.getFinalTemp(),
+                profile.getSterilisationTemperature(true),
+                profile.getFinalTemp(true),
                 profile.isMaintainEnabled() ? 1 : 0,
                 profile.isLiquidProgram() ? 1 : 0,
                 profile.isContByFlexProbe1Enabled() ? 1 : 0,
@@ -329,7 +330,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                 profile.getVacuumTimes(),
                 profile.isF0Enabled() ? 1 : 0,
                 profile.getF0Value(),
-                profile.getzValue()));
+                profile.getzValue(true)));
     }
 
     /*
@@ -458,7 +459,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
             serialPathAutoclave = "/dev/ttyUSB0";
         } else if (AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH_RS_232)) {
             serialPathAutoclave = "/dev/ttyS4";
-        }else{
+        } else {
             serialPathAutoclave = "/dev/ttymxc3";
         }
         if (AppConstants.MODEL_CURRENT.equals(AppConstants.MODEL_RAYPA_TLV)) {
@@ -469,7 +470,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 
         listeners = new ArrayList<>();
         serialService = new SerialService(serialPathAutoclave, serialBaudAutoclave);
-       // serialService = Autoclave.getInstance().getSerialsService();
+        // serialService = Autoclave.getInstance().getSerialsService();
         handlerGetData.post(runnableGetData);
 
 //        serialThread.start();
@@ -572,10 +573,17 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                         indexOfRunningProgram = Integer.parseInt(responseParameters[INDEX_DAT_PROGRAM_INDEX]);
                         cycleNumber = Integer.parseInt(responseParameters[INDEX_DAT_CYCLE]);
                         timeOrPercent = Float.parseFloat(responseParameters[INDEX_DAT_TIME_OR_PERCENT]);
+
+
                         temperatures[0] = Float.parseFloat(responseParameters[INDEX_DAT_TEMP_STEAM]);
                         temperatures[1] = Float.parseFloat(responseParameters[INDEX_DAT_TEMP_MEDIA]);
                         temperatures[2] = Float.parseFloat(responseParameters[INDEX_DAT_TEMP_OPTIONAL_1]);
                         temperatures[3] = Float.parseFloat(responseParameters[INDEX_DAT_TEMP_OPTIONAL_2]);
+
+                        if (AutoclaveModelManager.getInstance().isFahrenheit()) {
+                            for (int i = 0; i < 4; i++)
+                                temperatures[i] = Helper.celsiusToCurrentUnit(temperatures[i]);
+                        }
                         pressures[0] = Float.parseFloat(responseParameters[INDEX_DAT_PRESSURE]);
                         pressures[1] = Float.parseFloat(responseParameters[INDEX_DAT_PRESSURE_OPTIONAL]);
                         debugData[0] = responseParameters[INDEX_DAT_DEBUG_INPUT];

@@ -1,26 +1,25 @@
 package com.certoclav.app.util;
 
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.preference.PreferenceManager;
-import android.util.Log;
-
-import android_serialport_api.SerialService;
 
 import com.certoclav.app.AppConstants;
+import com.certoclav.app.R;
 import com.certoclav.app.database.Protocol;
 import com.certoclav.app.database.ProtocolEntry;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveMonitor;
+import com.certoclav.app.model.Log;
 import com.certoclav.library.application.ApplicationController;
 
-import static io.fabric.sdk.android.services.network.HttpRequest.append;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+
+import android_serialport_api.SerialService;
 
 
 public class ESCPos {
@@ -41,13 +40,15 @@ public class ESCPos {
 
     public void printProtocol(Protocol protocol, Context context) {
         //get version
-
+        //Print line
+        i = 5;
         String version = "";
         try {
             PackageInfo pInfo;
             pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             version = pInfo.versionName + " (" + pInfo.versionCode + ")";
         } catch (NameNotFoundException e) {
+            e.printStackTrace();
             version = "";
         }
 
@@ -57,6 +58,7 @@ public class ESCPos {
             Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             startTimeString = formatter.format(protocol.getStartTime());
         } catch (Exception e) {
+            e.printStackTrace();
             startTimeString = "";
         }
 
@@ -66,6 +68,7 @@ public class ESCPos {
             Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             endTimeString = formatter.format(protocol.getEndTime());
         } catch (Exception e) {
+            e.printStackTrace();
             endTimeString = "";
         }
 
@@ -73,39 +76,80 @@ public class ESCPos {
         resetToDefault();
         String SPACING = "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n";
         StringBuilder sb = new StringBuilder();
-        sb.append("10 ").append("Raypa").append("\n");
-        sb.append(SPACING);
-        sb.append("15 ").append("Program").append(": ").append(protocol.getProfileName().replace("\u00B0", "")).append("\n");
-        sb.append("20 ").append("Program load/details").append(":").append("\n");
-        sb.append("   ").append(protocol.getProfileDescription().replace("\u00B0", "")).append("\n");
-        sb.append("25 ").append("Date").append(": ").append(startTimeString).append("\n");
-        sb.append("30 ").append("Cycle").append(": ").append(protocol.getZyklusNumber()).append("\n");
-        sb.append(SPACING);
 
-        if (protocol.getErrorCode() == 0) {
-            sb.append("40 ").append("Result").append(": ").append("passed".toUpperCase()).append("\n");
-        } else {
-            sb.append("40 ").append("Result").append(": ").append("failed".toUpperCase()).append("\n");
-            sb.append("41 ").append(AutoclaveMonitor.getInstance().getErrorString(protocol.getErrorCode())).append("\n");
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+
+        //GLP Header
+        if (isPrefEnabled(R.string.preferences_print_header, R.bool.preferences_print_header)
+                && prefs.getString("preferences_glp_header", "").length() > 0) {
+            sb.append(getPrintLine()).append(prefs.getString("preferences_glp_header", "") + "\n");
         }
+        //Autoclave Name
+        if (isPrefEnabled(R.string.preferences_print_autoclave_name, R.bool.preferences_print_autoclave_name))
+            sb.append(getPrintLine()).append(context.getString(R.string.glp_autoclave_name)).append(
+                    prefs.getString(context.getString(R.string.preferences_glp_autoclave_name),
+                            context.getString(R.string.preferences_print_autoclave_name_value)) + "\n");
+
+        //Serial Number
+        if (isPrefEnabled(R.string.preferences_print_autoclave_serial_number, R.bool.preferences_print_autoclave_serial_number))
+            sb.append(getPrintLine()).append(context.getString(R.string.glp_autoclave_serial_number)).append(
+                    Autoclave.getInstance().getController().getSerialnumber()).append(version).append("\n");
+
+        //Project Name
+        if (isPrefEnabled(R.string.preferences_print_project_name, R.bool.preferences_print_project_name))
+            sb.append(getPrintLine()).append(context.getString(R.string.glp_project_name)).append(
+                    prefs.getString(context.getString(R.string.preferences_glp_project_name),
+                            "") + "\n");
+
+
         sb.append(SPACING);
 
-        sb.append("45 ").append("Temperature").append(": ").append(protocol.getSterilisationTemperature()).append("\n");
-        sb.append("50 ").append("Pressure").append(": ").append(protocol.getSterilisationPressure()).append("\n");
-        sb.append("55 ").append("Time").append(": ").append(protocol.getSterilisationTime()).append("\n");
-        sb.append("65 ").append("Start").append(": ").append(startTimeString).append("\n");
-        sb.append("70 ").append("End").append(": ").append(endTimeString).append("\n");
+        //Program Name
+        if (isPrefEnabled(R.string.preferences_print_program_name, R.bool.preferences_print_program_name)) {
+            sb.append(getPrintLine()).append(context.getString(R.string.glp_program_name))
+                    .append(protocol.getProfileName().replace("\u00B0", "")).append("\n");
+        }
+        //Program description
+        if (isPrefEnabled(R.string.preferences_print_program_desc, R.bool.preferences_print_program_desc)) {
+            sb.append(getPrintLine()).append(context.getString(R.string.print_program_desc)).append(":").append("\n");
+            sb.append("   ").append(protocol.getProfileDescription().replace("\u00B0", "")
+                    .replace("\n", "\n   ")).append("\n");
+            sb.append(getPrintLine()).append(context.getString(R.string.date)).append(": ")
+                    .append(startTimeString).append("\n");
+            sb.append(getPrintLine()).append(context.getString(R.string.cycle)).append(": ")
+                    .append(protocol.getZyklusNumber()).append("\n");
+            sb.append(SPACING);
+        }
 
-        sb.append(SPACING);
-        sb.append("80 ").append("SN:").append(Autoclave.getInstance().getController().getSerialnumber()).append(version).append("\n");
-        sb.append("85 ").append("User").append(": ").append(protocol.getUserEmail()).append("\n");
-        sb.append(SPACING);
-        if (prefs.getBoolean(AppConstants.PREFERENCE_KEY_PRINT_ENTITES, true)) {
+        if (isPrefEnabled(R.string.preferences_print_program_result, R.bool.preferences_print_program_result)) {
+            if (protocol.getErrorCode() == 0) {
+                sb.append(getPrintLine()).append(context.getString(R.string.result)).append(": ").append(context.getString(R.string.passed).toUpperCase()).append("\n");
+            } else {
+                sb.append(getPrintLine()).append(context.getString(R.string.result)).append(": ").append(context.getString(R.string.failed).toUpperCase()).append("\n");
+                sb.append(getPrintLine()).append(AutoclaveMonitor.getInstance().getErrorString(protocol.getErrorCode())).append("\n");
+            }
+            sb.append(SPACING);
+            sb.append(getPrintLine()).append(context.getString(R.string.glp_temperature)).append(": ")
+                    .append(Helper.celsiusToCurrentUnit(protocol.getSterilisationTemperature())).append("\n");
+            sb.append(getPrintLine()).append(context.getString(R.string.glp_pressure)).append(": ").append(protocol.getSterilisationPressure()).append("\n");
+            sb.append(getPrintLine()).append(context.getString(R.string.glp_time)).append(": ").append(protocol.getSterilisationTime()).append("\n");
+            sb.append(getPrintLine()).append(context.getString(R.string.glp_start)).append(": ").append(startTimeString).append("\n");
+            sb.append(getPrintLine()).append("End").append(": ").append(endTimeString).append("\n");
+            sb.append(SPACING);
+        }
 
+        if (isPrefEnabled(R.string.preferences_print_user_name, R.bool.preferences_print_user_name)) {
+            sb.append(getPrintLine()).append(context.getString(R.string.email)).append(": ").append(protocol.getUserEmail()).append("\n");
+            sb.append(SPACING);
+        }
+        if (isPrefEnabled(R.string.preferences_print_program_data_points, R.bool.preferences_print_program_data_points)) {
+            sb.append(getPrintLine()).append(context.getString(R.string.glp_data_points)).append("\n");
             sb.append(String.format("%-8s", "t[h:m]"))
                     .append(String.format("%-8s", "P[bar]"))
-                    .append(String.format("%-8s", "S[C]"))
-                    .append(String.format("%-8s", "M[C]"))
+                    .append(String.format("%-8s", "S[" + AutoclaveModelManager.getInstance().getTemperatureUnit() + "]"))
+                    .append(protocol.isContByFlexProbe1() ? String.format("%-8s", "M[" + AutoclaveModelManager.getInstance().getTemperatureUnit() + "]") : "")
+                    .append(protocol.isContByFlexProbe2() ? String.format("%-8s", "M2[" + AutoclaveModelManager.getInstance().getTemperatureUnit() + "]") : "")
                     .append("\n");
             Long startTime = protocol.getStartTime().getTime();
             int minutesOnLastPrint = -1;
@@ -117,24 +161,50 @@ public class ESCPos {
                     minutesOnLastPrint = minutes;
                     String timeStamp = String.format("%02d:%02d", hours, minutes);
                     String pressure = String.format("%03d", Math.round(entry.getPressure()));
-                    String temperature = String.format("%05.1f", entry.getTemperature());
-                    String mediaTemp = String.format("%05.1f", entry.getMediaTemperature());
+                    String temperature = String.format("%05.1f", Helper.celsiusToCurrentUnit(entry.getTemperature()));
+                    String mediaTemp = String.format("%05.1f", Helper.celsiusToCurrentUnit(entry.getMediaTemperature()));
+                    String mediaTemp2 = String.format("%05.1f", Helper.celsiusToCurrentUnit(entry.getMediaTemperature2()));
 
                     sb.append(String.format("%-8s", timeStamp))
                             .append(String.format("%-8s", pressure))
                             .append(String.format("%-8s", temperature))
-                            .append(String.format("%-8s", mediaTemp))
+                            .append(protocol.isContByFlexProbe1() ? String.format("%-8s", mediaTemp) : "")
+                            .append(protocol.isContByFlexProbe1() ? String.format("%-8s", mediaTemp2) : "")
                             .append("\n");
                 }
             }
             sb.append(SPACING);
         }
-        sb.append("End");
 
+//        sb.append(context.getString(R.string.glp_end)).append("\n");
+
+        //Printed Date
+        if (isPrefEnabled(R.string.preferences_print_date, R.bool.preferences_print_date))
+            sb.append(getPrintLine()).append(context.getString(R.string.glp_date)).append("\t").append(startTimeString).append("\n");
+
+        if (isPrefEnabled(R.string.preferences_print_signature, R.bool.preferences_print_signature)) {
+            sb.append("\n");
+            sb.append(getPrintLine()).append(context.getString(R.string.signature) + ":    _______________" + "\n");
+            sb.append("\n");
+            sb.append(getPrintLine()).append(context.getString(R.string.verified_by) + ":  _______________" + "\n");
+        }
+
+
+        android.util.Log.e("printed", sb.toString());
         printString(sb.toString());
 
     }
 
+    private boolean isPrefEnabled(int resId, int defaultResId) {
+        return prefs.getBoolean(AppController.getContext().getString(resId), AppController.getContext().getResources().getBoolean(defaultResId));
+    }
+
+    int i = 5;
+
+    private String getPrintLine() {
+        i += 5;
+        return i + " ";
+    }
 
     public void sayHello() {
 
@@ -270,15 +340,15 @@ public class ESCPos {
     /**
      * Encode and print QR code
      *
-     * @param str           String to be encoded in QR.
-     * @param  The degree of error correction. (48 <= n <= 51)
-     *                      48 = level L / 7% recovery capacity.
-     *                      49 = level M / 15% recovery capacity.
-     *                      50 = level Q / 25% recovery capacity.
-     *                      51 = level H / 30% recovery capacity.
-     * @param moduleSize    The size of the QR module (pixel) in dots.
-     *                      The QR code will not print if it is too big.
-     *                      Try setting this low and experiment in making it larger.
+     * @param str        String to be encoded in QR.
+     * @param The        degree of error correction. (48 <= n <= 51)
+     *                   48 = level L / 7% recovery capacity.
+     *                   49 = level M / 15% recovery capacity.
+     *                   50 = level Q / 25% recovery capacity.
+     *                   51 = level H / 30% recovery capacity.
+     * @param moduleSize The size of the QR module (pixel) in dots.
+     *                   The QR code will not print if it is too big.
+     *                   Try setting this low and experiment in making it larger.
      */
     public void printQR(String str, int errCorrect, int moduleSize) {
         //save data function 80

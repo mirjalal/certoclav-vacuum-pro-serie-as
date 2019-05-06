@@ -1,6 +1,8 @@
 package com.certoclav.app.database;
 
 
+import com.certoclav.app.util.AutoclaveModelManager;
+import com.certoclav.app.util.Helper;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 
@@ -137,13 +139,23 @@ public class Profile {
         this.sterilisationTime = sterilisationTime;
     }
 
-    public float getSterilisationTemperature() {
+    public float getSterilisationTemperature(boolean isToAutoclave) {
+        if (isToAutoclave && AutoclaveModelManager.getInstance().isFahrenheit())
+            return Helper.currentUnitToCelsius(sterilisationTemperature);
         return sterilisationTemperature;
+    }
+
+    public void setSterilisationTemperature(float sterilisationTemperature, boolean isFromAutoclave) {
+        if (isFromAutoclave && AutoclaveModelManager.getInstance().isFahrenheit())
+            this.sterilisationTemperature = Helper.celsiusToCurrentUnit(sterilisationTemperature);
+        else
+            this.sterilisationTemperature = sterilisationTemperature;
     }
 
     public float getSterilisationPressure() {
         return sterilisationPressure;
     }
+
 
     public void setSterilisationPressure(int sterilisationPressure) {
         this.sterilisationPressure = sterilisationPressure;
@@ -155,10 +167,6 @@ public class Profile {
 
     public void setVacuumPersistTime(int vacuumPersistTime) {
         this.vacuumPersistTime = vacuumPersistTime;
-    }
-
-    public void setSterilisationTemperature(float sterilisationTemperature) {
-        this.sterilisationTemperature = sterilisationTemperature;
     }
 
     public float getVacuumPersistTemperature() {
@@ -286,7 +294,7 @@ public class Profile {
         this.name = name;
         this.vacuumTimes = vacuumTimes;
         this.sterilisationTime = sterilisationTime;
-        this.sterilisationTemperature = sterilisationTemperature;
+        setSterilisationTemperature(sterilisationTemperature, true);
         this.sterilisationPressure = sterilisationPressure;
         this.vacuumPersistTime = vacuumPersistTime;
         this.dryTime = dryTime;
@@ -296,11 +304,11 @@ public class Profile {
         this.controller = controller;
         this.isLiquidProgram = isLiquidProgram;
         this.isF0Enabled = isF0Enabled;
-        this.zValue = zValue;
+        setzValue(zValue, true);
         this.isContByFlexProbe1 = isContByFlexProbe1;
         this.isContByFlexProbe2 = isContByFlexProbe2;
         this.isMaintainEnabled = isMaintainEnabled;
-        this.finalTemp = finalTemp;
+        setFinalTemp(finalTemp, true);
         this.f0Value = f0Value;
     }
 
@@ -310,7 +318,17 @@ public class Profile {
     }
 
 
-    public String getDescription() {
+    public String getDescription(boolean isFormated) {
+        if (isFormated)
+            try {
+                String description = this.description;
+                String temp = description.substring(description.indexOf("[") + 1, description.indexOf("]"));
+                return description.replaceAll("\\[(.*?)\\]",
+                        String.valueOf(Helper.celsiusToCurrentUnit(Float.valueOf(temp)))
+                                + " " + Helper.getTemperatureUnitText(null) + " ");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         return description;
     }
 
@@ -355,12 +373,17 @@ public class Profile {
         return isF0Enabled;
     }
 
-    public float getzValue() {
+    public float getzValue(boolean isToAutoclave) {
+        if (isToAutoclave && AutoclaveModelManager.getInstance().isFahrenheit())
+            return Helper.currentUnitToCelsius(zValue);
         return zValue;
     }
 
-    public void setzValue(float zValue) {
-        this.zValue = zValue;
+    public void setzValue(float zValue, boolean isFromAutoclave) {
+        if (isFromAutoclave && AutoclaveModelManager.getInstance().isFahrenheit())
+            this.zValue = Helper.celsiusToCurrentUnit(zValue);
+        else
+            this.zValue = zValue;
     }
 
     public Boolean isMaintainEnabled() {
@@ -372,11 +395,11 @@ public class Profile {
     }
 
     public Boolean isContByFlexProbe1Enabled() {
-        return isContByFlexProbe1;
+        return isContByFlexProbe1 && isLiquidProgram;
     }
 
     public Boolean isContByFlexProbe2Enabled() {
-        return isContByFlexProbe2;
+        return isContByFlexProbe2 && isContByFlexProbe1Enabled();
     }
 
     public void setContByFlexProbe1(Boolean contByFlexProbe1) {
@@ -395,12 +418,17 @@ public class Profile {
         this.f0Value = f0Value;
     }
 
-    public float getFinalTemp() {
+    public float getFinalTemp(boolean isToAutoclave) {
+        if (isToAutoclave && AutoclaveModelManager.getInstance().isFahrenheit())
+            return Helper.currentUnitToCelsius(finalTemp);
         return finalTemp;
     }
 
-    public void setFinalTemp(float finalTemp) {
-        this.finalTemp = finalTemp;
+    public void setFinalTemp(float finalTemp, boolean isFromAutoclave) {
+        if (isFromAutoclave && AutoclaveModelManager.getInstance().isFahrenheit())
+            this.finalTemp = Helper.celsiusToCurrentUnit(finalTemp);
+        else
+            this.finalTemp = finalTemp;
     }
 
     public void setF0Enabled(Boolean f0Enabled) {
@@ -413,8 +441,8 @@ public class Profile {
     }
 
     //Vacuum Test and BD Test is not editable, their index is 1 and 2.
-    public boolean isEditable(){
-        return index!=1 && index!=2;
+    public boolean isEditable() {
+        return index != 1 && index != 2;
     }
 }
 

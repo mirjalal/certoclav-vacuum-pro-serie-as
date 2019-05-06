@@ -71,12 +71,12 @@ public class MonitorListFragment extends Fragment {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
 
-        if(protocol!=null) {
-            view.findViewById(R.id.mediaTemperature2).setVisibility(protocol.isContByFlexProbe2()?View.VISIBLE:View.GONE);
-            ((TextView)view.findViewById(R.id.mediaTemperature2)).setText(getString(R.string.header_media_temp_2,Helper.getTemperatureUnitText(protocol.getTemperatureUnit())));
-            ((TextView)view.findViewById(R.id.mediaTemperature)).setText(getString(R.string.header_media_temp,Helper.getTemperatureUnitText(protocol.getTemperatureUnit())));
-            ((TextView)view.findViewById(R.id.temperature)).setText(getString(R.string.header_temp,Helper.getTemperatureUnitText(protocol.getTemperatureUnit())));
-            view.findViewById(R.id.mediaTemperature).setVisibility(protocol.isContByFlexProbe1()?View.VISIBLE:View.GONE);
+        if (protocol != null) {
+            view.findViewById(R.id.mediaTemperature2).setVisibility(protocol.isContByFlexProbe2() ? View.VISIBLE : View.GONE);
+            ((TextView) view.findViewById(R.id.mediaTemperature2)).setText(getString(R.string.header_media_temp_2, Helper.getTemperatureUnitText(null)));
+            ((TextView) view.findViewById(R.id.mediaTemperature)).setText(getString(R.string.header_media_temp, Helper.getTemperatureUnitText(null)));
+            ((TextView) view.findViewById(R.id.temperature)).setText(getString(R.string.header_temp, Helper.getTemperatureUnitText(null)));
+            view.findViewById(R.id.mediaTemperature).setVisibility(protocol.isContByFlexProbe1() ? View.VISIBLE : View.GONE);
             recyclerView.setAdapter(new MyProtocolEntryRecyclerViewAdapter(new ArrayList<>(protocol != null ? protocol.getProtocolEntry() : null),
                     protocol));
         }

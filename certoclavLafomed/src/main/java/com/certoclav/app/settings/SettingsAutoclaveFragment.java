@@ -224,9 +224,16 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
                     }
 
                 }
-                ReadAndParseSerialService.getInstance().setParameter(
-                        id,
-                        sharedPreferences.getString(key, ""));
+                //It is a temperature, should check the temp unit, StMax only support C
+                if (AutoclaveModelManager.getInstance().isTemperatureParameter(id)) {
+                    ReadAndParseSerialService.getInstance().setParameter(
+                            id,
+                            Helper.currentUnitToCelsius(Float.valueOf(sharedPreferences.getString(key, "")
+                                    .replace(",", "."))));
+                } else
+                    ReadAndParseSerialService.getInstance().setParameter(
+                            id,
+                            sharedPreferences.getString(key, ""));
             }
         } else {
             if (sharedPreferences.contains(key))

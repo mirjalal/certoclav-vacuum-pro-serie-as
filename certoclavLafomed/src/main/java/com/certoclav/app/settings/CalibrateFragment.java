@@ -5,12 +5,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
@@ -21,6 +23,8 @@ import com.certoclav.app.model.AutoclaveParameter;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.service.ReadAndParseSerialService;
+import com.certoclav.app.util.AutoclaveModelManager;
+import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.MyCallback;
 import com.certoclav.library.application.ApplicationController;
 
@@ -40,13 +44,17 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
     private EditText editOffsetMedia2 = null;
     private EditText editOffsetPress = null;
     private EditText editOffsetPress2;
+
+    private TextView textViewSteamTempText;
+    private TextView textViewMedia1TempText;
+    private TextView textViewMedia2TempText;
     private Button buttonApply = null;
     private int currentOffsetReadParameter = AppConstants.PARAM_OFFSET_STEAM;
     private int failCount = 0;
     private final int MAX_FAIL_COUNT = 5;
-    private double offsetTemp1;
-    private double offsetMedia;
-    private double offsetMedia2;
+    private Double offsetTemp1;
+    private Double offsetMedia;
+    private Double offsetMedia2;
     private double offsetPress;
     private double offsetPress2;
     private boolean isLocked;
@@ -74,6 +82,10 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
         editOffsetPress2 = rootView.findViewById(R.id.parameter_press_2_coeff1);
         editOffsetMedia = rootView.findViewById(R.id.parameter_media_coeff1);
         editOffsetMedia2 = rootView.findViewById(R.id.parameter_media_2_coeff1);
+
+        textViewSteamTempText = rootView.findViewById(R.id.parameter_temp1_text);
+        textViewMedia1TempText = rootView.findViewById(R.id.parameter_media_text);
+        textViewMedia2TempText = rootView.findViewById(R.id.parameter_media_2_text);
 
         editOffsetSteamSensor.setText("");
         editOffsetPress.setText("");
@@ -107,31 +119,32 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
                     if (editOffsetPress.getText().length() > 0)
                         offsetPress2 = Double.parseDouble(editOffsetPress2.getText().toString());
 
-                    if (offsetTemp1 < -10 || offsetTemp1 > 10) {
-                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_steam_sensor, -10f,10f), Toast.LENGTH_SHORT, true).show();
+                    Pair<Float, Float> range = AutoclaveModelManager.getInstance().getOffsetTempRange();
+                    if (offsetTemp1 < range.first || offsetTemp1 > range.second) {
+                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_steam_sensor, range.first, range.second), Toast.LENGTH_SHORT, true).show();
                         return;
                     }
 
                     if (offsetPress < -1 || offsetPress > 1) {
-                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_pressure_sensor_1,-1f,1f), Toast.LENGTH_SHORT, true).show();
+                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_pressure_sensor_1, -1f, 1f), Toast.LENGTH_SHORT, true).show();
                         return;
                     }
 
                     if (offsetPress2 < -1 || offsetPress2 > 1) {
-                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_pressure_sensor_2,-1f,1f), Toast.LENGTH_SHORT, true).show();
+                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_pressure_sensor_2, -1f, 1f), Toast.LENGTH_SHORT, true).show();
                         return;
                     }
-                    if (offsetMedia < -10 || offsetMedia > 10) {
-                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_media_sensor,-10f,10f), Toast.LENGTH_SHORT, true).show();
-                        return;
-                    }
-
-                    if (offsetMedia2 < -10 || offsetMedia2 > 10) {
-                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_media_2_sensor,-10f,10f), Toast.LENGTH_SHORT, true).show();
+                    if (offsetMedia < range.first || offsetMedia > range.second) {
+                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_media_sensor, range.first, range.second), Toast.LENGTH_SHORT, true).show();
                         return;
                     }
 
-                    barProgressDialog= new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
+                    if (offsetMedia2 < range.first || offsetMedia2 > range.second) {
+                        Toasty.warning(getActivity(), getString(R.string.calibration_not_valid_media_2_sensor, range.first, range.second), Toast.LENGTH_SHORT, true).show();
+                        return;
+                    }
+
+                    barProgressDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
                     barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
                     barProgressDialog.setTitleText(getString(R.string.saving));
                     barProgressDialog.setContentText(null);
@@ -139,7 +152,8 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
                     barProgressDialog.setCancelable(false);
                     barProgressDialog.setCanceledOnTouchOutside(false);
                     barProgressDialog.show();
-                    ReadAndParseSerialService.getInstance().setParameter(currentOffsetReadParameter = AppConstants.PARAM_OFFSET_STEAM, offsetTemp1);
+                    ReadAndParseSerialService.getInstance().setParameter(currentOffsetReadParameter = AppConstants.PARAM_OFFSET_STEAM,
+                            Helper.currentUnitToCelsius(offsetTemp1.floatValue()));
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -165,6 +179,11 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
         } else {
             isLocked = false;
         }
+
+        textViewSteamTempText.setText(getString(R.string.offset_of_steam_sensor_c_, Helper.getTemperatureUnitText(null)));
+        textViewMedia1TempText.setText(getString(R.string.offset_of_media_sensor_c_, Helper.getTemperatureUnitText(null)));
+        textViewMedia2TempText.setText(getString(R.string.offset_of_media_2_sensor_c_, Helper.getTemperatureUnitText(null)));
+
 
         editOffsetSteamSensor.setEnabled(false);
         editOffsetPress.setEnabled(false);
@@ -193,7 +212,7 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
     public void onPause() {
         Autoclave.getInstance().removeOnCalibrationListener(this);
         ReadAndParseSerialService.getInstance().removeCallback(this);
-        if(barProgressDialog!=null)
+        if (barProgressDialog != null)
             barProgressDialog.dismiss();
         super.onPause();
     }
@@ -201,7 +220,7 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
     @Override
     public void onCalibrationParameterReceived() {
 
-        if(!isLocked) {
+        if (!isLocked) {
             editOffsetSteamSensor.setEnabled(true);
             editOffsetPress.setEnabled(true);
             editOffsetPress2.setEnabled(true);
@@ -255,11 +274,13 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
             switch (currentOffsetReadParameter) {
                 case AppConstants.PARAM_OFFSET_STEAM:
                     currentOffsetReadParameter = AppConstants.PARAM_OFFSET_MEDIA;
-                    ReadAndParseSerialService.getInstance().setParameter(AppConstants.PARAM_OFFSET_MEDIA, offsetMedia);
+                    ReadAndParseSerialService.getInstance().setParameter(AppConstants.PARAM_OFFSET_MEDIA,
+                            Helper.currentUnitToCelsius(offsetMedia.floatValue()));
                     break;
                 case AppConstants.PARAM_OFFSET_MEDIA:
                     currentOffsetReadParameter = AppConstants.PARAM_OFFSET_MEDIA_2;
-                    ReadAndParseSerialService.getInstance().setParameter(AppConstants.PARAM_OFFSET_MEDIA_2, offsetMedia2);
+                    ReadAndParseSerialService.getInstance().setParameter(AppConstants.PARAM_OFFSET_MEDIA_2,
+                            Helper.currentUnitToCelsius(offsetMedia2.floatValue()));
                     break;
                 case AppConstants.PARAM_OFFSET_MEDIA_2:
                     currentOffsetReadParameter = AppConstants.PARAM_OFFSET_PRESSURE_1;
@@ -289,7 +310,7 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
             }
         } else {
             barProgressDialog.dismissWithAnimation();
-            Toasty.warning(getContext(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT,true).show();
+            Toasty.warning(getContext(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT, true).show();
         }
     }
 

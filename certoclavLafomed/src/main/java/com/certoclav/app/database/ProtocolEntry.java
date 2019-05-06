@@ -1,6 +1,7 @@
 package com.certoclav.app.database;
 
 
+import com.certoclav.app.util.Helper;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
@@ -135,9 +136,9 @@ public class ProtocolEntry {
 
     public ProtocolEntry(Date timeStamp, float temperature, float mediaTemperature, float mediaTemperature2, float pressure, Protocol protocol, String debugInput, String debugOutput) {
         this.timestamp = timeStamp;
-        this.temperature = temperature;
-        this.mediaTemperature = mediaTemperature;
-        this.mediaTemperature2 = mediaTemperature2;
+        this.temperature = Helper.currentUnitToCelsius(temperature);
+        this.mediaTemperature = Helper.currentUnitToCelsius(mediaTemperature);
+        this.mediaTemperature2 = Helper.currentUnitToCelsius(mediaTemperature2);
         this.pressure = pressure;
         this.protocol = protocol;
         this.debugInput = debugInput;

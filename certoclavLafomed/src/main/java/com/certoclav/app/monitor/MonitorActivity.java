@@ -359,10 +359,10 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 buttonStop.setVisibility(View.VISIBLE);
                 if (currentProgramStep == Autoclave.PROGRAM_STEPS.MAINTAIN_TEMP) {
                     textState.setText(getString(R.string.success_sterilization_and_maintain_temp,
-                            Autoclave.getInstance().getProfile().getFinalTemp()));
+                            Autoclave.getInstance().getProfile().getFinalTemp(false)));
                     buttonStop.setText(getString(R.string.stop_maintain_temp));
                     buttonStop.setEnabled(true);
-                }else{
+                } else {
                     textState.setText(R.string.state_finished);
                 }
 
@@ -377,8 +377,8 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
 
                 if (currentProgramStep == Autoclave.PROGRAM_STEPS.FINISHED) {
                     askForIndicator();
-                }else{
-                  startProtocolSync();
+                } else {
+                    startProtocolSync();
                 }
 
                 break;
@@ -415,17 +415,17 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                         R.string.please_open_door));
                 buttonStop.setEnabled(false);
 
-               if(Autoclave.getInstance().getProgramStep() == Autoclave.PROGRAM_STEPS.MAINTAIN_TEMP){
-                   buttonStop.setEnabled(true);
-                   buttonStop.setText(R.string.stop_maintain_temp);
-               }
+                if (Autoclave.getInstance().getProgramStep() == Autoclave.PROGRAM_STEPS.MAINTAIN_TEMP) {
+                    buttonStop.setEnabled(true);
+                    buttonStop.setText(R.string.stop_maintain_temp);
+                }
 
-                if(Autoclave.getInstance().getData().isProgramRunning()){
+                if (Autoclave.getInstance().getData().isProgramRunning()) {
                     textState.setText(R.string.state_stopping);
                     textState.append(" (");
                     textState.append(Helper.getStateText());
                     textState.append(")");
-                }else{
+                } else {
                     textState.setText(R.string.state_finished);
                 }
                 navigationbar.hideButtonBack();
@@ -440,9 +440,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 break;
 
         }
-        if (AppConstants.IS_CERTOASSISTANT)
-
-        {
+        if (AppConstants.IS_CERTOASSISTANT) {
             buttonStop.setVisibility(View.GONE);
         }
 
@@ -467,7 +465,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 }
             }
         }
-        textSteps.setText(Helper.getProfileDesc(Autoclave.getInstance().getProfile(), this));
+        textSteps.setText(Autoclave.getInstance().getProfile().getDescription(true));
 
         //update UI
         onAutoclaveStateChange(Autoclave.getInstance().getState());
@@ -670,12 +668,13 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
         }
     }
 
-    private void startProtocolSync(){
-        if ( Autoclave.getInstance().isOnlineMode(this)) {
+    private void startProtocolSync() {
+        if (Autoclave.getInstance().isOnlineMode(this)) {
             Intent intent5 = new Intent(this, PostProtocolsService.class);
             startService(intent5);
         }
     }
+
     private void askForIndicator() {
         if (!PreferenceManager.getDefaultSharedPreferences(ApplicationController.getContext()).getBoolean(AppConstants.PREFERENCE_KEY_INDICATOR_TEST, false))
             return;
@@ -687,8 +686,8 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
-                       askForIndicatorStatus();
-                       sweetAlertDialog.dismissWithAnimation();
+                        askForIndicatorStatus();
+                        sweetAlertDialog.dismissWithAnimation();
                     }
                 })
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {

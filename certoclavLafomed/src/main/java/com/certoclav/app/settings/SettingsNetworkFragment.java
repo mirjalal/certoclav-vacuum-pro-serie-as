@@ -3,13 +3,13 @@ package com.certoclav.app.settings;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
@@ -150,8 +150,22 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
                 intent.putExtra("extra_prefs_show_button_bar", true);
                 startActivityForResult(intent, 0);
             } catch (Exception e) {
-                Toasty.warning(getActivity(), getString(R.string.no_ethernet_app, Toast.LENGTH_SHORT, true)).show();
 
+                try
+                {
+                    Intent intent = new Intent(Intent.ACTION_MAIN, null);
+                    intent.putExtra("extra_prefs_show_button_bar", true);
+                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                    ComponentName cn = new ComponentName("com.android.settings", "com.android.settings.ethernet.EthernetSettings ");
+                    intent.setComponent(cn);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivityForResult(intent,0);
+                }
+                catch (Exception e1)
+                {
+                    Toasty.warning(getActivity(), getString(R.string.no_ethernet_app), Toast.LENGTH_SHORT, true).show();
+
+                }
             }
 
 //            try {

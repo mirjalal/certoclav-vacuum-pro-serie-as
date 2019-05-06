@@ -23,7 +23,6 @@ import com.certoclav.app.service.CloudSocketService;
 import com.certoclav.app.service.PostProtocolsService;
 import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.app.util.AuditLogger;
-import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.bcrypt.BCrypt;
 import com.certoclav.library.certocloud.CloudDatabase;
@@ -404,8 +403,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                                 Autoclave.getInstance().getUser(),
                                 Autoclave.getInstance().getProfile(),
                                 ERROR_CODE_CONNECTION_LOST,
-                                false,
-                                AutoclaveModelManager.getInstance().getTemperatureUnit());
+                                false);
                         Autoclave.getInstance().setProtocol(protocol);
                         databaseService.insertProtocol(protocol);
 

@@ -17,9 +17,10 @@ public class AutoclaveModelManager implements MyCallback {
 
     private static AutoclaveModelManager manager;
     private Integer[] parametersForAdmin = new Integer[]{1, 2, 3, 4, 71, 72, 94, 95};
+    private Integer[] parametersTemperature = new Integer[]{36, 37, 39, 40};
     private String[] parametersSkipForAuditLog = new String[]{"preferences_autoclave_parameter_94",
-    "preferences_autoclave_parameter_95","preferences_autoclave_parameter_96",
-    "preferences_autoclave_parameter_98"};
+            "preferences_autoclave_parameter_95", "preferences_autoclave_parameter_96",
+            "preferences_autoclave_parameter_98"};
     private int currentSentParameterId = 1;
 
     private AutoclaveModelManager() {
@@ -60,6 +61,10 @@ public class AutoclaveModelManager implements MyCallback {
         return temperatureSymbol != null ? temperatureSymbol.getValue().toString() : "C";
     }
 
+    public boolean isFahrenheit() {
+        return getTemperatureUnit().equalsIgnoreCase("F");
+    }
+
     public void setTemperatureSymbol(AutoclaveParameter temperatureSymbol) {
         this.temperatureSymbol = temperatureSymbol;
     }
@@ -78,17 +83,34 @@ public class AutoclaveModelManager implements MyCallback {
         switch (model.getValue().toString()) {
             case "AEB":
             case "AHSB":
-                return new Pair<>(100f, 134f);
+                return new Pair<>(Helper.celsiusToCurrentUnit(100f),
+                        Helper.celsiusToCurrentUnit(134f));
             default:
-                return new Pair<>(100f, 140f);
+                return new Pair<>(Helper.celsiusToCurrentUnit(100f),
+                        Helper.celsiusToCurrentUnit(140f));
         }
     }
 
 
     public Pair<Float, Float> getWarmingUpTempRange() {
-        return new Pair<>(0f, 199f);
+        return new Pair<>(Helper.celsiusToCurrentUnit(0f),
+                Helper.celsiusToCurrentUnit(199f));
     }
 
+    public Pair<Float, Float> getFinalTempRange() {
+        return new Pair<>(Helper.celsiusToCurrentUnit(50f),
+                Helper.celsiusToCurrentUnit(95f));
+    }
+
+    public Pair<Float, Float> getZValueTempRange() {
+        return new Pair<>(Helper.celsiusToCurrentUnit(0.1f),
+                Helper.celsiusToCurrentUnit(100f));
+    }
+
+    public Pair<Float, Float> getOffsetTempRange() {
+        return new Pair<>(Helper.celsiusToCurrentUnit(-10),
+                Helper.celsiusToCurrentUnit(10f));
+    }
     public Pair<Integer, Integer> getSterilizationTimeRange() {
         switch (model.getValue().toString()) {
             case "AEB":
@@ -128,9 +150,9 @@ public class AutoclaveModelManager implements MyCallback {
             case 98:
                 return new Pair<>(0f, 100f);
             case 40:
-                if(getModelName().contains("TLV"))
-                        return new Pair<>(100f, 140f);
-                return new Pair<>(0f, 140f);
+                if (getModelName().contains("TLV"))
+                    return new Pair<>(Helper.celsiusToCurrentUnit(100), Helper.celsiusToCurrentUnit(140));
+                return new Pair<>(Helper.celsiusToCurrentUnit(0), Helper.celsiusToCurrentUnit(140));
             case 99:
                 switch (getModelName()) {
                     case "TLVPD":
@@ -194,7 +216,7 @@ public class AutoclaveModelManager implements MyCallback {
     private String getModelName() {
         try {
             return model.getValue().toString().toUpperCase().replaceAll("\\d", "").replaceAll("-", "");
-        }catch (Exception e){
+        } catch (Exception e) {
             return "NA";
         }
     }
@@ -238,5 +260,9 @@ public class AutoclaveModelManager implements MyCallback {
     @Override
     public void onProgress(int current, int max) {
 
+    }
+
+    public boolean isTemperatureParameter(int id) {
+        return Arrays.asList(parametersTemperature).contains(id);
     }
 }

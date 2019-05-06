@@ -109,7 +109,7 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
             viewHolder = (ViewHolder) convertView.getTag();
 
         viewHolder.firstLine.setText(getItem(position).getName());
-        viewHolder.textDuration.setText(getItem(position).getDescription());
+        viewHolder.textDuration.setText(getItem(position).getDescription(true));
 
         if (CloudUser.getInstance().isLoggedIn() == false) {
             viewHolder.imageViewCloud.setImageResource(R.drawable.ic_cloud_no_user);
@@ -178,7 +178,8 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
 
     private void onItemClickListener(final int position) {
         Log.e("ProgramAdapter", "onclick");
-        if (Autoclave.getInstance().getUser().isAdmin()) {
+        if (Autoclave.getInstance().getUser().isAdmin()
+                && Autoclave.getInstance().getUser().getEmail().equalsIgnoreCase("admin")) {
             SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
                     .setTitleText(mContext.getString(R.string.permission_denied))
                     .setContentText(mContext.getString(R.string.admin_user_cant_start_a_program_and_info))

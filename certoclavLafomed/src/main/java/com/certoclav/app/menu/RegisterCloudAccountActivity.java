@@ -83,7 +83,6 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
         navigationbar.setHeadText(getString(currentUser != null ? R.string.edit_user : R.string.register_new_user));
 
 
-
         linEditTextItemContainer = (LinearLayout) findViewById(R.id.register_container_edit_text_items);
 
         //Checkbox is Admin
@@ -108,7 +107,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().contains("@") && s.toString().contains("."))
+                if (android.util.Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches())
                     editEmailItem.setHasValidString(true);
             }
 
@@ -315,12 +314,17 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                     return;
                 }
                 Log.e("RegisterActivity", "onclickRegisterButton");
-                if (editPasswordItem.getText().length() > 0 || editPasswordItemConfirm.getText().length() > 0)
-                    if ((!editPasswordItem.hasValidString() || !editPasswordItemConfirm.hasValidString()) ||
-                            !editPasswordItem.getText().equals(editPasswordItemConfirm.getText())) {
-                        Toast.makeText(RegisterCloudAccountActivity.this, getString(R.string.passwords_do_not_match), Toast.LENGTH_LONG).show();
-                        return;
-                    }
+
+                if (!editPasswordItem.hasValidString()) {
+                    Toast.makeText(RegisterCloudAccountActivity.this, getString(R.string.passwords_min_length), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if ((!editPasswordItemConfirm.hasValidString()) ||
+                        !editPasswordItem.getText().equals(editPasswordItemConfirm.getText())) {
+                    Toast.makeText(RegisterCloudAccountActivity.this, getString(R.string.passwords_do_not_match), Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if (!editEmailItem.hasValidString()) {
                     Toast.makeText(RegisterCloudAccountActivity.this, getString(R.string.please_enter_a_valid_email_address), Toast.LENGTH_LONG).show();
                     return;
@@ -568,7 +572,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
     @Override
     protected void onResume() {
         super.onResume();
-        if(navigationbar!=null)
+        if (navigationbar != null)
             navigationbar.setNavigationbarListener(this);
     }
 
@@ -576,7 +580,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
     @Override
     protected void onPause() {
         super.onPause();
-        if(navigationbar!=null)
+        if (navigationbar != null)
             navigationbar.removeNavigationbarListener(this);
     }
 

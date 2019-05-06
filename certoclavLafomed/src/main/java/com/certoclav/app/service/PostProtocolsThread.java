@@ -140,7 +140,6 @@ public class PostProtocolsThread extends Thread {
                             jsonProtocolObject.put("errcode", errorCodeCloud);
                             jsonProtocolObject.put("is_cont_by_flex_probe_1", protocol.isContByFlexProbe1());
                             jsonProtocolObject.put("is_cont_by_flex_probe_2", protocol.isContByFlexProbe2());
-                            jsonProtocolObject.put("temp_unit", protocol.getTemperatureUnit());
                             jsonProtocolObject.put("entries", entryJSONArray);
 
                             JSONObject jsonProtocolWrapper = new JSONObject();

@@ -1,5 +1,8 @@
 package com.certoclav.app.model;
 
+import com.certoclav.app.util.AutoclaveModelManager;
+import com.certoclav.app.util.Helper;
+
 public class AutoclaveParameter {
     private int parameterId;
     private Object value;
@@ -14,6 +17,8 @@ public class AutoclaveParameter {
     }
 
     public Object getValue() {
+        if (AutoclaveModelManager.getInstance().isTemperatureParameter(parameterId))
+            return Helper.celsiusToCurrentUnit(Float.valueOf(value.toString()));
         return value;
     }
 

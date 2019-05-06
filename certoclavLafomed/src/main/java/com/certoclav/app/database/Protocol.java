@@ -5,6 +5,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.certoclav.app.model.Autoclave;
+import com.certoclav.app.util.Helper;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DataType;
@@ -61,10 +62,6 @@ public class Protocol {
     @SerializedName("is_cont_by_flex_probe_2")
     private Boolean isContByFlexProbe2;
 
-    @DatabaseField(columnName = FIELD_TEMP_UNIT)
-    @SerializedName("temp_unit")
-    private String temperatureUnit;
-
     @DatabaseField(columnName = FIELD_PROTOCOL_START_TIME, dataType = DataType.DATE)
     @SerializedName("start")
     private Date startTime;
@@ -119,10 +116,6 @@ public class Protocol {
 
     private List<Profile> program;
 
-
-    public String getTemperatureUnit() {
-        return temperatureUnit == null ? "C" : temperatureUnit;
-    }
 
     public Profile getProgram() {
         return (program != null && program.size() > 0) ? program.get(0) : null;
@@ -194,6 +187,15 @@ public class Protocol {
     }
 
     public String getProfileDescription() {
+        try {
+            String description = this.profileDescription;
+            String temp = description.substring(description.indexOf("[") + 1, description.indexOf("]"));
+            return description.replaceAll("\\[(.*?)\\]",
+                    String.valueOf(Helper.celsiusToCurrentUnit(Float.valueOf(temp)))
+                            + " " + Helper.getTemperatureUnitText(null) + " ");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return profileDescription;
     }
 
@@ -266,7 +268,7 @@ public class Protocol {
     }
 
     public Protocol(String cloudId, int version, Date startTime, Date endTime, int zykklusNumber,
-                    Controller controller, User user, Profile profile, int errorCode, boolean uploaded, String tempUnit) {
+                    Controller controller, User user, Profile profile, int errorCode, boolean uploaded) {
         this.cloudId = cloudId;
         this.version = version;
         this.startTime = startTime;
@@ -274,13 +276,12 @@ public class Protocol {
         this.zyklusNumber = zykklusNumber;
         this.controller = controller;
         this.user = user;
-        this.temperatureUnit = tempUnit;
         this.isContByFlexProbe1 = profile.isContByFlexProbe1Enabled();
         this.isContByFlexProbe2 = profile.isContByFlexProbe2Enabled();
         if (profile != null) {
             //copy of profile, because the original profile will be deleted after a while
             StringBuilder sb = new StringBuilder();
-            sb.append(profile.getDescription());
+            sb.append(profile.getDescription(false));
             if (!uploaded) {
                 HashMap<String, Integer> contents = new HashMap<>();
                 for (String contentString : Autoclave.getInstance().getListContent()) {
@@ -293,7 +294,7 @@ public class Protocol {
             this.profileDescription = sb.toString();
             this.profileName = profile.getName();
             this.sterilisationPressure = profile.getSterilisationPressure();
-            this.sterilisationTemperature = profile.getSterilisationTemperature();
+            this.sterilisationTemperature = profile.getSterilisationTemperature(true);
             this.sterilisationTime = profile.getSterilisationTime();
             this.vacuumPersistTemperature = profile.getVacuumPersistTemperature();
             this.vacuumPersistTime = profile.getVacuumPersistTime();

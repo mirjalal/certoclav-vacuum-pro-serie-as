@@ -65,7 +65,7 @@ public class RegisterActivity extends CertoclavSuperActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().contains("@") && s.toString().contains("."))
+                if (android.util.Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches())
                     editEmailItem.setHasValidString(true);
             }
 
@@ -242,6 +242,12 @@ public class RegisterActivity extends CertoclavSuperActivity {
 
                 Log.e("RegisterActivity", "onclickRegisterButton");
                 if (editPasswordItem.getVisibility() == View.VISIBLE) {
+
+                    if (!editPasswordItem.hasValidString()) {
+                        Toast.makeText(RegisterActivity.this, getString(R.string.passwords_min_length), Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
                     if (!editPasswordItem.hasValidString() || !editPasswordItemConfirm.hasValidString()) {
                         Toast.makeText(RegisterActivity.this, getString(R.string.passwords_do_not_match), Toast.LENGTH_LONG).show();
                         return;

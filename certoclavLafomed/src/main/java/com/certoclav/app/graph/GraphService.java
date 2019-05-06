@@ -11,6 +11,7 @@ import com.certoclav.app.database.ProtocolEntry;
 import com.certoclav.app.listener.SensorDataListener;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveData;
+import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.app.util.Helper;
 import com.certoclav.library.graph.LineGraph;
 import com.certoclav.library.graph.Point;
@@ -95,7 +96,7 @@ public class GraphService implements SensorDataListener {
                                             runningGraph.addNewPoints(p2, LineGraph.TYPE_MEDIA_2);
                                         }
 
-                                        Point p3 = new Point(roundFloat((float) (secondsSinceStart / 60.0)), roundFloat((float) (Autoclave.getInstance().getData().getPress().getCurrentValue()*100)));
+                                        Point p3 = new Point(roundFloat((float) (secondsSinceStart / 60.0)), roundFloat((float) (Autoclave.getInstance().getData().getPress().getCurrentValue() * 100)));
                                         runningGraph.addNewPoints(p3, LineGraph.TYPE_PRESS);
                                         double[] range = new double[4];
                                         range[0] = 0;
@@ -185,7 +186,8 @@ public class GraphService implements SensorDataListener {
 
                 if (pastSeconds - timeLastPoint > 30) {
 
-                    Point p = new Point(roundFloat((float) (pastSeconds / 60.0)), roundFloat(entry.getTemperature()));
+                    Point p = new Point(roundFloat((float) (pastSeconds / 60.0)),
+                            roundFloat(Helper.celsiusToCurrentUnit(entry.getTemperature())));
                     protocolGraph.addNewPoints(p, LineGraph.TYPE_STEAM);
 
                     Point p2 = new Point(roundFloat((float) (pastSeconds / 60.0)), roundFloat((float) (entry.getPressureInkPa())));
@@ -193,12 +195,14 @@ public class GraphService implements SensorDataListener {
 
 
                     if (protocol.isContByFlexProbe1()) {
-                        Point p3 = new Point(roundFloat((float) (pastSeconds / 60.0)), roundFloat(entry.getMediaTemperature()));
+                        Point p3 = new Point(roundFloat((float) (pastSeconds / 60.0)),
+                                roundFloat(Helper.celsiusToCurrentUnit(entry.getMediaTemperature())));
                         protocolGraph.addNewPoints(p3, LineGraph.TYPE_MEDIA);
                     }
 
-                    if(protocol.isContByFlexProbe2()){
-                        Point p3 = new Point(roundFloat((float) (pastSeconds / 60.0)), roundFloat(entry.getMediaTemperature2()));
+                    if (protocol.isContByFlexProbe2()) {
+                        Point p3 = new Point(roundFloat((float) (pastSeconds / 60.0)),
+                                roundFloat(Helper.celsiusToCurrentUnit(entry.getMediaTemperature2())));
                         protocolGraph.addNewPoints(p3, LineGraph.TYPE_MEDIA_2);
                     }
 
@@ -210,7 +214,7 @@ public class GraphService implements SensorDataListener {
             range[0] = 0;
             range[1] = (pastSeconds / 60.0) * 1.05;
             range[2] = -90;
-            range[3] = 250;
+            range[3] = AutoclaveModelManager.getInstance().getTemperatureUnit().equalsIgnoreCase("F") ? 300 : 250;
             protocolGraph.setRange(range);
 
         } catch (Exception e) {

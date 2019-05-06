@@ -34,7 +34,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/edittext_selector"
                 android:imeOptions="actionDone"
-                android:inputType="number" />
+                android:inputType="numberDecimal" />
 
             <TextView
                 android:id="@+id/program_definition_editstep_edit_temp_unit"

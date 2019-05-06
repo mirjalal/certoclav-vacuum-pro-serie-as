@@ -85,7 +85,7 @@
 
     <CheckBoxPreference
         android:defaultValue="@bool/preferences_print_program_data_points"
-        android:key="/preferences_print_program_data_points"
+        android:key="@string/preferences_print_program_data_points"
         android:summary="@string/print_the_program_data_points_on_off"
         android:title="@string/print_program_data_points" />
 

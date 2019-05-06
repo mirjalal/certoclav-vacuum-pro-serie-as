@@ -248,7 +248,7 @@ public class SyncProfilesThread extends Thread {
             programJsonObject.put("lidopen", false);
             programJsonObject.put("tmpbuffer", 0);
             programJsonObject.put("title", profile.getName());
-            programJsonObject.put("note", profile.getDescription());
+            programJsonObject.put("note", profile.getDescription(true));
             if (profile.getCloudId() != null && profile.getCloudId().length() > 0)
                 programJsonObject.put("_id", profile.getCloudId());
 

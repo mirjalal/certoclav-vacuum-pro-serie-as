@@ -151,8 +151,7 @@ public class Helper {
                             Autoclave.getInstance().getUser(),
                             protocol.getProgram(),
                             protocol.getErrorCode(), // power loss
-                            true,
-                            AutoclaveModelManager.getInstance().getTemperatureUnit());
+                            true);
 
                     databaseService.insertProtocol(temp);
                     Calendar calendar = Calendar.getInstance();
@@ -231,8 +230,7 @@ public class Helper {
                         Autoclave.getInstance().getUser(),
                         protocol.getProgram(),
                         protocol.getErrorCode(), // power loss
-                        true,
-                        AutoclaveModelManager.getInstance().getTemperatureUnit());
+                        true);
 
                 databaseService.insertProtocol(temp);
                 Calendar calendar = Calendar.getInstance();
@@ -571,10 +569,14 @@ public class Helper {
                     for (ProtocolEntry protocolEntry : protocol.getProtocolEntry()) {
                         if (protocolEntry.getTimestamp().getTime() < startTime.getTime()) continue;
                         JSONObject entryJSONObject = new JSONObject();
-                        entryJSONObject.put("ts", String.format(Locale.US, "%.2f", ((float) (protocolEntry.getTimestamp().getTime() - startTime.getTime())) / (1000.0 * 60.0)));
-                        entryJSONObject.put("tmp", String.format(Locale.US, "%.2f", protocolEntry.getTemperature()));
-                        entryJSONObject.put("mtmp", String.format(Locale.US, "%.2f", protocolEntry.getMediaTemperature()));
-                        entryJSONObject.put("mtmp_2", String.format(Locale.US, "%.2f", protocolEntry.getMediaTemperature2()));
+                        entryJSONObject.put("ts", String.format(Locale.US, "%.2f",
+                                ((float) (protocolEntry.getTimestamp().getTime() - startTime.getTime())) / (1000.0 * 60.0)));
+                        entryJSONObject.put("tmp", String.format(Locale.US, "%.2f",
+                                protocolEntry.getTemperature()));
+                        entryJSONObject.put("mtmp", String.format(Locale.US, "%.2f",
+                                protocolEntry.getMediaTemperature()));
+                        entryJSONObject.put("mtmp_2", String.format(Locale.US, "%.2f",
+                                protocolEntry.getMediaTemperature2()));
                         entryJSONObject.put("prs", String.format(Locale.US, "%.2f", protocolEntry.getPressure()));
                         entryJSONObject.put("input", protocolEntry.getDebugInput());
                         entryJSONObject.put("output", protocolEntry.getDebugOutput());
@@ -608,7 +610,7 @@ public class Helper {
                     jsonProtocolObject.put("devicekey", Autoclave.getInstance().getController().getSavetyKey());
                     jsonProtocolObject.put("program", programJsonArray);
                     jsonProtocolObject.put("start", protocol.getStartTime().getTime());
-                    jsonProtocolObject.put("end", lastEntry.getTime());
+                    jsonProtocolObject.put("end", lastEntry != null ? lastEntry.getTime() : protocol.getStartTime().getTime());
                     jsonProtocolObject.put("cycle", protocol.getZyklusNumber());
                     /*
                      *  The cloud will interpret the error codes as following:
@@ -644,7 +646,7 @@ public class Helper {
                     jsonProtocolObject.put("errcode", errorCodeCloud);
                     jsonProtocolObject.put("is_cont_by_flex_probe_1", protocol.isContByFlexProbe1());
                     jsonProtocolObject.put("is_cont_by_flex_probe_2", protocol.isContByFlexProbe2());
-                    jsonProtocolObject.put("temp_unit", protocol.getTemperatureUnit());
+                    jsonProtocolObject.put("temp_unit", "C"/*AutoclaveModelManager.getInstance().getTemperatureUnit()*/);
                     jsonProtocolObject.put("entries", entryJSONArray);
 
                     JSONObject jsonProtocolWrapper = new JSONObject();
@@ -904,7 +906,7 @@ public class Helper {
                     public void onClick(View v) {
                         if (Helper.checkAdminPassword(context, editTextPassword.getText().toString())) {
                             Intent intent2 = new Intent(context, SettingsActivity.class);
-                            intent2.putExtra("isAdmin",true);
+                            intent2.putExtra("isAdmin", true);
                             context.startActivity(intent2);
                             dialog.dismiss();
                         } else {
@@ -1091,19 +1093,19 @@ public class Helper {
                     dryTime.put("m", profile.getDryTime() % 60);
 
                     programJsonObject.put("title", profile.getName());
-                    programJsonObject.put("note", profile.getDescription());
+                    programJsonObject.put("note", profile.getDescription(true));
                     programJsonObject.put("id", profile.getIndex());
-                    programJsonObject.put("tmp", profile.getSterilisationTemperature());
+                    programJsonObject.put("tmp", profile.getSterilisationTemperature(true));
                     programJsonObject.put("is_liquid", profile.isLiquidProgram());
                     programJsonObject.put("is_cont_by_flex_probe_1", profile.isContByFlexProbe1Enabled());
                     programJsonObject.put("is_cont_by_flex_probe_2", profile.isContByFlexProbe2Enabled());
                     programJsonObject.put("is_maintain_enabled", profile.isMaintainEnabled());
-                    programJsonObject.put("final_temp", profile.getFinalTemp());
+                    programJsonObject.put("final_temp", profile.getFinalTemp(true));
                     programJsonObject.put("use_f_function", profile.isF0Enabled());
                     programJsonObject.put("dur", sterlizationTime);
                     programJsonObject.put("dry_dur", dryTime);
                     programJsonObject.put("f0_value", profile.getF0Value());
-                    programJsonObject.put("z_value", profile.getzValue());
+                    programJsonObject.put("z_value", profile.getzValue(true));
                     programJsonObject.put("is_from_android", true);
                     programJsonObject.put("deviceKey", Autoclave.getInstance()
                             .getController().getSavetyKey());
@@ -1163,10 +1165,10 @@ public class Helper {
 
     public static String getProfileDesc(Profile profile, Context context) {
         StringBuilder sbuilder = new StringBuilder();
-        if (profile.getSterilisationTemperature() != 0) {
-            sbuilder.append(profile.getSterilisationTemperature())
-                    .append(" " + getTemperatureUnitText(null))
-                    .append(" ");
+        if (profile.getSterilisationTemperature(false) != 0) {
+            sbuilder.append("[")
+                    .append(profile.getSterilisationTemperature(true))
+                    .append("]");
         }
         if (profile.getSterilisationPressure() != 0) {
             sbuilder.append(Float.toString(profile.getSterilisationPressure()))
@@ -1197,7 +1199,8 @@ public class Helper {
                     .append(" " + context.getString(R.string.min))
                     .append("\n");
         }
-        if (profile.getDryTime() != 0 && AutoclaveModelManager.getInstance().isDryTimeExists()) {
+        if (profile.getDryTime() != 0 && AutoclaveModelManager.getInstance().isDryTimeExists()
+                && !profile.isLiquidProgram()) {
             sbuilder.append(context.getString(R.string.drying_time) + " ")
                     .append(profile.getDryTime())
                     .append(" " + context.getString(R.string.min))
@@ -1206,11 +1209,12 @@ public class Helper {
         if (profile.isF0Enabled()) {
             sbuilder.append(context.getString(R.string.f0_value_format, profile.getF0Value()))
                     .append("\t")
-                    .append(context.getString(R.string.z_value_format, profile.getzValue()))
+                    .append(context.getString(R.string.z_value_format, profile.getzValue(false),
+                            Helper.getTemperatureUnitText(null)))
                     .append("\n");
         }
         if (profile.isMaintainEnabled()) {
-            sbuilder.append(context.getString(R.string.maintain_final_temp_format, profile.getFinalTemp(),
+            sbuilder.append(context.getString(R.string.maintain_final_temp_format, profile.getFinalTemp(false),
                     getTemperatureUnitText(null)))
                     .append("\n");
         }
@@ -1245,7 +1249,7 @@ public class Helper {
 
             case HEATING:
                 return context.getString(R.string.current_program_step_heating_desc,
-                        Autoclave.getInstance().getProfile().getSterilisationTemperature());
+                        Autoclave.getInstance().getProfile().getSterilisationTemperature(false));
 
             case STERILIZATION:
                 return context.getString(R.string.sterilisation);
@@ -1267,7 +1271,7 @@ public class Helper {
 
             case MAINTAIN_TEMP:
                 return context.getString(R.string.success_sterilization_and_maintain_temp,
-                        Autoclave.getInstance().getProfile().getFinalTemp());
+                        Autoclave.getInstance().getProfile().getFinalTemp(false));
 
             case STABILIZATION:
                 return context.getString(R.string.current_program_step_stabilization_desc);
@@ -1303,7 +1307,7 @@ public class Helper {
             if (protocol.getSterilisationTemperature() != 0) {
                 sbuilder.append("Sterilisation temperature: ")
                         .append(protocol.getSterilisationTemperature())
-                        .append(Helper.getTemperatureUnitText(protocol.getTemperatureUnit()))
+                        .append(Helper.getTemperatureUnitText(AutoclaveModelManager.getInstance().getTemperatureUnit()))
                         .append("\r\n");
             }
 
@@ -1324,7 +1328,7 @@ public class Helper {
             if (protocol.getVacuumPersistTemperature() != 0) {
                 sbuilder.append("Vacuum persist temperature: ")
                         .append(protocol.getVacuumPersistTemperature())
-                        .append(Helper.getTemperatureUnitText(protocol.getTemperatureUnit()))
+                        .append(Helper.getTemperatureUnitText(AutoclaveModelManager.getInstance().getTemperatureUnit()))
                         .append("\r\n");
             }
             if (protocol.getVacuumPersistTime() != 0) {
@@ -1346,9 +1350,14 @@ public class Helper {
 
 
     public static Double roundFloat(float f) {
-        int tempnumber = (int) (f * 100);
+        int tempnumber = (int) ((f + 0.00001) * 100);
         Double roundedfloat = (double) ((double) tempnumber / 100.0);
         return roundedfloat;
+    }
+
+    public static float roundFloat2(float f) {
+        String str = String.format(Locale.US, "%.2f", f);
+        return Float.valueOf(str);
     }
 
     public static String getTemperatureUnitText(String unit) {
@@ -1359,4 +1368,22 @@ public class Helper {
         return (unit != null && unit.equals("F"))
                 ? "\u2109" : "\u2103";
     }
+
+    public static float currentUnitToCelsius(float temp) {
+        switch (AutoclaveModelManager.getInstance().getTemperatureUnit()) {
+            case "F":
+                return roundFloat2(((temp - 32) * 5) / 9);
+        }
+        return roundFloat2(temp);
+    }
+
+
+    public static float celsiusToCurrentUnit(float temp) {
+        switch (AutoclaveModelManager.getInstance().getTemperatureUnit()) {
+            case "F":
+                return roundFloat2((temp * 9) / 5 + 32);
+        }
+        return roundFloat2(temp);
+    }
+
 }
