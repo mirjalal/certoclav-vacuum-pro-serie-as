@@ -727,6 +727,7 @@ public class Helper {
                 for (Profile profile : ((DeviceProgramsResponseModel) response).getPrograms()) {
                     if (oldProfiles.contains(profile)) {
                         profile.setRecentUsedDate(oldProfiles.get(oldProfiles.indexOf(profile)).getRecentUsedDate());
+                        profile.setDescription(getProfileDesc(profile, context));
                         oldProfiles.remove(profile);
                     }
                     Autoclave.getInstance().getProfilesFromAutoclave().add(profile);

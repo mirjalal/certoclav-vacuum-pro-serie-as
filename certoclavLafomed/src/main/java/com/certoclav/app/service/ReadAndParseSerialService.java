@@ -55,8 +55,9 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     public static final int INDEX_DAT_ERRORCODE = 13;
     public static final int INDEX_DAT_DEBUG_INPUT = 14;
     public static final int INDEX_DAT_DEBUG_OUTPUT = 15;
-    public static final int INDEX_DAT_CHECKSUM = 16;
-    public static final int NUMBER_OF_DAT_RESPONSE_PARAMETERS = 17;
+    public static final int INDEX_DAT_WARNING = 16;
+    public static final int INDEX_DAT_CHECKSUM = 17;
+    public static final int NUMBER_OF_DAT_RESPONSE_PARAMETERS = 18;
     public static final int NUMBER_OF_PROGRAM_RESPONSE_PARAMETERS = 15;
     private static final int DELAY_PROGRAM_RUNNING = 600;
     private static final int DELAY_PROGRAM_NOT_RUNNING = 800;
@@ -368,6 +369,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
     private String firmwareVersion = "";
     float[] pressures = new float[2];
     String[] debugData = new String[2];
+    String warningList;
     float[] temperatures = new float[4];
     private String programStep = "";
 
@@ -397,6 +399,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                     Autoclave.getInstance().getController().setCycleNumber(cycleNumber);
                     Autoclave.getInstance().getController().setFirmwareVersion(firmwareVersion);
                     Autoclave.getInstance().setDebugData(debugData);
+                    Autoclave.getInstance().setWarningList(warningList);
 
                     break;
                 case HANDLER_MSG_CALIBRATION:
@@ -588,6 +591,9 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                         pressures[1] = Float.parseFloat(responseParameters[INDEX_DAT_PRESSURE_OPTIONAL]);
                         debugData[0] = responseParameters[INDEX_DAT_DEBUG_INPUT];
                         debugData[1] = responseParameters[INDEX_DAT_DEBUG_OUTPUT];
+                        warningList = responseParameters[INDEX_DAT_WARNING];
+
+                        Log.e("warning", warningList);
 
                         String digitalFlags = responseParameters[INDEX_DAT_DIGITAL];
                         boolean isProgramFinished = digitalFlags.charAt(AppConstants.DIGITAL_PROGRAM_FINISHED_INDEX) == '1';

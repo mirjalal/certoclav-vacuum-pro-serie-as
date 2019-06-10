@@ -1,6 +1,7 @@
 package com.certoclav.app.menu;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,8 +32,10 @@ import com.certoclav.library.application.ApplicationController;
 
 import java.util.ArrayList;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class ScanActivity extends CertoclavSuperActivity {
+
+public class ScanActivity extends CertoclavSuperActivity implements OnClickListener {
 
     private GridView programGrid;
     private EditText editTextId;
@@ -114,7 +117,7 @@ public class ScanActivity extends CertoclavSuperActivity {
                 Log.e("ScanActivity", "EVENT: " + v.getText().toString());
                 if (editTextId.getText().toString().length() > 0) {
                     scanAdapter.add(editTextId.getText().toString());
-                    programGrid.smoothScrollToPosition(scanAdapter.getCount()-1);
+                    programGrid.smoothScrollToPosition(scanAdapter.getCount() - 1);
                 }
                 editTextId.requestFocus();
                 editTextId.setText("");
@@ -137,6 +140,47 @@ public class ScanActivity extends CertoclavSuperActivity {
     }
 
 
+    @Override
+    public void onClick(View view) {
+        final SweetAlertDialog dialog = new SweetAlertDialog(this, R.layout.dialog_admin_password, SweetAlertDialog.WARNING_TYPE);
+        dialog.setContentView(R.layout.dialog_add_item);
+        dialog.setTitle(R.string.register_new_user);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
+        final EditText editTextItemName = dialog.findViewById(R.id.editTextPassword);
+        Button buttonAdd = dialog
+                .findViewById(R.id.dialogButtonLogin);
+        Button buttonCancel = dialog
+                .findViewById(R.id.dialogButtonCancel);
+        buttonAdd.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (editTextItemName.getText().toString().length() > 0) {
+                    scanAdapter.add(editTextItemName.getText().toString());
+                    programGrid.smoothScrollToPosition(scanAdapter.getCount() - 1);
+                }
+
+                if (editTextItemName.getText().toString().length() > 0) {
+                    dialog.dismissWithAnimation();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(editTextItemName.getWindowToken(), 0);
+                }
+            }
+        });
+
+        buttonCancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismissWithAnimation();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(editTextItemName.getWindowToken(), 0);
+            }
+        });
+
+        dialog.show();
+
+
+    }
 }
 
 

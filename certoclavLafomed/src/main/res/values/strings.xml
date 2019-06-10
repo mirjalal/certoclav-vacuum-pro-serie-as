@@ -992,6 +992,9 @@
     <string name="no_ethernet_app">Please install Ethernat app to manage the LAN configuration</string>
     <string name="admin">Admin</string>
     <string name="passwords_min_length">Password must be of minimum 4 characters</string>
+    <string name="please_enter_item_name">Add item name</string>
+    <string name="item_name">Item name</string>
+    <string name="add">Add</string>
 
 
 </resources>

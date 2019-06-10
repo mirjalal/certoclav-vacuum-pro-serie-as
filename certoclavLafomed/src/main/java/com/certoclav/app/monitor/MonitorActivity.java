@@ -305,7 +305,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
 
 
     @Override
-    public void onWarnListChange(ArrayList<Error> errorList) {
+    public void onWarnListChange(ArrayList<Error> errorList, ArrayList<Error> warningList) {
         if (errorList.size() > 0) {
 
         }

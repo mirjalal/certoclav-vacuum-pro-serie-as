@@ -1,11 +1,11 @@
 package com.certoclav.app.listener;
 
-import java.util.ArrayList;
-
 import com.certoclav.app.model.Error;
+
+import java.util.ArrayList;
 
 
 
 public interface AlertListener {
- void onWarnListChange(ArrayList<Error> errorList);
+ void onWarnListChange(ArrayList<Error> errorList, ArrayList<Error> warningList);
 }

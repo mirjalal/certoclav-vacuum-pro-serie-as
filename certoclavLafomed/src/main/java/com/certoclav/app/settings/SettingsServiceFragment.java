@@ -70,6 +70,7 @@ public class SettingsServiceFragment extends Fragment implements SensorDataListe
                 + "Date:                     " + Autoclave.getInstance().getDate() + "\n"
                 + "Time:                     " + Autoclave.getInstance().getTime() + "\n"
                 + "ErrorCode:                " + Autoclave.getInstance().getErrorCode() + "\n"
+                + "WarningCode:                " + Autoclave.getInstance().getWarningList() + "\n"
                 + "CycleNumber:              " + Autoclave.getInstance().getController().getCycleNumber() + "\n");
 
         v.setTypeface(Typeface.MONOSPACE);

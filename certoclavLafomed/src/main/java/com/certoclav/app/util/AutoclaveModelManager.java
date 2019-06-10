@@ -111,6 +111,7 @@ public class AutoclaveModelManager implements MyCallback {
         return new Pair<>(Helper.celsiusToCurrentUnit(-10),
                 Helper.celsiusToCurrentUnit(10f));
     }
+
     public Pair<Integer, Integer> getSterilizationTimeRange() {
         switch (model.getValue().toString()) {
             case "AEB":
@@ -179,6 +180,11 @@ public class AutoclaveModelManager implements MyCallback {
         //No Vacuum Phase exists
         return false;
     }
+
+    public boolean hasTwoFlexProbe2() {
+        return getModelName().contains("TLV");
+    }
+
 
     public List<Integer> getAdminParameters() {
         return Arrays.asList(parametersForAdmin);

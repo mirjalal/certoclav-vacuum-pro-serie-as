@@ -43,7 +43,7 @@ public interface AppConstants {
 
     /*TABLET AND AUTOCLAVE SELECTION*/
 
-    String TABLET_TYPE = TABLET_TYPE_FAYTECH;//TABLET_TYPE_FAYTECH_RS_232;//TABLET_TYPE_LILLIPUT
+    String TABLET_TYPE = TABLET_TYPE_FAYTECH;/*TABLET_TYPE_FAYTECH_RS_232*/;//TABLET_TYPE_LILLIPUT
     String MODEL_CURRENT = MODEL_RAYPA_TLV;
     Boolean isIoSimulated = false;
     String MODEL = "TLV-150FA";
@@ -243,8 +243,9 @@ public interface AppConstants {
     String PREFERENCE_KEY_SERIAL_BAUDRATE = "BAUDRATE";
 
 
-    String TVConfigurationID = "pff75tf";
+    String TVConfigurationID = "6nrvhq7";
     String TVCongigurationToken = "4340c134-d721-860b-2432-9d38b8ac7b99";
+//    String TVCongigurationToken = "5641552-d6NOIcjfVW4zAYVi0ztX";
 
 
     //Parameters

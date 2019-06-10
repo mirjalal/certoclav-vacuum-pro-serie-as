@@ -43,6 +43,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
     Context mContext = ApplicationController.getContext();
     private SparseArray<String> errorMap = new SparseArray<String>();
+    private SparseArray<String> warningMap = new SparseArray<String>();
     private SparseArray<String> errorVideoMap = new SparseArray<String>();
 
 
@@ -85,11 +86,52 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
     public static final int ERROR_CODE_CANCELLED_BY_USER = 2;
     public static final int FATAL_ERROR_PROCESS_STOPPED = 1;
 
+
+    public static final int TEMP_OUT_OF_RANGE = 1;
+    public static final int TIMEOUT_STEAM_PULSE = 2;
+    public static final int TIMEOUT_STABILIZATION = 3;
+    public static final int HEART_PROBES_EXC_DIF = 4;
+    public static final int PROCESS_ERROR = 5;
+    public static final int PLEASE_CLOSE_DOOR = 6;
+    public static final int OPEN_DOOR = 7;
+    public static final int HIGH_TEMP_FOR_THE_TEST = 8;
+    public static final int ERROR_TEMP_SENSOR_1 = 9;
+    public static final int ERROR_TEMP_SENSOR_2 = 10;
+    public static final int ERROR_TEMP_SENSOR_3 = 11;
+    public static final int ERROR_TEMP_SENSOR_4 = 12;
+    public static final int ERROR_PRES_SENSOR_1 = 13;
+    public static final int ERROR_PRES_SENSOR_2 = 14;
+    public static final int READ_ATM_PRESSURE = 15;
+    public static final int ATMOSPHERIC_PRESS_FAILURE = 16;
+    public static final int DOOR_OPEN_WARN = 17;
+    public static final int TEST_MAX_TEMP = 18;
+    public static final int GENERAL_FAILURE = 19;
+    public static final int VACUUM_TEST_NOK = 20;
+    public static final int STERILIZATION_NOK = 21;
+    public static final int VACUUM_TEST_OK = 22;
+    public static final int STERILIZATION_OK = 23;
+    public static final int NO_WATER = 24;
+    public static final int RESET_SAFETY_THERMOSTAT = 25;
+    public static final int CHECKING_RECOMMENDED = 26;
+    public static final int BACTERIOL_FILTER_CHANGE = 27;
+    public static final int BOILER_WITHOUT_WATER = 28;
+    public static final int ERROR_APROX__SENSOR = 29;
+    public static final int ERROR_CLOSE_DOOR_1 = 30;
+    public static final int ERROR_CLOSE_DOOR_2 = 31;
+    public static final int ERROR_CLOSE_DOOR_3 = 32;
+    public static final int ERROR_CLOSE_DOOR_4 = 33;
+    public static final int ERROR_CLOSE_DOOR_5 = 34;
+    public static final int ERROR_OPEN_DOOR_1 = 35;
+    public static final int ERROR_OPEN_DOOR_2 = 36;
+    public static final int ERROR_OPEN_DOOR_3 = 37;
+    public static final int NO_WATTER_FOR_PUMP = 38;
+
     private long nanoTimeAtLastMessageReceived = 0;
 
 
     ArrayList<AlertListener> alertListeners = new ArrayList<AlertListener>();
     private ArrayList<Error> errorList = new ArrayList<Error>(); //list of current errors
+    private ArrayList<Error> warningList = new ArrayList<Error>(); //list of current errors
     private DatabaseService databaseService;
     private boolean startButtonClicked = false;
     private long nanoTimeAtLastStopCommand = 0;
@@ -171,6 +213,47 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
         errorMap.put(POWER_SUPPLY_FAILURE, "POWER SUPPLY FAILURE");
         errorMap.put(ERROR_CODE_CANCELLED_BY_USER, mContext.getString(R.string.cycle_cancelled_by_user_));
         errorMap.put(FATAL_ERROR_PROCESS_STOPPED, "FATAL ERROR PROCESS STOPPED");
+
+
+        //map a error description to the error code.
+        warningMap.put(TEMP_OUT_OF_RANGE, "TEMP OUT OF RANGE");
+        warningMap.put(TIMEOUT_STEAM_PULSE, "TIMEOUT STEAM PULSE");
+        warningMap.put(TIMEOUT_STABILIZATION, "TIMEOUT STABILIZATION");
+        warningMap.put(HEART_PROBES_EXC_DIF, "HEART PROBES EXC DIF");
+        warningMap.put(PROCESS_ERROR, "PROCESS ERROR");
+        warningMap.put(PLEASE_CLOSE_DOOR, "PLEASE CLOSE DOOR");
+        warningMap.put(OPEN_DOOR, "OPEN DOOR");
+        warningMap.put(HIGH_TEMP_FOR_THE_TEST, "HIGH TEMP FOR THE TEST");
+        warningMap.put(ERROR_TEMP_SENSOR_1, "ERROR TEMP SENSOR 1");
+        warningMap.put(ERROR_TEMP_SENSOR_2, "ERROR TEMP SENSOR 2");
+        warningMap.put(ERROR_TEMP_SENSOR_3, "ERROR TEMP SENSOR 3");
+        warningMap.put(ERROR_TEMP_SENSOR_4, "ERROR TEMP SENSOR 4");
+        warningMap.put(ERROR_PRES_SENSOR_1, "ERROR PRES SENSOR 1");
+        warningMap.put(ERROR_PRES_SENSOR_2, "ERROR PRES SENSOR 2");
+        warningMap.put(READ_ATM_PRESSURE, "READ ATM PRESSURE");
+        warningMap.put(ATMOSPHERIC_PRESS_FAILURE, "ATMOSPHERIC PRESS FAILURE");
+        warningMap.put(DOOR_OPEN, "DOOR OPEN");
+        warningMap.put(TEST_MAX_TEMP, "TEST MAX TEMP");
+        warningMap.put(GENERAL_FAILURE, "GENERAL FAILURE");
+        warningMap.put(VACUUM_TEST_NOK, "VACUUM TEST NOK");
+        warningMap.put(STERILIZATION_NOK, "STERILIZATION NOK");
+        warningMap.put(VACUUM_TEST_OK, "VACUUM TEST OK");
+        warningMap.put(STERILIZATION_OK, "STERILIZATION OK");
+        warningMap.put(NO_WATER, "NO WATER");
+        warningMap.put(RESET_SAFETY_THERMOSTAT, "RESET SAFETY THERMOSTAT");
+        warningMap.put(CHECKING_RECOMMENDED, "CHECKING RECOMMENDED");
+        warningMap.put(BACTERIOL_FILTER_CHANGE, "BACTERIOL FILTER CHANGE");
+        warningMap.put(BOILER_WITHOUT_WATER, "BOILER WITHOUT WATER");
+        warningMap.put(ERROR_APROX__SENSOR, "ERROR APROX SENSOR");
+        warningMap.put(ERROR_CLOSE_DOOR_1, "ERROR CLOSE DOOR 1");
+        warningMap.put(ERROR_CLOSE_DOOR_2, "ERROR CLOSE_DOOR 2");
+        warningMap.put(ERROR_CLOSE_DOOR_3, "ERROR CLOSE_DOOR 3");
+        warningMap.put(ERROR_CLOSE_DOOR_4, "ERROR CLOSE_DOOR 4");
+        warningMap.put(ERROR_CLOSE_DOOR_5, "ERROR CLOSE_DOOR 5");
+        warningMap.put(ERROR_OPEN_DOOR_1, "ERROR OPEN_DOOR 1");
+        warningMap.put(ERROR_OPEN_DOOR_2, "ERROROPEN_DOOR 2");
+        warningMap.put(ERROR_OPEN_DOOR_3, "ERROR OPEN DOOR 3");
+        warningMap.put(NO_WATTER_FOR_PUMP, "NO WATTER FOR PUMP");
 
 
         Autoclave.getInstance().setOnSensorDataListener(this);
@@ -533,9 +616,9 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
         updateErrorList();
 
         for (AlertListener listener : alertListeners) {
-            listener.onWarnListChange(errorList);
+            listener.onWarnListChange(errorList, warningList);
         }
-        if (errorList.size() > 0) {
+        if (errorList.size() > 0 || warningList.size() > 0) {
             startAlertActivity();
         }
     }
@@ -732,6 +815,10 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
         return errorMap.get(errorCode, mContext.getString(R.string.cycle_cancelled_because_of_error));
     }
 
+    public String getWarningString(int errorCode) {
+        return warningMap.get(errorCode, null);
+    }
+
     public String getErrorVideo(int errorCode) {
         return errorMap.get(errorCode, "");
     }
@@ -852,6 +939,32 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                             "",
                             Error.TYPE_ERROR,
                             errorcode));
+                }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        checkWarnings();
+    }
+
+    private void checkWarnings() {
+
+        try {
+            String binary = String.format("%40s", new BigInteger(Autoclave.getInstance().getWarningList()
+                    , 16).toString(2)).replace(" ", "0");
+
+            Log.e("warning", binary);
+
+            warningList = new ArrayList<>();
+            int errorcode = 0;
+            for (int i = 0; i < 40; i++)
+                if (binary.charAt(i) == '1') {
+                    errorcode = i + 1;
+                    if (getWarningString(errorcode) != null)
+                        warningList.add(new Error("WARNING: " + getWarningString(errorcode),
+                                "",
+                                Error.TYPE_WARNING,
+                                errorcode));
                 }
         } catch (Exception e) {
             e.printStackTrace();

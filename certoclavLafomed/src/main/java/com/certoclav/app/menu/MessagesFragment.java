@@ -15,8 +15,8 @@ import android.widget.Toast;
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.model.Autoclave;
+import com.certoclav.app.model.Log;
 import com.certoclav.app.settings.SettingsEmailActivity;
-import com.certoclav.app.util.ESCPos;
 import com.teamviewer.sdk.screensharing.api.TVConfigurationID;
 import com.teamviewer.sdk.screensharing.api.TVCreationError;
 import com.teamviewer.sdk.screensharing.api.TVSession;
@@ -25,6 +25,7 @@ import com.teamviewer.sdk.screensharing.api.TVSessionCreationCallback;
 import com.teamviewer.sdk.screensharing.api.TVSessionFactory;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
 
 public class MessagesFragment extends Fragment {
 
@@ -128,7 +129,8 @@ public class MessagesFragment extends Fragment {
 
                     @Override
                     public void onTVSessionCreationFailed(TVCreationError error) {
-                        Toast.makeText(getActivity(), getString(R.string.start_screen_share_problem), Toast.LENGTH_SHORT).show();
+                        Log.e("tv_error", error.name());
+                        Toasty.error(getActivity(), getString(R.string.start_screen_share_problem)+error.name(), Toast.LENGTH_SHORT, true).show();
                     }
                 });
     }

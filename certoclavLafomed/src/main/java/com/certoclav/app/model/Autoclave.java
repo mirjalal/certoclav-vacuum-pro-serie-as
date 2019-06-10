@@ -46,6 +46,7 @@ public class Autoclave extends Observable {
     private boolean isDebugMode;
     private boolean isDoorLocked;
     private String[] debugData;
+    private String warningList;
 
     public enum PROGRAM_STEPS {
         ATMOSPHERIC_PRESSURE("PA"),
@@ -1294,6 +1295,15 @@ public class Autoclave extends Observable {
         }
         this.currentProgramCounter++;
 
+    }
+
+    public void setWarningList(String warningList) {
+        this.warningList = warningList;
+    }
+
+
+    public String getWarningList() {
+        return warningList;
     }
 
     public void setDebugData(String[] debugData) {

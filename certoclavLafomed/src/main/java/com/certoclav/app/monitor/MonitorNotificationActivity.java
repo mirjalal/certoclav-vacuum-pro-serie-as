@@ -79,17 +79,19 @@ public class MonitorNotificationActivity extends CertoclavSuperActivity implemen
 
 
     @Override
-    public void onWarnListChange(ArrayList<Error> errorList) {
+    public void onWarnListChange(ArrayList<Error> errorList, ArrayList<Error> warningList) {
 
-
-        if (errorList != null) {
-            if (errorList.size() == 0) {
+        ArrayList<Error> errorAndWarningList = new ArrayList<>();
+        errorAndWarningList.addAll(errorList);
+        errorAndWarningList.addAll(warningList);
+        if (errorAndWarningList != null) {
+            if (errorAndWarningList.size() == 0) {
                 finish();
             } else {
-                if (lastErrorMessage.equals("") || !lastErrorMessage.equals(errorList.get(0).getMsg()) || errorList.size() != errorCount) {
+                if (lastErrorMessage.equals("") || !lastErrorMessage.equals(errorAndWarningList.get(0).getMsg()) || errorAndWarningList.size() != errorCount) {
 
-                    errorCount = errorList.size();
-                    if (errorList.get(0).getType() == Error.TYPE_WARNING) {
+                    errorCount = errorAndWarningList.size();
+                    if (errorAndWarningList.get(0).getType() == Error.TYPE_WARNING) {
                         buttonOk.setVisibility(View.GONE);
                         buttonCancel.setVisibility(View.VISIBLE);
                     } else {
@@ -98,9 +100,8 @@ public class MonitorNotificationActivity extends CertoclavSuperActivity implemen
                     }
 
 
-
                     notificationContainer.removeAllViews();
-                    for (Error error : errorList) {
+                    for (Error error : errorAndWarningList) {
                         lastErrorMessage = error.getMsg();
                         View view = getLayoutInflater().inflate(R.layout.alert_view, null);
                         TextView tv = (TextView) view.findViewById(R.id.text_message);

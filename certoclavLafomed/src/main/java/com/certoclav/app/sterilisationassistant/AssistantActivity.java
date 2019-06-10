@@ -92,7 +92,7 @@ public class AssistantActivity extends CertoclavSuperActivity implements Profile
     }
 
     @Override
-    public void onWarnListChange(ArrayList<Error> errorList) {
+    public void onWarnListChange(ArrayList<Error> errorList, ArrayList<Error> waningList) {
     }
 
     @Override
