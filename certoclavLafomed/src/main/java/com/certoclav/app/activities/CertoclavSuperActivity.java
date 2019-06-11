@@ -67,9 +67,11 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
                 textMedia.setVisibility(View.GONE);
             }
 
-            textMedia2.setVisibility(AutoclaveModelManager.getInstance().hasTwoFlexProbe2() ? View.VISIBLE : View.GONE);
 
-            textMedia.setVisibility(View.VISIBLE);
+            textMedia.setVisibility(data.getTemp2().getCurrentValue() < -100 ? View.GONE : View.VISIBLE);
+            textMedia2.setVisibility(data.getTemp3().getCurrentValue() < -100 ? View.GONE : View.VISIBLE);
+            textMedia2.setVisibility((AutoclaveModelManager.getInstance().hasTwoFlexProbe2()
+                    && data.getTemp3().getCurrentValue() > -100) ? View.VISIBLE : View.GONE);
 
             textPressure.setText(getString(R.string.pressure) + ": " + data.getPress().getValueString() + " " + getString(R.string.bar));
             textSteam.setText(getString(R.string.steam) + ": " + data.getTemp1().getValueString() + " " + Helper.getTemperatureUnitText(null));
