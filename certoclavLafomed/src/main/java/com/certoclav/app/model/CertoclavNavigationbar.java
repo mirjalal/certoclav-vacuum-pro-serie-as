@@ -127,7 +127,7 @@ public class CertoclavNavigationbar {
 
         actionItemEdit = (QuickActionItem) mActivity.getLayoutInflater().inflate(R.layout.quickaction_item, linActionContainer, false);
         actionItemEdit.setChecked(false);
-        actionItemEdit.setImageDrawable(Helper.changeColorToWhite(mActivity.getResources().getDrawable(R.drawable.ic_menu_launcher_settings)));
+        actionItemEdit.setImageDrawable(Helper.getInstance().changeColorToWhite(mActivity.getResources().getDrawable(R.drawable.ic_menu_launcher_settings)));
         //actionItemAdd.setText("test");
         linActionContainer.addView(actionItemEdit);
         actionItemEdit.setOnClickListener(new OnClickListener() {
@@ -143,7 +143,7 @@ public class CertoclavNavigationbar {
 
         actionItemAdd = (QuickActionItem) mActivity.getLayoutInflater().inflate(R.layout.quickaction_item, linActionContainer, false);
         actionItemAdd.setChecked(false);
-        actionItemAdd.setImageDrawable(Helper.changeColorToWhite(mActivity.getResources().getDrawable(R.drawable.ic_menu_add)));
+        actionItemAdd.setImageDrawable(Helper.getInstance().changeColorToWhite(mActivity.getResources().getDrawable(R.drawable.ic_menu_add)));
         //actionItemAdd.setText("test");
         linActionContainer.addView(actionItemAdd);
         actionItemAdd.setOnClickListener(new OnClickListener() {
@@ -161,7 +161,7 @@ public class CertoclavNavigationbar {
 
         actionItemPrint = (QuickActionItem) mActivity.getLayoutInflater().inflate(R.layout.quickaction_item, linActionContainer, false);
         actionItemPrint.setChecked(false);
-        actionItemPrint.setImageDrawable(Helper.changeColorToWhite(mActivity.getResources().getDrawable(R.drawable.ic_menu_print)));
+        actionItemPrint.setImageDrawable(Helper.getInstance().changeColorToWhite(mActivity.getResources().getDrawable(R.drawable.ic_menu_print)));
         //actionItemAdd.setText("test");
         linActionContainer.addView(actionItemPrint);
         actionItemPrint.setOnClickListener(new OnClickListener() {
@@ -177,7 +177,7 @@ public class CertoclavNavigationbar {
 
         actionItemScan = (QuickActionItem) mActivity.getLayoutInflater().inflate(R.layout.quickaction_item, linActionContainer, false);
         actionItemScan.setChecked(false);
-        actionItemScan.setImageDrawable(Helper.changeColorToWhite(mActivity.getResources().getDrawable(R.drawable.ic_menu_scan)));
+        actionItemScan.setImageDrawable(Helper.getInstance().changeColorToWhite(mActivity.getResources().getDrawable(R.drawable.ic_menu_scan)));
         linActionContainer.addView(actionItemScan);
         actionItemScan.setOnClickListener(new OnClickListener() {
             @Override
@@ -193,7 +193,7 @@ public class CertoclavNavigationbar {
         linActionContainer = (LinearLayout) mActivity.findViewById(R.id.navigationbar_container_quickactionitem_settings);
         actionItemSettings = (QuickActionItem) mActivity.getLayoutInflater().inflate(R.layout.quickaction_item, linActionContainer, false);
         actionItemSettings.setChecked(false);
-        actionItemSettings.setImageDrawable(Helper.changeColorToWhite(mActivity.getResources().getDrawable(R.drawable.ic_settings)));
+        actionItemSettings.setImageDrawable(Helper.getInstance().changeColorToWhite(mActivity.getResources().getDrawable(R.drawable.ic_settings)));
         //actionItemAdd.setText("test");
         linActionContainer.addView(actionItemSettings);
         actionItemSettings.setOnClickListener(new OnClickListener() {
@@ -212,7 +212,7 @@ public class CertoclavNavigationbar {
         linActionContainer = (LinearLayout) mActivity.findViewById(R.id.navigationbar_container_quickaction_left);
         actionItemLogout = (QuickActionItem) mActivity.getLayoutInflater().inflate(R.layout.quickaction_item, linActionContainer, false);
         actionItemLogout.setChecked(false);
-        actionItemLogout.setImageDrawable(Helper.changeColorToWhite(mActivity.getResources().getDrawable(R.drawable.ic_logout)));
+        actionItemLogout.setImageDrawable(Helper.getInstance().changeColorToWhite(mActivity.getResources().getDrawable(R.drawable.ic_logout)));
         //actionItemLogout.setText("Logout");
         linActionContainer.addView(actionItemLogout);
         actionItemLogout.setOnClickListener(new OnClickListener() {

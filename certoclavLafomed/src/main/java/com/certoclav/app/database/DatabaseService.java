@@ -983,7 +983,7 @@ public class DatabaseService {
             }
             main.or(protocols.size());
             protocolEntryDao.delete(db.prepare());
-            //    TableUtils.clearTable(mDatabaseHelper.getConnectionSource(), ProtocolEntry.class);
+            //    TableUtils.clearTable(mDatabaseHelper.getInstance().getConnectionSource(), ProtocolEntry.class);
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -999,7 +999,7 @@ public class DatabaseService {
             Where main = db.where();
             main.eq("protocol_id", protocol);
             protocolEntryDao.delete(db.prepare());
-            //    TableUtils.clearTable(mDatabaseHelper.getConnectionSource(), ProtocolEntry.class);
+            //    TableUtils.clearTable(mDatabaseHelper.getInstance().getConnectionSource(), ProtocolEntry.class);
             return 1;
         } catch (Exception e) {
             e.printStackTrace();

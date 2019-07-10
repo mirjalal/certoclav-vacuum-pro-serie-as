@@ -530,6 +530,11 @@
     <string name="failed">Gescheitert</string>
     <string name="passed">Bestanden</string>
     <string name="indicator_failed">Chargenkontrolle negativ</string>
+    <string name="enable_fda">FDA enabled</string>
+    <string name="raypa_access">Raypa Access</string>
+    <string name="deny">Deny</string>
+    <string name="allow">Allow</string>
+    <string name="gen_press">S. GEN</string>
 
 
 </resources>

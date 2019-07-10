@@ -18,6 +18,7 @@ import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -34,10 +35,12 @@ import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.responsemodels.DeviceProgramsResponseModel;
 import com.certoclav.app.responsemodels.UserProtocolResponseModel;
 import com.certoclav.app.responsemodels.UserProtocolsResponseModel;
+import com.certoclav.app.service.CloudSocketThread;
 import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.app.settings.SettingsActivity;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.certocloud.CertocloudConstants;
+import com.certoclav.library.certocloud.CloudUser;
 import com.certoclav.library.certocloud.PostUtil;
 import com.certoclav.library.certocloud.SocketService;
 import com.certoclav.library.util.Response;
@@ -81,8 +84,19 @@ import needle.UiRelatedTask;
 
 public class Helper {
     private final static String KEY_ADMIN_PASSWORD = "adminpassword";
+    private static Helper instance;
 
-    public static String getTimeStamp(String dateStr) {
+    private Helper() {
+
+    }
+
+    public static Helper getInstance() {
+        if (instance == null)
+            instance = new Helper();
+        return instance;
+    }
+
+    public String getTimeStamp(String dateStr) {
         Calendar calendar = Calendar.getInstance();
         String today = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'", Locale.ENGLISH);
@@ -109,7 +123,7 @@ public class Helper {
         return timestamp;
     }
 
-    public static Date getDate(String dateStr) {
+    public Date getDate(String dateStr) {
         Calendar calendar = Calendar.getInstance();
         String today = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'", Locale.ENGLISH);
@@ -129,7 +143,7 @@ public class Helper {
         return null;
     }
 
-    public static void downloadProtocols(final Context context, final MyCallback myCallback) {
+    public void downloadProtocols(final Context context, final MyCallback myCallback) {
 
         class SyncPrtocolsAsync extends AsyncTask<UserProtocolsResponseModel, Integer, Void> {
 
@@ -210,7 +224,7 @@ public class Helper {
         }, 1);
     }
 
-    public static void downloadProtocol(final Context context, Protocol protocol, final MyCallback myCallback) {
+    public void downloadProtocol(final Context context, Protocol protocol, final MyCallback myCallback) {
 
         class SyncPrtocolsAsync extends AsyncTask<UserProtocolResponseModel, Integer, Void> {
 
@@ -290,7 +304,7 @@ public class Helper {
         }, protocol.getCloudId(), 1);
     }
 
-    public static void printProtocols(final Context context, final Protocol protocol, final MyCallback myCallback) {
+    public void printProtocols(final Context context, final Protocol protocol, final MyCallback myCallback) {
 
         new AsyncTask<Protocol, Void, Boolean>() {
             @Override
@@ -337,7 +351,7 @@ public class Helper {
         return buf.toString();
     }
 
-    public static String SHA1(String text) {
+    public String SHA1(String text) {
         MessageDigest md = null;
         byte[] textBytes = null;
         try {
@@ -356,17 +370,17 @@ public class Helper {
         return convertToHex(sha1hash);
     }
 
-    public static boolean checkAdminPassword(Context context, String password) {
+    public boolean checkAdminPassword(Context context, String password) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         return SHA1(password).equals(pref.getString(KEY_ADMIN_PASSWORD, SHA1(AppConstants.DEFAULT_ADMIN_PASSWORD)));
     }
 
-    public static boolean updateAdminPassword(Context context, String newPassword) {
+    public boolean updateAdminPassword(Context context, String newPassword) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         return pref.edit().putString(KEY_ADMIN_PASSWORD, SHA1(newPassword)).commit();
     }
 
-    public static Map<String, String> getKeyValueFromStringArray(Context ctx) {
+    public Map<String, String> getKeyValueFromStringArray(Context ctx) {
         String[] array = ctx.getResources().getStringArray(R.array.error_codes);
         Map<String, String> result = new HashMap<>();
         for (String str : array) {
@@ -379,7 +393,7 @@ public class Helper {
     }
 
 
-    public static void sendBroadcast(Context context, String messageStr, final BroadcastListener listener) {
+    public void sendBroadcast(Context context, String messageStr, final BroadcastListener listener) {
         // Hack Prevent crash (sending should be done using an async task)
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -453,7 +467,7 @@ public class Helper {
         return InetAddress.getByAddress(quads);
     }
 
-    public static boolean installEnthernet(Context context) {
+    public boolean installEnthernet(Context context) {
         AssetManager assetManager = context.getAssets();
     /*    PackageManager pm = context.getPackageManager();
         try {
@@ -507,7 +521,7 @@ public class Helper {
     }
 
 
-    public static HashMap<Integer, Integer> getPreferenceTitles() {
+    public HashMap<Integer, Integer> getPreferenceTitles() {
 
         HashMap<Integer, Integer> preferenceMap = new HashMap<>();
 
@@ -550,12 +564,12 @@ public class Helper {
     }
 
 
-    public static Drawable changeColorToWhite(Drawable drawable) {
+    public Drawable changeColorToWhite(Drawable drawable) {
         drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         return drawable;
     }
 
-    public static void uploadLiveDebug(final Context context) {
+    public void uploadLiveDebug(final Context context) {
         Needle.onBackgroundThread().execute(new UiRelatedTask<Boolean>() {
             @Override
             protected Boolean doWork() {
@@ -690,7 +704,7 @@ public class Helper {
         });
     }
 
-    public static void getCloudPrograms(final Context context) {
+    public void getCloudPrograms(final Context context) {
         final SweetAlertDialog barProgressDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
         barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         barProgressDialog.setTitleText(context.getString(R.string.loading));
@@ -770,7 +784,7 @@ public class Helper {
     static Runnable runnableTimeout = null;
     static int failCount = 0;
 
-    public static void getPrograms(final Context context) {
+    public void getPrograms(final Context context) {
 
         failCount = 0;
         if (AppConstants.isIoSimulated) {
@@ -905,7 +919,7 @@ public class Helper {
                 buttonLogin.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (Helper.checkAdminPassword(context, editTextPassword.getText().toString())) {
+                        if (Helper.getInstance().checkAdminPassword(context, editTextPassword.getText().toString())) {
                             Intent intent2 = new Intent(context, SettingsActivity.class);
                             intent2.putExtra("isAdmin", true);
                             context.startActivity(intent2);
@@ -950,7 +964,7 @@ public class Helper {
         handler.postDelayed(runnableTimeout, TIMEOUT);
     }
 
-    public static void setProgram(final Context context, final Profile profile, final MyCallback callback) {
+    public void setProgram(final Context context, final Profile profile, final MyCallback callback) {
         if (AppConstants.isIoSimulated) {
             Autoclave.getInstance();
             return;
@@ -1076,7 +1090,7 @@ public class Helper {
         handler.postDelayed(runnableTimeout, TIMEOUT);
     }
 
-    public static void syncProgramWithCloud(final Profile profile) {
+    public void syncProgramWithCloud(final Profile profile) {
         Needle.onBackgroundThread().execute(new UiRelatedTask<Boolean>() {
             @Override
             protected Boolean doWork() {
@@ -1148,8 +1162,8 @@ public class Helper {
         });
     }
 
-    public static void askConfirmation(Context context, String title, String content, final SweetAlertDialog.OnSweetClickListener onConfirm,
-                                       SweetAlertDialog.OnCancelListener onCancel) {
+    public void askConfirmation(Context context, String title, String content, final SweetAlertDialog.OnSweetClickListener onConfirm,
+                                SweetAlertDialog.OnCancelListener onCancel) {
         final SweetAlertDialog dialogConfirmation = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
         dialogConfirmation.showCancelButton(true);
         dialogConfirmation.setCancelText(context.getString(R.string.cancel));
@@ -1164,7 +1178,7 @@ public class Helper {
 
     }
 
-    public static String getProfileDesc(Profile profile, Context context) {
+    public String getProfileDesc(Profile profile, Context context) {
         StringBuilder sbuilder = new StringBuilder();
         if (profile.getSterilisationTemperature(false) != 0) {
             sbuilder.append("[")
@@ -1211,7 +1225,7 @@ public class Helper {
             sbuilder.append(context.getString(R.string.f0_value_format, profile.getF0Value()))
                     .append("\t")
                     .append(context.getString(R.string.z_value_format, profile.getzValue(false),
-                            Helper.getTemperatureUnitText(null)))
+                            Helper.getInstance().getTemperatureUnitText(null)))
                     .append("\n");
         }
         if (profile.isMaintainEnabled()) {
@@ -1231,7 +1245,7 @@ public class Helper {
         return sbuilder.toString();
     }
 
-    public static String getStateText() {
+    public String getStateText() {
         Context context = AppController.getContext();
         switch (Autoclave.getInstance().getProgramStep()) {
             case VACUUM_PULSE_1:
@@ -1295,7 +1309,7 @@ public class Helper {
         return "---";
     }
 
-    public static String generateProfileDescription(Protocol protocol) {
+    public String generateProfileDescription(Protocol protocol) {
 
         try {
             StringBuilder sbuilder = new StringBuilder();
@@ -1308,7 +1322,7 @@ public class Helper {
             if (protocol.getSterilisationTemperature() != 0) {
                 sbuilder.append("Sterilisation temperature: ")
                         .append(protocol.getSterilisationTemperature())
-                        .append(Helper.getTemperatureUnitText(AutoclaveModelManager.getInstance().getTemperatureUnit()))
+                        .append(Helper.getInstance().getTemperatureUnitText(AutoclaveModelManager.getInstance().getTemperatureUnit()))
                         .append("\r\n");
             }
 
@@ -1329,7 +1343,7 @@ public class Helper {
             if (protocol.getVacuumPersistTemperature() != 0) {
                 sbuilder.append("Vacuum persist temperature: ")
                         .append(protocol.getVacuumPersistTemperature())
-                        .append(Helper.getTemperatureUnitText(AutoclaveModelManager.getInstance().getTemperatureUnit()))
+                        .append(Helper.getInstance().getTemperatureUnitText(AutoclaveModelManager.getInstance().getTemperatureUnit()))
                         .append("\r\n");
             }
             if (protocol.getVacuumPersistTime() != 0) {
@@ -1350,18 +1364,18 @@ public class Helper {
     }
 
 
-    public static Double roundFloat(float f) {
+    public Double roundFloat(float f) {
         int tempnumber = (int) ((f + 0.00001) * 100);
         Double roundedfloat = (double) ((double) tempnumber / 100.0);
         return roundedfloat;
     }
 
-    public static float roundFloat2(float f) {
+    public float roundFloat2(float f) {
         String str = String.format(Locale.US, "%.2f", f);
         return Float.valueOf(str);
     }
 
-    public static String getTemperatureUnitText(String unit) {
+    public String getTemperatureUnitText(String unit) {
         if (unit == null)
             return AutoclaveModelManager.getInstance().
                     getTemperatureUnit().equals("F") ? "\u2109" : "\u2103";
@@ -1370,7 +1384,7 @@ public class Helper {
                 ? "\u2109" : "\u2103";
     }
 
-    public static float currentUnitToCelsius(float temp) {
+    public float currentUnitToCelsius(float temp) {
         switch (AutoclaveModelManager.getInstance().getTemperatureUnit()) {
             case "F":
                 return roundFloat2(((temp - 32) * 5) / 9);
@@ -1379,12 +1393,87 @@ public class Helper {
     }
 
 
-    public static float celsiusToCurrentUnit(float temp) {
+    public float celsiusToCurrentUnit(float temp) {
         switch (AutoclaveModelManager.getInstance().getTemperatureUnit()) {
             case "F":
                 return roundFloat2((temp * 9) / 5 + 32);
         }
         return roundFloat2(temp);
     }
+
+
+    public SweetAlertDialog getDialog(Context context, String title, String content,
+                                      Boolean showCancel, Boolean isCancelable,
+                                      SweetAlertDialog.OnSweetClickListener onCancel,
+                                      SweetAlertDialog.OnSweetClickListener onConfirm) {
+        final SweetAlertDialog barProgressDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
+        barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        barProgressDialog.setTitleText(title);
+        barProgressDialog.setContentText(content);
+        barProgressDialog.showCancelButton(showCancel);
+        barProgressDialog.setCancelable(isCancelable);
+        barProgressDialog.setCanceledOnTouchOutside(false);
+
+        barProgressDialog.setCancelClickListener(onCancel);
+        barProgressDialog.setConfirmClickListener(onConfirm);
+
+        return barProgressDialog;
+    }
+
+    public void askPermissionFDA(final CloudSocketThread socket) {
+
+        if (!CloudUser.getInstance().isLoggedIn()) {
+            socket.sendPermissionResponse(false);
+            return;
+        }
+        Context context = AppController.getContext();
+        final SweetAlertDialog dialogConfirmation = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
+        dialogConfirmation.showCancelButton(true);
+        dialogConfirmation.setCancelText(context.getString(R.string.deny));
+        dialogConfirmation.setCanceledOnTouchOutside(false);
+        dialogConfirmation.setConfirmText(context.getString(R.string.allow));
+        dialogConfirmation.setTitleText(context.getString(R.string.raypa_access));
+        dialogConfirmation.setContentText(context.getString(R.string.would_you_like_allow_raypa_to_access_your_data));
+        dialogConfirmation.getWindow().setType(WindowManager.LayoutParams.TYPE_TOAST);
+
+        dialogConfirmation.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                socket.sendPermissionResponse(false);
+                sweetAlertDialog.dismissWithAnimation();
+            }
+        });
+        dialogConfirmation
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(final SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismissWithAnimation();
+                        Requests.getInstance().enableDeviceFDAAccess(new MyCallback() {
+                            @Override
+                            public void onSuccess(Object response, int requestId) {
+                                socket.sendPermissionResponse(true);
+                            }
+
+                            @Override
+                            public void onError(ErrorModel error, int requestId) {
+                                socket.sendPermissionResponse(false);
+                            }
+
+                            @Override
+                            public void onStart(int requestId) {
+
+                            }
+
+                            @Override
+                            public void onProgress(int current, int max) {
+
+                            }
+                        }, 0.5f, 13);
+                    }
+                });
+
+        dialogConfirmation.show();
+    }
+
 
 }

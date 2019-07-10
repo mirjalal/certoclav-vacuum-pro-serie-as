@@ -585,7 +585,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
 
                         if (AutoclaveModelManager.getInstance().isFahrenheit()) {
                             for (int i = 0; i < 4; i++)
-                                temperatures[i] = Helper.celsiusToCurrentUnit(temperatures[i]);
+                                temperatures[i] = Helper.getInstance().celsiusToCurrentUnit(temperatures[i]);
                         }
                         pressures[0] = Float.parseFloat(responseParameters[INDEX_DAT_PRESSURE]);
                         pressures[1] = Float.parseFloat(responseParameters[INDEX_DAT_PRESSURE_OPTIONAL]);

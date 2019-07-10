@@ -153,7 +153,7 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
                     barProgressDialog.setCanceledOnTouchOutside(false);
                     barProgressDialog.show();
                     ReadAndParseSerialService.getInstance().setParameter(currentOffsetReadParameter = AppConstants.PARAM_OFFSET_STEAM,
-                            Helper.currentUnitToCelsius(offsetTemp1.floatValue()));
+                            Helper.getInstance().currentUnitToCelsius(offsetTemp1.floatValue()));
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -180,9 +180,9 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
             isLocked = false;
         }
 
-        textViewSteamTempText.setText(getString(R.string.offset_of_steam_sensor_c_, Helper.getTemperatureUnitText(null)));
-        textViewMedia1TempText.setText(getString(R.string.offset_of_media_sensor_c_, Helper.getTemperatureUnitText(null)));
-        textViewMedia2TempText.setText(getString(R.string.offset_of_media_2_sensor_c_, Helper.getTemperatureUnitText(null)));
+        textViewSteamTempText.setText(getString(R.string.offset_of_steam_sensor_c_, Helper.getInstance().getTemperatureUnitText(null)));
+        textViewMedia1TempText.setText(getString(R.string.offset_of_media_sensor_c_, Helper.getInstance().getTemperatureUnitText(null)));
+        textViewMedia2TempText.setText(getString(R.string.offset_of_media_2_sensor_c_, Helper.getInstance().getTemperatureUnitText(null)));
 
 
         editOffsetSteamSensor.setEnabled(false);
@@ -275,12 +275,12 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
                 case AppConstants.PARAM_OFFSET_STEAM:
                     currentOffsetReadParameter = AppConstants.PARAM_OFFSET_MEDIA;
                     ReadAndParseSerialService.getInstance().setParameter(AppConstants.PARAM_OFFSET_MEDIA,
-                            Helper.currentUnitToCelsius(offsetMedia.floatValue()));
+                            Helper.getInstance().currentUnitToCelsius(offsetMedia.floatValue()));
                     break;
                 case AppConstants.PARAM_OFFSET_MEDIA:
                     currentOffsetReadParameter = AppConstants.PARAM_OFFSET_MEDIA_2;
                     ReadAndParseSerialService.getInstance().setParameter(AppConstants.PARAM_OFFSET_MEDIA_2,
-                            Helper.currentUnitToCelsius(offsetMedia2.floatValue()));
+                            Helper.getInstance().currentUnitToCelsius(offsetMedia2.floatValue()));
                     break;
                 case AppConstants.PARAM_OFFSET_MEDIA_2:
                     currentOffsetReadParameter = AppConstants.PARAM_OFFSET_PRESSURE_1;

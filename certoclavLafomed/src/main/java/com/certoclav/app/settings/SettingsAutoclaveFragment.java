@@ -63,7 +63,7 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
 
-                        Helper.askConfirmation(getContext(), getString(R.string.warning), getString(R.string.do_you_really_want_to_assign_programs), new SweetAlertDialog.OnSweetClickListener() {
+                        Helper.getInstance().askConfirmation(getContext(), getString(R.string.warning), getString(R.string.do_you_really_want_to_assign_programs), new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
                                 sDialog.dismissWithAnimation();
@@ -92,7 +92,7 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
 //                    @Override
 //                    public boolean onPreferenceClick(Preference preference) {
 //
-//                        Helper.askConfirmation(getContext(), getString(R.string.reset), getString(R.string.do_you_really_want_to_reset_format,
+//                        Helper.getInstance().askConfirmation(getContext(), getString(R.string.reset), getString(R.string.do_you_really_want_to_reset_format,
 //                                getString(R.string.preferences_autoclave_review_hours)), new SweetAlertDialog.OnSweetClickListener() {
 //                            @Override
 //                            public void onClick(SweetAlertDialog sDialog) {
@@ -111,7 +111,7 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
 //                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 //                    @Override
 //                    public boolean onPreferenceClick(Preference preference) {
-//                        Helper.askConfirmation(getContext(), getString(R.string.reset), getString(R.string.do_you_really_want_to_reset_format,
+//                        Helper.getInstance().askConfirmation(getContext(), getString(R.string.reset), getString(R.string.do_you_really_want_to_reset_format,
 //                                getString(R.string.preferences_autoclave_filter_cycle)), new SweetAlertDialog.OnSweetClickListener() {
 //                            @Override
 //                            public void onClick(SweetAlertDialog sDialog) {
@@ -228,7 +228,7 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
                 if (AutoclaveModelManager.getInstance().isTemperatureParameter(id)) {
                     ReadAndParseSerialService.getInstance().setParameter(
                             id,
-                            Helper.currentUnitToCelsius(Float.valueOf(sharedPreferences.getString(key, "")
+                            Helper.getInstance().currentUnitToCelsius(Float.valueOf(sharedPreferences.getString(key, "")
                                     .replace(",", "."))));
                 } else
                     ReadAndParseSerialService.getInstance().setParameter(
@@ -295,7 +295,7 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
 
                         if (!AutoclaveModelManager.getInstance().getTemperatureUnit().equals(parameter.getValue().toString())) {
                             AutoclaveModelManager.getInstance().setTemperatureSymbol(parameter);
-                            Helper.getPrograms(getActivity());
+                            Helper.getInstance().getPrograms(getActivity());
                         } else {
                             AutoclaveModelManager.getInstance().setTemperatureSymbol(parameter);
                         }

@@ -21,7 +21,7 @@ public class AppController extends ApplicationController {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-//        Helper.installEnthernet(getContext());
+//        Helper.getInstance().installEnthernet(getContext());
     }
 
     public static synchronized AppController getInstance() {

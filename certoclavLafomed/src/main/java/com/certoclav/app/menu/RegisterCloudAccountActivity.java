@@ -548,7 +548,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
         buttonLogin.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Helper.checkAdminPassword(RegisterCloudAccountActivity.this, editTextPassword.getText().toString())) {
+                if (Helper.getInstance().checkAdminPassword(RegisterCloudAccountActivity.this, editTextPassword.getText().toString())) {
                     dialog.dismiss();
                 } else {
                     Toasty.error(RegisterCloudAccountActivity.this, getString(R.string.admin_password_wrong), Toast.LENGTH_SHORT, true).show();

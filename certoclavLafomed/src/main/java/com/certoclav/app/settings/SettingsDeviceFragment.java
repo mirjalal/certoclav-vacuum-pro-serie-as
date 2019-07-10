@@ -12,6 +12,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StatFs;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
@@ -30,8 +31,13 @@ import com.certoclav.app.menu.ChangeAdminPasswordAccountActivity;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveData;
 import com.certoclav.app.model.AutoclaveState;
+import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.service.ReadAndParseSerialService;
+import com.certoclav.app.util.Helper;
+import com.certoclav.app.util.MyCallback;
+import com.certoclav.app.util.Requests;
 import com.certoclav.library.application.ApplicationController;
+import com.certoclav.library.certocloud.CloudUser;
 import com.certoclav.library.util.DownloadUtils;
 import com.certoclav.library.util.ExportUtils;
 import com.certoclav.library.util.UpdateUtils;
@@ -272,6 +278,63 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 //                    e1.printStackTrace();
 //                }
 //            }
+//
+//            Enable FDA
+            try {
+
+                final CheckBoxPreference checkBoxPreferenceFDA = (CheckBoxPreference) findPreference(AppConstants.PREFERENCE_KEY_ENABLE_FDA);
+                checkBoxPreferenceFDA.setEnabled(CloudUser.getInstance().isSuperAdmin());
+
+                checkBoxPreferenceFDA.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object o) {
+
+                        final SweetAlertDialog dialog = Helper.getInstance().getDialog(getContext(),
+                                getString(R.string.saving), null, false, false,
+                                null, new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        sweetAlertDialog.dismissWithAnimation();
+                                    }
+                                });
+
+                        Requests.getInstance().enableDeviceFDA(new MyCallback() {
+                            @Override
+                            public void onSuccess(Object response, int requestId) {
+                                dialog.setTitleText(getString(R.string.success));
+                                dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                dialog.setConfirmText(getString(R.string.ok));
+                            }
+
+                            @Override
+                            public void onError(ErrorModel error, int requestId) {
+                                checkBoxPreferenceFDA.setChecked(!checkBoxPreferenceFDA.isChecked());
+                                dialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                                dialog.setTitleText(getString(R.string.error));
+                                dialog.setContentText(getString(R.string.something_went_wrong));
+                                dialog.setConfirmText(getString(R.string.ok));
+                            }
+
+                            @Override
+                            public void onStart(int requestId) {
+                                dialog.show();
+                            }
+
+                            @Override
+                            public void onProgress(int current, int max) {
+
+                            }
+                        }, !checkBoxPreferenceFDA.isChecked(), 12);
+                        return true;
+                    }
+                });
+            } catch (Exception e) {
+                try {
+                    findPreference(AppConstants.PREFERENCE_KEY_CYCLE_NUMBER).setSummary(getString(R.string.please_connect_to_autoclave_first));
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             if ((!Autoclave.getInstance().getUser().isAdmin() || Autoclave.getInstance().getState() == AutoclaveState.LOCKED) &&

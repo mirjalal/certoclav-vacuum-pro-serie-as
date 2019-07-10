@@ -87,7 +87,7 @@ public class PostProtocolsThread extends Thread {
                             programJsonObject.put("lidopen", false);
                             programJsonObject.put("tbuffer", 0);
                             programJsonObject.put("title", protocol.getProfileName());
-                            programJsonObject.put("note", protocol.getProfileDescription() + "\n" + Helper.generateProfileDescription(protocol));
+                            programJsonObject.put("note", protocol.getProfileDescription() + "\n" + Helper.getInstance().generateProfileDescription(protocol));
                             programJsonObject.put("commands", jsonCommandArray);
 
                             JSONArray programJsonArray = new JSONArray();

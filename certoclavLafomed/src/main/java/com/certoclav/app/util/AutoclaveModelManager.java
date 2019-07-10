@@ -83,33 +83,33 @@ public class AutoclaveModelManager implements MyCallback {
         switch (model.getValue().toString()) {
             case "AEB":
             case "AHSB":
-                return new Pair<>(Helper.celsiusToCurrentUnit(100f),
-                        Helper.celsiusToCurrentUnit(134f));
+                return new Pair<>(Helper.getInstance().celsiusToCurrentUnit(100f),
+                        Helper.getInstance().celsiusToCurrentUnit(134f));
             default:
-                return new Pair<>(Helper.celsiusToCurrentUnit(100f),
-                        Helper.celsiusToCurrentUnit(140f));
+                return new Pair<>(Helper.getInstance().celsiusToCurrentUnit(100f),
+                        Helper.getInstance().celsiusToCurrentUnit(140f));
         }
     }
 
 
     public Pair<Float, Float> getWarmingUpTempRange() {
-        return new Pair<>(Helper.celsiusToCurrentUnit(0f),
-                Helper.celsiusToCurrentUnit(199f));
+        return new Pair<>(Helper.getInstance().celsiusToCurrentUnit(0f),
+                Helper.getInstance().celsiusToCurrentUnit(199f));
     }
 
     public Pair<Float, Float> getFinalTempRange() {
-        return new Pair<>(Helper.celsiusToCurrentUnit(50f),
-                Helper.celsiusToCurrentUnit(95f));
+        return new Pair<>(Helper.getInstance().celsiusToCurrentUnit(50f),
+                Helper.getInstance().celsiusToCurrentUnit(95f));
     }
 
     public Pair<Float, Float> getZValueTempRange() {
-        return new Pair<>(Helper.celsiusToCurrentUnit(0.1f),
-                Helper.celsiusToCurrentUnit(100f));
+        return new Pair<>(Helper.getInstance().celsiusToCurrentUnit(0.1f),
+                Helper.getInstance().celsiusToCurrentUnit(100f));
     }
 
     public Pair<Float, Float> getOffsetTempRange() {
-        return new Pair<>(Helper.celsiusToCurrentUnit(-10),
-                Helper.celsiusToCurrentUnit(10f));
+        return new Pair<>(Helper.getInstance().celsiusToCurrentUnit(-10),
+                Helper.getInstance().celsiusToCurrentUnit(10f));
     }
 
     public Pair<Integer, Integer> getSterilizationTimeRange() {
@@ -152,8 +152,8 @@ public class AutoclaveModelManager implements MyCallback {
                 return new Pair<>(0f, 100f);
             case 40:
                 if (getModelName().contains("TLV"))
-                    return new Pair<>(Helper.celsiusToCurrentUnit(100), Helper.celsiusToCurrentUnit(140));
-                return new Pair<>(Helper.celsiusToCurrentUnit(0), Helper.celsiusToCurrentUnit(140));
+                    return new Pair<>(Helper.getInstance().celsiusToCurrentUnit(100), Helper.getInstance().celsiusToCurrentUnit(140));
+                return new Pair<>(Helper.getInstance().celsiusToCurrentUnit(0), Helper.getInstance().celsiusToCurrentUnit(140));
             case 99:
                 switch (getModelName()) {
                     case "TLVPD":
@@ -171,9 +171,9 @@ public class AutoclaveModelManager implements MyCallback {
     public boolean isWarmingUpEnabled() {
         switch (getModelName()) {
             case "AHSB":
-            case "TLVPD":
             case "AEB":
                 return true;
+            case "TLVPD":
             case "TLVFA":
             case "TLV":
         }
@@ -270,5 +270,9 @@ public class AutoclaveModelManager implements MyCallback {
 
     public boolean isTemperatureParameter(int id) {
         return Arrays.asList(parametersTemperature).contains(id);
+    }
+
+    public boolean showGenPress() {
+        return Arrays.asList(new String[]{"TLVPD"}).contains(getModelName());
     }
 }

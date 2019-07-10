@@ -121,6 +121,7 @@ public interface AppConstants {
     String PREFERENCE_KEY_SERIAL_NUMBER = "preferences_autoclave_serial_number";
     String PREFERENCE_KEY_FIRMWARE_VERSION = "preferences_autoclave_firmware_version";
     String PREFERENCE_KEY_CYCLE_NUMBER = "preferences_cycle_number";
+    String PREFERENCE_KEY_ENABLE_FDA = "preferences_device_fda_enabled";
     String PREFERENCE_KEY_LIST_GRAPH = "islistgrapportrace";
     String PREFERENCE_KEY_ID_OF_LAST_USER = "idoflastuser";
 

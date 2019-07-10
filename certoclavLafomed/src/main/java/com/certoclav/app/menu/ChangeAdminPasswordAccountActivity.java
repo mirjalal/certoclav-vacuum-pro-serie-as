@@ -160,8 +160,8 @@ public class ChangeAdminPasswordAccountActivity extends Activity {
                     return;
                 }
 
-                if (Helper.checkAdminPassword(ChangeAdminPasswordAccountActivity.this, editCurPasswordItem.getText())) {
-                    if (Helper.updateAdminPassword(ChangeAdminPasswordAccountActivity.this, editPasswordItem.getText())) {
+                if (Helper.getInstance().checkAdminPassword(ChangeAdminPasswordAccountActivity.this, editCurPasswordItem.getText())) {
+                    if (Helper.getInstance().updateAdminPassword(ChangeAdminPasswordAccountActivity.this, editPasswordItem.getText())) {
                         Toast.makeText(ChangeAdminPasswordAccountActivity.this, getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();
                         finish();
                     } else {

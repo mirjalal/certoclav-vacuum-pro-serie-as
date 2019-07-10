@@ -186,7 +186,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
         //converts temperature [�C] to pressure [bar relative], relative means, atmoshperic pressure is 0 bar
 
         if (temp >= 100) {
-            pressure = (float) (0.006112 * Math.exp((17.62 * Helper.currentUnitToCelsius(temp)) / (243.12 + Helper.currentUnitToCelsius(temp))) - 1);
+            pressure = (float) (0.006112 * Math.exp((17.62 * Helper.getInstance().currentUnitToCelsius(temp)) / (243.12 + Helper.getInstance().currentUnitToCelsius(temp))) - 1);
         } else {
             pressure = (float) 0;
         }
@@ -233,19 +233,19 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
             programStepSterilisationDescription.setText(getString(R.string.program_step_sterlisation_desc,
                     newProfile.getSterilisationTime(),
                     newProfile.getSterilisationTemperature(false),
-                    Helper.getTemperatureUnitText(null)));
+                    Helper.getInstance().getTemperatureUnitText(null)));
         else
             programStepSterilisationDescription.setText(getString(R.string.program_step_sterlisation_desc_f0,
                     newProfile.getSterilisationTemperature(false),
-                    Helper.getTemperatureUnitText(null)));
+                    Helper.getInstance().getTemperatureUnitText(null)));
         programStepF0FunctionDescription.setText(getString(R.string.program_step_f0_function_desc,
                 newProfile.getF0Value(), newProfile.getzValue(false),
-                Helper.getTemperatureUnitText(null)));
+                Helper.getInstance().getTemperatureUnitText(null)));
         programStepDryDescription.setText(getString(R.string.program_step_dry_desc, newProfile.getDryTime()));
         programStepVacuumDescription.setText(getString(R.string.program_step_vacuum_desc, newProfile.getVacuumTimes()));
         programStepFinalTempDescription.setText(getString(R.string.program_step_final_temp_desc,
                 newProfile.getFinalTemp(false),
-                Helper.getTemperatureUnitText(null)));
+                Helper.getInstance().getTemperatureUnitText(null)));
 
     }
 
@@ -296,7 +296,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
                 newProfile.setF0Enabled(checkboxIsF0FunctionProgram.isChecked());
                 newProfile.setContByFlexProbe1(checkboxIsContByFlexProbe1.isChecked());
                 newProfile.setContByFlexProbe2(checkboxIsContByFlexProbe2.isChecked());
-                Helper.setProgram(this, newProfile, new MyCallback() {
+                Helper.getInstance().setProgram(this, newProfile, new MyCallback() {
                     @Override
                     public void onSuccess(Object response, int requestId) {
                         Toasty.success(getApplicationContext(), getString(R.string.program_saved), Toast.LENGTH_LONG, true).show();
@@ -359,11 +359,11 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
                 linearLayoutF0Function.setVisibility(isChecked ? View.VISIBLE : View.GONE);
                 if (!checkboxIsF0FunctionProgram.isChecked())
                     programStepSterilisationDescription.setText(getString(R.string.program_step_sterlisation_desc,
-                            newProfile.getSterilisationTime(), newProfile.getSterilisationTemperature(false), Helper.getTemperatureUnitText(null)));
+                            newProfile.getSterilisationTime(), newProfile.getSterilisationTemperature(false), Helper.getInstance().getTemperatureUnitText(null)));
                 else
                     programStepSterilisationDescription.setText(getString(R.string.program_step_sterlisation_desc_f0,
                             newProfile.getSterilisationTemperature(false),
-                            Helper.getTemperatureUnitText(null)));
+                            Helper.getInstance().getTemperatureUnitText(null)));
                 if (isChecked)
                     showEditF0FunctionnDialog();
             }
@@ -430,7 +430,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
         final EditText editTime = dialog.findViewById(R.id.program_definition_editstep_edit_time);
 
         editTime.setEnabled(!checkboxIsF0FunctionProgram.isChecked());
-        editTempUnit.setText(Helper.getTemperatureUnitText(null));
+        editTempUnit.setText(Helper.getInstance().getTemperatureUnitText(null));
 
         //insert default values
         editTime.setText(Integer.toString(newProfile.getSterilisationTime()));
@@ -451,7 +451,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
 
                 if (editTemp.getText().toString().isEmpty()) {
                     Toasty.error(getApplicationContext(), getString(R.string.sterilization_temp_range,
-                            tempRange.first, tempRange.second, Helper.getTemperatureUnitText(null)),
+                            tempRange.first, tempRange.second, Helper.getInstance().getTemperatureUnitText(null)),
                             Toast.LENGTH_SHORT, true).show();
                     return;
                 }
@@ -466,7 +466,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
 
                 if (valueTemp < tempRange.first || valueTemp > tempRange.second) {
                     Toasty.error(getApplicationContext(), getString(R.string.sterilization_temp_range,
-                            tempRange.first, tempRange.second, Helper.getTemperatureUnitText(null)), Toast.LENGTH_SHORT, true).show();
+                            tempRange.first, tempRange.second, Helper.getInstance().getTemperatureUnitText(null)), Toast.LENGTH_SHORT, true).show();
                     return;
                 }
 
@@ -496,7 +496,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
         final EditText editLethalTemp = dialog.findViewById(R.id.program_definition_edit_f0_value);
         final EditText editZValue = dialog.findViewById(R.id.program_definition_edit_z_value);
         final TextView editZValueUnit = dialog.findViewById(R.id.program_definition_edit_z_value_unit);
-        editZValueUnit.setText(Helper.getTemperatureUnitText(null));
+        editZValueUnit.setText(Helper.getInstance().getTemperatureUnitText(null));
         editLethalTemp.setFilters(new InputFilterMinMax[]{new InputFilterMinMax(0, 100)});
 
         //insert default values
@@ -519,7 +519,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
                         || Float.valueOf(editZValue.getText().toString().replace(",", ".")) < range.first
                         || Float.valueOf(editZValue.getText().toString().replace(",", ".")) > range.second) {
                     Toasty.error(getApplicationContext(), getString(R.string.z_value_range, range.first, range.second,
-                            Helper.getTemperatureUnitText(null)),
+                            Helper.getInstance().getTemperatureUnitText(null)),
                             Toast.LENGTH_SHORT, true).show();
                     return;
                 }
@@ -621,7 +621,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
         editParameter.setText(String.format("%.1f", newProfile.getFinalTemp(false)));
 
         textViewParameterName.setText(R.string.final_temp);
-        textViewParameterType.setText(Helper.getTemperatureUnitText(null));
+        textViewParameterType.setText(Helper.getInstance().getTemperatureUnitText(null));
 
         dialog.findViewById(R.id.cancel_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -636,13 +636,13 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
                 Pair<Float, Float> range = AutoclaveModelManager.getInstance().getFinalTempRange();
                 if (editParameter.getText().toString().isEmpty()) {
                     Toasty.error(getApplicationContext(), getString(R.string.final_temp_range, range.first, range.second,
-                            Helper.getTemperatureUnitText(null)), Toast.LENGTH_SHORT, true).show();
+                            Helper.getInstance().getTemperatureUnitText(null)), Toast.LENGTH_SHORT, true).show();
                     return;
                 }
                 float value = Float.valueOf(editParameter.getText().toString().replace(",", "."));
                 if (value < range.first || value > range.second) {
                     Toasty.error(getApplicationContext(), getString(R.string.final_temp_range, range.first, range.second,
-                            Helper.getTemperatureUnitText(null)), Toast.LENGTH_SHORT, true).show();
+                            Helper.getInstance().getTemperatureUnitText(null)), Toast.LENGTH_SHORT, true).show();
                     return;
                 }
                 newProfile.setFinalTemp(value, false);

@@ -191,8 +191,8 @@ public class Protocol {
             String description = this.profileDescription;
             String temp = description.substring(description.indexOf("[") + 1, description.indexOf("]"));
             return description.replaceAll("\\[(.*?)\\]",
-                    String.valueOf(Helper.celsiusToCurrentUnit(Float.valueOf(temp)))
-                            + " " + Helper.getTemperatureUnitText(null) + " ");
+                    String.valueOf(Helper.getInstance().celsiusToCurrentUnit(Float.valueOf(temp)))
+                            + " " + Helper.getInstance().getTemperatureUnitText(null) + " ");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -251,6 +251,14 @@ public class Protocol {
         return isContByFlexProbe1 != null && isContByFlexProbe2 != null && isContByFlexProbe1 && isContByFlexProbe2;
     }
 
+    public void setContByFlexProbe1(Boolean contByFlexProbe1) {
+        isContByFlexProbe1 = contByFlexProbe1;
+    }
+
+    public void setContByFlexProbe2(Boolean contByFlexProbe2) {
+        isContByFlexProbe2 = contByFlexProbe2;
+    }
+
     //Protocol can be selected (protocoloverview.java)
     boolean selected = false;
 
@@ -276,9 +284,14 @@ public class Protocol {
         this.zyklusNumber = zykklusNumber;
         this.controller = controller;
         this.user = user;
-        this.isContByFlexProbe1 = profile.isContByFlexProbe1Enabled();
-        this.isContByFlexProbe2 = profile.isContByFlexProbe2Enabled();
+
         if (profile != null) {
+            try {
+                this.isContByFlexProbe1 = profile.isContByFlexProbe1Enabled();
+                this.isContByFlexProbe2 = profile.isContByFlexProbe2Enabled();
+            } catch (Exception e) {
+                //It means that the protocols have been downloaded from cloud
+            }
             //copy of profile, because the original profile will be deleted after a while
             StringBuilder sb = new StringBuilder();
             sb.append(profile.getDescription(false));

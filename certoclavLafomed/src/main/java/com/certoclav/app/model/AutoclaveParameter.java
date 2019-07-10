@@ -18,7 +18,7 @@ public class AutoclaveParameter {
 
     public Object getValue() {
         if (AutoclaveModelManager.getInstance().isTemperatureParameter(parameterId))
-            return Helper.celsiusToCurrentUnit(Float.valueOf(value.toString()));
+            return Helper.getInstance().celsiusToCurrentUnit(Float.valueOf(value.toString()));
         return value;
     }
 

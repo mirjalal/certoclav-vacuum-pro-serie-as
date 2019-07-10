@@ -391,7 +391,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 buttonStop.setText(R.string.stop);
                 textState.setText(R.string.state_running);
                 textState.append(" (");
-                textState.append(Helper.getStateText());
+                textState.append(Helper.getInstance().getStateText());
                 textState.append(")");
 
                 navigationbar.hideButtonBack();
@@ -423,7 +423,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 if (Autoclave.getInstance().getData().isProgramRunning()) {
                     textState.setText(R.string.state_stopping);
                     textState.append(" (");
-                    textState.append(Helper.getStateText());
+                    textState.append(Helper.getInstance().getStateText());
                     textState.append(")");
                 } else {
                     textState.setText(R.string.state_finished);

@@ -112,7 +112,7 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
                     barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
                     barProgressDialog.setTitleText(getActivity().getString(com.certoclav.library.R.string.downloading));
                     barProgressDialog.setCancelable(false);
-                    Helper.downloadProtocols(getActivity(), new MyCallback() {
+                    Helper.getInstance().downloadProtocols(getActivity(), new MyCallback() {
                         @Override
                         public void onSuccess(Object response, int requestId) {
                             if ((Boolean) response)

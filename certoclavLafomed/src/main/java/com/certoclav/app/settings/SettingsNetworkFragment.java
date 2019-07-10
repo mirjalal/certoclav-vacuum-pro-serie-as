@@ -376,7 +376,7 @@ public class SettingsNetworkFragment extends PreferenceFragment implements WifiL
 
                     }
                 };
-                Helper.sendBroadcast(getActivity(), "Mene gonder gorum", broadcastListener);
+                Helper.getInstance().sendBroadcast(getActivity(), "Mene gonder gorum", broadcastListener);
             }
         };
 

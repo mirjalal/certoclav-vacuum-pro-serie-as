@@ -29,6 +29,8 @@ public class MyProtocolEntryRecyclerViewAdapter extends RecyclerView.Adapter<MyP
         for (ProtocolEntry entry : items) {
             if (lastdate < (entry.getTimestamp().getTime() - 19 * 1000)) {
                 mValues.add(entry);
+                protocol.setContByFlexProbe1(entry.getMediaTemperature() > -100);
+                protocol.setContByFlexProbe2(entry.getMediaTemperature2() > -100);
                 lastdate = entry.getTimestamp().getTime();
             }
         }
@@ -46,15 +48,15 @@ public class MyProtocolEntryRecyclerViewAdapter extends RecyclerView.Adapter<MyP
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.time.setText(holder.mItem.getFormatedTime());
-        holder.temperature.setText(roundFloat(Helper.celsiusToCurrentUnit(mValues.get(position).getTemperature())).floatValue() + "");
+        holder.temperature.setText(roundFloat(Helper.getInstance().celsiusToCurrentUnit(mValues.get(position).getTemperature())).floatValue() + "");
 
         holder.mediaTemperature.setVisibility(protocol.isContByFlexProbe1() ? View.VISIBLE : View.GONE);
         holder.mediaTemperature2.setVisibility(protocol.isContByFlexProbe2() ? View.VISIBLE : View.GONE);
         if (protocol.isContByFlexProbe2())
-            holder.mediaTemperature2.setText(roundFloat(Helper.celsiusToCurrentUnit(
+            holder.mediaTemperature2.setText(roundFloat(Helper.getInstance().celsiusToCurrentUnit(
                     mValues.get(position).getMediaTemperature2())).floatValue() + "");
         if (protocol.isContByFlexProbe1())
-            holder.mediaTemperature.setText(roundFloat(Helper.celsiusToCurrentUnit(
+            holder.mediaTemperature.setText(roundFloat(Helper.getInstance().celsiusToCurrentUnit(
                     mValues.get(position).getMediaTemperature())).floatValue() + "");
 //        holder.pressure.setText(roundFloat(mValues.get(position).getPressure()).toString());
         holder.pressure.setText(String.format(Locale.US, "%.2f", mValues.get(position).getPressure()));

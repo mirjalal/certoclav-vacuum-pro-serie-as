@@ -141,13 +141,13 @@ public class Profile {
 
     public float getSterilisationTemperature(boolean isToAutoclave) {
         if (isToAutoclave && AutoclaveModelManager.getInstance().isFahrenheit())
-            return Helper.currentUnitToCelsius(sterilisationTemperature);
+            return Helper.getInstance().currentUnitToCelsius(sterilisationTemperature);
         return sterilisationTemperature;
     }
 
     public void setSterilisationTemperature(float sterilisationTemperature, boolean isFromAutoclave) {
         if (isFromAutoclave && AutoclaveModelManager.getInstance().isFahrenheit())
-            this.sterilisationTemperature = Helper.celsiusToCurrentUnit(sterilisationTemperature);
+            this.sterilisationTemperature = Helper.getInstance().celsiusToCurrentUnit(sterilisationTemperature);
         else
             this.sterilisationTemperature = sterilisationTemperature;
     }
@@ -318,14 +318,15 @@ public class Profile {
     }
 
 
+    //This method takes account the temperature units
     public String getDescription(boolean isFormated) {
         if (isFormated)
             try {
                 String description = this.description;
                 String temp = description.substring(description.indexOf("[") + 1, description.indexOf("]"));
                 return description.replaceAll("\\[(.*?)\\]",
-                        String.valueOf(Helper.celsiusToCurrentUnit(Float.valueOf(temp)))
-                                + " " + Helper.getTemperatureUnitText(null) + " ");
+                        String.valueOf(Helper.getInstance().celsiusToCurrentUnit(Float.valueOf(temp)))
+                                + " " + Helper.getInstance().getTemperatureUnitText(null) + " ");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -375,13 +376,13 @@ public class Profile {
 
     public float getzValue(boolean isToAutoclave) {
         if (isToAutoclave && AutoclaveModelManager.getInstance().isFahrenheit())
-            return Helper.currentUnitToCelsius(zValue);
+            return Helper.getInstance().currentUnitToCelsius(zValue);
         return zValue;
     }
 
     public void setzValue(float zValue, boolean isFromAutoclave) {
         if (isFromAutoclave && AutoclaveModelManager.getInstance().isFahrenheit())
-            this.zValue = Helper.celsiusToCurrentUnit(zValue);
+            this.zValue = Helper.getInstance().celsiusToCurrentUnit(zValue);
         else
             this.zValue = zValue;
     }
@@ -420,13 +421,13 @@ public class Profile {
 
     public float getFinalTemp(boolean isToAutoclave) {
         if (isToAutoclave && AutoclaveModelManager.getInstance().isFahrenheit())
-            return Helper.currentUnitToCelsius(finalTemp);
+            return Helper.getInstance().currentUnitToCelsius(finalTemp);
         return finalTemp;
     }
 
     public void setFinalTemp(float finalTemp, boolean isFromAutoclave) {
         if (isFromAutoclave && AutoclaveModelManager.getInstance().isFahrenheit())
-            this.finalTemp = Helper.celsiusToCurrentUnit(finalTemp);
+            this.finalTemp = Helper.getInstance().celsiusToCurrentUnit(finalTemp);
         else
             this.finalTemp = finalTemp;
     }

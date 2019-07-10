@@ -107,7 +107,7 @@ public class AuditLogger {
         map.put(OBJECT_CREATE_NEW_BUTTON, R.string.audit_object_create_new_button);
 
 
-        map.putAll(Helper.getPreferenceTitles());
+        map.putAll(Helper.getInstance().getPreferenceTitles());
 
     }
 

@@ -145,7 +145,7 @@ public class CloudSocketThread extends Thread implements SocketEventListener {
                         if (Autoclave.getInstance().getState() == AutoclaveState.RUNNING) {
                             jsonLiveMessageDataObj.put(AppController.getInstance().
                                             getApplicationContext().getString(R.string.stage)
-                                    , Helper.getStateText());
+                                    , Helper.getInstance().getStateText());
                         }
                         //jsonLiveMessageDataObj.put("Time", Calendar.getInstance().getTime().toGMTString().replace(" GMT", ""));
 
@@ -181,15 +181,15 @@ public class CloudSocketThread extends Thread implements SocketEventListener {
                             float timeLeftSeconds = Autoclave.getInstance().getTimeOrPercent();
 
                             jsonLiveMessageDataObj.put(AppController.getInstance().
-                                            getApplicationContext().getString(Autoclave.getInstance().getProfile().isF0Enabled()?
-                                            R.string.time_left_f:
+                                            getApplicationContext().getString(Autoclave.getInstance().getProfile().isF0Enabled() ?
+                                            R.string.time_left_f :
                                             R.string.time_left)
-                                    , Autoclave.getInstance().getProfile().isF0Enabled()?
-                                            String.format("%.1f",timeLeftSeconds)+ "%":
+                                    , Autoclave.getInstance().getProfile().isF0Enabled() ?
+                                            String.format("%.1f", timeLeftSeconds) + "%" :
                                             (String.format("%02d:%02d:%02d",
-                                    (((int)timeLeftSeconds) / 60 / 60) % 24,
-                                    (((int)timeLeftSeconds) / 60) % 60,
-                                                    ((int)timeLeftSeconds) % 60)));
+                                                    (((int) timeLeftSeconds) / 60 / 60) % 24,
+                                                    (((int) timeLeftSeconds) / 60) % 60,
+                                                    ((int) timeLeftSeconds) % 60)));
                         }
                         jsonLiveMessageObj.put("data", jsonLiveMessageDataObj);
                         Log.e("CloudSocketThread", "sending: " + jsonLiveMessageObj.toString().replace("{", "[").replace("}", "]"));
@@ -263,7 +263,16 @@ public class CloudSocketThread extends Thread implements SocketEventListener {
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(new Runnable() {
                 public void run() {
-                    Helper.getCloudPrograms(AppController.getContext());
+                    Helper.getInstance().getCloudPrograms(AppController.getContext());
+                }
+            });
+        } else if (eventIdentifier.equals(SocketService.EVENT_ASK_PERMISSION)) {
+            Log.e("Received", "ASK PERMISSION");
+
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
+                public void run() {
+                    Helper.getInstance().askPermissionFDA(CloudSocketThread.this);
                 }
             });
         } else if (eventIdentifier.equals(SocketService.EVENT_GET_LIVE_DEBUG)) {
@@ -272,18 +281,18 @@ public class CloudSocketThread extends Thread implements SocketEventListener {
             handler.post(new Runnable() {
                 public void run() {
 
-                    if(Autoclave.getInstance().getState() != AutoclaveState.RUNNING) {
+                    if (Autoclave.getInstance().getState() != AutoclaveState.RUNNING) {
                         JSONObject content = new JSONObject();
                         try {
                             content.put("isRunning", false);
-                            content.put("device_key",AutoclaveModelManager.getInstance().getSerialNumber());
+                            content.put("device_key", AutoclaveModelManager.getInstance().getSerialNumber());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         SocketService.getInstance().getSocket().emit(SocketService.EVENT_SEND_LIVE_DEBUG,
                                 content);
-                    }else{
-                        Helper.uploadLiveDebug(AppController.getContext());
+                    } else {
+                        Helper.getInstance().uploadLiveDebug(AppController.getContext());
                     }
                 }
             });
@@ -298,5 +307,17 @@ public class CloudSocketThread extends Thread implements SocketEventListener {
         SocketService.getInstance().endService();
         Log.e("SocketThread", "close and destroy thread");
         //wenn runflag false ist, dann l�uft die run() Methode zu ende und der Thread wird zerst�rt.
+    }
+
+    public void sendPermissionResponse(boolean isGranted) {
+        JSONObject content = new JSONObject();
+        try {
+            content.put("allow", isGranted);
+            content.put("device_key", AutoclaveModelManager.getInstance().getSerialNumber());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        SocketService.getInstance().getSocket().emit(SocketService.EVENT_SEND_PERMISSION,
+                content);
     }
 }

@@ -15,6 +15,7 @@ import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.Log;
 import com.certoclav.library.application.ApplicationController;
+import com.j256.ormlite.dao.ForeignCollection;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -46,7 +47,7 @@ public class ESCPos {
         try {
             PackageInfo pInfo;
             pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            version = pInfo.versionName + " (" + pInfo.versionCode + ")";
+            version = " (" + pInfo.versionName + ")";
         } catch (NameNotFoundException e) {
             e.printStackTrace();
             version = "";
@@ -87,18 +88,18 @@ public class ESCPos {
         }
         //Autoclave Name
         if (isPrefEnabled(R.string.preferences_print_autoclave_name, R.bool.preferences_print_autoclave_name))
-            sb.append(getPrintLine()).append(context.getString(R.string.glp_autoclave_name)).append(
+            sb.append(getPrintLine()).append(context.getString(R.string.glp_autoclave_name)).append(" ").append(
                     prefs.getString(context.getString(R.string.preferences_glp_autoclave_name),
                             context.getString(R.string.preferences_print_autoclave_name_value)) + "\n");
 
         //Serial Number
         if (isPrefEnabled(R.string.preferences_print_autoclave_serial_number, R.bool.preferences_print_autoclave_serial_number))
-            sb.append(getPrintLine()).append(context.getString(R.string.glp_autoclave_serial_number)).append(
-                    Autoclave.getInstance().getController().getSerialnumber()).append(version).append("\n");
+            sb.append(getPrintLine()).append(context.getString(R.string.glp_autoclave_serial_number)).append(" ").append(
+                    Autoclave.getInstance().getController().getSavetyKey()).append(version).append("\n");
 
         //Project Name
         if (isPrefEnabled(R.string.preferences_print_project_name, R.bool.preferences_print_project_name))
-            sb.append(getPrintLine()).append(context.getString(R.string.glp_project_name)).append(
+            sb.append(getPrintLine()).append(context.getString(R.string.glp_project_name)).append(" ").append(
                     prefs.getString(context.getString(R.string.preferences_glp_project_name),
                             "") + "\n");
 
@@ -107,13 +108,15 @@ public class ESCPos {
 
         //Program Name
         if (isPrefEnabled(R.string.preferences_print_program_name, R.bool.preferences_print_program_name)) {
-            sb.append(getPrintLine()).append(context.getString(R.string.glp_program_name))
+            sb.append(getPrintLine()).append(context.getString(R.string.glp_program_name)).append(" ")
                     .append(protocol.getProfileName().replace("\u00B0", "")).append("\n");
         }
         //Program description
         if (isPrefEnabled(R.string.preferences_print_program_desc, R.bool.preferences_print_program_desc)) {
             sb.append(getPrintLine()).append(context.getString(R.string.print_program_desc)).append(":").append("\n");
             sb.append("   ").append(protocol.getProfileDescription().replace("\u00B0", "")
+                    .replaceAll("\u2103", "C")
+                    .replaceAll("\u2109", "F")
                     .replace("\n", "\n   ")).append("\n");
             sb.append(getPrintLine()).append(context.getString(R.string.date)).append(": ")
                     .append(startTimeString).append("\n");
@@ -131,7 +134,7 @@ public class ESCPos {
             }
             sb.append(SPACING);
             sb.append(getPrintLine()).append(context.getString(R.string.glp_temperature)).append(": ")
-                    .append(Helper.celsiusToCurrentUnit(protocol.getSterilisationTemperature())).append("\n");
+                    .append(Helper.getInstance().celsiusToCurrentUnit(protocol.getSterilisationTemperature())).append("\n");
             sb.append(getPrintLine()).append(context.getString(R.string.glp_pressure)).append(": ").append(protocol.getSterilisationPressure()).append("\n");
             sb.append(getPrintLine()).append(context.getString(R.string.glp_time)).append(": ").append(protocol.getSterilisationTime()).append("\n");
             sb.append(getPrintLine()).append(context.getString(R.string.glp_start)).append(": ").append(startTimeString).append("\n");
@@ -144,32 +147,44 @@ public class ESCPos {
             sb.append(SPACING);
         }
         if (isPrefEnabled(R.string.preferences_print_program_data_points, R.bool.preferences_print_program_data_points)) {
+
+            boolean showMediaTemp = false;
+            boolean showMedia2Temp = false;
+
+            ForeignCollection<ProtocolEntry> protocolEntries = protocol.getProtocolEntry();
+
+            for (ProtocolEntry protocolEntry : protocolEntries) {
+                showMediaTemp = protocolEntry.getMediaTemperature() > -100;
+                showMedia2Temp = protocolEntry.getMediaTemperature2() > -100;
+                break;
+            }
+
             sb.append(getPrintLine()).append(context.getString(R.string.glp_data_points)).append("\n");
             sb.append(String.format("%-8s", "t[h:m]"))
                     .append(String.format("%-8s", "P[bar]"))
                     .append(String.format("%-8s", "S[" + AutoclaveModelManager.getInstance().getTemperatureUnit() + "]"))
-                    .append(protocol.isContByFlexProbe1() ? String.format("%-8s", "M[" + AutoclaveModelManager.getInstance().getTemperatureUnit() + "]") : "")
-                    .append(protocol.isContByFlexProbe2() ? String.format("%-8s", "M2[" + AutoclaveModelManager.getInstance().getTemperatureUnit() + "]") : "")
+                    .append(showMediaTemp ? String.format("%-8s", "M[" + AutoclaveModelManager.getInstance().getTemperatureUnit() + "]") : "")
+                    .append(showMedia2Temp ? String.format("%-8s", "M2[" + AutoclaveModelManager.getInstance().getTemperatureUnit() + "]") : "")
                     .append("\n");
             Long startTime = protocol.getStartTime().getTime();
             int minutesOnLastPrint = -1;
-            for (ProtocolEntry entry : protocol.getProtocolEntry()) {
+            for (ProtocolEntry entry : protocolEntries) {
                 Long timeDiff = entry.getTimestamp().getTime() - startTime;
                 int hours = (int) (timeDiff / (1000 * 60 * 60));
                 int minutes = (int) ((timeDiff / (1000 * 60)) % 60);
                 if (minutesOnLastPrint != minutes) {
                     minutesOnLastPrint = minutes;
                     String timeStamp = String.format("%02d:%02d", hours, minutes);
-                    String pressure = String.format("%03d", Math.round(entry.getPressure()));
-                    String temperature = String.format("%05.1f", Helper.celsiusToCurrentUnit(entry.getTemperature()));
-                    String mediaTemp = String.format("%05.1f", Helper.celsiusToCurrentUnit(entry.getMediaTemperature()));
-                    String mediaTemp2 = String.format("%05.1f", Helper.celsiusToCurrentUnit(entry.getMediaTemperature2()));
+                    String pressure = String.format("%04.2f", entry.getPressure());
+                    String temperature = String.format("%05.1f", Helper.getInstance().celsiusToCurrentUnit(entry.getTemperature()));
+                    String mediaTemp = String.format("%05.1f", Helper.getInstance().celsiusToCurrentUnit(entry.getMediaTemperature()));
+                    String mediaTemp2 = String.format("%05.1f", Helper.getInstance().celsiusToCurrentUnit(entry.getMediaTemperature2()));
 
                     sb.append(String.format("%-8s", timeStamp))
                             .append(String.format("%-8s", pressure))
                             .append(String.format("%-8s", temperature))
-                            .append(protocol.isContByFlexProbe1() ? String.format("%-8s", mediaTemp) : "")
-                            .append(protocol.isContByFlexProbe1() ? String.format("%-8s", mediaTemp2) : "")
+                            .append(showMediaTemp ? String.format("%-8s", mediaTemp) : "")
+                            .append(showMedia2Temp ? String.format("%-8s", mediaTemp2) : "")
                             .append("\n");
                 }
             }

@@ -1114,7 +1114,7 @@ public class Autoclave extends Observable {
         data.setDoorLocked(digitalData[AppConstants.DIGITAL_DOOR_LOCKED_INDEX]);
 //        data.setFailStoppedByUser(digitalData[AppConstants.DIGITAL_FAIL_STOPPED_BY_USER]);
         data.setWaterLvlFull(digitalData[AppConstants.DIGITAL_WATER_LVL_FULL_INDEX]);
-        data.setWaterLvlLow(digitalData[AppConstants.DIGITAL_WATER_LVL_LOW_INDEX]);
+//        data.setWaterLvlLow(digitalData[AppConstants.DIGITAL_WATER_LVL_LOW_INDEX]);
         data.setWaterQuality(digitalData[AppConstants.DIGITAL_FAIL_WATER_QUALITY]);
 
         for (SensorDataListener listener : sensorDataListeners) {

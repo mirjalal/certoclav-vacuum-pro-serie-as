@@ -234,7 +234,7 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
                     barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
                     barProgressDialog.setTitleText(getActivity().getString(com.certoclav.library.R.string.downloading));
                     barProgressDialog.setCancelable(false);
-                    Helper.downloadProtocol(getActivity(), protocolAdapter.getItem(aktPosition), new MyCallback() {
+                    Helper.getInstance().downloadProtocol(getActivity(), protocolAdapter.getItem(aktPosition), new MyCallback() {
                         @Override
                         public void onSuccess(Object response, int requestId) {
                             if ((Boolean) response)
@@ -467,7 +467,7 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
 
                 @Override
                 public void onClick(View v) {
-                    Helper.printProtocols(getActivity(), protocolAdapter.getItem(aktPosition), new MyCallback() {
+                    Helper.getInstance().printProtocols(getActivity(), protocolAdapter.getItem(aktPosition), new MyCallback() {
                         SweetAlertDialog dialogLocal;
 
                         @Override
@@ -768,7 +768,7 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
                                 AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
                                 AuditLogger.OBJECT_EMPTY,
                                 getString(R.string.later));
-                        DatabaseService.getInstance().updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(), AutoclaveMonitor.ERROR_CODE_INDICATOR_NOT_COMPLETED);
+                        DatabaseService.getInstance().updateProtocolErrorCode(protocol.getProtocol_id(), AutoclaveMonitor.ERROR_CODE_INDICATOR_NOT_COMPLETED);
                         sweetAlertDialog.dismissWithAnimation();
                     }
                 });

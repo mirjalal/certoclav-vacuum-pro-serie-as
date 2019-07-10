@@ -136,9 +136,9 @@ public class ProtocolEntry {
 
     public ProtocolEntry(Date timeStamp, float temperature, float mediaTemperature, float mediaTemperature2, float pressure, Protocol protocol, String debugInput, String debugOutput) {
         this.timestamp = timeStamp;
-        this.temperature = Helper.currentUnitToCelsius(temperature);
-        this.mediaTemperature = Helper.currentUnitToCelsius(mediaTemperature);
-        this.mediaTemperature2 = Helper.currentUnitToCelsius(mediaTemperature2);
+        this.temperature = Helper.getInstance().currentUnitToCelsius(temperature);
+        this.mediaTemperature = Helper.getInstance().currentUnitToCelsius(mediaTemperature);
+        this.mediaTemperature2 = Helper.getInstance().currentUnitToCelsius(mediaTemperature2);
         this.pressure = pressure;
         this.protocol = protocol;
         this.debugInput = debugInput;

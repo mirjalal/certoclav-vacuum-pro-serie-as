@@ -93,7 +93,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
     public static final int HEART_PROBES_EXC_DIF = 4;
     public static final int PROCESS_ERROR = 5;
     public static final int PLEASE_CLOSE_DOOR = 6;
-//    public static final int OPEN_DOOR = 7;
+    //    public static final int OPEN_DOOR = 7;
     public static final int HIGH_TEMP_FOR_THE_TEST = 8;
     public static final int ERROR_TEMP_SENSOR_1 = 9;
     public static final int ERROR_TEMP_SENSOR_2 = 10;
@@ -101,12 +101,12 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
     public static final int ERROR_TEMP_SENSOR_4 = 12;
     public static final int ERROR_PRES_SENSOR_1 = 13;
     public static final int ERROR_PRES_SENSOR_2 = 14;
-//    public static final int READ_ATM_PRESSURE = 15;
+    //    public static final int READ_ATM_PRESSURE = 15;
     public static final int ATMOSPHERIC_PRESS_FAILURE = 16;
-//    public static final int DOOR_OPEN_WARN = 17;
+    //    public static final int DOOR_OPEN_WARN = 17;
     public static final int TEST_MAX_TEMP = 18;
     public static final int GENERAL_FAILURE = 19;
-//    public static final int VACUUM_TEST_NOK = 20;
+    //    public static final int VACUUM_TEST_NOK = 20;
 //    public static final int STERILIZATION_NOK = 21;
 //    public static final int VACUUM_TEST_OK = 22;
 //    public static final int STERILIZATION_OK = 23;
@@ -549,6 +549,9 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                                         errorList.get(0).getMsg() + ")");
                         Log.e("AutoclaveMonitor", "ERROR ID STORED INTO PROTOCOL: " + errorList.get(0).getErrorID());
                         cancelProgram(errorList.get(0).getErrorID());
+                    } else if (warningList.size() > 0 || (!Autoclave.getInstance().getData().isProgramRunning() &&
+                            !Autoclave.getInstance().getData().isProgramFinishedSucessfully())) {
+                        Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);
                     } else {
                         if (Autoclave.getInstance().getData().isProgramFinishedSucessfully()
                                 && Autoclave.getInstance().getState() != AutoclaveState.PROGRAM_FINISHED) {
@@ -958,7 +961,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
             warningList = new ArrayList<>();
             int errorcode = 0;
             for (int i = 0; i < 40; i++)
-                if (binary.charAt(i) == '1') {
+                if (binary.charAt(39 - i) == '1') {
                     errorcode = i + 1;
                     if (getWarningString(errorcode) != null)
                         warningList.add(new Error("WARNING: " + getWarningString(errorcode),

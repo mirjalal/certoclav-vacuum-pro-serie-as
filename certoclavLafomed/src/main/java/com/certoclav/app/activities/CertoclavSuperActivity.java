@@ -74,9 +74,9 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
                     && data.getTemp3().getCurrentValue() > -100) ? View.VISIBLE : View.GONE);
 
             textPressure.setText(getString(R.string.pressure) + ": " + data.getPress().getValueString() + " " + getString(R.string.bar));
-            textSteam.setText(getString(R.string.steam) + ": " + data.getTemp1().getValueString() + " " + Helper.getTemperatureUnitText(null));
-            textMedia.setText(getString(R.string.media) + ": " + data.getTemp2().getValueString() + " " + Helper.getTemperatureUnitText(null));
-            textMedia2.setText(getString(R.string.media_2) + ": " + data.getTemp3().getValueString() + " " + Helper.getTemperatureUnitText(null));
+            textSteam.setText(getString(R.string.steam) + ": " + data.getTemp1().getValueString() + " " + Helper.getInstance().getTemperatureUnitText(null));
+            textMedia.setText(getString(R.string.media) + ": " + data.getTemp2().getValueString() + " " + Helper.getInstance().getTemperatureUnitText(null));
+            textMedia2.setText(getString(R.string.media_2) + ": " + data.getTemp3().getValueString() + " " + Helper.getInstance().getTemperatureUnitText(null));
         } catch (Exception e) {
             e.printStackTrace();
         }

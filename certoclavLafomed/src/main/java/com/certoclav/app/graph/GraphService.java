@@ -25,13 +25,13 @@ import java.util.Collection;
 public class GraphService implements SensorDataListener {
 
     private GraphicalView view;
-    private LineGraph runningGraph = new LineGraph(Helper.getTemperatureUnitText(null));
+    private LineGraph runningGraph = new LineGraph(Helper.getInstance().getTemperatureUnitText(null));
 
 
-    private LineGraph graphTemp1 = new LineGraph(Helper.getTemperatureUnitText(null));
-    private LineGraph graphTemp2 = new LineGraph(Helper.getTemperatureUnitText(null));
-    private LineGraph graphTemp3 = new LineGraph(Helper.getTemperatureUnitText(null));
-    private LineGraph graphPressure = new LineGraph(Helper.getTemperatureUnitText(null));
+    private LineGraph graphTemp1 = new LineGraph(Helper.getInstance().getTemperatureUnitText(null));
+    private LineGraph graphTemp2 = new LineGraph(Helper.getInstance().getTemperatureUnitText(null));
+    private LineGraph graphTemp3 = new LineGraph(Helper.getInstance().getTemperatureUnitText(null));
+    private LineGraph graphPressure = new LineGraph(Helper.getInstance().getTemperatureUnitText(null));
     private GraphicalView viewTemp1;
     private GraphicalView viewTemp2;
     private GraphicalView viewTemp3;
@@ -164,7 +164,7 @@ public class GraphService implements SensorDataListener {
 
     private LineGraph getProtocolGraph(Protocol protocol) {
 
-        LineGraph protocolGraph = new LineGraph(Helper.getTemperatureUnitText(null));
+        LineGraph protocolGraph = new LineGraph(Helper.getInstance().getTemperatureUnitText(null));
 
         try {
 
@@ -187,22 +187,22 @@ public class GraphService implements SensorDataListener {
                 if (pastSeconds - timeLastPoint > 30) {
 
                     Point p = new Point(roundFloat((float) (pastSeconds / 60.0)),
-                            roundFloat(Helper.celsiusToCurrentUnit(entry.getTemperature())));
+                            roundFloat(Helper.getInstance().celsiusToCurrentUnit(entry.getTemperature())));
                     protocolGraph.addNewPoints(p, LineGraph.TYPE_STEAM);
 
                     Point p2 = new Point(roundFloat((float) (pastSeconds / 60.0)), roundFloat((float) (entry.getPressureInkPa())));
                     protocolGraph.addNewPoints(p2, LineGraph.TYPE_PRESS);
 
 
-                    if (protocol.isContByFlexProbe1()) {
+                    if (entry.getMediaTemperature() > -100) {
                         Point p3 = new Point(roundFloat((float) (pastSeconds / 60.0)),
-                                roundFloat(Helper.celsiusToCurrentUnit(entry.getMediaTemperature())));
+                                roundFloat(Helper.getInstance().celsiusToCurrentUnit(entry.getMediaTemperature())));
                         protocolGraph.addNewPoints(p3, LineGraph.TYPE_MEDIA);
                     }
 
-                    if (protocol.isContByFlexProbe2()) {
+                    if (entry.getMediaTemperature2() > -100) {
                         Point p3 = new Point(roundFloat((float) (pastSeconds / 60.0)),
-                                roundFloat(Helper.celsiusToCurrentUnit(entry.getMediaTemperature2())));
+                                roundFloat(Helper.getInstance().celsiusToCurrentUnit(entry.getMediaTemperature2())));
                         protocolGraph.addNewPoints(p3, LineGraph.TYPE_MEDIA_2);
                     }
 
@@ -218,7 +218,7 @@ public class GraphService implements SensorDataListener {
             protocolGraph.setRange(range);
 
         } catch (Exception e) {
-            protocolGraph = new LineGraph(Helper.getTemperatureUnitText(null));
+            protocolGraph = new LineGraph(Helper.getInstance().getTemperatureUnitText(null));
 
         }
 

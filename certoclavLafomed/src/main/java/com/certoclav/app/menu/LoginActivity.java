@@ -26,7 +26,6 @@ import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.activities.CertoclavSuperActivity;
 import com.certoclav.app.adapters.UserDropdownAdapter;
-import com.certoclav.app.database.AuditLog;
 import com.certoclav.app.database.Controller;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.User;
@@ -277,7 +276,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                         progressBar.setVisibility(View.VISIBLE);
                         textViewLogin.setVisibility(View.GONE);
 
-//                        if (Helper.checkAdminPassword(getApplicationContext(), password)) {
+//                        if (Helper.getInstance().checkAdminPassword(getApplicationContext(), password)) {
 //                            password = AppConstants.DEFAULT_CLOUD_ADMIN_PASSWORD;
 //                        }
 
@@ -309,7 +308,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                                     || params[0].equals(AppConstants.DEFAULT_CLOUD_ADMIN_PASSWORD)
                                     || params[0].equals(AppConstants.DEFAULT_SUPER_ADMIN_PASSWORD)
                                     || (selectedUser.isAdmin() &&
-                                    Helper.checkAdminPassword(getApplicationContext(), params[0]))) {
+                                    Helper.getInstance().checkAdminPassword(getApplicationContext(), params[0]))) {
 
                                 DatabaseService databaseService = DatabaseService.getInstance();
 
@@ -362,7 +361,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
             }
         });
         // throw new RuntimeException();
-        Helper.getPrograms(this);
+        Helper.getInstance().getPrograms(this);
 
         //get data from autoclave
 //        ReadAndParseSerialService.getInstance().sendGetAdjustParameterCommand();
@@ -726,7 +725,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         buttonLogin.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Helper.checkAdminPassword(LoginActivity.this, editTextPassword.getText().toString())) {
+                if (Helper.getInstance().checkAdminPassword(LoginActivity.this, editTextPassword.getText().toString())) {
                     showCreateAccountDialog();
                     dialog.dismiss();
                 } else {

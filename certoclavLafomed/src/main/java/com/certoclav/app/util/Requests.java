@@ -22,6 +22,7 @@ import com.certoclav.library.certocloud.CertocloudConstants;
 import com.certoclav.library.certocloud.CloudUser;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
@@ -79,6 +80,46 @@ public class Requests {
 
         sendRequest(url, myCallback, requestId, null, null, null, LicenseCountModel.class, null, Request.Method.POST);
     }
+
+    public void enableDeviceFDA(MyCallback myCallback, boolean isEnabled, int requestId) {
+        String url = Uri.parse(CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_ENABLE_FDA)
+                .buildUpon()
+                .build().toString();
+        Map<String, String> headers = new HashMap<>();
+
+        JSONObject body = new JSONObject();
+        try {
+            body.put("isEnabledFDA", isEnabled + "");
+            body.put("devicekey", Autoclave.getInstance().getController().getSavetyKey());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        headers.put("Content-Type", "application/json");
+
+        sendRequest(url, myCallback, requestId, null, headers, body.toString(), LicenseCountModel.class, null, Request.Method.POST);
+    }
+
+    public void enableDeviceFDAAccess(MyCallback myCallback, float hours, int requestId) {
+        String url = Uri.parse(CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_ENABLE_FDA_PERMISSION)
+                .buildUpon()
+                .build().toString();
+        Map<String, String> headers = new HashMap<>();
+
+        JSONObject body = new JSONObject();
+        try {
+            body.put("allowHours", hours);
+            body.put("devicekey", Autoclave.getInstance().getController().getSavetyKey());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        headers.put("X-Access-Token", CloudUser.getInstance().getToken());
+        headers.put("X-Key", CloudUser.getInstance().getEmail());
+        headers.put("Content-Type", "application/json");
+
+        sendRequest(url, myCallback, requestId, null, headers, body.toString(), LicenseCountModel.class, null, Request.Method.POST);
+    }
+
 
     public void getUserProtocols(MyCallback myCallback, int requestId) {
         String url = Uri.parse(CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_GET_PROTOCOLS + Autoclave.getInstance().getController().getSavetyKey())

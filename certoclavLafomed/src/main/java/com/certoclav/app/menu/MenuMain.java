@@ -70,7 +70,6 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
         Crashlytics.setUserEmail("user@fabric.io");
         Crashlytics.setUserName("Test User");
 
-
         fragmentList = new ArrayList<Fragment>(); //liste von Fragmenten f?r den ControlPagerAdapter
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the app.
@@ -79,13 +78,13 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
 
         try {
             navigationbar = new CertoclavNavigationbar(this);
-        }catch (Exception e){
+        } catch (Exception e) {
             finish();
         }
         try {
             navigationbar.showNavigationBar();
             navigationbar.setTabSterilisationEnabled();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -120,7 +119,7 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
         mViewPager.setCurrentItem(INDEX_STERILISATION);
         navigationbar.setTabSterilisationEnabled();
 
-
+        Helper.getInstance().getPrograms(this);
     }
 
 
@@ -235,7 +234,7 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
                                 public void onClick(SweetAlertDialog sDialog) {
                                     sDialog.dismissWithAnimation();
                                     Intent intent = new Intent(MenuMain.this, EditProgramActivity.class);
-                                        intent.putExtra(AppConstants.INTENT_EXTRA_PROFILE_ID, Autoclave.getInstance().getUnusedProfileIndex());
+                                    intent.putExtra(AppConstants.INTENT_EXTRA_PROFILE_ID, Autoclave.getInstance().getUnusedProfileIndex());
                                     startActivityForResult(intent, REQUEST_PROGRAM_EDIT);
                                 }
                             }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -282,7 +281,7 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_PROGRAM_EDIT && resultCode == RESULT_OK) {
-            Helper.getPrograms(this);
+            Helper.getInstance().getPrograms(this);
         }
     }
 }

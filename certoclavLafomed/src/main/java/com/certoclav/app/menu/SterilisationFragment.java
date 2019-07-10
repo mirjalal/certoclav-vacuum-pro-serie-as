@@ -131,11 +131,11 @@ public class SterilisationFragment extends Fragment implements ProfileSyncedList
 //                    db.insertDeletedProfile(new DeletedProfileModel(profile.getCloudId()));
 //                    new DeleteTask().execute(CertocloudConstants.SERVER_URL + CertocloudConstants.REST_API_DELETE_PROFILE + profile.getCloudId());
                 }
-                Helper.setProgram(getContext(), profile, new MyCallback() {
+                Helper.getInstance().setProgram(getContext(), profile, new MyCallback() {
                     @Override
                     public void onSuccess(Object response, int requestId) {
 //                        programGrid.setVisibility(View.GONE);
-                        Helper.getPrograms(getActivity());
+                        Helper.getInstance().getPrograms(getActivity());
 //                        programGrid.setVisibility(View.VISIBLE);
                     }
 

@@ -14,9 +14,11 @@ public class SocketService {
     public static final String EVENT_SEND_DATA_FROM_ANDROID_TO_SERVER = "android:give";
     public static final String EVENT_REGISTER = "register";
     public static final String EVENT_START_SEND = "server:get";
+    public static final String EVENT_ASK_PERMISSION = "server:askpermission";
     public static final String EVENT_PROGRAM_EDIT = "server:get:edit";
     public static final String EVENT_GET_LIVE_DEBUG = "server:get:livedebug";
     public static final String EVENT_SEND_LIVE_DEBUG = "android:give:livedebug";
+    public static final String EVENT_SEND_PERMISSION = "android:give:askpermission";
 
     private static SocketService instance;
 
@@ -93,6 +95,14 @@ public class SocketService {
                         public void call(Object... args) {
                             if (listener != null)
                                 listener.onSocketEvent(EVENT_PROGRAM_EDIT, args);
+                            Log.e("SocketService", "SOCKET EVENT_START_SEND");
+                        }
+                    })
+                    .on(EVENT_ASK_PERMISSION, new Emitter.Listener() {
+                        @Override
+                        public void call(Object... args) {
+                            if (listener != null)
+                                listener.onSocketEvent(EVENT_ASK_PERMISSION, args);
                             Log.e("SocketService", "SOCKET EVENT_START_SEND");
                         }
                     })
