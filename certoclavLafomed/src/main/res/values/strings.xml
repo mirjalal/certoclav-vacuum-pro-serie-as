@@ -560,24 +560,24 @@
     </string-array>
 
     <string-array name="autoclave_models_values">
-        <item>AE-50-B</item>
-        <item>AE-75-B</item>
-        <item>AE-110-B</item>
-        <item>AE-150-B</item>
-        <item>AHS-50-B</item>
-        <item>AHS-75-B</item>
+        <item>AE-50B</item>
+        <item>AE-75B</item>
+        <item>AE-110B</item>
+        <item>AE-150B</item>
+        <item>AHS-50B</item>
+        <item>AHS-75B</item>
         <item>TLV-50</item>
-        <item>TLV-50-FA</item>
-        <item>TLV-50-PD</item>
+        <item>TLV-50FA</item>
+        <item>TLV-50PD</item>
         <item>TLV-75</item>
-        <item>TLV-75-FA</item>
-        <item>TLV-75-PD</item>
+        <item>TLV-75FA</item>
+        <item>TLV-75PD</item>
         <item>TLV-110</item>
-        <item>TLV-110-FA</item>
-        <item>TLV-110-PD</item>
+        <item>TLV-110FA</item>
+        <item>TLV-110PD</item>
         <item>TLV-150</item>
-        <item>TLV-150-FA</item>
-        <item>TLV-150-PD</item>
+        <item>TLV-150FA</item>
+        <item>TLV-150PD</item>
     </string-array>
 
 

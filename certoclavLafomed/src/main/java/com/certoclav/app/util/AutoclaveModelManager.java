@@ -172,8 +172,8 @@ public class AutoclaveModelManager implements MyCallback {
         switch (getModelName()) {
             case "AHSB":
             case "AEB":
-                return true;
             case "TLVPD":
+                return true;
             case "TLVFA":
             case "TLV":
         }
@@ -274,5 +274,9 @@ public class AutoclaveModelManager implements MyCallback {
 
     public boolean showGenPress() {
         return Arrays.asList(new String[]{"TLVPD"}).contains(getModelName());
+    }
+
+    public int getVacuumProgramIndex(){
+        return 2;
     }
 }

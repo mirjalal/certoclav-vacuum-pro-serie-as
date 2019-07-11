@@ -118,7 +118,7 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
         }
         viewHolder.imageViewMenu.setVisibility(isLocked ? View.GONE : View.VISIBLE);
 
-        if(!getItem(position).isEditable()){
+        if (!getItem(position).isEditable()) {
             viewHolder.imageViewMenu.setVisibility(View.GONE);
         }
 
@@ -141,8 +141,7 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
         Profile item;
 
 
-
-        ViewHolder( TextView firstLine, TextView textDuration, CardView cardView, ImageView imageViewMenu,
+        ViewHolder(TextView firstLine, TextView textDuration, CardView cardView, ImageView imageViewMenu,
                    ImageView imageViewCloud, final SterilisationFragment fragment, final ProgramAdapter adapter) {
             this.firstLine = firstLine;
             this.textDuration = textDuration;
@@ -198,7 +197,9 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
         }
 
         if (Autoclave.getInstance().getProgramStep() == Autoclave.PROGRAM_STEPS.PRE_HEATING
-                && AutoclaveModelManager.getInstance().isWarmingUpEnabled()) {
+                && AutoclaveModelManager.getInstance().isWarmingUpEnabled()
+                && getItem(position) != null
+                && getItem(position).getIndex() != AutoclaveModelManager.getInstance().getVacuumProgramIndex()) {
             SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
                     .setTitleText(mContext.getString(R.string.can_not_start_program))
                     .setContentText(mContext.getString(R.string.can_not_start_program_please_wait_warming_up_finished))

@@ -23,6 +23,7 @@ import com.certoclav.app.service.CloudSocketService;
 import com.certoclav.app.service.PostProtocolsService;
 import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.app.util.AuditLogger;
+import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.bcrypt.BCrypt;
 import com.certoclav.library.certocloud.CloudDatabase;
@@ -701,7 +702,8 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                 checkErrors();
                 try {
                     if (AppConstants.IS_CERTOASSISTANT == false) {
-                        if (Autoclave.getInstance().getProfile().getIndex() == 9 && Autoclave.getInstance().getData().getTemp1().getCurrentValue() > 50) {
+                        if (Autoclave.getInstance().getProfile().getIndex() == AutoclaveModelManager.getInstance().getVacuumProgramIndex()
+                                && Autoclave.getInstance().getData().getTemp1().getCurrentValue() > 50) {
                             errorList.add(new Error(mContext.getString(R.string.unable_to_start_vacuum_test),
                                     "",
                                     Error.TYPE_WARNING,
