@@ -29,6 +29,7 @@ public class AuditLogsAdapter extends ArrayAdapter<AuditLog> {
     static class ViewHolder {
         protected TextView textViewAuditLog;
         protected TextView textViewAuditLogDate;
+        protected TextView textViewAuditLogComment;
 
     }
 
@@ -66,6 +67,7 @@ public class AuditLogsAdapter extends ArrayAdapter<AuditLog> {
             holder = new ViewHolder();
             holder.textViewAuditLog = convertView.findViewById(R.id.textViewAuditLog);
             holder.textViewAuditLogDate = convertView.findViewById(R.id.textViewAuditLogDate);
+            holder.textViewAuditLogComment = convertView.findViewById(R.id.textViewAuditLogComment);
 
             convertView.setTag(holder);
         } else {
@@ -86,6 +88,8 @@ public class AuditLogsAdapter extends ArrayAdapter<AuditLog> {
                 (screenId != -1 ? mContext.getString(screenId) : -1))));
 
         holder.textViewAuditLogDate.setText(format.format(log.getDate()));
+        holder.textViewAuditLogComment.setText(log.getComment());
+        holder.textViewAuditLogComment.setVisibility(log.getComment().isEmpty() ? View.GONE : View.VISIBLE);
 
 
         return convertView;

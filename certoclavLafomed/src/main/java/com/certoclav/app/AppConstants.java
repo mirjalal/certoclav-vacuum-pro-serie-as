@@ -112,6 +112,7 @@ public interface AppConstants {
     String PREFERENCE_KEY_BATCH_NUMBER = "preferences_batch_number";
     String PREFERENCE_KEY_SOFTWARE_UPDATE = "preferences_software_update";
     String PREFERENCE_KEY_EXPORT_USB = "preferences_export_usb";
+    String PREFERENCE_KEY_EXPORT_AUDIT_USB = "preferences_export_audit_usb";
     String PREFERENCE_KEY_EXPORT_SD = "preferences_export_sdcard";
     String PREFERENCE_KEY_VERSION = "preferences_software_version";
     String PREFERENCE_KEY_LANGUAGE_WAS_SET = "preferences_language_was_set";

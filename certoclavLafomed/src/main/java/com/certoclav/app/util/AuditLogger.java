@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.StringRes;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -179,6 +181,13 @@ public class AuditLogger {
     private void askForComment(final User user, @StringRes final int screenId, @StringRes final int eventId, final int objectId, final String value) {
         final SweetAlertDialog dialog = new SweetAlertDialog(context, R.layout.dialog_ask_comment_audit, SweetAlertDialog.WARNING_TYPE);
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_TOAST);
+
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        wlp.gravity = Gravity.TOP;
+        wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        window.setAttributes(wlp);
+
         dialog.setContentView(R.layout.dialog_ask_comment_audit);
         dialog.setTitle(R.string.register_new_user);
         dialog.setCancelable(false);

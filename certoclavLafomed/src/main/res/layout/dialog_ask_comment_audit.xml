@@ -43,14 +43,14 @@
                     <EditText
                         android:id="@+id/editTextDesc"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
                         android:background="@drawable/edittext_selector"
-                        android:gravity="top|left"
+                        android:gravity="top"
                         android:hint="@string/description"
-                        android:inputType="text"
-                        android:minLines="5"
-                        android:textColor="@android:color/black"
-                        tools:ignore="HardcodedText"></EditText>
+                        android:inputType="textMultiLine"
+                        android:lines="3" />
                 </LinearLayout>
 
 

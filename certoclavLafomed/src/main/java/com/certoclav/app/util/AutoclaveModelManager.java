@@ -2,6 +2,7 @@ package com.certoclav.app.util;
 
 import android.util.Pair;
 
+import com.certoclav.app.AppConstants;
 import com.certoclav.app.model.AutoclaveParameter;
 import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.service.ReadAndParseSerialService;
@@ -20,7 +21,7 @@ public class AutoclaveModelManager implements MyCallback {
     private Integer[] parametersTemperature = new Integer[]{36, 37, 39, 40};
     private String[] parametersSkipForAuditLog = new String[]{"preferences_autoclave_parameter_94",
             "preferences_autoclave_parameter_95", "preferences_autoclave_parameter_96",
-            "preferences_autoclave_parameter_98"};
+            "preferences_autoclave_parameter_98", AppConstants.PREFERENCE_KEY_ID_OF_LAST_USER};
     private int currentSentParameterId = 1;
 
     private AutoclaveModelManager() {
@@ -276,7 +277,7 @@ public class AutoclaveModelManager implements MyCallback {
         return Arrays.asList(new String[]{"TLVPD"}).contains(getModelName());
     }
 
-    public int getVacuumProgramIndex(){
+    public int getVacuumProgramIndex() {
         return 2;
     }
 }

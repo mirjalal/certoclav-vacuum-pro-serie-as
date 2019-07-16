@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import com.certoclav.app.R;
 import com.certoclav.app.activities.CertoclavSuperActivity;
 import com.certoclav.app.listener.NavigationbarListener;
+import com.certoclav.app.model.Autoclave;
+import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 
 /**
@@ -34,11 +36,12 @@ public class SettingsActivity extends CertoclavSuperActivity implements ItemList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        isAdmin = getIntent().getBooleanExtra("isAdmin",false);
+        isAdmin = getIntent().getBooleanExtra("isAdmin", false)
+                || (Autoclave.getInstance().getState() != AutoclaveState.LOCKED && Autoclave.getInstance().getUser().isAdmin());
         setContentView(R.layout.settings_activity); //ItemListFragment, sont nix
         CertoclavNavigationbarClean navigationbar = new CertoclavNavigationbarClean(this);
+        navigationbar.showButtonBack();
         navigationbar.setHeadText(getString(R.string.settings));
-
 
 
         //((ItemListFragment) getSupportFragmentManager().findFragmentById(R.id.item_list)).setActivateOnItemClick(true);
@@ -47,7 +50,7 @@ public class SettingsActivity extends CertoclavSuperActivity implements ItemList
     @Override
     protected void onResume() {
         super.onResume();
-        isAdmin = getIntent().getBooleanExtra("isAdmin",false);
+        isAdmin = getIntent().getBooleanExtra("isAdmin", false);
     }
 
     /**

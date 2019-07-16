@@ -11,19 +11,31 @@
         android:id="@+id/textViewAuditLog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="2dp"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="2dp"
         android:text="sasjasha" />
 
     <TextView
         android:id="@+id/textViewAuditLogDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
         android:paddingLeft="10dp"
-        android:textColor="@android:color/secondary_text_light"
+        android:paddingBottom="10dp"
         android:text="dsd"
+        android:textColor="@android:color/secondary_text_light"
         android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/textViewAuditLogComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"
+        android:text="dsd"
+        android:textColor="@android:color/secondary_text_light"
+        android:textSize="10sp"
+        android:textStyle="italic"
+        android:visibility="gone" />
 </LinearLayout>
