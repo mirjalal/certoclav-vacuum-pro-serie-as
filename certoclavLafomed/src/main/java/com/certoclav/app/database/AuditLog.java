@@ -17,9 +17,10 @@ public class AuditLog {
     public static final String FIELD_DATE = "date";
     public static final String FIELD_OBJECT_VALUE = "value";
     public static final String FIELD_SCREEN_ID = "screenid";
+    public static final String FIELD_COMMENT = "comment";
     public static final String FIELD_USER_EMAIL = "useremail";
 
-    public AuditLog(User user, int screenId, int eventId, int objectId, String value) {
+    public AuditLog(User user, int screenId, int eventId, int objectId, String value, String comment) {
         this.user = user;
         this.eventId = eventId;
         this.objectId = objectId;
@@ -27,10 +28,11 @@ public class AuditLog {
         this.screenId = screenId;
         this.email = user.getEmail();
         this.createdDate = new Date();
+        this.comment = comment;
     }
 
 
-    public AuditLog(String email, int screenId, int eventId, int objectId, String value) {
+    public AuditLog(String email, int screenId, int eventId, int objectId, String value, String comment) {
         this.user = user;
         this.eventId = eventId;
         this.objectId = objectId;
@@ -38,6 +40,7 @@ public class AuditLog {
         this.screenId = screenId;
         this.email = email;
         this.createdDate = new Date();
+        this.comment = comment;
     }
 
 
@@ -72,9 +75,12 @@ public class AuditLog {
     @DatabaseField(columnName = FIELD_USER_EMAIL)
     private String email;
 
-    @DatabaseField(columnName = FIELD_DATE,canBeNull = false, dataType = DataType.DATE_STRING,
+    @DatabaseField(columnName = FIELD_DATE, canBeNull = false, dataType = DataType.DATE_STRING,
             format = "yyyy-MM-dd HH:mm:ss")
     private Date createdDate;
+
+    @DatabaseField(columnName = FIELD_COMMENT)
+    private String comment;
 
     public int getAuditId() {
         return auditId;
@@ -110,5 +116,9 @@ public class AuditLog {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getComment() {
+        return comment == null ? "" : comment;
     }
 }

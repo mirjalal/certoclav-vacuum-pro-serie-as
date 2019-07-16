@@ -673,10 +673,10 @@ public class DatabaseService {
         try {
             int result = userDao.create(user);
             if (result != -1)
-                AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
                         AuditLogger.ACTION_USER_CREATED,
                         AuditLogger.OBJECT_EMPTY,
-                        user.getEmail());
+                        user.getEmail(), true);
             return result;
         } catch (java.sql.SQLException e) {
             e.printStackTrace();
@@ -1070,10 +1070,11 @@ public class DatabaseService {
         try {
             int result = userDao.delete(user);
             if (result != -1)
-                AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
                         AuditLogger.ACTION_USER_DELETED,
                         AuditLogger.OBJECT_EMPTY,
-                        user.getEmail());
+                        user.getEmail(),
+                        true);
             return result;
         } catch (java.sql.SQLException e) {
             Log.e(TAG, e.getMessage());

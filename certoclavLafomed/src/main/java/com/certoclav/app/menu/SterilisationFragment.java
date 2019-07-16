@@ -123,9 +123,9 @@ public class SterilisationFragment extends Fragment implements ProfileSyncedList
             case CONTEXT_MENU_DELETE: {
                 final Profile profile = programAdapter.getItem(item.getGroupId());
 
-                AuditLogger.addAuditLog(Autoclave.getInstance().getUser(),
+                AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(),
                         AuditLogger.SCEEN_EMPTY, AuditLogger.ACTION_PROGRAM_DELETED,
-                        AuditLogger.OBJECT_EMPTY, profile.getName());
+                        AuditLogger.OBJECT_EMPTY, profile.getName(),true);
                 profile.setName(AppConstants.DELETED_PROFILE_NAME);
                 if (profile.getCloudId() != null && profile.getCloudId().length() > 0) {
 //                    db.insertDeletedProfile(new DeletedProfileModel(profile.getCloudId()));

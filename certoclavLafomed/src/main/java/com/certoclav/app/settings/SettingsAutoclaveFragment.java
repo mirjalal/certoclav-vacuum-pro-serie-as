@@ -68,8 +68,8 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
                             public void onClick(SweetAlertDialog sDialog) {
                                 sDialog.dismissWithAnimation();
                                 ReadAndParseSerialService.getInstance().setParameter(2, "1");
-                                AuditLogger.addAuditLog(AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CLICKED,
-                                        "preferences_autoclave_parameter_std_assign".hashCode(), "");
+                                AuditLogger.getInstance().addAuditLog(AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CLICKED,
+                                        "preferences_autoclave_parameter_std_assign".hashCode(), "", true);
                             }
                         }, null);
 
@@ -81,8 +81,8 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 ReadAndParseSerialService.getInstance().requestForFirmwareUpdate();
-                AuditLogger.addAuditLog(AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CLICKED,
-                        "preferences_autoclave_parameter_update".hashCode(), "");
+                AuditLogger.getInstance().addAuditLog(AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CLICKED,
+                        "preferences_autoclave_parameter_update".hashCode(), "", true);
                 return false;
             }
         });
@@ -98,7 +98,7 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
 //                            public void onClick(SweetAlertDialog sDialog) {
 //                                sDialog.dismissWithAnimation();
 //                                ReadAndParseSerialService.getInstance().setParameter(83, "1");
-//                                AuditLogger.addAuditLog(AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CLICKED,
+//                                AuditLogger.getInstance().addAuditLog(AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CLICKED,
 //                                        "preferences_autoclave_parameter_reset_review_hours".hashCode(), "");
 //                            }
 //                        }, null);
@@ -117,7 +117,7 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
 //                            public void onClick(SweetAlertDialog sDialog) {
 //                                sDialog.dismissWithAnimation();
 //                                ReadAndParseSerialService.getInstance().setParameter(86, "1");
-//                                AuditLogger.addAuditLog(AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CLICKED,
+//                                AuditLogger.getInstance().addAuditLog(AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CLICKED,
 //                                        "preferences_autoclave_parameter_reset_filter_cycle".hashCode(), "");
 //                            }
 //                        }, null);

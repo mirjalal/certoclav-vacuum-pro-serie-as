@@ -1002,6 +1002,9 @@
     <string name="allow">Allow</string>
     <string name="gen_press">S. GEN</string>
     <string name="media_h_temp">H. JACK</string>
+    <string name="please_enter_reason">Please enter a reason</string>
+    <string name="enable_audit_comment">Enable Audit Comment</string>
+    <string name="please_fill_comment_field">Fill out the description field</string>
 
 
 </resources>

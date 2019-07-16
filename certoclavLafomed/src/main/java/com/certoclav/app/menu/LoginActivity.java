@@ -149,13 +149,6 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
         modelManager = AutoclaveModelManager.getInstance();
-
-        try {
-            if (new Date().after(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse("2019-07-15T09:27:37Z")))
-                finish();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
         serverConfigs = ServerConfigs.getInstance(this);
         AuditLogger.init();
         Fabric.with(this, new Crashlytics());
@@ -341,13 +334,13 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                                 Intent intent = new Intent(LoginActivity.this,
                                         MenuMain.class);
                                 startActivity(intent);
-                                AuditLogger.addAuditLog(currentUser, -1, AuditLogger.ACTION_SUCCESS_LOGIN, AuditLogger.OBJECT_EMPTY, null);
+                                AuditLogger.getInstance().addAuditLog(currentUser, -1, AuditLogger.ACTION_SUCCESS_LOGIN, AuditLogger.OBJECT_EMPTY, null, false);
                             } else {
                                 Toasty.error(getApplicationContext(),
                                         getString(R.string.password_not_correct),
                                         Toast.LENGTH_LONG, true).show();
 
-                                AuditLogger.addAuditLog(currentUser, -1, AuditLogger.ACTION_FAILED_LOGIN, AuditLogger.OBJECT_EMPTY, null);
+                                AuditLogger.getInstance().addAuditLog(currentUser, -1, AuditLogger.ACTION_FAILED_LOGIN, AuditLogger.OBJECT_EMPTY, null, false);
 
                             }
                             super.onPostExecute(result);
@@ -555,7 +548,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                 Toasty.success(LoginActivity.this,
                         getResources().getString(R.string.login_successful),
                         Toast.LENGTH_LONG, true).show();
-                AuditLogger.addAuditLog(currentUser, -1, AuditLogger.ACTION_SUCCESS_LOGIN, AuditLogger.OBJECT_EMPTY, null);
+                AuditLogger.getInstance().addAuditLog(currentUser, -1, AuditLogger.ACTION_SUCCESS_LOGIN, AuditLogger.OBJECT_EMPTY, null, false);
                 Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);
                 try {
                     if (Autoclave.getInstance().getUser().getIsLocal() == true) {
@@ -621,7 +614,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                 return;
         }
 
-        AuditLogger.addAuditLog(currentUser, -1, AuditLogger.ACTION_FAILED_LOGIN, AuditLogger.OBJECT_EMPTY, null);
+        AuditLogger.getInstance().addAuditLog(currentUser, -1, AuditLogger.ACTION_FAILED_LOGIN, AuditLogger.OBJECT_EMPTY, null,false);
         mHandler.post(mShowCloudLoginFailed);
 
     }
@@ -717,7 +710,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         dialog.setTitle(R.string.register_new_user);
         dialog.setCancelable(true);
         dialog.setCanceledOnTouchOutside(true);
-        final EditText editTextPassword = dialog.findViewById(R.id.editTextPassword);
+        final EditText editTextPassword = dialog.findViewById(R.id.editTextDesc);
         Button buttonLogin = (Button) dialog
                 .findViewById(R.id.dialogButtonLogin);
         Button buttonCancel = (Button) dialog

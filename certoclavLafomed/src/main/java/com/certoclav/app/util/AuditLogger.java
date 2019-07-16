@@ -1,22 +1,35 @@
 package com.certoclav.app.util;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.StringRes;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.database.AuditLog;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.User;
 import com.certoclav.app.model.Autoclave;
+import com.certoclav.library.application.ApplicationController;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
+
 public class AuditLogger {
     private static Context context;
     private static AuditLogger logger;
-    private static DatabaseService databaseService;
+    private DatabaseService databaseService;
+    private SharedPreferences prefs;
 
     public static final int SCEEN_LOCKOUT = 1;//R.string.lockout;
     public static final int SCEEN_SETTINGS = 2;//R.string.settings;
@@ -64,7 +77,7 @@ public class AuditLogger {
     private AuditLogger() {
         context = AppController.getInstance().getApplicationContext();
         databaseService = DatabaseService.getInstance();
-
+        prefs = PreferenceManager.getDefaultSharedPreferences(ApplicationController.getContext());
         //Screens
         map.put(SCEEN_LOCKOUT, R.string.lockout);
         map.put(SCEEN_SETTINGS, R.string.settings);
@@ -117,25 +130,33 @@ public class AuditLogger {
         return logger;
     }
 
-    public static void addAuditLog(AuditLog auditLog) {
+    public void addAuditLog(AuditLog auditLog) {
         init();
         databaseService.addAuditLog(auditLog);
     }
 
 
-    public static void addAuditLog(User user, @StringRes int screenId, @StringRes int eventId, int objectId, String value) {
+    public void addAuditLog(User user, @StringRes int screenId, @StringRes int eventId, int objectId, String value, boolean shouldAskForComment) {
         init();
         if (context == null) return;
-        databaseService.addAuditLog(new AuditLog(user, screenId, eventId, objectId, value));
+
+        if (isCommentEnabled() && shouldAskForComment)
+            askForComment(user, screenId, eventId, objectId, value);
+        else
+            databaseService.addAuditLog(new AuditLog(user, screenId, eventId, objectId, value, null));
     }
 
-    public static void addAuditLog(@StringRes int screenId, @StringRes int eventId, int objectId, String value) {
+    public void addAuditLog(@StringRes int screenId, @StringRes int eventId, int objectId, String value, boolean shouldAskForComment) {
         init();
         if (context == null) return;
-        databaseService.addAuditLog(new AuditLog(Autoclave.getInstance().getUser(), screenId, eventId, objectId, value));
+
+        if (isCommentEnabled() && shouldAskForComment)
+            askForComment(Autoclave.getInstance().getUser(), screenId, eventId, objectId, value);
+        else
+            databaseService.addAuditLog(new AuditLog(Autoclave.getInstance().getUser(), screenId, eventId, objectId, value, null));
     }
 
-    public static List<AuditLog> getAuditLogs(User user, String orderBy, boolean isAsc) {
+    public List<AuditLog> getAuditLogs(User user, String orderBy, boolean isAsc) {
         return databaseService.getAuditLogs(user, orderBy, isAsc);
     }
 
@@ -149,6 +170,37 @@ public class AuditLogger {
         if (map.containsKey(id))
             return map.get(id);
         return -1;
+    }
+
+    private boolean isCommentEnabled() {
+        return prefs.getBoolean(AppConstants.PREFERENCE_KEY_ENABLE_AUDIT_COMMENT, false);
+    }
+
+    private void askForComment(final User user, @StringRes final int screenId, @StringRes final int eventId, final int objectId, final String value) {
+        final SweetAlertDialog dialog = new SweetAlertDialog(context, R.layout.dialog_ask_comment_audit, SweetAlertDialog.WARNING_TYPE);
+        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_TOAST);
+        dialog.setContentView(R.layout.dialog_ask_comment_audit);
+        dialog.setTitle(R.string.register_new_user);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        final EditText editTextDesc = dialog.findViewById(R.id.editTextDesc);
+        Button buttonSave = dialog
+                .findViewById(R.id.dialogButtonSave);
+        buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (editTextDesc.getText().toString().isEmpty())
+                    Toasty.warning(context, context.getString(R.string.please_fill_comment_field), Toast.LENGTH_SHORT, true).show();
+                else {
+                    databaseService.addAuditLog(new AuditLog(user, screenId, eventId, objectId, value, editTextDesc.getText().toString()));
+                    dialog.dismissWithAnimation();
+                }
+            }
+        });
+
+
+        dialog.show();
     }
 
 

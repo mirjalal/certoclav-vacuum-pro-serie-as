@@ -366,13 +366,13 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                     textState.setText(R.string.state_finished);
                 }
 
-                AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
                         currentProgramStep == Autoclave.PROGRAM_STEPS.MAINTAIN_TEMP ?
                                 AuditLogger.ACTION_PROGRAM_FINISHED_MAINTAIN_TEMP :
                                 AuditLogger.ACTION_PROGRAM_FINISHED,
                         AuditLogger.OBJECT_EMPTY,
                         Autoclave.getInstance().getProfile().getName() + " (" + getString(R.string.cycle) + " "
-                                + Autoclave.getInstance().getController().getCycleNumber() + ")");
+                                + Autoclave.getInstance().getController().getCycleNumber() + ")", false);
 
 
                 if (currentProgramStep == Autoclave.PROGRAM_STEPS.FINISHED) {
@@ -693,10 +693,10 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                        AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
                                 AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
                                 AuditLogger.OBJECT_EMPTY,
-                                getString(R.string.later));
+                                getString(R.string.later), false);
                         DatabaseService.getInstance().updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(),
                                 AutoclaveMonitor.ERROR_CODE_INDICATOR_NOT_COMPLETED);
                         sweetAlertDialog.dismissWithAnimation();
@@ -716,10 +716,10 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                        AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
                                 AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
                                 AuditLogger.OBJECT_EMPTY,
-                                getString(R.string.failed));
+                                getString(R.string.failed), false);
                         DatabaseService.getInstance().updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(), AutoclaveMonitor.ERROR_CODE_INDICATOR_FAILED);
                         sweetAlertDialog.dismissWithAnimation();
                         startProtocolSync();
@@ -728,10 +728,10 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                        AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
                                 AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
                                 AuditLogger.OBJECT_EMPTY,
-                                getString(R.string.success));
+                                getString(R.string.success), false);
                         DatabaseService.getInstance().updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(), AutoclaveMonitor.ERROR_CODE_INDICATOR_SUCCESS);
                         sweetAlertDialog.dismissWithAnimation();
                         startProtocolSync();

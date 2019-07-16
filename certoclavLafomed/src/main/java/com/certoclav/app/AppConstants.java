@@ -43,7 +43,7 @@ public interface AppConstants {
 
     /*TABLET AND AUTOCLAVE SELECTION*/
 
-    String TABLET_TYPE = TABLET_TYPE_FAYTECH;/*TABLET_TYPE_FAYTECH_RS_232;*///TABLET_TYPE_LILLIPUT
+    String TABLET_TYPE = /*TABLET_TYPE_FAYTECH;*/TABLET_TYPE_FAYTECH_RS_232;//TABLET_TYPE_LILLIPUT
     String MODEL_CURRENT = MODEL_RAYPA_TLV;
     Boolean isIoSimulated = false;
     String MODEL = "TLV-150FA";
@@ -122,6 +122,7 @@ public interface AppConstants {
     String PREFERENCE_KEY_FIRMWARE_VERSION = "preferences_autoclave_firmware_version";
     String PREFERENCE_KEY_CYCLE_NUMBER = "preferences_cycle_number";
     String PREFERENCE_KEY_ENABLE_FDA = "preferences_device_fda_enabled";
+    String PREFERENCE_KEY_ENABLE_AUDIT_COMMENT = "preferences_device_audit_comment_enabled";
     String PREFERENCE_KEY_LIST_GRAPH = "islistgrapportrace";
     String PREFERENCE_KEY_ID_OF_LAST_USER = "idoflastuser";
 

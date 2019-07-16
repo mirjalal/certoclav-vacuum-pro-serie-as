@@ -119,17 +119,17 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
             return;
 
         if (sharedPreferences.getAll().get(key) instanceof Boolean) {
-            AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_PREF_CHANGED,
-                    key.hashCode(), sharedPreferences.getBoolean(key, false) + "");
+            AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_PREF_CHANGED,
+                    key.hashCode(), sharedPreferences.getBoolean(key, false) + "", true);
         } else if (sharedPreferences.getAll().get(key) instanceof String) {
-            AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_PREF_CHANGED,
-                    key.hashCode(), sharedPreferences.getString(key, "") + "");
+            AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_PREF_CHANGED,
+                    key.hashCode(), sharedPreferences.getString(key, "") + "", true);
         } else if (sharedPreferences.getAll().get(key) instanceof Integer) {
-            AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_PREF_CHANGED,
-                    key.hashCode(), sharedPreferences.getInt(key, -1) + "");
+            AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_PREF_CHANGED,
+                    key.hashCode(), sharedPreferences.getInt(key, -1) + "",true);
         } else if (sharedPreferences.getAll().get(key) instanceof Float) {
-            AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_PREF_CHANGED,
-                    key.hashCode(), sharedPreferences.getFloat(key, 0f) + "");
+            AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_PREF_CHANGED,
+                    key.hashCode(), sharedPreferences.getFloat(key, 0f) + "",true);
         }
     }
 }

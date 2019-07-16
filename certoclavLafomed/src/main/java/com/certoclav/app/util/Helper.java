@@ -911,7 +911,7 @@ public class Helper {
                 dialog.setTitle(R.string.register_new_user);
                 dialog.setCancelable(true);
                 dialog.setCanceledOnTouchOutside(true);
-                final EditText editTextPassword = dialog.findViewById(R.id.editTextPassword);
+                final EditText editTextPassword = dialog.findViewById(R.id.editTextDesc);
                 Button buttonLogin = (Button) dialog
                         .findViewById(R.id.dialogButtonLogin);
                 Button buttonCancel = (Button) dialog

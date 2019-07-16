@@ -300,9 +300,9 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
                     @Override
                     public void onSuccess(Object response, int requestId) {
                         Toasty.success(getApplicationContext(), getString(R.string.program_saved), Toast.LENGTH_LONG, true).show();
-                        AuditLogger.addAuditLog(Autoclave.getInstance().getUser(),
+                        AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(),
                                 AuditLogger.SCEEN_EMPTY, AuditLogger.ACTION_PROGRAM_EDITED,
-                                AuditLogger.OBJECT_EMPTY, newProfile.getName());
+                                AuditLogger.OBJECT_EMPTY, newProfile.getName(), true);
                         setResult(RESULT_OK);
                         finish();
                     }

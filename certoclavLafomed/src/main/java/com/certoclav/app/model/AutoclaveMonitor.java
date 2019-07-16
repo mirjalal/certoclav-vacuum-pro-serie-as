@@ -542,12 +542,12 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
 
                     if (errorList.size() > 0) {//Autoclave.getInstance().getData().isFailStoppedByUser() || Autoclave.getInstance().isMicrocontrollerReachable()==false){
                         Autoclave.getInstance().setState(AutoclaveState.RUN_CANCELED);
-                        AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                        AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
                                 AuditLogger.ACTION_PROGRAM_FAILED,
                                 AuditLogger.OBJECT_EMPTY,
                                 Autoclave.getInstance().getProfile().getName() + " (" +
                                         mContext.getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() +
-                                        errorList.get(0).getMsg() + ")");
+                                        errorList.get(0).getMsg() + ")", false);
                         Log.e("AutoclaveMonitor", "ERROR ID STORED INTO PROTOCOL: " + errorList.get(0).getErrorID());
                         cancelProgram(errorList.get(0).getErrorID());
                     } else if (warningList.size() > 0 || (!Autoclave.getInstance().getData().isProgramRunning() &&

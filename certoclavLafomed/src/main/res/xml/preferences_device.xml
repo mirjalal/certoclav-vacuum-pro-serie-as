@@ -51,6 +51,13 @@
         android:key="preferences_software_version"
         android:title="@string/settings_software_version" />
 
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:enabled="false"
+        android:key="preferences_device_audit_comment_enabled"
+        android:title="@string/enable_audit_comment" />
+
     <CheckBoxPreference
         android:defaultValue="false"
         android:enabled="false"

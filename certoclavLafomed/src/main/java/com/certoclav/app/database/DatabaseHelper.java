@@ -25,7 +25,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     // name of the database file for your application -- change to something appropriate for your app
     public static final String DATABASE_NAME = "helloAndroid.db";
     // any time you make changes to your database objects, you may have to increase the database version
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 11;
 
 
     // the DAO object we use to access the SimpleData table
@@ -98,6 +98,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
                 throw new RuntimeException(e);
             }
 
+        } else if (oldVersion < 11) {
+            db.execSQL("ALTER TABLE audit_logs ADD COLUMN " + AuditLog.FIELD_COMMENT + " TEXT");
         }
     }
 
@@ -254,7 +256,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
                                     c.getInt(c.getColumnIndex(AuditLog.FIELD_SCREEN_ID)),
                                     c.getInt(c.getColumnIndex(AuditLog.FIELD_EVENT_ID)),
                                     c.getInt(c.getColumnIndex(AuditLog.FIELD_OBJECT_ID)),
-                                    c.getString(c.getColumnIndex(AuditLog.FIELD_OBJECT_VALUE))));
+                                    c.getString(c.getColumnIndex(AuditLog.FIELD_OBJECT_VALUE)), null));
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }

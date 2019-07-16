@@ -329,12 +329,18 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                     }
                 });
             } catch (Exception e) {
-                try {
-                    findPreference(AppConstants.PREFERENCE_KEY_CYCLE_NUMBER).setSummary(getString(R.string.please_connect_to_autoclave_first));
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
+                e.printStackTrace();
             }
+
+            //Enable Audit Comment
+            try {
+
+                final CheckBoxPreference checkBoxPreferenceAuditComment = (CheckBoxPreference) findPreference(AppConstants.PREFERENCE_KEY_ENABLE_AUDIT_COMMENT);
+                checkBoxPreferenceAuditComment.setEnabled(Autoclave.getInstance().getUser().isAdmin());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             if ((!Autoclave.getInstance().getUser().isAdmin() || Autoclave.getInstance().getState() == AutoclaveState.LOCKED) &&

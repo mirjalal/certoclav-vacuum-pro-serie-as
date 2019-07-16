@@ -110,7 +110,7 @@ public class LicenseManagerActivity extends Activity implements View.OnClickList
         dialog.setTitle(R.string.register_new_user);
         dialog.setCancelable(true);
         dialog.setCanceledOnTouchOutside(true);
-        final EditText editTextPassword = dialog.findViewById(R.id.editTextPassword);
+        final EditText editTextPassword = dialog.findViewById(R.id.editTextDesc);
 
         final Button buttonActivate = dialog
                 .findViewById(R.id.dialogButtonActivate);

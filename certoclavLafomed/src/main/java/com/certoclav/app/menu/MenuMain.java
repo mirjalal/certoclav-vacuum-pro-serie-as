@@ -187,9 +187,9 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
                                 public void onClick(SweetAlertDialog sDialog) {
                                     sDialog.dismissWithAnimation();
                                     Autoclave.getInstance().setState(AutoclaveState.LOCKED);
-                                    AuditLogger.addAuditLog(Autoclave.getInstance().getUser(),
+                                    AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(),
                                             AuditLogger.SCEEN_EMPTY, AuditLogger.ACTION_LOGOUT,
-                                            AuditLogger.OBJECT_EMPTY, null);
+                                            AuditLogger.OBJECT_EMPTY, null, false);
                                     Intent intent = new Intent(MenuMain.this, LoginActivity.class);
                                     startActivity(intent);
                                     finish();

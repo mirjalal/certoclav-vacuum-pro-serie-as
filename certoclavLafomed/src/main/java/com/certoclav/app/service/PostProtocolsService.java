@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.certoclav.app.model.Autoclave;
+
 public class PostProtocolsService  extends Service{
 
 	PostProtocolsThread postProtocolsThread = null;
@@ -28,7 +30,7 @@ public class PostProtocolsService  extends Service{
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.e("PostProtocolService", "onstart");
-		if(!postProtocolsThread.isAlive()){
+		if(!postProtocolsThread.isAlive() && Autoclave.getInstance().isOnlineMode(this)){
 			postProtocolsThread = new PostProtocolsThread();
 			postProtocolsThread.start();
 		}

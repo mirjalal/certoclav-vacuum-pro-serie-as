@@ -26,13 +26,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="20sp"
-                android:text="@string/please_enter_admin_password"/>
+                android:text="@string/please_enter_reason"
+                android:textSize="20sp" />
 
             <com.certoclav.app.button.EditTextItem xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
 
                 <LinearLayout
@@ -43,11 +43,12 @@
                     <EditText
                         android:id="@+id/editTextDesc"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="200dp"
                         android:background="@drawable/edittext_selector"
-                        android:hint="@string/password"
-                        android:singleLine="true"
-                        android:inputType="textPassword"
+                        android:gravity="top|left"
+                        android:hint="@string/description"
+                        android:inputType="text"
+                        android:minLines="5"
                         android:textColor="@android:color/black"
                         tools:ignore="HardcodedText"></EditText>
                 </LinearLayout>
@@ -66,21 +67,12 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/dialogButtonCancel"
+            android:id="@+id/dialogButtonSave"
             android:layout_width="match_parent"
             android:layout_height="78dp"
             android:layout_weight="1"
             android:background="@drawable/btn_login"
-            android:text="@string/cancel"
-            android:textColor="@android:color/white" />
-
-        <Button
-            android:id="@+id/dialogButtonLogin"
-            android:layout_width="match_parent"
-            android:layout_height="78dp"
-            android:layout_weight="1"
-            android:background="@drawable/btn_login"
-            android:text="@string/ok"
+            android:text="@string/save"
             android:textColor="@android:color/white" />
 
 

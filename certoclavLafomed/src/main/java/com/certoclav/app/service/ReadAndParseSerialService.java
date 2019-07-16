@@ -548,22 +548,22 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                     handlerGetData.removeCallbacks(runnableGetData);
                     handlerGetData.postDelayed(runnableGetData, delayForGetData);
                     if (responseParameters[0] != null && responseParameters[0].equals("1"))
-                        AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                        AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
                                 AuditLogger.ACTION_PROGRAM_STARTED,
                                 AuditLogger.OBJECT_EMPTY,
                                 Autoclave.getInstance().getProfile().getName() +
-                                        " (" + mContext.getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() + ")");
+                                        " (" + mContext.getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() + ")", false);
                     break;
                 case RESPONSES.ACK_STOP:
                     delayForGetData = DELAY_PROGRAM_RUNNING;
                     handlerGetData.removeCallbacks(runnableGetData);
                     handlerGetData.postDelayed(runnableGetData, delayForGetData);
                     if (responseParameters[0] != null && responseParameters[0].equals("1"))
-                        AuditLogger.addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                        AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
                                 AuditLogger.ACTION_PROGRAM_CANCELED,
                                 AuditLogger.OBJECT_EMPTY,
                                 Autoclave.getInstance().getProfile().getName() +
-                                        " (" + mContext.getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() + ")");
+                                        " (" + mContext.getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() + ")", false);
 
                     Intent intent5 = new Intent(ApplicationController.getContext(), PostProtocolsService.class);
                     ApplicationController.getContext().startService(intent5);

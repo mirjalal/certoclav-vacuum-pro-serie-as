@@ -147,7 +147,7 @@ public class ScanActivity extends CertoclavSuperActivity implements OnClickListe
         dialog.setTitle(R.string.register_new_user);
         dialog.setCancelable(true);
         dialog.setCanceledOnTouchOutside(true);
-        final EditText editTextItemName = dialog.findViewById(R.id.editTextPassword);
+        final EditText editTextItemName = dialog.findViewById(R.id.editTextDesc);
         Button buttonAdd = dialog
                 .findViewById(R.id.dialogButtonLogin);
         Button buttonCancel = dialog
