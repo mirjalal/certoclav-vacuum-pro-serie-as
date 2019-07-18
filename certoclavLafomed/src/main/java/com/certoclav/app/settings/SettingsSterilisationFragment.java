@@ -60,7 +60,7 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.preference_sterilization);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        
+
         //upload protocols to USB
         ((Preference) findPreference(AppConstants.PREFERENCE_KEY_EXPORT_USB)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
@@ -107,7 +107,7 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceClick(Preference preference) {
 
-                if (ApplicationController.getInstance().isNetworkAvailable()|| ServerConfigs.getInstance(getActivity()).getUrl() != null) {
+                if (ApplicationController.getInstance().isNetworkAvailable() || ServerConfigs.getInstance(getActivity()).getUrl() != null) {
                     barProgressDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
                     barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
                     barProgressDialog.setTitleText(getActivity().getString(com.certoclav.library.R.string.downloading));
@@ -226,11 +226,11 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 //        ((CheckBoxPreference) findPreference(AppConstants.PREFREENCE_KEY_PREHEAT)).setChecked(Autoclave.getInstance().isPreheat());
-       // ((CheckBoxPreference) findPreference(AppConstants.PREFREENCE_KEY_KEEP_TEMP)).setChecked(Autoclave.getInstance().isPreheat());
-        ((CheckBoxPreference) findPreference(AppConstants.PREFERENCE_KEY_STEP_BY_STEP)).setChecked(prefs.getBoolean(AppConstants.PREFERENCE_KEY_STEP_BY_STEP,false));
+        // ((CheckBoxPreference) findPreference(AppConstants.PREFREENCE_KEY_KEEP_TEMP)).setChecked(Autoclave.getInstance().isPreheat());
+        ((CheckBoxPreference) findPreference(AppConstants.PREFERENCE_KEY_STEP_BY_STEP)).setChecked(prefs.getBoolean(AppConstants.PREFERENCE_KEY_STEP_BY_STEP, false));
 
 
-        if(AppConstants.IS_CERTOASSISTANT){
+        if (AppConstants.IS_CERTOASSISTANT) {
             ((CheckBoxPreference) findPreference(AppConstants.PREFERENCE_KEY_STEP_BY_STEP)).setEnabled(false);
         }
 
@@ -349,9 +349,7 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
             }
 
 
-        }.
-
-                execute();
+        }.execute();
 
 
     }

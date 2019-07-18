@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StatFs;
@@ -18,6 +20,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v4.preference.PreferenceFragment;
+import android.text.Html;
 import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
@@ -25,6 +28,7 @@ import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
+import com.certoclav.app.database.AuditLog;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.listener.SensorDataListener;
 import com.certoclav.app.menu.ChangeAdminPasswordAccountActivity;
@@ -45,6 +49,7 @@ import com.certoclav.library.util.UpdateUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -54,6 +59,9 @@ import es.dmoral.toasty.Toasty;
 public class SettingsDeviceFragment extends PreferenceFragment implements SensorDataListener {
 
 
+    private SweetAlertDialog barProgressDialog;
+    private static final int EXPORT_TARGET_USB = 1;
+    private static final int EXPORT_TARGET_SD = 2;
     private Calendar dateTime;
 
     @Override
@@ -202,6 +210,46 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
             Toasty.warning(getContext(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT,
                     true).show();
         }
+
+        //upload Audits to USB
+        ((Preference) findPreference(AppConstants.PREFERENCE_KEY_EXPORT_AUDIT_USB)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+
+
+                ExportUtils exportUtils = new ExportUtils();
+
+
+                if (exportUtils.checkExternalMedia()) { //check if usb flash drive is available
+                    uploadAllAuditsTo(EXPORT_TARGET_USB);
+                } else {
+
+                    try {
+
+                        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                                .setTitleText(getString(R.string.mount_usb_stick))
+                                .setContentText(getString(R.string.reboot_neccessary))
+                                .setConfirmText(getString(R.string.ok))
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        sDialog.dismissWithAnimation();
+                                    }
+                                });
+                        sweetAlertDialog.setCanceledOnTouchOutside(true);
+                        sweetAlertDialog.setCancelable(true);
+                        sweetAlertDialog.show();
+
+
+                    } catch (Exception e) {
+
+                    }
+                }
+                return false;
+
+            }
+        });
 
 
     }
@@ -442,5 +490,118 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
             timepickerdialog.show(); //show time picker dialog
         }
     }
+
+    public void uploadAllAuditsTo(final int target_id) {
+
+        barProgressDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+        barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        barProgressDialog.setTitleText(getString(R.string.import_protocols));
+        barProgressDialog.setCancelable(false);
+        barProgressDialog.show();
+        //  barProgressDialog = new ProgressDialog(getActivity());
+
+        barProgressDialog.setTitle("");
+        if (target_id == EXPORT_TARGET_USB) {
+            barProgressDialog.setContentText(getString(R.string.exporting));
+        } else {
+            barProgressDialog.setContentText("copy protocols to SD card");
+        }
+        barProgressDialog.show();
+
+
+        final DatabaseService databaseServie = DatabaseService.getInstance();
+
+        new AsyncTask<Void, Boolean, Boolean>() {
+
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                List<AuditLog> audits = databaseServie.getAuditLogs(null, null, false);
+                try {
+                    final int numberOfAudits = audits.size();
+
+                    //For audit file name
+                    SimpleDateFormat format = new SimpleDateFormat("dd_MM_yyyy__hh_mm_ss");
+
+                    String filename = "audits_" + format.format(new Date());
+
+                    //For audit
+                    format = new SimpleDateFormat("MMM dd, yyyy  HH:mm");
+                    StringBuilder sb = new StringBuilder();
+
+//                        Html.fromHtml(mContext.getString(eventId,
+//                username, objectId != -1 ? mContext.getString(objectId) : "", log.getValue(),
+//                (screenId != -1 ? mContext.getString(screenId) : -1)))
+                    //Add column name
+                    sb.append(getString(R.string.user_name)).append(",")
+                            .append(getString(R.string.audit_log)).append(",")
+                            .append(getString(R.string.comment)).append(",")
+                            .append(getString(R.string.date_and_time)).append("\r\n");
+
+                    int currentIndex = 0;
+                    int updateRate = numberOfAudits / 100;
+                    updateRate = updateRate == 0 ? 1 : updateRate;
+                    for (AuditLog auditLog : audits) {
+
+                        currentIndex++;
+                        sb.append(auditLog.getEmail()).append(",")
+                                .append(Html.fromHtml(getString(auditLog.getEventId(),
+                                        auditLog.getEmail(), auditLog.getObjectId() != -1 ? getString(auditLog.getObjectId()) : "", auditLog.getValue(),
+                                        (auditLog.getScreenId() != -1 ? getString(auditLog.getScreenId()) : -1)))).append(",")
+                                .append(auditLog.getComment()).append(",")
+                                .append(format.format(auditLog.getDate())).append("\r\n");
+                        if (currentIndex % updateRate == 0) {
+                            final int finalCurrentIndex = currentIndex;
+                            getActivity().runOnUiThread(new Runnable() {
+                                public void run() {
+                                    barProgressDialog.setTitleText(getActivity().getString(R.string.coping_protocols) + " (" + ((100 * finalCurrentIndex) / numberOfAudits) + "%)");
+                                }
+                            });
+                        }
+
+
+                    }//end while
+
+                    ExportUtils expUtils = new ExportUtils();
+
+                    //all protocols copied sucessfully
+                    if (target_id == EXPORT_TARGET_USB) {
+                        return expUtils.writeToExtUsbFile(getString(R.string.audits), filename, "csv", sb.toString());
+                    } else {
+                        return expUtils.writeToExtSDFile(getString(R.string.audits), filename, "csv", sb.toString());
+                    }
+
+
+                } catch (Exception e) {
+                    Log.e("ExportUtils", "Exception during copying audits: " + e.toString());
+                    e.printStackTrace();
+                    return false;
+                }
+
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if (result == false) {
+                    barProgressDialog
+                            .setContentText(getString(R.string.export_failed))
+                            .setConfirmText("OK")
+                            .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                } else {
+                    // Toast.makeText(getActivity(), , Toast.LENGTH_LONG).show();
+                    barProgressDialog
+                            .setConfirmText("OK")
+                            .setContentText(getString(R.string.export_success))
+                            .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                }
+                super.onPostExecute(result);
+            }
+
+
+        }.execute();
+
+
+    }
+
+
 
 }

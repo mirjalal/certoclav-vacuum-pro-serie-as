@@ -86,12 +86,12 @@ public class GraphService implements SensorDataListener {
 
                                         Point p = new Point(roundFloat((float) (secondsSinceStart / 60.0)), roundFloat((float) (Autoclave.getInstance().getData().getTemp1().getCurrentValue())));
                                         runningGraph.addNewPoints(p, LineGraph.TYPE_STEAM);
-                                        if (Autoclave.getInstance().getProfile().isContByFlexProbe1Enabled()) {
+                                        if (Autoclave.getInstance().getData().getTemp2().getCurrentValue() > -100) {
                                             Point p2 = new Point(roundFloat((float) (secondsSinceStart / 60.0)), roundFloat((float) (Autoclave.getInstance().getData().getTemp2().getCurrentValue())));
                                             runningGraph.addNewPoints(p2, LineGraph.TYPE_MEDIA);
                                         }
 
-                                        if (Autoclave.getInstance().getProfile().isContByFlexProbe2Enabled()) {
+                                        if (Autoclave.getInstance().getData().getTemp3().getCurrentValue() > -100) {
                                             Point p2 = new Point(roundFloat((float) (secondsSinceStart / 60.0)), roundFloat((float) (Autoclave.getInstance().getData().getTemp3().getCurrentValue())));
                                             runningGraph.addNewPoints(p2, LineGraph.TYPE_MEDIA_2);
                                         }

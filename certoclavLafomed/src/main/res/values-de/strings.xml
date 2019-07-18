@@ -198,6 +198,7 @@
     <string name="certocloud_password">RaypaCloud Passwort</string> 
     <string name="password_for_offline_mode">Password für den Offline Modus</string>
     <string name="export_protocols_to_usb_stick">Protokollexport auf USB Stick</string>
+    <string name="export_audits_to_usb_stick">Auditsexport auf USB Stick</string>
     
     
     <string name="delete_user">Benutzer löschen</string>
@@ -538,6 +539,14 @@
     <string name="please_enter_reason">Please enter a reason</string>
     <string name="enable_audit_comment">Enable Audit Comment</string>
     <string name="please_fill_comment_field">Fill out the description field</string>
+    <string name="exporting">Exporting...</string>
+    <string name="audits">Audits</string>
+    <string name="audit_log">Log</string>
+    <string name="comment">Comment</string>
+    <string name="pref_fda_category">FDA CFR 21 PART 11</string>
+    <string name="pref_update_category">Update</string>
+    <string name="pref_info_category">Info</string>
+    <string name="pref_administration_category">Administration</string>
 
 
 </resources>

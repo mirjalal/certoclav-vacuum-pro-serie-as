@@ -1,73 +1,100 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Preference
-        android:key="preferences_software_update"
-        android:title="@string/check_for_updates" />
 
-    <Preference
-        android:key="preferences_software_update_usb"
-        android:title="@string/install_update_from_usb_flash_drive" />
+    <PreferenceCategory
+        android:key="pref_key_calibration_category"
+        android:title="@string/pref_update_category">
+        <Preference
+            android:key="preferences_software_update"
+            android:title="@string/check_for_updates" />
+
+        <Preference
+            android:key="preferences_software_update_usb"
+            android:title="@string/install_update_from_usb_flash_drive" />
+
+    </PreferenceCategory>
     <!--<Preference-->
     <!--android:key="preferences_software_update_sdcard"-->
     <!--android:title="@string/install_update_from_external_sd_card" />-->
 
-    <Preference
-        android:enabled="false"
-        android:key="preferences_storage"
-        android:title="@string/settings_storage" />
 
-    <Preference
-        android:key="preferences_date"
-        android:title="@string/settings_date_and_time" />
+    <PreferenceCategory
+        android:key="pref_key_calibration_category"
+        android:title="@string/pref_administration_category">
 
-    <Preference
-        android:key="preferences_reset"
-        android:summary="@string/settings_restore_device_to_its_original_manufacturer_setting"
-        android:title="@string/settings_factory_reset" />
+        <Preference
+            android:key="preferences_date"
+            android:title="@string/settings_date_and_time" />
 
-    <Preference
-        android:key="preferences_admin_password"
-        android:summary="@string/change_admin_password"
-        android:title="@string/admin_password" />
+        <Preference
+            android:key="preferences_reset"
+            android:summary="@string/settings_restore_device_to_its_original_manufacturer_setting"
+            android:title="@string/settings_factory_reset" />
 
-    <Preference
-        android:enabled="false"
-        android:key="preferences_device_key"
-        android:title="@string/settings_device_key_security_key" />
+        <Preference
+            android:key="preferences_admin_password"
+            android:summary="@string/change_admin_password"
+            android:title="@string/admin_password" />
 
+    </PreferenceCategory>
 
-    <!--<Preference-->
-    <!--android:key="preferences_autoclave_firmware_version"-->
-    <!--android:title="@string/autoclave_firmware_version" />-->
-    <!--<Preference-->
-    <!--android:key="preferences_autoclave_serial_number"-->
-    <!--android:title="@string/autoclave_serial_number" />-->
-    <!--<Preference-->
-    <!--android:key="preferences_cycle_number"-->
-    <!--android:title="@string/total_cycles_of_the_autoclave" />-->
+    <PreferenceCategory
+        android:key="pref_key_calibration_category"
+        android:title="@string/pref_info_category">
 
-    <Preference
-        android:enabled="false"
-        android:key="preferences_software_version"
-        android:title="@string/settings_software_version" />
+        <Preference
+            android:enabled="false"
+            android:key="preferences_device_key"
+            android:title="@string/settings_device_key_security_key" />
 
 
-    <CheckBoxPreference
-        android:defaultValue="false"
-        android:enabled="false"
-        android:key="preferences_device_audit_comment_enabled"
-        android:title="@string/enable_audit_comment" />
+        <!--<Preference-->
+        <!--android:key="preferences_autoclave_firmware_version"-->
+        <!--android:title="@string/autoclave_firmware_version" />-->
+        <!--<Preference-->
+        <!--android:key="preferences_autoclave_serial_number"-->
+        <!--android:title="@string/autoclave_serial_number" />-->
+        <!--<Preference-->
+        <!--android:key="preferences_cycle_number"-->
+        <!--android:title="@string/total_cycles_of_the_autoclave" />-->
 
-    <CheckBoxPreference
-        android:defaultValue="false"
-        android:enabled="false"
-        android:key="preferences_device_fda_enabled"
-        android:title="@string/enable_fda" />
+        <Preference
+            android:enabled="false"
+            android:key="preferences_software_version"
+            android:title="@string/settings_software_version" />
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:key="preferences_device_show_logs"
-        android:title="Show UART Logs" />
+
+        <Preference
+            android:enabled="false"
+            android:key="preferences_storage"
+            android:title="@string/settings_storage" />
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+        android:key="pref_key_calibration_category"
+        android:title="@string/pref_fda_category">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="false"
+            android:key="preferences_device_audit_comment_enabled"
+            android:title="@string/enable_audit_comment" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="false"
+            android:key="preferences_device_fda_enabled"
+            android:title="@string/enable_fda" />
+
+        <Preference
+            android:key="preferences_export_audit_usb"
+            android:title="@string/export_audits_to_usb_stick" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="preferences_device_show_logs"
+            android:title="Show UART Logs" />
+    </PreferenceCategory>
 
 
 </PreferenceScreen>
