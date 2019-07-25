@@ -1468,7 +1468,7 @@ public class Helper {
                             public void onProgress(int current, int max) {
 
                             }
-                        }, 0.5f, 13);
+                        }, AppConstants.PERMISSION_TIMEOUT_FDA, 13);
                     }
                 });
 

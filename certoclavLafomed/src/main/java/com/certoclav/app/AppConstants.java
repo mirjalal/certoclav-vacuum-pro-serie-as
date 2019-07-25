@@ -258,4 +258,5 @@ public interface AppConstants {
     int PARAM_OFFSET_PRESSURE_1 = 45;
     int PARAM_OFFSET_PRESSURE_2 = 46;
 
+    float PERMISSION_TIMEOUT_FDA = 1f;
 }
