@@ -957,7 +957,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
             errorList = new ArrayList<>();
             int errorcode = 0;
             for (int i = 0; i < 32; i++)
-                if (binary.charAt(i) == '1') {
+                if (binary.charAt(31 - i) == '1') {
                     errorcode = i + 1;
                     errorList.add(new Error("ERROR: " + getErrorString(errorcode),
                             "",
