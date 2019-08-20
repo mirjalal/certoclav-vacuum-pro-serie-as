@@ -592,7 +592,8 @@
     <string name="error_vacuum_test_undertemperature">ERROR_VACUUM_TEST_UNDERTEMPERATURE</string>
     <string name="error_vacuum_test_final_pressure_exceeded">ERROR_VACUUM_TEST_FINAL_PRESSURE_EXCEEDED</string>
     <string name="error_power_supply_failure">ERROR_POWER_SUPPLY_FAILURE</string>
-    <string name="error_cycle_cancelled_manually">ERROR_CYCLE_CANCELLED_MANUALLY</string>
+    <string name="error_cycle_cancelled_error">ERROR CYCLE CANCELLED BY ERROR</string>
+    <string name="error_cycle_cancelled_manually">ERROR CYCLE CANCELLED MANUALLY</string>
 
 
 </resources>

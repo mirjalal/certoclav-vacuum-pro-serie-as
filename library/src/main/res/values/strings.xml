@@ -320,7 +320,7 @@
     <string name="_140_liquid_5000ml">121 LIQUID 5000ml</string>
     <string name="sterilization_of_5000ml_liquid_media_at_121_degree_celsius">Sterilization of 5000ml liquid media at 121 degree celsius</string>
     <string name="please_connect_to_network_first">Please connect to network first</string>
-    <string name="please_log_in_into_your_certocloud_account_first">Please log in into your CertoCloud account first</string>
+    <string name="please_log_in_into_your_certocloud_account_first">Please log in into your RaypaCloud account first</string>
     <string name="venting">Venting</string>
     <string name="notifications">Notifications</string>
     <string name="not_able_to_connect_to_certocloud">Not able to connect to CertoCloud</string>

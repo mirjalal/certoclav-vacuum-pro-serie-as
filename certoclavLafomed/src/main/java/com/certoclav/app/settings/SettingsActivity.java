@@ -57,10 +57,14 @@ public class SettingsActivity extends CertoclavSuperActivity implements ItemList
      * Callback method from {@link ItemListFragment.Callbacks} indicating that
      * the item with the given ID was selected.
      */
+    private Fragment currentFragment;
+
     @Override
     public void onItemSelected(long id, Fragment fragment) { //ItemListFragment ruft diese Funktion auf, falls ein Listenelement angeklickt wurde und �bergibt die id des Listenelements.
+        currentFragment = fragment;
         getSupportFragmentManager().beginTransaction().replace(R.id.item_detail_container, fragment).commit();
     }
+
 
     @Override
     protected void onDestroy() {

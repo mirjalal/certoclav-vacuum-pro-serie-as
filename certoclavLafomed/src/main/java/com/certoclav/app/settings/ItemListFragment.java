@@ -87,7 +87,7 @@ public class ItemListFragment extends ListFragment {
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         getListView().setDivider(null);
         getListView().setDividerHeight(0);
-        isAdmin = ((SettingsActivity)getActivity()).isAdmin();
+        isAdmin = ((SettingsActivity) getActivity()).isAdmin();
         //	getListView().setDivider(ContextCompat.getDrawable(getActivity(),R.drawable.list_divider));
         // Restore the previously serialized activated item position.
 
@@ -98,9 +98,9 @@ public class ItemListFragment extends ListFragment {
         if (!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.USER_ACCOUNT) || isAdmin)
             AddItem(getListView(), getActivity().getString(R.string.settings_user_account), R.drawable.ic_account_settings, R.drawable.ic_account_settings_selected, new UserEditFragment());
 
-        if (!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.NETWORK)|| isAdmin)
+        if (!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.NETWORK) || isAdmin)
             AddItem(getListView(), getActivity().getString(R.string.settings_network), R.drawable.ic_network_settings, R.drawable.ic_network_settings_selected, new SettingsNetworkFragment());
-        if (!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.LANGUAGE)|| isAdmin)
+        if (!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.LANGUAGE) || isAdmin)
             AddItem(getListView(), getActivity().getString(R.string.settings_language), R.drawable.ic_language_settings, R.drawable.ic_language_settings_selected, new SettingsLanguageFragment());
 
 
@@ -114,35 +114,35 @@ public class ItemListFragment extends ListFragment {
                         || Autoclave.getInstance().getUser().isAdmin())
                     AddItem(getListView(), getActivity().getString(R.string.settings_autoclave), R.drawable.ic_service_setttings, R.drawable.ic_service_setttings_selected, new SettingsAutoclaveFragment());
 
-                if (isAdmin ||!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.DEVICE)
+                if (isAdmin || !LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.DEVICE)
                         || Autoclave.getInstance().getUser().isAdmin())
                     AddItem(getListView(), getActivity().getString(R.string.settings_device),
                             R.drawable.ic_device_settings, R.drawable.ic_device_settings_selected,
                             new SettingsDeviceFragment());
 
-                if (isAdmin ||!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.AUDIT_LOGS)
+                if (isAdmin || !LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.AUDIT_LOGS)
                         || Autoclave.getInstance().getUser().isAdmin())
                     AddItem(getListView(), getActivity().getString(R.string.settings_audit_log),
                             R.drawable.ic_audit_logs, R.drawable.ic_audit_logs_selected,
                             new AuditLogFragment());
-                if (isAdmin ||!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.NOTIFICATIONS)
+                if (isAdmin || !LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.NOTIFICATIONS)
                         || Autoclave.getInstance().getUser().isAdmin())
                     AddItem(getListView(), getActivity().getString(R.string.notifications),
                             R.drawable.ic_notification_settings, R.drawable.ic_notification_settings_selected,
                             new SettingsConditionFragment());
 
-                if (isAdmin ||!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.STERILIZATION)
+                if (isAdmin || !LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.STERILIZATION)
                         || Autoclave.getInstance().getUser().isAdmin())
                     AddItem(getListView(), getActivity().getString(R.string.settings_sterilization),
                             R.drawable.ic_sterilization_settings, R.drawable.ic_sterilization_settings_selceted,
                             new SettingsSterilisationFragment());
 
-                if (isAdmin ||!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.CALIBRATION)
+                if (isAdmin || !LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.CALIBRATION)
                         || Autoclave.getInstance().getUser().isAdmin())
                     AddItem(getListView(), getActivity().getString(R.string.calibration),
                             R.drawable.ic_calibartion_settings, R.drawable.ic_calibartion_settings_selected,
                             new CalibrateFragment());
-                if (isAdmin ||Autoclave.getInstance().getUser().isAdmin())
+                if (isAdmin || Autoclave.getInstance().getUser().isAdmin())
                     AddItem(getListView(), getActivity().getString(R.string.lockout),
                             R.drawable.ic_lock, R.drawable.ic_lock_selected,
                             new SettingsLockoutFragment());
@@ -152,7 +152,7 @@ public class ItemListFragment extends ListFragment {
 //                            R.drawable.ic_service_setttings_selected,
 //                            new SettingsServiceFragment());
 
-                if (isAdmin ||!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.GLP)
+                if (isAdmin || !LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.GLP)
                         || Autoclave.getInstance().getUser().isAdmin())
                     AddItem(getListView(), getActivity().getString(R.string.glp),
                             R.drawable.ic_glp, R.drawable.ic_glp_selected,
@@ -200,7 +200,9 @@ public class ItemListFragment extends ListFragment {
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
         mCallbacks.onItemSelected(id, list.get(position).getFragment());
+
     }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

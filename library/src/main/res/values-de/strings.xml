@@ -304,7 +304,7 @@
     <string name="sterilization_of_5000ml_liquid_media_at_121_degree_celsius">Sterilisation von 5000ml Flüssigkeit bei 121 Grad Celsius</string>
     
     <string name="please_connect_to_network_first">Bitte verbinden Sie das Gerät mit einem Internetfähigen Netzwerk</string>
-    <string name="please_log_in_into_your_certocloud_account_first">Bitte melden Sie sich zuerst mit Ihrem CertoCloud Konto an</string>
+    <string name="please_log_in_into_your_certocloud_account_first">Bitte melden Sie sich zuerst mit Ihrem RaypaCloud Konto an</string>
     
     <string name="venting">Entlüften</string>
 

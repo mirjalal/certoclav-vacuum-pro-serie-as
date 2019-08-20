@@ -55,8 +55,7 @@ public class SettingsConditionFragment extends Fragment implements Navigationbar
                 Condition con;
                 for (int i = 0; i < conditionAdapter.getCount(); i++) {
                     con = conditionAdapter.getItem(i);
-                    if ((con.isEnabledEmail() && con.getEmailAddress().isEmpty()) ||
-                            (con.isEnabledSms() && con.getSMSNumber().isEmpty())) {
+                    if ((con.isEnabledEmail() && con.getEmailAddress().isEmpty())) {
                         Toast.makeText(getActivity(), getString(R.string.please_enter_valid_data), Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -117,7 +116,7 @@ public class SettingsConditionFragment extends Fragment implements Navigationbar
     public void onResume() {
 
 
-        if (CloudUser.getInstance().isLoggedIn()) {
+        if (CloudUser.getInstance().isLoggedIn() && !Autoclave.getInstance().getUser().isAdmin()) {
             viewText.setVisibility(View.GONE);
             buttonSave.setVisibility(View.VISIBLE);
             for (Condition conditionCloud : CloudDatabase.getInstance().getConditionList()) {

@@ -18,7 +18,7 @@ public class AutoclaveModelManager implements MyCallback {
 
     private static AutoclaveModelManager manager;
     private Integer[] parametersForAdmin = new Integer[]{1, 2, 3, 4, 71, 72, 94, 95};
-    private Integer[] parametersTemperature = new Integer[]{36, 37, 39, 40};
+    private Integer[] parametersTemperature = new Integer[]{27, 97, 36, 37, 39, 40, 99};
     private String[] parametersSkipForAuditLog = new String[]{"preferences_autoclave_parameter_94",
             "preferences_autoclave_parameter_95", "preferences_autoclave_parameter_96",
             "preferences_autoclave_parameter_98", AppConstants.PREFERENCE_KEY_ID_OF_LAST_USER};
@@ -94,8 +94,8 @@ public class AutoclaveModelManager implements MyCallback {
 
 
     public Pair<Float, Float> getWarmingUpTempRange() {
-        return new Pair<>(Helper.getInstance().celsiusToCurrentUnit(0f),
-                Helper.getInstance().celsiusToCurrentUnit(199f));
+        return new Pair<>(Helper.getInstance().celsiusToCurrentUnit(30f),
+                Helper.getInstance().celsiusToCurrentUnit(70f));
     }
 
     public Pair<Float, Float> getFinalTempRange() {

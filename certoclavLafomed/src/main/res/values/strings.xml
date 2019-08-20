@@ -1047,26 +1047,27 @@
     <string name="warning_timeout_stabilization">TIMEOUT STABILIZATION</string>
     <string name="warning_timeout_steam_pulse">TIMEOUT STEAM PULSE</string>
     <string name="warning_temp_out_of_range">TEMP OUT OF RANGE</string>
-    <string name="error_temp_out_of_range">ERROR_TEMP_OUT_OF_RANGE</string>
-    <string name="error_timeout_steam_pulse">ERROR_TIMEOUT_STEAM_PULSE</string>
-    <string name="error_timeout_stabilization">ERROR_TIMEOUT_STABILIZATION</string>
-    <string name="error_heart_probes_exc_dif">ERROR_HEART_PROBES_EXC_DIF</string>
-    <string name="error_heating_failure">ERROR_HEATING_FAILURE</string>
-    <string name="error_heating_failure_2">ERROR_HEATING_FAILURE</string>
-    <string name="error_sterilization_overtemperature">ERROR_STERILIZATION_OVERTEMPERATURE</string>
-    <string name="error_sterilization_undertemperature">ERROR_STERILIZATION_UNDERTEMPERATURE</string>
-    <string name="error_sterilization_overpressure">ERROR_STERILIZATION_OVERPRESSURE</string>
-    <string name="error_sterilization_underpressure">ERROR_STERILIZATION_UNDERPRESSURE</string>
-    <string name="error_pressure_leveling_timeout">ERROR_PRESSURE_LEVELING_TIMEOUT</string>
-    <string name="error_difference_between_probes_exceeded">ERROR_DIFFERENCE_BETWEEN_PROBES_EXCEEDED</string>
-    <string name="error_door_open">ERROR_DOOR_OPEN</string>
-    <string name="error_no_water">ERROR_NO_WATER</string>
-    <string name="error_reset_safety_thermostat">ERROR_RESET_SAFETY_THERMOSTAT</string>
-    <string name="error_vacuum_test_underpressure">ERROR_VACUUM_TEST_UNDERPRESSURE</string>
-    <string name="error_vacuum_test_undertemperature">ERROR_VACUUM_TEST_UNDERTEMPERATURE</string>
-    <string name="error_vacuum_test_final_pressure_exceeded">ERROR_VACUUM_TEST_FINAL_PRESSURE_EXCEEDED</string>
-    <string name="error_power_supply_failure">ERROR_POWER_SUPPLY_FAILURE</string>
-    <string name="error_cycle_cancelled_manually">ERROR_CYCLE_CANCELLED_MANUALLY</string>
+    <string name="error_temp_out_of_range">ERROR TEMP OUT OF RANGE</string>
+    <string name="error_timeout_steam_pulse">ERROR TIMEOUT STEAM PULSE</string>
+    <string name="error_timeout_stabilization">ERROR TIMEOUT STABILIZATION</string>
+    <string name="error_heart_probes_exc_dif">ERROR HEART PROBES EXC DIF</string>
+    <string name="error_heating_failure">ERROR HEATING FAILURE</string>
+    <string name="error_heating_failure_2">ERROR HEATING FAILURE 2</string>
+    <string name="error_sterilization_overtemperature">ERROR STERILIZATION OVERTEMPERATURE</string>
+    <string name="error_sterilization_undertemperature">ERROR STERILIZATION UNDERTEMPERATURE</string>
+    <string name="error_sterilization_overpressure">ERROR STERILIZATION OVERPRESSURE</string>
+    <string name="error_sterilization_underpressure">ERROR STERILIZATION UNDERPRESSURE</string>
+    <string name="error_pressure_leveling_timeout">ERROR PRESSURE LEVELING TIMEOUT</string>
+    <string name="error_difference_between_probes_exceeded">ERROR DIFFERENCE BETWEEN PROBES EXCEEDED</string>
+    <string name="error_door_open">ERROR DOOR OPEN</string>
+    <string name="error_no_water">ERROR NO WATER</string>
+    <string name="error_reset_safety_thermostat">ERROR RESET SAFETY THERMOSTAT</string>
+    <string name="error_vacuum_test_underpressure">ERROR VACUUM TEST UNDERPRESSURE</string>
+    <string name="error_vacuum_test_undertemperature">ERROR VACUUM TEST UNDERTEMPERATURE</string>
+    <string name="error_vacuum_test_final_pressure_exceeded">ERROR VACUUM TEST FINAL PRESSURE EXCEEDED</string>
+    <string name="error_power_supply_failure">ERROR POWER SUPPLY FAILURE</string>
+    <string name="error_cycle_cancelled_error">ERROR CYCLE CANCELLED BY ERROR</string>
+    <string name="error_cycle_cancelled_manually">ERROR CYCLE CANCELLED MANUALLY</string>
 
 
 </resources>

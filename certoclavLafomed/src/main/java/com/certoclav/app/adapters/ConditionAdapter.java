@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.certoclav.app.R;
 import com.certoclav.app.database.Profile;
-import com.certoclav.library.certocloud.CloudUser;
 import com.certoclav.library.certocloud.Condition;
 
 import java.util.List;
@@ -32,9 +31,9 @@ public class ConditionAdapter extends ArrayAdapter<Condition> {
 
     static class ViewHolder {
         protected EditText editTextEmail;
-        protected EditText editTextSms;
+//        protected EditText editTextSms;
         protected CheckBox cbEmail;
-        protected CheckBox cbSms;
+//        protected CheckBox cbSms;
 
     }
 
@@ -66,20 +65,20 @@ public class ConditionAdapter extends ArrayAdapter<Condition> {
             convertView = inflater.inflate(R.layout.settings_condition_element, parent, false);
             final ViewHolder viewHolder = new ViewHolder();
 
-            viewHolder.cbSms = (CheckBox) convertView.findViewById(R.id.condition_element_cb_sms);
-            viewHolder.cbSms.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked == false) {
-                        viewHolder.editTextSms.setEnabled(false);
-                        viewHolder.editTextSms.setText("");
-                    } else {
-                        viewHolder.editTextSms.setEnabled(true);
-                    }
-                    wed.setEnabledSms(isChecked);
-                }
-            });
+//            viewHolder.cbSms = (CheckBox) convertView.findViewById(R.id.condition_element_cb_sms);
+//            viewHolder.cbSms.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+//
+//                @Override
+//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                    if (isChecked == false) {
+//                        viewHolder.editTextSms.setEnabled(false);
+//                        viewHolder.editTextSms.setText("");
+//                    } else {
+//                        viewHolder.editTextSms.setEnabled(true);
+//                    }
+//                    wed.setEnabledSms(isChecked);
+//                }
+//            });
 
 
             viewHolder.cbEmail = (CheckBox) convertView.findViewById(R.id.condition_element_cb_mail);
@@ -118,36 +117,36 @@ public class ConditionAdapter extends ArrayAdapter<Condition> {
                 }
             });
 
-            viewHolder.editTextSms = (EditText) convertView.findViewById(R.id.condition_element_edit_sms);
-            viewHolder.editTextSms.setText(getItem(position).getSMSNumber());
-            viewHolder.editTextSms.addTextChangedListener(new TextWatcher() {
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    getItem(position).setSMS(s.toString());
-
-                }
-
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count,
-                                              int after) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            });
+//            viewHolder.editTextSms = (EditText) convertView.findViewById(R.id.condition_element_edit_sms);
+//            viewHolder.editTextSms.setText(getItem(position).getSMSNumber());
+//            viewHolder.editTextSms.addTextChangedListener(new TextWatcher() {
+//
+//                @Override
+//                public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                    getItem(position).setSMS(s.toString());
+//
+//                }
+//
+//                @Override
+//                public void beforeTextChanged(CharSequence s, int start, int count,
+//                                              int after) {
+//
+//                }
+//
+//                @Override
+//                public void afterTextChanged(Editable s) {
+//
+//                }
+//            });
 
 
             convertView.setTag(viewHolder);
             viewHolder.editTextEmail.setTag(wed);
-            viewHolder.editTextSms.setTag(wed);
+//            viewHolder.editTextSms.setTag(wed);
         } else {
             ViewHolder holder = (ViewHolder) convertView.getTag();
             holder.editTextEmail.setTag(wed);
-            holder.editTextSms.setTag(wed);
+//            holder.editTextSms.setTag(wed);
         }
 
 
@@ -157,18 +156,18 @@ public class ConditionAdapter extends ArrayAdapter<Condition> {
         }
 
 
-        if (!holder.editTextSms.getText().toString().isEmpty()) {
-            holder.cbSms.setChecked(true);
-        }
+//        if (!holder.editTextSms.getText().toString().isEmpty()) {
+//            holder.cbSms.setChecked(true);
+//        }
 
         TextView textTitle = (TextView) convertView.findViewById(R.id.condition_element_text_title);
         textTitle.setText(getItem(position).getIfDescription());
 
 
-        if (CloudUser.getInstance().isPremiumAccount() == false) {
-            holder.cbSms.setEnabled(false);
-            holder.editTextSms.setEnabled(false);
-        }
+//        if (CloudUser.getInstance().isPremiumAccount() == false) {
+//            holder.cbSms.setEnabled(false);
+//            holder.editTextSms.setEnabled(false);
+//        }
 
 
         return convertView;

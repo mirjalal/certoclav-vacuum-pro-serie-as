@@ -10,6 +10,7 @@ import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.support.v4.preference.PreferenceFragment;
+import android.util.Log;
 import android.util.Pair;
 import android.widget.Toast;
 
@@ -40,9 +41,8 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
     private AutoclaveModelManager manager;
     //Check is it is first time, get all parameter from autoclave
     private boolean isParameterLoaded;
+    private ItemListFragment itemListFragment;
 
-    public SettingsAutoclaveFragment() {
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -276,6 +276,20 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
                 Preference pref;
                 String key;
                 updatePreferences();
+
+                //first change the temperature unit
+                for (AutoclaveParameter parameter : parameters) {
+                    if (parameter.getParameterId() == 8) {
+
+                        if (!AutoclaveModelManager.getInstance().getTemperatureUnit().equals(parameter.getValue().toString())) {
+                            AutoclaveModelManager.getInstance().setTemperatureSymbol(parameter);
+                            Helper.getInstance().getPrograms(getActivity());
+                        } else {
+                            AutoclaveModelManager.getInstance().setTemperatureSymbol(parameter);
+                        }
+                        break;
+                    }
+                }
                 for (AutoclaveParameter parameter : parameters) {
 
                     //Autoclave Model
@@ -307,6 +321,7 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
                         if (pref instanceof ListPreference) {
                             pref.getEditor().putString(key, parameter.getValue().toString()).commit();
                         } else if (!(pref instanceof CheckBoxPreference)) {
+                            Log.e("parameter", key + " " + parameter.getValue().toString());
                             pref.getEditor().putString(key, parameter.getValue().toString()).commit();
                         } else {
                             pref.getEditor().putBoolean(key, parameter.getValue().toString().equals("1")).commit();
@@ -389,4 +404,5 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
     public void onProgress(int current, int max) {
 
     }
+
 }
