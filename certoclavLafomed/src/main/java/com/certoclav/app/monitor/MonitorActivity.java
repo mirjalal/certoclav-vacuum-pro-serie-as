@@ -34,6 +34,7 @@ import com.certoclav.app.listener.AutoclaveStateListener;
 import com.certoclav.app.listener.NavigationbarListener;
 import com.certoclav.app.listener.ProfileListener;
 import com.certoclav.app.listener.SensorDataListener;
+import com.certoclav.app.menu.LoginActivity;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveData;
 import com.certoclav.app.model.AutoclaveMonitor;
@@ -53,12 +54,15 @@ import java.util.Calendar;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
 
 
 public class MonitorActivity extends CertoclavSuperActivity implements NavigationbarListener, ProfileListener, AlertListener, AutoclaveStateListener {
 
     private static final int INDEX_FRAGMANT_GRAPH = 0;
     private static final int INDEX_FRAGMENT_AUTOCLAVE = 1;
+    public static final int REQUEST_CODE_START_LATER = 0;
+    public static final int REQUEST_CODE_LOGIN_AGAIN = 1;
     private ArrayList<Fragment> fragmentList = new ArrayList<Fragment>();
     private CertoclavNavigationbarClean navigationbar;
     private Calendar dateTime;
@@ -154,6 +158,11 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
 
             @Override
             public void onClick(final View v) {
+
+                if (isSessionExpired()) {
+                    askForLoginAgain();
+                    return;
+                }
 
                 if (Autoclave.getInstance().getState().equals(AutoclaveState.NOT_RUNNING)) {
                     showStartNowOrLaterProgramDialog();
@@ -651,7 +660,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                         Intent intent = new Intent(MonitorActivity.this, ProgramTimerActivity.class);
                         intent.putExtra(ProgramTimerActivity.ARG_PROGRAM_NAME, Autoclave.getInstance().getProfile().getName());
                         intent.putExtra(ProgramTimerActivity.ARG_PROGRAM_STARTING_TIME, calendar.getTimeInMillis());
-                        startActivityForResult(intent, 0);
+                        startActivityForResult(intent, REQUEST_CODE_START_LATER);
                     }
                 });
                 newFragment.show(getSupportFragmentManager(), "timePicker");
@@ -663,8 +672,19 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 0 && resultCode == RESULT_OK) {
-            startProgram();
+
+        switch (requestCode) {
+            case REQUEST_CODE_START_LATER:
+                if (resultCode == RESULT_OK) {
+                    startProgram();
+                }
+                break;
+            case REQUEST_CODE_LOGIN_AGAIN:
+                if (resultCode == RESULT_OK) {
+                    setSessionExpired(false);
+                    buttonStop.performClick();
+                }
+                break;
         }
     }
 
@@ -742,4 +762,12 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
         sweetAlertDialog.setCancelable(false);
         sweetAlertDialog.show();
     }
+
+
+    private void askForLoginAgain() {
+        Intent intent = new Intent(MonitorActivity.this, LoginActivity.class);
+        intent.putExtra("login_again", true);
+        startActivityForResult(intent, REQUEST_CODE_LOGIN_AGAIN);
+    }
+
 }

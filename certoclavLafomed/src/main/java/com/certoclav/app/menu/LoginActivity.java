@@ -83,6 +83,8 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
     private TextView textViewNotification = null;
     private ProgressBar progressBar = null; // progess bar which shows cloud
     private AutoclaveModelManager modelManager;
+
+
     // login process
 
     // Need handler for callbacks to the UI thread
@@ -329,11 +331,17 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                                         getString(R.string.login_successful),
                                         Toast.LENGTH_LONG, true).show();
                                 CloudUser.getInstance().setLoggedIn(true);
-                                Autoclave.getInstance().setState(
-                                        AutoclaveState.NOT_RUNNING);
-                                Intent intent = new Intent(LoginActivity.this,
-                                        MenuMain.class);
-                                startActivity(intent);
+
+                                if (!getIntent().hasExtra("login_again")) {
+                                    Autoclave.getInstance().setState(
+                                            AutoclaveState.NOT_RUNNING);
+                                    Intent intent = new Intent(LoginActivity.this,
+                                            MenuMain.class);
+                                    startActivity(intent);
+                                } else {
+                                    setResult(RESULT_OK);
+                                    finish();
+                                }
                                 AuditLogger.getInstance().addAuditLog(currentUser, -1, AuditLogger.ACTION_SUCCESS_LOGIN, AuditLogger.OBJECT_EMPTY, null, false);
                             } else {
                                 Toasty.error(getApplicationContext(),
@@ -354,7 +362,11 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
             }
         });
         // throw new RuntimeException();
-        Helper.getInstance().getPrograms(this);
+        if (!getIntent().hasExtra("login_again"))
+            Helper.getInstance().getPrograms(this);
+        else {
+            navigationbar.showButtonBack();
+        }
 
         //get data from autoclave
 //        ReadAndParseSerialService.getInstance().sendGetAdjustParameterCommand();
@@ -418,7 +430,8 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 
         // catch event, when user presses home button. Pressing home button
         // should take no effect. That means reopen last activity
-        if (Autoclave.getInstance().getState() == AutoclaveState.RUNNING) {
+        if (Autoclave.getInstance().getState() == AutoclaveState.RUNNING
+                && !getIntent().hasExtra("login_again")) {
             // buttonLogin.setVisibility(View.INVISIBLE);
             Intent intent = new Intent(LoginActivity.this, MonitorActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
@@ -506,8 +519,8 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 
                 break;
             case CertoclavNavigationbarClean.BUTTON_BACK:
-
-
+                setResult(RESULT_CANCELED);
+                finish();
                 break;
 
         }
@@ -549,7 +562,6 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                         getResources().getString(R.string.login_successful),
                         Toast.LENGTH_LONG, true).show();
                 AuditLogger.getInstance().addAuditLog(currentUser, -1, AuditLogger.ACTION_SUCCESS_LOGIN, AuditLogger.OBJECT_EMPTY, null, false);
-                Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);
                 try {
                     if (Autoclave.getInstance().getUser().getIsLocal() == true) {
                         DatabaseService databaseService = DatabaseService.getInstance();
@@ -558,8 +570,15 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                     }
                 } catch (Exception e) {
                 }
-                Intent intent = new Intent(LoginActivity.this, MenuMain.class);
-                startActivity(intent);
+                if (!getIntent().hasExtra("login_again")) {
+                    Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);
+                    Intent intent = new Intent(LoginActivity.this,
+                            MenuMain.class);
+                    startActivity(intent);
+                } else {
+                    setResult(RESULT_OK);
+                    finish();
+                }
 
                 new AsyncTask<Boolean, Boolean, Boolean>() {
 
@@ -614,7 +633,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                 return;
         }
 
-        AuditLogger.getInstance().addAuditLog(currentUser, -1, AuditLogger.ACTION_FAILED_LOGIN, AuditLogger.OBJECT_EMPTY, null,false);
+        AuditLogger.getInstance().addAuditLog(currentUser, -1, AuditLogger.ACTION_FAILED_LOGIN, AuditLogger.OBJECT_EMPTY, null, false);
         mHandler.post(mShowCloudLoginFailed);
 
     }
