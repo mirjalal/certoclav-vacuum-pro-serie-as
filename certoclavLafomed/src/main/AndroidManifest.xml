@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.certoclav.app"
-    android:versionCode="98"
-    android:versionName="98">
+    android:versionCode="99"
+    android:versionName="99">
 
     <uses-sdk
         android:targetSdkVersion="26"
