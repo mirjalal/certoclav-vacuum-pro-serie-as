@@ -17,13 +17,11 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.listener.SensorDataListener;
 import com.certoclav.app.menu.LoginActivity;
-import com.certoclav.app.menu.MenuMain;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveData;
 import com.certoclav.app.model.AutoclaveState;
@@ -192,7 +190,7 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
             handler.removeCallbacks(runnableAutologout);
             handler.postDelayed(runnableAutologout, AppConstants.SESSION_EXPIRE);
-            Toast.makeText(this, "touch", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "touch", Toast.LENGTH_SHORT).show();
         }
         return false;
     }

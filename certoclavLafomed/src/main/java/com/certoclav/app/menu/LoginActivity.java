@@ -54,9 +54,6 @@ import com.crashlytics.android.Crashlytics;
 
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import cn.pedant.SweetAlert.ProgressHelper;
@@ -477,6 +474,11 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         }
 
         adapterUserDropdown.notifyDataSetChanged();
+
+
+        if(getIntent()!=null && getIntent().hasExtra("login_again")){
+            editTextPassword.setText("");
+        }
 
     }
 
