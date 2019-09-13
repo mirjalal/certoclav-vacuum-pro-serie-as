@@ -992,7 +992,7 @@
     <string name="no_license_key_title">No License Key</string>
     <string name="no_ethernet_app">Please install Ethernat app to manage the LAN configuration</string>
     <string name="admin">Admin</string>
-    <string name="passwords_min_length">Password must be of minimum 4 characters</string>
+    <string name="passwords_min_length">Password must be of minimum 6 characters</string>
     <string name="please_enter_item_name">Add item name</string>
     <string name="item_name">Item name</string>
     <string name="add">Add</string>
@@ -1068,6 +1068,8 @@
     <string name="error_power_supply_failure">ERROR POWER SUPPLY FAILURE</string>
     <string name="error_cycle_cancelled_error">ERROR CYCLE CANCELLED BY ERROR</string>
     <string name="error_cycle_cancelled_manually">ERROR CYCLE CANCELLED MANUALLY</string>
+    <string name="change_user_password">Change User Password</string>
+    <string name="password_has_expired">The user\'s password has expired. Please update the password.</string>
 
 
 </resources>

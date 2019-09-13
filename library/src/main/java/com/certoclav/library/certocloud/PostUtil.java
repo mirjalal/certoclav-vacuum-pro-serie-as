@@ -22,6 +22,7 @@ public class PostUtil {
     private int responseCode = -1;
 
     public static final int RETURN_OK = 200;
+    public static final int RETURN_ERROR_PASSWORD_EXPIRED = 406;
     public static final int RETURN_OK_200 = 200;
     public static final int RETURN_ERROR_TIMEOUT = 1;
     public static final int RETURN_ERROR_UNKNOWN_HOST = 2;

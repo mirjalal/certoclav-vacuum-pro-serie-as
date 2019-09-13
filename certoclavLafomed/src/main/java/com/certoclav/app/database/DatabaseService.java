@@ -5,6 +5,7 @@ import android.database.SQLException;
 import android.os.Environment;
 import android.util.Log;
 
+import com.certoclav.app.AppConstants;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.util.AuditLogger;
 import com.certoclav.library.application.ApplicationController;
@@ -1108,6 +1109,8 @@ public class DatabaseService {
 
             /** query for object in the database with id equal profileId */
             updateBuilder.updateColumnValue("password", newPassword);
+            updateBuilder.updateColumnValue(User.FIELD_PASSWORD_EXPITE, new Date(new Date().getTime() + AppConstants.PASSWORD_EXPIRE));
+
 
             int r = updateBuilder.update();
             return r;

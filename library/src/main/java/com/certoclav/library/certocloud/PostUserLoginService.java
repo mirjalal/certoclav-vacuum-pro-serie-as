@@ -46,7 +46,7 @@ public class PostUserLoginService {
                 try {
                     object.put("username", email);
                     object.put("password", password);
-                    object.put("devices",new Gson().toJson(device));
+                    object.put("devices", new Gson().toJson(device));
 
                 } catch (Exception ex) {
                     Log.e("RestUserLoginTask", ex.toString());
@@ -83,7 +83,21 @@ public class PostUserLoginService {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
+            } else
+                //Password has expired
+                if (response != null && response.getStatus() == 406) {
+                    JSONObject loginJSONObject;
+                    try {
+                        loginJSONObject = new JSONObject(postUtil.getResponseBody());
+                        CloudUser.getInstance().setEmail(email);
+                        if (loginJSONObject.has("token"))
+                            CloudUser.getInstance().setToken(loginJSONObject.getString("token"));
+                        CloudUser.getInstance().setCurrentDeviceKey(device.getDeviceKey());
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
 
             if (putUserTaskFinishedListener != null) {
                 putUserTaskFinishedListener.onTaskFinished(response);

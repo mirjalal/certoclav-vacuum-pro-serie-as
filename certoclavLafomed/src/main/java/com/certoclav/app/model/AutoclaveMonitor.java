@@ -3,6 +3,7 @@ package com.certoclav.app.model;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.SparseArray;
 
 import com.certoclav.app.AppConstants;
@@ -204,7 +205,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
         //map a error description to the error code.
         errorMap.put(ERROR_CODE_SUCCESSFULL, mContext.getString(R.string.progr_finished_successfully));
         errorMap.put(ERROR_CODE_CONNECTION_LOST, mContext.getString(R.string.connection_lost_during_record));
-        errorMap.put(ERROR_CODE_CANCELLED_BY_ERROR, mContext.getString(R.string.error_cycle_cancelled_manually));
+        errorMap.put(ERROR_CODE_CANCELLED_BY_ERROR, mContext.getString(R.string.error_cycle_cancelled_error));
         errorMap.put(ERROR_CODE_POWER_LOSS, mContext.getString(R.string.power_loss_during_record));
         errorMap.put(ERROR_CODE_INDICATOR_FAILED, mContext.getString(R.string.indicator_failed));
         errorMap.put(ERROR_CODE_INDICATOR_SUCCESS, mContext.getString(R.string.indicator_success));
@@ -227,6 +228,8 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
         errorMap.put(ERROR_VACUUM_TEST_FINAL_PRESSURE_EXCEEDED, mContext.getString(R.string.error_vacuum_test_final_pressure_exceeded));
         errorMap.put(ERROR_POWER_SUPPLY_FAILURE, mContext.getString(R.string.error_power_supply_failure));
         errorMap.put(ERROR_CYCLE_CANCELLED_MANUALLY, mContext.getString(R.string.error_cycle_cancelled_manually));
+
+
 
 
         //map a error description to the error code.
@@ -654,9 +657,15 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
     private void finishProgram() {
         Log.e("monitor", "finishprogramcalled");
         Autoclave.getInstance().getProtocol().setEndTime(Autoclave.getInstance().getDateObject());
-        databaseService.updateProtocolEndTime(Autoclave.getInstance().getProtocol().getProtocol_id(), Autoclave.getInstance().getDateObject());
-        Autoclave.getInstance().getProtocol().setErrorCode(ERROR_CODE_SUCCESSFULL);
-        databaseService.updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(), ERROR_CODE_SUCCESSFULL);
+        databaseService.updateProtocolEndTime(Autoclave.getInstance().getProtocol().getProtocol_id(),
+                Autoclave.getInstance().getDateObject());
+        boolean isIndicatorEnabled = PreferenceManager.getDefaultSharedPreferences(ApplicationController.getContext())
+                .getBoolean(AppConstants.PREFERENCE_KEY_INDICATOR_TEST, false);
+        Autoclave.getInstance().getProtocol().setErrorCode(isIndicatorEnabled ?
+                ERROR_CODE_INDICATOR_NOT_COMPLETED :
+                ERROR_CODE_SUCCESSFULL);
+        databaseService.updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(),
+                isIndicatorEnabled ? ERROR_CODE_INDICATOR_NOT_COMPLETED : ERROR_CODE_SUCCESSFULL);
     }
 
     public ArrayList<Error> getErrorList() {

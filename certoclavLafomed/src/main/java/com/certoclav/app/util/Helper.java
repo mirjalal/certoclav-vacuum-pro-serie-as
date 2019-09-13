@@ -1091,6 +1091,8 @@ public class Helper {
     }
 
     public void syncProgramWithCloud(final Profile profile) {
+        if (!Autoclave.getInstance().isOnlineMode(ApplicationController.getContext()))
+            return;
         Needle.onBackgroundThread().execute(new UiRelatedTask<Boolean>() {
             @Override
             protected Boolean doWork() {

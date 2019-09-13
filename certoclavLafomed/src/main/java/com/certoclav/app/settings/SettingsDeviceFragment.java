@@ -31,7 +31,7 @@ import com.certoclav.app.R;
 import com.certoclav.app.database.AuditLog;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.listener.SensorDataListener;
-import com.certoclav.app.menu.ChangeAdminPasswordAccountActivity;
+import com.certoclav.app.menu.UpdateUserPasswordAccountActivity;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveData;
 import com.certoclav.app.model.AutoclaveState;
@@ -105,7 +105,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    startActivity(new Intent(getActivity(), ChangeAdminPasswordAccountActivity.class));
+                    startActivity(new Intent(getActivity(), UpdateUserPasswordAccountActivity.class));
                     return false;
                 }
             });

@@ -43,7 +43,7 @@ public interface AppConstants {
 
     /*TABLET AND AUTOCLAVE SELECTION*/
 
-    String TABLET_TYPE = TABLET_TYPE_FAYTECH;/*TABLET_TYPE_FAYTECH_RS_232;*///TABLET_TYPE_LILLIPUT
+    String TABLET_TYPE = /*TABLET_TYPE_FAYTECH;*/TABLET_TYPE_FAYTECH_RS_232;//TABLET_TYPE_LILLIPUT
     String MODEL_CURRENT = MODEL_RAYPA_TLV;
     Boolean isIoSimulated = false;
     String MODEL = "TLV-150FA";
@@ -260,4 +260,5 @@ public interface AppConstants {
 
     float PERMISSION_TIMEOUT_FDA = 1f;
     long SESSION_EXPIRE = 15 * 60 * 1000;
+    long PASSWORD_EXPIRE = 60 * 1000;
 }

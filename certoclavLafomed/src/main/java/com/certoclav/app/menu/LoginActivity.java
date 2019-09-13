@@ -272,6 +272,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 //                            password = AppConstants.DEFAULT_CLOUD_ADMIN_PASSWORD;
 //                        }
 
+
                         postUserLoginService = new PostUserLoginService();
                         postUserLoginService.setOnTaskFinishedListener(LoginActivity.this);
                         postUserLoginService.loginUser(currentUser.getEmail(),
@@ -282,7 +283,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                     }
 
                 } else {
-                    new AsyncTask<String, Boolean, Boolean>() {
+                    new AsyncTask<String, Boolean, Integer>() {
 
                         @Override
                         protected void onPreExecute() {
@@ -294,8 +295,13 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                         }
 
                         @Override
-                        protected Boolean doInBackground(String... params) {
+                        protected Integer doInBackground(String... params) {
                             User selectedUser = listUsers.get(Integer.valueOf(params[2]));
+
+                            if (selectedUser.isPasswordExpired()) {
+                                return -1;
+                            }
+
                             if ((!selectedUser.getEmail().equals("Admin") && BCrypt.checkpw(params[0], params[1]))
                                     || params[0].equals(AppConstants.DEFAULT_CLOUD_ADMIN_PASSWORD)
                                     || params[0].equals(AppConstants.DEFAULT_SUPER_ADMIN_PASSWORD)
@@ -310,20 +316,20 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                                 // the UserController Table.
 
 
-                                return true;
+                                return 1;
 
                             }
-                            return false;
+                            return 0;
                         }
 
                         @Override
-                        protected void onPostExecute(Boolean result) {
+                        protected void onPostExecute(Integer result) {
                             buttonLogin.setEnabled(true);
                             progressBar.setVisibility(View.GONE);
                             textViewLogin.setVisibility(View.VISIBLE);
                             textViewLogin.setEnabled(true);
-
-                            if (result) {
+                            //Success
+                            if (result == 1) {
                                 Toasty.success(LoginActivity.this,
                                         getString(R.string.login_successful),
                                         Toast.LENGTH_LONG, true).show();
@@ -341,11 +347,20 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                                 }
                                 AuditLogger.getInstance().addAuditLog(currentUser, -1, AuditLogger.ACTION_SUCCESS_LOGIN, AuditLogger.OBJECT_EMPTY, null, false);
                             } else {
-                                Toasty.error(getApplicationContext(),
-                                        getString(R.string.password_not_correct),
-                                        Toast.LENGTH_LONG, true).show();
 
-                                AuditLogger.getInstance().addAuditLog(currentUser, -1, AuditLogger.ACTION_FAILED_LOGIN, AuditLogger.OBJECT_EMPTY, null, false);
+                                if (result == 0) {
+                                    Toasty.error(getApplicationContext(),
+                                            getString(R.string.password_not_correct),
+                                            Toast.LENGTH_LONG, true).show();
+
+                                    AuditLogger.getInstance().addAuditLog(currentUser, -1, AuditLogger.ACTION_FAILED_LOGIN, AuditLogger.OBJECT_EMPTY, null, false);
+                                }
+                                //The password is correct but expired
+                                if (result == -1) {
+
+                                    askToChangePassword(false);
+
+                                }
 
                             }
                             super.onPostExecute(result);
@@ -372,6 +387,19 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 //        ReadAndParseSerialService.getInstance().sendGetUserProgramCommand();
     }
 
+    private void askToChangePassword(final boolean isOnline) {
+        Helper.getInstance().askConfirmation(LoginActivity.this, getString(R.string.password), getString(R.string.password_has_expired), new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                Intent intent = new Intent(LoginActivity.this, UpdateUserPasswordAccountActivity.class);
+                intent.putExtra("isUser", true);
+                intent.putExtra("user_email", currentUser.getEmail_user_id());
+                intent.putExtra("isOnline", isOnline);
+                startActivity(intent);
+                sweetAlertDialog.dismissWithAnimation();
+            }
+        }, null);
+    }
 
     @Override
     public void onResume() {
@@ -466,6 +494,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                     for (int i = 0; i < listUsers.size(); i++) {
                         if (user.getUserId() == listUsers.get(i).getUserId()) {
                             spinner.setSelection(i);
+                            currentUser = user;
                             Autoclave.getInstance().setUser(user);
                         }
                     }
@@ -476,9 +505,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         adapterUserDropdown.notifyDataSetChanged();
 
 
-        if(getIntent()!=null && getIntent().hasExtra("login_again")){
-            editTextPassword.setText("");
-        }
+        editTextPassword.setText("");
 
     }
 
@@ -632,6 +659,9 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
             case PostUtil.RETURN_ERROR_ACCOUNT_NOT_ACTIVATED:
                 Intent intent2 = new Intent(LoginActivity.this, ActivateCloudAccountActivity.class);
                 startActivity(intent2);
+                return;
+            case PostUtil.RETURN_ERROR_PASSWORD_EXPIRED:
+                askToChangePassword(true);
                 return;
         }
 
