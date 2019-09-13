@@ -171,7 +171,7 @@ public class UpdateUserPasswordAccountActivity extends Activity {
                     return;
                 }
                 Log.e("RegisterActivity", "onclickRegisterButton");
-                if (!editPasswordItem.hasValidString() || !editPasswordItemConfirm.hasValidString()) {
+                if (!editPasswordItem.hasValidString()) {
                     Toasty.error(UpdateUserPasswordAccountActivity.this, getString(R.string.passwords_min_length), Toast.LENGTH_SHORT,true).show();
                     return;
                 }
