@@ -167,6 +167,23 @@ public class Requests {
         sendRequest(url, myCallback, requestId, null, headers, body.toString(), ResponseModel.class, policy, Request.Method.PUT);
     }
 
+    public void unblockUser(MyCallback myCallback, int requestId) {
+        String url = Uri.parse(CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_UNBLOCK_USER)
+                .buildUpon()
+                .build().toString();
+        Map<String, String> headers = new HashMap<>();
+
+        headers.put("X-Access-Token", CloudUser.getInstance().getToken());
+        headers.put("X-Key", CloudUser.getInstance().getEmail());
+        headers.put("Content-Type", "application/json");
+
+        DefaultRetryPolicy policy = new DefaultRetryPolicy(
+                200000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        sendRequest(url, myCallback, requestId, null, headers, null, ResponseModel.class, policy, Request.Method.PUT);
+    }
+
     public void getCloudPrograms(MyCallback myCallback, int requestId) {
         String url = Uri.parse(CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_GET_DEVICE_PROFILES + Autoclave.getInstance().getController().getSavetyKey())
                 .buildUpon()

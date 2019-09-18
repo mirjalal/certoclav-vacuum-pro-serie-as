@@ -58,6 +58,7 @@ public class CertocloudConstants {
     public final static String REST_API_DELETE_PROFILE = "/api/programs/";// programs.delete);
     public final static String REST_API_GET_PROTOCOLS = "/api/device-protocols/";
     public final static String REST_API_POST_USER_PASSWORD = "/api/profiles/updatePwd";
+    public final static String REST_API_UNBLOCK_USER = "/api/profiles/unblockUser";
     public final static String REST_API_GET_PROTOCOL = "/api/protocols/";
     public final static String REST_API_ENABLE_FDA = "/devices/fda/";// auth.login);
     public final static String REST_API_ENABLE_FDA_PERMISSION = "/api/devices/permission/";// auth.login);

@@ -643,7 +643,7 @@ public class DatabaseService {
     public User getUserByUsername(String username) {
         try {
             List<User> users = userDao.queryBuilder().where().eq(User.FIELD_USER_EMAIL, username).query();
-            if(users.size()>0)
+            if (users.size() > 0)
                 return users.get(0);
             return null;
         } catch (SQLException e) {
@@ -1122,6 +1122,17 @@ public class DatabaseService {
 
     }
 
+    public int updateUser(User user) {
+        try {
+            int r = userDao.update(user);
+            return r;
+        } catch (java.sql.SQLException e) {
+            //
+            e.printStackTrace();
+        }
+        return -1;
+
+    }
 
     public List<Profile> getProfilesWhithValidCloudId() {
 

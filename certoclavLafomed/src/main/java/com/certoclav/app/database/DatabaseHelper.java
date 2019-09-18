@@ -25,7 +25,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     // name of the database file for your application -- change to something appropriate for your app
     public static final String DATABASE_NAME = "helloAndroid.db";
     // any time you make changes to your database objects, you may have to increase the database version
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 14;
 
 
     // the DAO object we use to access the SimpleData table
@@ -100,9 +100,19 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
         } else if (oldVersion < 11) {
             db.execSQL("ALTER TABLE audit_logs ADD COLUMN " + AuditLog.FIELD_COMMENT + " TEXT");
-        } else if (oldVersion < 12) {
+        }
+
+        if (oldVersion < 12) {
             db.execSQL("ALTER TABLE users ADD COLUMN " + User.FIELD_PASSWORD_EXPITE + " DATE");
         }
+
+        if (oldVersion < 13) {
+            db.execSQL("ALTER TABLE users ADD COLUMN " + User.FIELD_LOGIN_ATTEMPT + " INTEGER DEFAULT 0");
+        }
+        if (oldVersion < 14) {
+            db.execSQL("ALTER TABLE users ADD COLUMN " + User.FIELD_BLOCKED_TILL + " DATE");
+        }
+
     }
 
     public Dao<DeletedProfileModel, Integer> getDeletedProfileDao() {

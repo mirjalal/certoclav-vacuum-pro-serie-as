@@ -260,5 +260,7 @@ public interface AppConstants {
 
     float PERMISSION_TIMEOUT_FDA = 1f;
     long SESSION_EXPIRE = 15 * 60 * 1000;
-    long PASSWORD_EXPIRE = 60 * 1000;
+    long PASSWORD_EXPIRE = 15552000000l; //6 months
+    int MAX_LOGIN_ATTEMPTS = 3;
+    int ADMIN_BLOCK_PERIOD = 2 * 60 * 1000; //1 hour
 }

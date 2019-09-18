@@ -36,10 +36,13 @@ import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
+import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.monitor.MonitorActivity;
 import com.certoclav.app.util.AuditLogger;
 import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.app.util.Helper;
+import com.certoclav.app.util.MyCallback;
+import com.certoclav.app.util.Requests;
 import com.certoclav.app.util.ServerConfigs;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.bcrypt.BCrypt;
@@ -54,6 +57,7 @@ import com.crashlytics.android.Crashlytics;
 
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.List;
 
 import cn.pedant.SweetAlert.ProgressHelper;
@@ -66,6 +70,8 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 public class LoginActivity extends CertoclavSuperActivity implements NavigationbarListener, DatabaseRefreshedListener, ControllerInfoListener, PutUserLoginTaskFinishedListener {
 
 
+    private static final int REQUEST_CREATE_ACCOUNT = 1;
+    private static final int REQUEST_UNBLOCK_USER = 2;
     private View buttonLogin;
     private View textViewLogin;
     private EditText editTextPassword;
@@ -297,6 +303,26 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                         @Override
                         protected Integer doInBackground(String... params) {
                             User selectedUser = listUsers.get(Integer.valueOf(params[2]));
+                            currentUser = selectedUser;
+
+                            if (selectedUser.isBlocked()) {
+                                if (selectedUser.isAdmin()) {
+                                    if (selectedUser.isBlockedByDate())
+                                        return -2;
+                                    else {
+                                        //Unblock the admin user
+                                        selectedUser.resetLoginAttempt();
+                                        databaseService.updateUser(selectedUser);
+                                        AuditLogger.getInstance().addAuditLog(
+                                                currentUser, -1,
+                                                AuditLogger.ACTION_USER_UNBLOCKED_TEMPORALLY,
+                                                AuditLogger.OBJECT_EMPTY,
+                                                null,
+                                                true);
+                                    }
+                                } else return -2;
+
+                            }
 
                             if (selectedUser.isPasswordExpired()) {
                                 return -1;
@@ -314,10 +340,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                                 // if the user trys to log in into this
                                 // Controller the first time, then save him into
                                 // the UserController Table.
-
-
                                 return 1;
-
                             }
                             return 0;
                         }
@@ -345,21 +368,66 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                                     setResult(RESULT_OK);
                                     finish();
                                 }
-                                AuditLogger.getInstance().addAuditLog(currentUser, -1, AuditLogger.ACTION_SUCCESS_LOGIN, AuditLogger.OBJECT_EMPTY, null, false);
+                                AuditLogger.getInstance().addAuditLog(currentUser,
+                                        -1,
+                                        AuditLogger.ACTION_SUCCESS_LOGIN,
+                                        AuditLogger.OBJECT_EMPTY,
+                                        null,
+                                        false);
+
+                                //Here reset the login attempt
+                                currentUser.resetLoginAttempt();
+                                databaseService.updateUser(currentUser);
                             } else {
 
                                 if (result == 0) {
+                                    //Wrong login attempt
                                     Toasty.error(getApplicationContext(),
                                             getString(R.string.password_not_correct),
                                             Toast.LENGTH_LONG, true).show();
 
-                                    AuditLogger.getInstance().addAuditLog(currentUser, -1, AuditLogger.ACTION_FAILED_LOGIN, AuditLogger.OBJECT_EMPTY, null, false);
+                                    //Here increase the login attempt only for non admin user
+
+                                    currentUser.increaseLoginAttempt();
+
+                                    if (currentUser.isBlocked()) {
+                                        AuditLogger.getInstance().addAuditLog(
+                                                currentUser, -1,
+                                                currentUser.isAdmin() ? AuditLogger.ACTION_USER_BLOCKED_TEMPORALLY : AuditLogger.ACTION_USER_BLOCKED,
+                                                AuditLogger.OBJECT_EMPTY,
+                                                null,
+                                                true);
+                                        if (currentUser.isAdmin())
+                                            currentUser.setBlockedByDate(new Date(new Date().getTime() + AppConstants.ADMIN_BLOCK_PERIOD));
+                                        result = -2;
+                                    } else {
+                                        AuditLogger.getInstance().addAuditLog(currentUser,
+                                                -1,
+                                                AuditLogger.ACTION_FAILED_LOGIN,
+                                                AuditLogger.OBJECT_EMPTY,
+                                                null,
+                                                false);
+                                    }
+                                    databaseService.updateUser(currentUser);
+
                                 }
                                 //The password is correct but expired
-                                if (result == -1) {
+                                if (result == -1)
+                                    askToChangePassword(false, currentUser.isAdmin());
 
-                                    askToChangePassword(false);
-
+                                //The user has been blocked, login as admin to unblock it
+                                if (result == -2) {
+                                    Toasty.error(getApplicationContext(),
+                                            getString(currentUser.isAdmin() ? R.string.user_blocked_temp : R.string.user_blocked),
+                                            Toast.LENGTH_LONG, true).show();
+                                    AuditLogger.getInstance().addAuditLog(currentUser,
+                                            -1,
+                                            AuditLogger.ACTION_FAILED_LOGIN,
+                                            AuditLogger.OBJECT_EMPTY,
+                                            null,
+                                            false);
+                                    if (!currentUser.isAdmin())
+                                        askForAdminPassword(REQUEST_UNBLOCK_USER);
                                 }
 
                             }
@@ -387,12 +455,12 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 //        ReadAndParseSerialService.getInstance().sendGetUserProgramCommand();
     }
 
-    private void askToChangePassword(final boolean isOnline) {
+    private void askToChangePassword(final boolean isOnline, final boolean isAdmin) {
         Helper.getInstance().askConfirmation(LoginActivity.this, getString(R.string.password), getString(R.string.password_has_expired), new SweetAlertDialog.OnSweetClickListener() {
             @Override
             public void onClick(SweetAlertDialog sweetAlertDialog) {
                 Intent intent = new Intent(LoginActivity.this, UpdateUserPasswordAccountActivity.class);
-                intent.putExtra("isUser", true);
+                if (!isAdmin) intent.putExtra("isUser", true);
                 intent.putExtra("user_email", currentUser.getEmail_user_id());
                 intent.putExtra("isOnline", isOnline);
                 startActivity(intent);
@@ -541,7 +609,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                         prefs.getBoolean(ApplicationController.getContext().getString(R.string.preferences_lockout_create_user),
                                 ApplicationController.getContext().getResources().getBoolean(R.bool.preferences_lockout_create_user))) {
                     Toasty.warning(this, getString(R.string.these_settings_are_locked_by_the_admin), Toast.LENGTH_SHORT, true).show();
-                    askForAdminPassword();
+                    askForAdminPassword(REQUEST_CREATE_ACCOUNT);
                 } else {
                     askForSelecteOption();
                 }
@@ -661,7 +729,20 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                 startActivity(intent2);
                 return;
             case PostUtil.RETURN_ERROR_PASSWORD_EXPIRED:
-                askToChangePassword(true);
+                askToChangePassword(true, currentUser.isAdmin());
+                return;
+            case PostUtil.RETURN_ERROR_USER_BLOCKED:
+                Toasty.error(getApplicationContext(),
+                        getString(currentUser.isAdmin() ? R.string.user_blocked_temp : R.string.user_blocked),
+                        Toast.LENGTH_LONG, true).show();
+                AuditLogger.getInstance().addAuditLog(currentUser,
+                        -1,
+                        AuditLogger.ACTION_FAILED_LOGIN,
+                        AuditLogger.OBJECT_EMPTY,
+                        null,
+                        false);
+                if (!currentUser.isAdmin())
+                    askForAdminPassword(REQUEST_UNBLOCK_USER);
                 return;
         }
 
@@ -755,7 +836,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         sweetAlertDialog.show();
     }
 
-    private void askForAdminPassword() {
+    private void askForAdminPassword(final int requestCode) {
         final SweetAlertDialog dialog = new SweetAlertDialog(this, R.layout.dialog_admin_password, SweetAlertDialog.WARNING_TYPE);
         dialog.setContentView(R.layout.dialog_admin_password);
         dialog.setTitle(R.string.register_new_user);
@@ -770,8 +851,42 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
             @Override
             public void onClick(View v) {
                 if (Helper.getInstance().checkAdminPassword(LoginActivity.this, editTextPassword.getText().toString())) {
-                    showCreateAccountDialog();
-                    dialog.dismiss();
+                    switch (requestCode) {
+                        case REQUEST_CREATE_ACCOUNT:
+                            showCreateAccountDialog();
+                            break;
+                        case REQUEST_UNBLOCK_USER:
+                            //unblock the current user
+                            if (Autoclave.getInstance().isOnlineMode(LoginActivity.this)) {
+                                Requests.getInstance().unblockUser(new MyCallback() {
+                                    @Override
+                                    public void onSuccess(Object response, int requestId) {
+                                        unblockUser();
+                                    }
+
+                                    @Override
+                                    public void onError(ErrorModel error, int requestId) {
+                                        showNotificationForNetworkNavigation();
+                                    }
+
+                                    @Override
+                                    public void onStart(int requestId) {
+
+                                    }
+
+                                    @Override
+                                    public void onProgress(int current, int max) {
+
+                                    }
+                                }, 1);
+                            } else {
+                                unblockUser();
+                            }
+
+                            break;
+                    }
+
+                    dialog.dismissWithAnimation();
                 } else {
                     Toasty.error(LoginActivity.this, getString(R.string.admin_password_wrong), Toast.LENGTH_SHORT, true).show();
                 }
@@ -787,6 +902,22 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 
         dialog.show();
 
+    }
+
+    private void unblockUser() {
+        currentUser.resetLoginAttempt();
+        if (DatabaseService.getInstance().updateUser(currentUser) != -1) {
+            Toasty.success(LoginActivity.this,
+                    getString(R.string.unblock_success),
+                    Toast.LENGTH_SHORT,
+                    true).show();
+            AuditLogger.getInstance().addAuditLog(
+                    currentUser, -1,
+                    AuditLogger.ACTION_USER_UNBLOCKED,
+                    AuditLogger.OBJECT_EMPTY,
+                    null,
+                    true);
+        }
     }
 
 

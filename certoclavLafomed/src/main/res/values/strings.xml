@@ -823,6 +823,10 @@
     <string name="audit_action_logout"><![CDATA[<b>%1$s</b> logout]]></string>
     <string name="audit_action_activated"><![CDATA[<b>%1$s</b> was activated]]></string>
     <string name="audit_action_pref_changed"><![CDATA[<b>%1$s</b> changed <font color=\"#69B7F5\"><b>%2$s</b></font> settings to  <font color=\"#6ACC61\">\'%3$s\'</font> in %4$s]]></string>
+    <string name="audit_action_user_blocked"><![CDATA[<b>%1$s</b> has been blocked]]></string>
+    <string name="audit_action_user_unblocked_temp"><![CDATA[<b>%1$s</b> has been unblocked after 1 hour]]></string>
+    <string name="audit_action_user_blocked_temp"><![CDATA[<b>%1$s</b> has been blocked for 1 hour]]></string>
+    <string name="audit_action_user_unblocked"><![CDATA[<b>%1$s</b> has been unblocked by Admin]]></string>
     <string name="audit_action_canceled"><![CDATA[<b>%1$s</b> canceled <font color=\"#6ACC61\">\'%2$s\'</font>]]></string>
     <string name="audit_action_confirmed"><![CDATA[<b>%1$s</b> confirmed <font color=\"#6ACC61\">\'%2$s\'</font>]]></string>
 
@@ -1070,6 +1074,9 @@
     <string name="error_cycle_cancelled_manually">ERROR CYCLE CANCELLED MANUALLY</string>
     <string name="change_user_password">Change User Password</string>
     <string name="password_has_expired">The user\'s password has expired. Please update the password.</string>
+    <string name="user_blocked">The user has been blocked. Login as Admin to unblock it.</string>
+    <string name="user_blocked_temp">The Admin has been blocked for 1 hour.</string>
+    <string name="unblock_success">The user has been unblocked.</string>
 
 
 </resources>

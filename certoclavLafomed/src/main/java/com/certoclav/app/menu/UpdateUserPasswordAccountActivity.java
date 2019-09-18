@@ -167,24 +167,26 @@ public class UpdateUserPasswordAccountActivity extends Activity {
             public void onClick(View v) {
 
                 if (!editCurPasswordItem.hasValidString()) {
-                    Toasty.warning(UpdateUserPasswordAccountActivity.this, getString(R.string.please_enter_password), Toast.LENGTH_SHORT,true).show();
+                    Toasty.warning(UpdateUserPasswordAccountActivity.this, getString(R.string.please_enter_password), Toast.LENGTH_SHORT, true).show();
                     return;
                 }
                 Log.e("RegisterActivity", "onclickRegisterButton");
                 if (!editPasswordItem.hasValidString()) {
-                    Toasty.error(UpdateUserPasswordAccountActivity.this, getString(R.string.passwords_min_length), Toast.LENGTH_SHORT,true).show();
+                    Toasty.error(UpdateUserPasswordAccountActivity.this, getString(R.string.passwords_min_length), Toast.LENGTH_SHORT, true).show();
                     return;
                 }
 
 
                 if (!editPasswordItem.getText().equals(editPasswordItemConfirm.getText())) {
-                    Toasty.error(UpdateUserPasswordAccountActivity.this, getString(R.string.passwords_do_not_match), Toast.LENGTH_SHORT,true).show();
+                    Toasty.error(UpdateUserPasswordAccountActivity.this, getString(R.string.passwords_do_not_match), Toast.LENGTH_SHORT, true).show();
                     return;
                 }
 
                 if (isAdminUser) {
                     if (Helper.getInstance().checkAdminPassword(UpdateUserPasswordAccountActivity.this, editCurPasswordItem.getText())) {
                         if (Helper.getInstance().updateAdminPassword(UpdateUserPasswordAccountActivity.this, editPasswordItem.getText())) {
+                            //Update the latest password fiel
+                            databaseService.updateUserPassword(userEmail, "");
                             Toasty.success(UpdateUserPasswordAccountActivity.this, getString(R.string.updated_successfully), Toast.LENGTH_SHORT, true).show();
                             finish();
                         } else {

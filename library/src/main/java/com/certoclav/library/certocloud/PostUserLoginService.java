@@ -85,7 +85,7 @@ public class PostUserLoginService {
                 }
             } else
                 //Password has expired
-                if (response != null && response.getStatus() == 406) {
+                if (response != null && (response.getStatus() == 406 || response.getStatus() == 402)) {
                     JSONObject loginJSONObject;
                     try {
                         loginJSONObject = new JSONObject(postUtil.getResponseBody());

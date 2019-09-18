@@ -58,6 +58,10 @@ public class AuditLogger {
     public static final int ACTION_PROGRAM_FINISHED_MAINTAIN_TEMP = 19;//R.string.audit_action_program_finished_maintain;
     public static final int ACTION_PROGRAM_EDITED = 31;//R.string.audit_action_program_edited;
     public static final int ACTION_PROGRAM_DELETED = 32;//R.string.audit_action_program_edited;
+    public static final int ACTION_USER_BLOCKED = 33;//R.string.audit_action_program_edited;
+    public static final int ACTION_USER_UNBLOCKED = 34;//R.string.audit_action_program_edited;
+    public static final int ACTION_USER_BLOCKED_TEMPORALLY = 35;//R.string.audit_action_program_edited;
+    public static final int ACTION_USER_UNBLOCKED_TEMPORALLY = 36;//R.string.audit_action_program_edited;
 
 
     //Object Names
@@ -106,6 +110,10 @@ public class AuditLogger {
         map.put(ACTION_LOGOUT, R.string.audit_action_logout);
         map.put(ACTION_ACTIVATED, R.string.audit_action_activated);
         map.put(ACTION_PREF_CHANGED, R.string.audit_action_pref_changed);
+        map.put(ACTION_USER_BLOCKED, R.string.audit_action_user_blocked);
+        map.put(ACTION_USER_UNBLOCKED, R.string.audit_action_user_unblocked);
+        map.put(ACTION_USER_BLOCKED_TEMPORALLY, R.string.audit_action_user_blocked_temp);
+        map.put(ACTION_USER_UNBLOCKED_TEMPORALLY, R.string.audit_action_user_unblocked_temp);
 
 
         //Object Names
