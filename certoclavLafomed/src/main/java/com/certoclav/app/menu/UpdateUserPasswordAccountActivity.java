@@ -46,8 +46,8 @@ public class UpdateUserPasswordAccountActivity extends Activity {
     private DatabaseService databaseService;
     private EditTextItem editCurPasswordItem;
     private EditTextItem editPasswordItemConfirm;
-    private boolean isAdminUser;
     private boolean isOnlineUser;
+    private boolean isReset;
     private String userEmail;
 
 
@@ -58,22 +58,23 @@ public class UpdateUserPasswordAccountActivity extends Activity {
         setContentView(R.layout.change_admin_password_layout);
         CertoclavNavigationbarClean navigationbar = new CertoclavNavigationbarClean(this);
 
-        isAdminUser = !getIntent().hasExtra("isUser");
         isOnlineUser = getIntent().hasExtra("isOnline") && getIntent().getBooleanExtra("isOnline", false);
+        isReset = getIntent().hasExtra("isReset") && getIntent().getBooleanExtra("isReset", false);
+        userEmail = getIntent().getStringExtra("user_email");
 
-        if (!isAdminUser)
-            userEmail = getIntent().getStringExtra("user_email");
-
-        if (isAdminUser)
+        navigationbar.setHeadText(getString((userEmail == null || userEmail.equalsIgnoreCase("admin")) ?
+                R.string.change_admin_password :
+                R.string.change_user_password));
+        if (userEmail == null) {
+            userEmail = "Admin";
             navigationbar.showButtonBack();
-
-
-        navigationbar.setHeadText(getString(isAdminUser ? R.string.change_admin_password : R.string.change_user_password));
+        }
 
 
         linEditTextItemContainer = findViewById(R.id.register_container_edit_text_items);
 
         editCurPasswordItem = (EditTextItem) getLayoutInflater().inflate(R.layout.edit_text_item, linEditTextItemContainer, false);
+        editCurPasswordItem.setVisibility(isReset ? View.GONE : View.VISIBLE);
         editCurPasswordItem.setHint(getString(R.string.cur_password));
         editCurPasswordItem.setHasValidString(false);
         editCurPasswordItem.setEditTextInputtype(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -166,7 +167,7 @@ public class UpdateUserPasswordAccountActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                if (!editCurPasswordItem.hasValidString()) {
+                if (!isReset && !editCurPasswordItem.hasValidString()) {
                     Toasty.warning(UpdateUserPasswordAccountActivity.this, getString(R.string.please_enter_password), Toast.LENGTH_SHORT, true).show();
                     return;
                 }
@@ -182,11 +183,11 @@ public class UpdateUserPasswordAccountActivity extends Activity {
                     return;
                 }
 
-                if (isAdminUser) {
+                if (userEmail.equalsIgnoreCase("admin")) {
                     if (Helper.getInstance().checkAdminPassword(UpdateUserPasswordAccountActivity.this, editCurPasswordItem.getText())) {
                         if (Helper.getInstance().updateAdminPassword(UpdateUserPasswordAccountActivity.this, editPasswordItem.getText())) {
                             //Update the latest password fiel
-                            databaseService.updateUserPassword(userEmail, "");
+                            databaseService.updateUserPassword(userEmail, "", true);
                             Toasty.success(UpdateUserPasswordAccountActivity.this, getString(R.string.updated_successfully), Toast.LENGTH_SHORT, true).show();
                             finish();
                         } else {
@@ -203,7 +204,7 @@ public class UpdateUserPasswordAccountActivity extends Activity {
                         Requests.getInstance().updateUserPassword(new MyCallback() {
                             @Override
                             public void onSuccess(Object response, int requestId) {
-                                if (databaseService.updateUserPassword(userEmail, BCrypt.hashpw(editPasswordItem.getText(), BCrypt.gensalt())) != -1) {
+                                if (databaseService.updateUserPassword(userEmail, BCrypt.hashpw(editPasswordItem.getText(), BCrypt.gensalt()), true) != -1) {
                                     Toasty.success(UpdateUserPasswordAccountActivity.this, getString(R.string.updated_successfully), Toast.LENGTH_SHORT, true).show();
                                     finish();
                                 } else {
@@ -230,15 +231,31 @@ public class UpdateUserPasswordAccountActivity extends Activity {
 
                 } else {
                     if (userEmail == null) {
-                        Toasty.error(UpdateUserPasswordAccountActivity.this, getString(R.string.something_went_wrong_try_again), Toast.LENGTH_SHORT, true).show();
+                        Toasty.error(UpdateUserPasswordAccountActivity.this,
+                                getString(R.string.something_went_wrong_try_again),
+                                Toast.LENGTH_SHORT,
+                                true).show();
                         finish();
+                    } else if (!isReset && !Helper.getInstance().checkUserValidation(UpdateUserPasswordAccountActivity.this,
+                            userEmail,
+                            editCurPasswordItem.getText())) {
+                        Toasty.error(UpdateUserPasswordAccountActivity.this,
+                                getString(R.string.username_or_password_is_wrong),
+                                Toast.LENGTH_SHORT,
+                                true).show();
                     } else
                         //Change password offline here
-                        if (databaseService.updateUserPassword(userEmail, BCrypt.hashpw(editPasswordItem.getText(), BCrypt.gensalt())) != -1) {
-                            Toasty.success(UpdateUserPasswordAccountActivity.this, getString(R.string.updated_successfully), Toast.LENGTH_SHORT, true).show();
+                        if (databaseService.updateUserPassword(userEmail, BCrypt.hashpw(editPasswordItem.getText(), BCrypt.gensalt()), true) != -1) {
+                            Toasty.success(UpdateUserPasswordAccountActivity.this,
+                                    getString(R.string.updated_successfully),
+                                    Toast.LENGTH_SHORT,
+                                    true).show();
                             finish();
                         } else {
-                            Toasty.error(UpdateUserPasswordAccountActivity.this, getString(R.string.password_not_correct), Toast.LENGTH_SHORT, true).show();
+                            Toasty.error(UpdateUserPasswordAccountActivity.this,
+                                    getString(R.string.something_went_wrong_try_again),
+                                    Toast.LENGTH_SHORT,
+                                    true).show();
                         }
                 }
 

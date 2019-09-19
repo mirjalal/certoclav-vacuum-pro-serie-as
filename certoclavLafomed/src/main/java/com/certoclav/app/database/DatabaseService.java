@@ -674,7 +674,7 @@ public class DatabaseService {
         try {
             int result = userDao.create(user);
             if (result != -1)
-                AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getSelectedAdminUser(), AuditLogger.SCEEN_EMPTY,
                         AuditLogger.ACTION_USER_CREATED,
                         AuditLogger.OBJECT_EMPTY,
                         user.getEmail(), true);
@@ -1100,7 +1100,7 @@ public class DatabaseService {
 
     }
 
-    public int updateUserPassword(String email_user_id, String newPassword) {
+    public int updateUserPassword(String email_user_id, String newPassword, boolean addToLog) {
         try {
             UpdateBuilder<User, Integer> updateBuilder = userDao
                     .updateBuilder();
@@ -1111,8 +1111,13 @@ public class DatabaseService {
             updateBuilder.updateColumnValue("password", newPassword);
             updateBuilder.updateColumnValue(User.FIELD_PASSWORD_EXPITE, new Date(new Date().getTime() + AppConstants.PASSWORD_EXPIRE));
 
-
             int r = updateBuilder.update();
+
+            if (addToLog)
+                AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                        AuditLogger.ACTION_USER_PASSWORD_UPDATED,
+                        AuditLogger.OBJECT_EMPTY,
+                        null, true);
             return r;
         } catch (java.sql.SQLException e) {
             // 

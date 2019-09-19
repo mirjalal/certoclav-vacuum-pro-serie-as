@@ -2,6 +2,7 @@ package com.certoclav.app.database;
 
 
 import com.certoclav.app.AppConstants;
+import com.certoclav.library.certocloud.CloudUser;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
@@ -191,7 +192,7 @@ public class User {
     }
 
     public Boolean isAdmin() {
-        return isAdmin;
+        return isAdmin || CloudUser.getInstance().isSuperAdmin();
     }
 
     public void setIsAdmin(Boolean isAdmin) {

@@ -189,6 +189,8 @@ public class AddCloudAccountActivity extends Activity {
 
     private class AddAccountTask extends AsyncTask<String, Void, Boolean> {
 
+        private User newUser;
+
         @Override
         protected void onPreExecute() {
             if (pDialog != null && pDialog.isShowing()) {
@@ -202,7 +204,7 @@ public class AddCloudAccountActivity extends Activity {
 
             if (Integer.valueOf(params[0]) == PostUtil.RETURN_OK) {
                 Boolean isLocal = false;
-                User user = new User(
+                newUser = new User(
                         "",
                         "",
                         "",
@@ -217,7 +219,6 @@ public class AddCloudAccountActivity extends Activity {
                         new Date(),
                         false,
                         isLocal);
-                databaseService.insertUser(user);
                 return true;
             }
 
@@ -226,6 +227,9 @@ public class AddCloudAccountActivity extends Activity {
 
         @Override
         protected void onPostExecute(final Boolean result) {
+
+            if (result && newUser != null)
+                databaseService.insertUser(newUser);
             if (pDialog == null) return;
             pDialog.setTitleText(getString(result ? R.string.account_added : R.string.username_or_password_is_wrong));
             pDialog.changeAlertType(result ? SweetAlertDialog.SUCCESS_TYPE : SweetAlertDialog.ERROR_TYPE);

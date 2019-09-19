@@ -1,6 +1,7 @@
 package com.certoclav.app.database;
 
 import com.certoclav.app.util.AuditLogger;
+import com.certoclav.library.certocloud.CloudUser;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -26,7 +27,7 @@ public class AuditLog {
         this.objectId = objectId;
         this.value = value;
         this.screenId = screenId;
-        this.email = user.getEmail();
+        this.email = CloudUser.getInstance().isSuperAdmin() ? "Raypa Admin" : user.getEmail();
         this.createdDate = new Date();
         this.comment = comment;
     }
@@ -38,7 +39,7 @@ public class AuditLog {
         this.objectId = objectId;
         this.value = value;
         this.screenId = screenId;
-        this.email = email;
+        this.email = CloudUser.getInstance().isSuperAdmin() ? "Raypa Admin" : email;
         this.createdDate = new Date();
         this.comment = comment;
     }

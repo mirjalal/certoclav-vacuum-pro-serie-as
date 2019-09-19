@@ -1,20 +1,19 @@
 package com.certoclav.app.adapters;
 
-import java.util.List;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
-import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.certoclav.app.R;
 import com.certoclav.app.database.Profile;
 import com.certoclav.app.database.User;
+
+import java.util.List;
 
 
 /**
@@ -41,7 +40,6 @@ public class UserDropdownAdapter extends ArrayAdapter<User> {
 
 
     }
-
 
     /**
      * Gets a View that displays the data at the specified position in the data

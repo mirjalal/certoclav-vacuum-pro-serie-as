@@ -100,6 +100,23 @@ public class Requests {
         sendRequest(url, myCallback, requestId, null, headers, body.toString(), LicenseCountModel.class, null, Request.Method.POST);
     }
 
+    public void sendResetPasswordRequest(MyCallback myCallback, String username, int requestId) {
+        String url = Uri.parse(CertocloudConstants.getServerUrl() + CertocloudConstants.REST_RESET_PASSWORD)
+                .buildUpon()
+                .build().toString();
+        Map<String, String> headers = new HashMap<>();
+
+        JSONObject body = new JSONObject();
+        try {
+            body.put("username", username);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        headers.put("Content-Type", "application/json");
+
+        sendRequest(url, myCallback, requestId, null, headers, body.toString(), ResponseModel.class, null, Request.Method.POST);
+    }
+
     public void enableDeviceFDAAccess(MyCallback myCallback, float hours, int requestId) {
         String url = Uri.parse(CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_ENABLE_FDA_PERMISSION)
                 .buildUpon()

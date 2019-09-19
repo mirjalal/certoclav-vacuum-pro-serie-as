@@ -47,6 +47,7 @@ public class Autoclave extends Observable {
     private boolean isDoorLocked;
     private String[] debugData;
     private String warningList;
+    private User selectedAdminUser;
 
     public enum PROGRAM_STEPS {
         ATMOSPHERIC_PRESSURE("PA"),
@@ -292,6 +293,14 @@ public class Autoclave extends Observable {
         }
     }
 */
+
+    public void setSelectedAdminUser(User selectedAdminUser) {
+        this.selectedAdminUser = selectedAdminUser;
+    }
+
+    public User getSelectedAdminUser() {
+        return selectedAdminUser;
+    }
 
     public long getSecondsSinceStart() {
         return secondsSinceStart;

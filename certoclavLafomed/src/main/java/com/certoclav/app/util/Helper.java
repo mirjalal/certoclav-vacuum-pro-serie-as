@@ -29,6 +29,7 @@ import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.Profile;
 import com.certoclav.app.database.Protocol;
 import com.certoclav.app.database.ProtocolEntry;
+import com.certoclav.app.database.User;
 import com.certoclav.app.listener.BroadcastListener;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.ErrorModel;
@@ -39,6 +40,7 @@ import com.certoclav.app.service.CloudSocketThread;
 import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.app.settings.SettingsActivity;
 import com.certoclav.library.application.ApplicationController;
+import com.certoclav.library.bcrypt.BCrypt;
 import com.certoclav.library.certocloud.CertocloudConstants;
 import com.certoclav.library.certocloud.CloudUser;
 import com.certoclav.library.certocloud.PostUtil;
@@ -374,6 +376,21 @@ public class Helper {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         return SHA1(password).equals(pref.getString(KEY_ADMIN_PASSWORD, SHA1(AppConstants.DEFAULT_ADMIN_PASSWORD)));
     }
+
+    public boolean checkUserValidation(Context context, User user, String password) {
+        if (user.isAdmin() && user.getEmail_user_id().equals("Admin"))
+            return checkAdminPassword(context, password);
+        return BCrypt.checkpw(password, user.getPassword());
+    }
+
+    public boolean checkUserValidation(Context context, String userEmail, String password) {
+        User user = DatabaseService.getInstance().getUserByUsername(userEmail);
+        if (user == null) return false;
+        if (user.isAdmin() && user.getEmail_user_id().equals("Admin"))
+            return checkAdminPassword(context, password);
+        return BCrypt.checkpw(password, user.getPassword());
+    }
+
 
     public boolean updateAdminPassword(Context context, String newPassword) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -1176,6 +1193,22 @@ public class Helper {
         dialogConfirmation
                 .setConfirmClickListener(onConfirm);
         dialogConfirmation.setOnCancelListener(onCancel);
+        dialogConfirmation.show();
+
+    }
+
+    public void showResult(Context context, String title, String content,
+                           final SweetAlertDialog.OnSweetClickListener onConfirm, boolean isSuccess
+    ) {
+        final SweetAlertDialog dialogConfirmation = new SweetAlertDialog(context,
+                isSuccess ? SweetAlertDialog.SUCCESS_TYPE : SweetAlertDialog.WARNING_TYPE);
+        dialogConfirmation.showCancelButton(false);
+        dialogConfirmation.setCanceledOnTouchOutside(false);
+        dialogConfirmation.setConfirmText(context.getString(R.string.yes));
+        dialogConfirmation.setTitleText(title);
+        dialogConfirmation.setContentText(content);
+        dialogConfirmation
+                .setConfirmClickListener(onConfirm);
         dialogConfirmation.show();
 
     }

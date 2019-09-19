@@ -57,6 +57,7 @@ import com.crashlytics.android.Crashlytics;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -72,6 +73,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 
     private static final int REQUEST_CREATE_ACCOUNT = 1;
     private static final int REQUEST_UNBLOCK_USER = 2;
+    private static final int REQUEST_RESET_USER_PASSWORD = 3;
     private View buttonLogin;
     private View textViewLogin;
     private EditText editTextPassword;
@@ -459,14 +461,18 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         Helper.getInstance().askConfirmation(LoginActivity.this, getString(R.string.password), getString(R.string.password_has_expired), new SweetAlertDialog.OnSweetClickListener() {
             @Override
             public void onClick(SweetAlertDialog sweetAlertDialog) {
-                Intent intent = new Intent(LoginActivity.this, UpdateUserPasswordAccountActivity.class);
-                if (!isAdmin) intent.putExtra("isUser", true);
-                intent.putExtra("user_email", currentUser.getEmail_user_id());
-                intent.putExtra("isOnline", isOnline);
-                startActivity(intent);
+                openUpdateChangeActivity(isOnline, isAdmin, false);
                 sweetAlertDialog.dismissWithAnimation();
             }
         }, null);
+    }
+
+    private void openUpdateChangeActivity(final boolean isOnline, final boolean isAdmin, final boolean isReset) {
+        Intent intent = new Intent(LoginActivity.this, UpdateUserPasswordAccountActivity.class);
+        intent.putExtra("user_email", currentUser.getEmail_user_id());
+        intent.putExtra("isOnline", isOnline);
+        intent.putExtra("isReset", isReset);
+        startActivity(intent);
     }
 
     @Override
@@ -658,6 +664,9 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                 Toasty.success(LoginActivity.this,
                         getResources().getString(R.string.login_successful),
                         Toast.LENGTH_LONG, true).show();
+                DatabaseService.getInstance().updateUserPassword(
+                        currentUser.getEmail_user_id(),
+                        BCrypt.hashpw(editTextPassword.getText().toString(), BCrypt.gensalt()), false);
                 AuditLogger.getInstance().addAuditLog(currentUser, -1, AuditLogger.ACTION_SUCCESS_LOGIN, AuditLogger.OBJECT_EMPTY, null, false);
                 try {
                     if (Autoclave.getInstance().getUser().getIsLocal() == true) {
@@ -837,20 +846,37 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
     }
 
     private void askForAdminPassword(final int requestCode) {
+
+
         final SweetAlertDialog dialog = new SweetAlertDialog(this, R.layout.dialog_admin_password, SweetAlertDialog.WARNING_TYPE);
         dialog.setContentView(R.layout.dialog_admin_password);
         dialog.setTitle(R.string.register_new_user);
         dialog.setCancelable(true);
         dialog.setCanceledOnTouchOutside(true);
+
+        final List<User> adminUsers = new ArrayList<>();
+        for (User u : listUsers)
+            if (u.isAdmin())
+                adminUsers.add(u);
+        UserDropdownAdapter adapterUserDropdown = new UserDropdownAdapter(this, adminUsers);
+
         final EditText editTextPassword = dialog.findViewById(R.id.editTextDesc);
-        Button buttonLogin = (Button) dialog
+        Button buttonLogin = dialog
                 .findViewById(R.id.dialogButtonLogin);
-        Button buttonCancel = (Button) dialog
+        Button buttonCancel = dialog
                 .findViewById(R.id.dialogButtonCancel);
+        final Spinner spinnerAdmins = dialog.findViewById(R.id.login_spinner);
+        spinnerAdmins.setAdapter(adapterUserDropdown);
         buttonLogin.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Helper.getInstance().checkAdminPassword(LoginActivity.this, editTextPassword.getText().toString())) {
+                if (Helper.getInstance().checkUserValidation(
+                        LoginActivity.this,
+                        adminUsers.get(spinnerAdmins.getSelectedItemPosition()),
+                        editTextPassword.getText().toString())) {
+                    //Neeed during adding the log to audit
+                    Autoclave.getInstance()
+                            .setSelectedAdminUser(adminUsers.get(spinnerAdmins.getSelectedItemPosition()));
                     switch (requestCode) {
                         case REQUEST_CREATE_ACCOUNT:
                             showCreateAccountDialog();
@@ -882,7 +908,9 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                             } else {
                                 unblockUser();
                             }
-
+                            break;
+                        case REQUEST_RESET_USER_PASSWORD:
+                            openUpdateChangeActivity(false, false, true);
                             break;
                     }
 
@@ -912,10 +940,10 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                     Toast.LENGTH_SHORT,
                     true).show();
             AuditLogger.getInstance().addAuditLog(
-                    currentUser, -1,
+                    Autoclave.getInstance().getSelectedAdminUser(), -1,
                     AuditLogger.ACTION_USER_UNBLOCKED,
                     AuditLogger.OBJECT_EMPTY,
-                    null,
+                    currentUser.getEmail_user_id(),
                     true);
         }
     }
@@ -972,6 +1000,52 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         Crashlytics.setUserIdentifier(userID);
         Crashlytics.setUserEmail(email);
         Crashlytics.setUserName(username);
+    }
+
+    public void askForResetPassword(View view) {
+        Helper.getInstance().askConfirmation(this,
+                getString(R.string.reset),
+                getString(R.string.do_you_really_want_to_reset_your_password),
+                new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        if (currentUser.getEmail_user_id().equals("Admin")) {
+                            //S
+                        } else {
+                            if (currentUser.getIsLocal()) {
+                                //Reset password offline as admin
+                                askForAdminPassword(REQUEST_RESET_USER_PASSWORD);
+
+                            } else {
+                                //Reset password in online mode, sending a email to reset password
+                                Requests.getInstance().sendResetPasswordRequest(new MyCallback() {
+                                    @Override
+                                    public void onSuccess(Object response, int requestId) {
+                                        Helper.getInstance().showResult(LoginActivity.this, getString(R.string.success),
+                                                getString(R.string.reset_instruction), null, true);
+                                    }
+
+                                    @Override
+                                    public void onError(ErrorModel error, int requestId) {
+                                        Helper.getInstance().showResult(LoginActivity.this, getString(R.string.failed),
+                                                getString(R.string.something_went_wrong_try_again), null, false);
+                                    }
+
+                                    @Override
+                                    public void onStart(int requestId) {
+
+                                    }
+
+                                    @Override
+                                    public void onProgress(int current, int max) {
+
+                                    }
+                                }, currentUser.getEmail_user_id(), 1);
+                            }
+                        }
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                }, null);
     }
 
 }

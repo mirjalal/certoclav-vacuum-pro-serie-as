@@ -49,6 +49,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
     private AutoclaveModelManager manager;
 
     private Profile newProfile;
+    private Profile oldProfile;
     private CertoclavNavigationbarClean navigationbar;
     private EditText editTextProgramName;
     private CheckBox checkboxIdLiquidProgram;
@@ -302,7 +303,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
                         Toasty.success(getApplicationContext(), getString(R.string.program_saved), Toast.LENGTH_LONG, true).show();
                         AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(),
                                 AuditLogger.SCEEN_EMPTY, AuditLogger.ACTION_PROGRAM_EDITED,
-                                AuditLogger.OBJECT_EMPTY, newProfile.getName(), true);
+                                AuditLogger.OBJECT_EMPTY, getChangedParameters(), true);
                         setResult(RESULT_OK);
                         finish();
                     }
@@ -342,6 +343,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
 
         navigationbar.setNavigationbarListener(this);
         newProfile = Autoclave.getInstance().getProfileByIndex(programIndex);
+        oldProfile = newProfile.clone();
 
         if (linearLayoutFinalTemp != null)
             linearLayoutFinalTemp.setVisibility(AutoclaveModelManager.getInstance().isFinalTempExistsInProgramEdit() ?
@@ -654,5 +656,30 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
         dialog.show();
     }
 
+
+    private String getChangedParameters() {
+        StringBuilder paramters = new StringBuilder(newProfile.getName() + ": [ ");
+
+        paramters.append(getChangingString(R.string.program_name, oldProfile.getName(), newProfile.getName()))
+                .append(getChangingString(R.string.is_liquid_program, oldProfile.isLiquidProgram(), newProfile.isLiquidProgram()))
+                .append(getChangingString(R.string.is_cont_by_flex_probe_1, oldProfile.isContByFlexProbe1Enabled(), newProfile.isContByFlexProbe1Enabled()))
+                .append(getChangingString(R.string.is_cont_by_flex_probe_2, oldProfile.isContByFlexProbe2Enabled(), newProfile.isContByFlexProbe2Enabled()))
+                .append(getChangingString(R.string.is_maintain_final_temp, oldProfile.isMaintainEnabled(), newProfile.isMaintainEnabled()))
+                .append(getChangingString(R.string.is_f0_function_enabled, oldProfile.isF0Enabled(), newProfile.isF0Enabled()))
+                .append(getChangingString(R.string.final_temp, oldProfile.getFinalTemp(false), newProfile.getFinalTemp(false)))
+                .append(getChangingString(R.string.f0_value_title, oldProfile.getF0Value(), newProfile.getF0Value()))
+                .append(getChangingString(R.string.z_value_title, oldProfile.getzValue(false), newProfile.getzValue(false)))
+                .append(getChangingString(R.string.temperature, oldProfile.getSterilisationTemperature(false), newProfile.getSterilisationTemperature(false)))
+                .append(getChangingString(R.string.holding_time, oldProfile.getSterilisationTime(), newProfile.getSterilisationTime()))
+                .append(getChangingString(R.string.vacuum_pulse, oldProfile.getVacuumTimes(), newProfile.getVacuumTimes()));
+
+        return paramters.append(" ]").toString();
+    }
+
+    private String getChangingString(int resId, Object oldValue, Object newValue) {
+        return !newValue.equals(oldValue) ?
+                (getString(resId) + ": " + oldValue + " \u00BB " + newValue + ", ") : "";
+
+    }
 
 }

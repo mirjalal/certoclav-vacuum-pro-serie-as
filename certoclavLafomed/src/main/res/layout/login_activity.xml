@@ -2,6 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".menu.LoginActivity"
     android:background="@android:color/white">
 
     <RelativeLayout
@@ -61,31 +63,45 @@
                 android:textSize="30sp"
                 android:visibility="gone"
                 android:textStyle="bold" />
-            
-            <LinearLayout
-                android:id="@+id/buttonLogin"
-                android:background="@drawable/btn_login"
-                android:layout_width="150dp"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_height="79dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/buttonLogin"
+                    android:background="@drawable/btn_login"
+                    android:layout_width="150dp"
+                    android:orientation="vertical"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:layout_height="79dp">
+                    <TextView
+                        android:id="@+id/textViewLogin"
+                        android:textStyle="bold"
+                        android:textSize="25sp"
+                        android:textColor="@drawable/selector_login_button_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/login"/>
+
+
+                    <ProgressBar
+                        android:id="@+id/login_progressbar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible" />
+                </LinearLayout>
+
                 <TextView
-                    android:id="@+id/textViewLogin"
-                    android:textStyle="bold"
-                    android:textSize="25sp"
-                    android:textColor="@drawable/selector_login_button_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/login"/>
-
-
-                <ProgressBar
-                    android:id="@+id/login_progressbar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="visible" />
-
-            </LinearLayout>
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="gone"
+                    android:onClick="askForResetPassword"
+                    android:text="@string/forget_password" />
+            </RelativeLayout>
 
 
         </LinearLayout>

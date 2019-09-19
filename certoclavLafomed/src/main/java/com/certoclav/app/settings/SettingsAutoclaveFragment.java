@@ -58,6 +58,8 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
 
         addPreferencesFromResource(R.xml.preference_autoclave);
 
+
+
         findPreference("preferences_autoclave_parameter_std_assign")
                 .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override

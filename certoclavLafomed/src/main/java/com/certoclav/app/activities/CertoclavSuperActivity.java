@@ -30,6 +30,8 @@ import com.certoclav.app.util.AuditLogger;
 import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.app.util.Helper;
 
+import java.util.Map;
+
 public class CertoclavSuperActivity extends FragmentActivity implements SensorDataListener, SharedPreferences.OnSharedPreferenceChangeListener, View.OnTouchListener {
     private TextView textSteam = null;
     private TextView textMedia = null;
@@ -37,6 +39,7 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
     private TextView textPressure = null;
 
     private boolean isSessionExpired;
+    private Map<String, ?> allPreferences;
 
 
     @Override
@@ -51,6 +54,9 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
 //            ((ViewGroup) findViewById(R.id.fragment_debugger_uart).getParent()).removeView(findViewById(R.id.fragment_debugger_uart));
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+
+        allPreferences = PreferenceManager.getDefaultSharedPreferences(this).getAll();
+
 
     }
 
@@ -149,17 +155,19 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
 
         if (sharedPreferences.getAll().get(key) instanceof Boolean) {
             AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_PREF_CHANGED,
-                    key.hashCode(), sharedPreferences.getBoolean(key, false) + "", true);
+                    key.hashCode(), allPreferences.get(key) + " \u00BB " + sharedPreferences.getBoolean(key, false) + "", true);
         } else if (sharedPreferences.getAll().get(key) instanceof String) {
             AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_PREF_CHANGED,
-                    key.hashCode(), sharedPreferences.getString(key, "") + "", true);
+                    key.hashCode(), allPreferences.get(key) + " \u00BB " + sharedPreferences.getString(key, "") + "", true);
         } else if (sharedPreferences.getAll().get(key) instanceof Integer) {
             AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_PREF_CHANGED,
-                    key.hashCode(), sharedPreferences.getInt(key, -1) + "", true);
+                    key.hashCode(), allPreferences.get(key) + " \u00BB " + sharedPreferences.getInt(key, -1) + "", true);
         } else if (sharedPreferences.getAll().get(key) instanceof Float) {
             AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_PREF_CHANGED,
-                    key.hashCode(), sharedPreferences.getFloat(key, 0f) + "", true);
+                    key.hashCode(), allPreferences.get(key) + " \u00BB " + sharedPreferences.getFloat(key, 0f) + "", true);
         }
+
+        allPreferences = sharedPreferences.getAll();
     }
 
 

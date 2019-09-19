@@ -16,11 +16,13 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.activities.CertoclavSuperActivity;
+import com.certoclav.app.adapters.UserDropdownAdapter;
 import com.certoclav.app.button.CheckboxItem;
 import com.certoclav.app.button.EditTextItem;
 import com.certoclav.app.database.DatabaseService;
@@ -43,7 +45,9 @@ import com.certoclav.library.util.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
@@ -535,6 +539,13 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
     }
 
     private void askForAdminPassword() {
+
+        final List<User> adminUsers = new ArrayList<>();
+        for (User u : DatabaseService.getInstance().getUsers())
+            if (u.isAdmin())
+                adminUsers.add(u);
+        UserDropdownAdapter adapterUserDropdown = new UserDropdownAdapter(this, adminUsers);
+
         final SweetAlertDialog dialog = new SweetAlertDialog(this, R.layout.dialog_admin_password, SweetAlertDialog.WARNING_TYPE);
         dialog.setContentView(R.layout.dialog_admin_password);
         dialog.setTitle(R.string.register_new_user);
@@ -545,10 +556,16 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                 .findViewById(R.id.dialogButtonLogin);
         Button buttonCancel = (Button) dialog
                 .findViewById(R.id.dialogButtonCancel);
+
+        final Spinner spinnerAdmins = dialog.findViewById(R.id.login_spinner);
+        spinnerAdmins.setAdapter(adapterUserDropdown);
         buttonLogin.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Helper.getInstance().checkAdminPassword(RegisterCloudAccountActivity.this, editTextPassword.getText().toString())) {
+                if (Helper.getInstance().checkUserValidation(
+                        RegisterCloudAccountActivity.this,
+                        adminUsers.get(spinnerAdmins.getSelectedItemPosition()),
+                        editTextPassword.getText().toString())) {
                     dialog.dismiss();
                 } else {
                     Toasty.error(RegisterCloudAccountActivity.this, getString(R.string.admin_password_wrong), Toast.LENGTH_SHORT, true).show();

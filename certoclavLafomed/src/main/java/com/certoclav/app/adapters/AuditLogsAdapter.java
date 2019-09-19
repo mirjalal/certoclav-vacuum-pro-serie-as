@@ -74,7 +74,7 @@ public class AuditLogsAdapter extends ArrayAdapter<AuditLog> {
             holder = (ViewHolder) convertView.getTag();
         }
         String username;
-        if (log.getUser() != null)
+        if (log.getUser() != null && !log.getEmail().contains("Raypa"))
             username = log.getUser().getEmail();
         else
             username = log.getEmail();

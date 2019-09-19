@@ -312,6 +312,31 @@ public class Profile {
         this.f0Value = f0Value;
     }
 
+    private Profile(Profile profile) {
+        this.cloudId = profile.cloudId;
+        this.version = profile.version;
+        this.description = profile.description;
+        this.name = profile.name;
+        this.vacuumTimes = profile.vacuumTimes;
+        this.sterilisationTime = profile.sterilisationTime;
+        setSterilisationTemperature(profile.sterilisationTemperature, true);
+        this.sterilisationPressure = profile.sterilisationPressure;
+        this.vacuumPersistTime = profile.vacuumPersistTime;
+        this.dryTime = profile.dryTime;
+        this.isLocal = profile.isLocal;
+        this.index = profile.index;
+        this.isVisible = profile.isVisible;
+        this.controller = profile.controller;
+        this.isLiquidProgram = profile.isLiquidProgram;
+        this.isF0Enabled = profile.isF0Enabled;
+        setzValue(profile.zValue, true);
+        this.isContByFlexProbe1 = profile.isContByFlexProbe1;
+        this.isContByFlexProbe2 = profile.isContByFlexProbe2;
+        this.isMaintainEnabled = profile.isMaintainEnabled;
+        setFinalTemp(profile.finalTemp, true);
+        this.f0Value = profile.f0Value;
+    }
+
 
     public Profile(int index) {
         this.index = index;
@@ -444,6 +469,11 @@ public class Profile {
     //Vacuum Test and BD Test is not editable, their index is 1 and 2.
     public boolean isEditable() {
         return index != 1 && index != 2;
+    }
+
+
+    public Profile clone() {
+        return new Profile(this);
     }
 }
 

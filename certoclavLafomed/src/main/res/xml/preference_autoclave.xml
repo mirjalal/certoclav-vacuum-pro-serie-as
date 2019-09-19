@@ -4,6 +4,39 @@
         android:key="pref_key_device_category"
         android:title="@string/pref_device_settings">
 
+        <EditTextPreference
+            android:inputType="number"
+            android:key="preferences_autoclave_parameter_3"
+            android:summary="@string/pref_model_summary"
+            android:title="@string/preferences_autoclave_serial" />
+
+        <EditTextPreference
+            android:enabled="false"
+            android:key="preferences_autoclave_parameter_4"
+            android:title="@string/preferences_autoclave_pcb_serial" />
+
+        <EditTextPreference
+            android:enabled="false"
+            android:inputType="number"
+            android:key="preferences_autoclave_parameter_94"
+            android:title="@string/preferences_autoclave_number_cycle" />
+
+        <EditTextPreference
+            android:enabled="false"
+            android:inputType="number"
+            android:key="preferences_autoclave_parameter_95"
+            android:title="@string/preferences_autoclave_number_hours" />
+
+        <!--<EditTextPreference-->
+        <!--android:inputType="number"-->
+        <!--android:key="preferences_autoclave_parameter_71"-->
+        <!--android:title="@string/preferences_autoclave_setpoint_hours_review" />-->
+
+        <!--<EditTextPreference-->
+        <!--android:inputType="number"-->
+        <!--android:key="preferences_autoclave_parameter_72"-->
+        <!--android:title="@string/preferences_autoclave_setpoint_filter_cycle" />-->
+
         <ListPreference
             android:defaultValue="TLV-150-FA"
             android:entries="@array/autoclave_models"
@@ -17,43 +50,10 @@
             android:summary="@string/preferences_autoclave_std_program_summary"
             android:title="@string/preferences_autoclave_std_program" />
 
-        <EditTextPreference
-            android:key="preferences_autoclave_parameter_3"
-            android:inputType="number"
-            android:summary="@string/pref_model_summary"
-            android:title="@string/preferences_autoclave_serial" />
 
-        <EditTextPreference
-            android:key="preferences_autoclave_parameter_4"
-            android:enabled="false"
-            android:title="@string/preferences_autoclave_pcb_serial" />
-
-        <!--<EditTextPreference-->
-            <!--android:inputType="number"-->
-            <!--android:key="preferences_autoclave_parameter_71"-->
-            <!--android:title="@string/preferences_autoclave_setpoint_hours_review" />-->
-
-        <!--<EditTextPreference-->
-            <!--android:inputType="number"-->
-            <!--android:key="preferences_autoclave_parameter_72"-->
-            <!--android:title="@string/preferences_autoclave_setpoint_filter_cycle" />-->
-
-        <EditTextPreference
-            android:inputType="number"
-            android:enabled="false"
-            android:key="preferences_autoclave_parameter_94"
-            android:title="@string/preferences_autoclave_number_cycle" />
-
-        <EditTextPreference
-            android:inputType="number"
-            android:enabled="false"
-            android:key="preferences_autoclave_parameter_95"
-            android:title="@string/preferences_autoclave_number_hours" />
-
-
-<!--        <CheckBoxPreference
-            android:key="preferences_autoclave_parameter_9"
-            android:title="@string/preferences_autoclave_is_user_mode" />-->
+        <!--        <CheckBoxPreference
+                    android:key="preferences_autoclave_parameter_9"
+                    android:title="@string/preferences_autoclave_is_user_mode" />-->
 
         <Preference
             android:key="preferences_autoclave_parameter_update"
@@ -61,26 +61,26 @@
             android:title="@string/preferences_autoclave_updatable" />
 
         <!--<EditTextPreference-->
-            <!--android:inputType="number"-->
-            <!--android:key="preferences_autoclave_parameter_96"-->
-            <!--android:enabled="false"-->
-            <!--android:title="@string/preferences_autoclave_number_review_hours" />-->
+        <!--android:inputType="number"-->
+        <!--android:key="preferences_autoclave_parameter_96"-->
+        <!--android:enabled="false"-->
+        <!--android:title="@string/preferences_autoclave_number_review_hours" />-->
 
         <!--<Preference-->
-            <!--android:key="preferences_autoclave_parameter_reset_review_hours"-->
-            <!--android:summary="@string/preferences_autoclave_reset_review_hours_summary"-->
-            <!--android:title="@string/preferences_autoclave_reset_review_hours" />-->
+        <!--android:key="preferences_autoclave_parameter_reset_review_hours"-->
+        <!--android:summary="@string/preferences_autoclave_reset_review_hours_summary"-->
+        <!--android:title="@string/preferences_autoclave_reset_review_hours" />-->
 
         <!--<EditTextPreference-->
-            <!--android:inputType="number"-->
-            <!--android:key="preferences_autoclave_parameter_98"-->
-            <!--android:enabled="false"-->
-            <!--android:title="@string/preferences_autoclave_number_filter_cycle" />-->
+        <!--android:inputType="number"-->
+        <!--android:key="preferences_autoclave_parameter_98"-->
+        <!--android:enabled="false"-->
+        <!--android:title="@string/preferences_autoclave_number_filter_cycle" />-->
 
         <!--<Preference-->
-            <!--android:key="preferences_autoclave_parameter_reset_filter_cycle"-->
-            <!--android:summary="@string/preferences_autoclave_reset_filter_cycle_summary"-->
-            <!--android:title="@string/preferences_autoclave_reset_filter_cycle" />-->
+        <!--android:key="preferences_autoclave_parameter_reset_filter_cycle"-->
+        <!--android:summary="@string/preferences_autoclave_reset_filter_cycle_summary"-->
+        <!--android:title="@string/preferences_autoclave_reset_filter_cycle" />-->
 
 
     </PreferenceCategory>
@@ -89,47 +89,47 @@
         android:key="pref_key_calibration_category"
         android:title="@string/pref_calibration_category">
 
+        <com.certoclav.app.settings.CustomEditTextPreference
+            android:inputType="numberDecimal"
+            android:key="preferences_autoclave_parameter_27"
+            android:title="@string/preferences_autoclave_final_temperature" />
+
+
+        <com.certoclav.app.settings.CustomEditTextPreference
+            android:inputType="numberDecimal"
+            android:key="preferences_autoclave_parameter_42"
+            android:title="@string/preferences_autoclave_cooling_pressure" />
+        <!--
+                <EditTextPreference
+                    android:inputType="numberDecimal|numberSigned"
+                    android:key="preferences_autoclave_parameter_36"
+                    android:title="@string/preferences_autoclave_offset_probe_1" />
+
+                <EditTextPreference
+                    android:inputType="numberDecimal|numberSigned"
+                    android:key="preferences_autoclave_parameter_37"
+                    android:title="@string/preferences_autoclave_offset_probe_2" />-->
+
+        <com.certoclav.app.settings.CustomEditTextPreference
+            android:inputType="numberDecimal"
+            android:key="preferences_autoclave_parameter_99"
+            android:title="@string/preferences_autoclave_warm_up_temp" />
+
+        <!--<EditTextPreference-->
+        <!--android:inputType="numberDecimal|numberSigned"-->
+        <!--android:key="preferences_autoclave_parameter_45"-->
+        <!--android:title="@string/preferences_autoclave_offset_pressure_probe_1" />-->
+
+        <!--<EditTextPreference-->
+        <!--android:inputType="numberDecimal|numberSigned"-->
+        <!--android:key="preferences_autoclave_parameter_46"-->
+        <!--android:title="@string/preferences_autoclave_offset_pressure_probe_2" />-->
+
         <ListPreference
             android:entries="@array/preferences_autoclave_degrees_key"
             android:entryValues="@array/preferences_autoclave_degrees_values"
             android:key="preferences_autoclave_parameter_8"
             android:title="@string/preferences_autoclave_degrees" />
-
-
-        <EditTextPreference
-            android:inputType="numberDecimal"
-            android:key="preferences_autoclave_parameter_27"
-            android:title="@string/preferences_autoclave_final_temperature" />
-<!--
-        <EditTextPreference
-            android:inputType="numberDecimal|numberSigned"
-            android:key="preferences_autoclave_parameter_36"
-            android:title="@string/preferences_autoclave_offset_probe_1" />
-
-        <EditTextPreference
-            android:inputType="numberDecimal|numberSigned"
-            android:key="preferences_autoclave_parameter_37"
-            android:title="@string/preferences_autoclave_offset_probe_2" />-->
-
-        <EditTextPreference
-            android:inputType="numberDecimal"
-            android:key="preferences_autoclave_parameter_42"
-            android:title="@string/preferences_autoclave_cooling_pressure" />
-
-        <!--<EditTextPreference-->
-            <!--android:inputType="numberDecimal|numberSigned"-->
-            <!--android:key="preferences_autoclave_parameter_45"-->
-            <!--android:title="@string/preferences_autoclave_offset_pressure_probe_1" />-->
-
-        <!--<EditTextPreference-->
-            <!--android:inputType="numberDecimal|numberSigned"-->
-            <!--android:key="preferences_autoclave_parameter_46"-->
-            <!--android:title="@string/preferences_autoclave_offset_pressure_probe_2" />-->
-
-        <EditTextPreference
-            android:inputType="numberDecimal"
-            android:key="preferences_autoclave_parameter_99"
-            android:title="@string/preferences_autoclave_warm_up_temp" />
 
     </PreferenceCategory>
 
@@ -137,7 +137,7 @@
     <PreferenceCategory
         android:key="pref_key_f_function_category"
         android:title="@string/pref_f_function_category">
-        <EditTextPreference
+        <com.certoclav.app.settings.CustomEditTextPreference
             android:inputType="numberDecimal"
             android:key="preferences_autoclave_parameter_40"
             android:title="@string/preferences_autoclave_setpoint_temperature" />

@@ -801,7 +801,7 @@
     <string name="textAuditLogWithValue"><![CDATA[<b>%1$s</b> in  <font color=\"#69B7F5\"><b>%2$s</b></font> %3$s <font color=\"#6ACC61\">%4$s</font><b>%5$s</b>]]></string>
     <string name="settings_audit_log">Audit Logs</string>
 
-    <string name="please_enter_admin_password">Please enter admin password</string>
+    <string name="please_enter_admin_password">Please login as admin password</string>
 
     <!--Audit Logger-->
     <string name="audit_action_open_window"><![CDATA[<b>%1$s</b> opened \'<font color=\"#69B7F5\"><b>%2$s</b></font>\']]></string>
@@ -815,20 +815,21 @@
     <string name="audit_action_program_canceled"><![CDATA[<b>%1$s</b> canceled <font color=\"#69B7F5\"><b>%3$s</b></font> program]]></string>
     <string name="audit_action_program_finished"><![CDATA[<font color=\"#69B7F5\"><b>%3$s</b></font> program finished.]]></string>
     <string name="audit_action_program_finished_maintain"><![CDATA[<font color=\"#69B7F5\"><b>%3$s</b></font> program finished. Maintain temperature.]]></string>
-    <string name="audit_action_program_failed"><![CDATA[<font color=\"#69B7F5\"><b>%3$s</b></font> program failed.]]></string>
+    <string name="audit_action_program_failed"><![CDATA[User: <b>%1$s</b>, <font color=\"#69B7F5\"><b>%3$s</b></font> program failed.]]></string>
     <string name="audit_action_asked_for_network">asked for Network</string>
     <string name="audit_action_selected">selected</string>
     <string name="audit_action_clicked"><![CDATA[<b>%1$s</b> clicked <font color=\"#69B7F5\"><b>%2$s</b></font> in %4$s]]></string>
     <string name="audit_action_success_to_login"><![CDATA[<b>%1$s</b> login successfully]]></string>
     <string name="audit_action_logout"><![CDATA[<b>%1$s</b> logout]]></string>
     <string name="audit_action_activated"><![CDATA[<b>%1$s</b> was activated]]></string>
-    <string name="audit_action_pref_changed"><![CDATA[<b>%1$s</b> changed <font color=\"#69B7F5\"><b>%2$s</b></font> settings to  <font color=\"#6ACC61\">\'%3$s\'</font> in %4$s]]></string>
+    <string name="audit_action_pref_changed"><![CDATA[<b>%1$s</b> changed <font color=\"#69B7F5\"><b>%2$s</b></font> settings <font color=\"#6ACC61\">\'%3$s\'</font> in %4$s]]></string>
     <string name="audit_action_user_blocked"><![CDATA[<b>%1$s</b> has been blocked]]></string>
     <string name="audit_action_user_unblocked_temp"><![CDATA[<b>%1$s</b> has been unblocked after 1 hour]]></string>
     <string name="audit_action_user_blocked_temp"><![CDATA[<b>%1$s</b> has been blocked for 1 hour]]></string>
-    <string name="audit_action_user_unblocked"><![CDATA[<b>%1$s</b> has been unblocked by Admin]]></string>
+    <string name="audit_action_user_unblocked"><![CDATA[<b>%1$s</b> unblocked <font color=\"#69B7F5\"><b>%3$s</b></font> user]]></string>
     <string name="audit_action_canceled"><![CDATA[<b>%1$s</b> canceled <font color=\"#6ACC61\">\'%2$s\'</font>]]></string>
     <string name="audit_action_confirmed"><![CDATA[<b>%1$s</b> confirmed <font color=\"#6ACC61\">\'%2$s\'</font>]]></string>
+    <string name="audit_action_user_password_udpated"><![CDATA[<b>%1$s</b> updated his/her password]]></string>
 
     <string name="audit_screen_login">Login Screen</string>
     <string name="audit_object_login_button">Login button</string>
@@ -1077,6 +1078,10 @@
     <string name="user_blocked">The user has been blocked. Login as Admin to unblock it.</string>
     <string name="user_blocked_temp">The Admin has been blocked for 1 hour.</string>
     <string name="unblock_success">The user has been unblocked.</string>
+    <string name="forget_password">Forget password?</string>
+    <string name="do_you_really_want_to_reset_your_password">Do you want to reset your password?</string>
+    <string name="sent">Sent</string>
+    <string name="reset_instruction">Please check your email and follow the instructions to reset your password.</string>
 
 
 </resources>

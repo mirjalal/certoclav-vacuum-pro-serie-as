@@ -2,6 +2,8 @@ package com.certoclav.app.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.annotation.StringRes;
 import android.view.Gravity;
@@ -62,6 +64,7 @@ public class AuditLogger {
     public static final int ACTION_USER_UNBLOCKED = 34;//R.string.audit_action_program_edited;
     public static final int ACTION_USER_BLOCKED_TEMPORALLY = 35;//R.string.audit_action_program_edited;
     public static final int ACTION_USER_UNBLOCKED_TEMPORALLY = 36;//R.string.audit_action_program_edited;
+    public static final int ACTION_USER_PASSWORD_UPDATED = 37;//R.string.audit_action_program_edited;
 
 
     //Object Names
@@ -114,6 +117,7 @@ public class AuditLogger {
         map.put(ACTION_USER_UNBLOCKED, R.string.audit_action_user_unblocked);
         map.put(ACTION_USER_BLOCKED_TEMPORALLY, R.string.audit_action_user_blocked_temp);
         map.put(ACTION_USER_UNBLOCKED_TEMPORALLY, R.string.audit_action_user_unblocked_temp);
+        map.put(ACTION_USER_PASSWORD_UPDATED, R.string.audit_action_user_password_udpated);
 
 
         //Object Names
@@ -187,37 +191,44 @@ public class AuditLogger {
     }
 
     private void askForComment(final User user, @StringRes final int screenId, @StringRes final int eventId, final int objectId, final String value) {
-        final SweetAlertDialog dialog = new SweetAlertDialog(context, R.layout.dialog_ask_comment_audit, SweetAlertDialog.WARNING_TYPE);
-        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_TOAST);
 
-        Window window = dialog.getWindow();
-        WindowManager.LayoutParams wlp = window.getAttributes();
-        wlp.gravity = Gravity.TOP;
-        wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-        window.setAttributes(wlp);
-
-        dialog.setContentView(R.layout.dialog_ask_comment_audit);
-        dialog.setTitle(R.string.register_new_user);
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        final EditText editTextDesc = dialog.findViewById(R.id.editTextDesc);
-        Button buttonSave = dialog
-                .findViewById(R.id.dialogButtonSave);
-        buttonSave.setOnClickListener(new View.OnClickListener() {
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
             @Override
-            public void onClick(View v) {
+            public void run() {
+                final SweetAlertDialog dialog = new SweetAlertDialog(context, R.layout.dialog_ask_comment_audit, SweetAlertDialog.WARNING_TYPE);
+                dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_TOAST);
 
-                if (editTextDesc.getText().toString().isEmpty())
-                    Toasty.warning(context, context.getString(R.string.please_fill_comment_field), Toast.LENGTH_SHORT, true).show();
-                else {
-                    databaseService.addAuditLog(new AuditLog(user, screenId, eventId, objectId, value, editTextDesc.getText().toString()));
-                    dialog.dismissWithAnimation();
-                }
+                Window window = dialog.getWindow();
+                WindowManager.LayoutParams wlp = window.getAttributes();
+                wlp.gravity = Gravity.TOP;
+                wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                window.setAttributes(wlp);
+
+                dialog.setContentView(R.layout.dialog_ask_comment_audit);
+                dialog.setTitle(R.string.register_new_user);
+                dialog.setCancelable(false);
+                dialog.setCanceledOnTouchOutside(false);
+                final EditText editTextDesc = dialog.findViewById(R.id.editTextDesc);
+                Button buttonSave = dialog
+                        .findViewById(R.id.dialogButtonSave);
+                buttonSave.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if (editTextDesc.getText().toString().isEmpty())
+                            Toasty.warning(context, context.getString(R.string.please_fill_comment_field), Toast.LENGTH_SHORT, true).show();
+                        else {
+                            databaseService.addAuditLog(new AuditLog(user, screenId, eventId, objectId, value, editTextDesc.getText().toString()));
+                            dialog.dismissWithAnimation();
+                        }
+                    }
+                });
+
+
+                dialog.show();
             }
         });
-
-
-        dialog.show();
     }
 
 

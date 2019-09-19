@@ -311,7 +311,6 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
             SimpleDateFormat format = new SimpleDateFormat("YYMMDDhhmmss");
             valueStr = format.format(value);
         }
-
         sendCommand(COMMANDS.CREATE(COMMANDS.SET_PARAMETER, paramId, valueStr));
     }
 
