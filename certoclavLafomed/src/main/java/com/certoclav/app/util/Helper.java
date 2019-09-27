@@ -21,10 +21,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
+import com.certoclav.app.adapters.UserDropdownAdapter;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.Profile;
 import com.certoclav.app.database.Protocol;
@@ -1510,5 +1512,66 @@ public class Helper {
         dialogConfirmation.show();
     }
 
+
+    public void askForAdminPassword(final Context context, final int requestCode, final MyCallbackAdminAprove myCallbackAdminAprove) {
+
+        final SweetAlertDialog dialog = new SweetAlertDialog(context, R.layout.dialog_admin_password, SweetAlertDialog.WARNING_TYPE);
+        dialog.setContentView(R.layout.dialog_admin_password);
+        dialog.setTitle(R.string.register_new_user);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
+        List<User> listUsers = DatabaseService.getInstance().getUsers();
+        final List<User> adminUsers = new ArrayList<>();
+        for (User u : listUsers)
+            if (u.isAdmin())
+                adminUsers.add(u);
+        UserDropdownAdapter adapterUserDropdown = new UserDropdownAdapter(context, adminUsers);
+
+        final EditText editTextPassword = dialog.findViewById(R.id.editTextDesc);
+        Button buttonLogin = dialog
+                .findViewById(R.id.dialogButtonLogin);
+        Button buttonCancel = dialog
+                .findViewById(R.id.dialogButtonCancel);
+        final Spinner spinnerAdmins = dialog.findViewById(R.id.login_spinner);
+        spinnerAdmins.setAdapter(adapterUserDropdown);
+        buttonLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (Helper.getInstance().checkUserValidation(
+                        context,
+                        adminUsers.get(spinnerAdmins.getSelectedItemPosition()),
+                        editTextPassword.getText().toString())) {
+                    //Neeed during adding the log to audit
+                    Autoclave.getInstance()
+                            .setSelectedAdminUser(adminUsers.get(spinnerAdmins.getSelectedItemPosition()));
+                    myCallbackAdminAprove.onResponse(requestCode, MyCallbackAdminAprove.APPROVED);
+                    dialog.dismissWithAnimation();
+
+                } else {
+                    myCallbackAdminAprove.onResponse(requestCode, MyCallbackAdminAprove.DENIED);
+                    Toasty.error(context,
+                            context.getString(R.string.admin_password_wrong), Toast.LENGTH_SHORT, true).show();
+                    AuditLogger.getInstance().addAuditLog(adminUsers.get(spinnerAdmins.getSelectedItemPosition()),
+                            -1,
+                            AuditLogger.ACTION_ADMIN_FAILED_LOGIN,
+                            AuditLogger.OBJECT_EMPTY,
+                            null,
+                            false);
+                }
+            }
+        });
+
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myCallbackAdminAprove.onResponse(requestCode, MyCallbackAdminAprove.CLOSED);
+                dialog.dismissWithAnimation();
+            }
+        });
+
+        dialog.show();
+
+    }
 
 }

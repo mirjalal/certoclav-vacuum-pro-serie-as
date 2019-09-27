@@ -380,6 +380,14 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                 e.printStackTrace();
             }
 
+
+            //Only the admin user can enable Raypa Admin user
+            try {
+                final CheckBoxPreference checkBoxPreferenceEnabledRaypaAdmin = (CheckBoxPreference) findPreference(AppConstants.PREFERENCE_KEY_ENABLE_RAYPA_ADMIN);
+                checkBoxPreferenceEnabledRaypaAdmin.setEnabled(Autoclave.getInstance().getUser().isAdmin());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             //Enable Audit Comment
             try {
 
@@ -601,7 +609,6 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 
 
     }
-
 
 
 }

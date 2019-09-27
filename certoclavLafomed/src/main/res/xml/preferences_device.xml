@@ -90,6 +90,13 @@
         <Preference
             android:key="preferences_export_audit_usb"
             android:title="@string/export_audits_to_usb_stick" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="false"
+            android:key="preferences_enable_raypa_admin"
+            android:title="@string/enable_raypa_admin" />
+
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="preferences_device_show_logs"

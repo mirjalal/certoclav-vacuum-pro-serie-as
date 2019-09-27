@@ -38,7 +38,7 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
     private TextView textMedia2 = null;
     private TextView textPressure = null;
 
-    private boolean isSessionExpired;
+    private static boolean isSessionExpired;
     private Map<String, ?> allPreferences;
 
 
@@ -63,6 +63,8 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
     protected void onResume() {
         Autoclave.getInstance().setOnSensorDataListener(this);
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+        if (!(this instanceof LoginActivity))
+            handler.postDelayed(getRunnableLogout(), AppConstants.SESSION_EXPIRE);
         overrideAllTouch(getWindow().getDecorView());
         super.onResume();
     }
@@ -82,14 +84,13 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
             }
             v1.setOnTouchListener(this);
         }
-        handler.postDelayed(runnableAutologout, AppConstants.SESSION_EXPIRE);
     }
 
 
     protected void onPause() {
         Autoclave.getInstance().removeOnSensorDataListener(this);
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
-        handler.removeCallbacks(runnableAutologout);
+        handler.removeCallbacks(getRunnableLogout());
         super.onPause();
     }
 
@@ -173,31 +174,37 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
 
     //Auto Logout
     private Handler handler = new Handler();
-    private Runnable runnableAutologout = new Runnable() {
+
+    private Runnable runnable = new Runnable() {
         @Override
         public void run() {
             isSessionExpired = true;
 
-            if (CertoclavSuperActivity.this instanceof MonitorActivity
+            AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(),
+                    AuditLogger.SCEEN_EMPTY, AuditLogger.ACTION_LOGOUT_AUTO,
+                    AuditLogger.OBJECT_EMPTY, null, false);
+
+            if ((CertoclavSuperActivity.this instanceof MonitorActivity
                     && Autoclave.getInstance().getState() == AutoclaveState.RUNNING)
+                    || CertoclavSuperActivity.this instanceof LoginActivity)
                 return;
 
             Autoclave.getInstance().setState(AutoclaveState.LOCKED);
-            AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(),
-                    AuditLogger.SCEEN_EMPTY, AuditLogger.ACTION_LOGOUT,
-                    AuditLogger.OBJECT_EMPTY, null, false);
             Intent intent = new Intent(CertoclavSuperActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         }
     };
 
+    public Runnable getRunnableLogout() {
+        return runnable;
+    }
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-            handler.removeCallbacks(runnableAutologout);
-            handler.postDelayed(runnableAutologout, AppConstants.SESSION_EXPIRE);
+            handler.removeCallbacks(getRunnableLogout());
+            handler.postDelayed(getRunnableLogout(), AppConstants.SESSION_EXPIRE);
 //            Toast.makeText(this, "touch", Toast.LENGTH_SHORT).show();
         }
         return false;

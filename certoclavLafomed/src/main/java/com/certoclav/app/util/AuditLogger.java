@@ -65,6 +65,9 @@ public class AuditLogger {
     public static final int ACTION_USER_BLOCKED_TEMPORALLY = 35;//R.string.audit_action_program_edited;
     public static final int ACTION_USER_UNBLOCKED_TEMPORALLY = 36;//R.string.audit_action_program_edited;
     public static final int ACTION_USER_PASSWORD_UPDATED = 37;//R.string.audit_action_program_edited;
+    public static final int ACTION_ADMIN_APPROVED_EDIT_DELETE_PROGRAM = 38;//R.string.audit_action_program_edited;
+    public static final int ACTION_ADMIN_FAILED_LOGIN = 39;//R.string.audit_action_failed_to_login;
+    public static final int ACTION_LOGOUT_AUTO = 40;//R.string.audit_action_logout;
 
 
     //Object Names
@@ -109,8 +112,10 @@ public class AuditLogger {
         map.put(ACTION_PROGRAM_FINISHED_MAINTAIN_TEMP, R.string.audit_action_program_finished_maintain);
         map.put(ACTION_PROGRAM_FAILED, R.string.audit_action_program_failed);
         map.put(ACTION_FAILED_LOGIN, R.string.audit_action_failed_to_login);
+        map.put(ACTION_ADMIN_FAILED_LOGIN, R.string.audit_action_admin_failed_to_login);
         map.put(ACTION_SUCCESS_LOGIN, R.string.audit_action_success_to_login);
         map.put(ACTION_LOGOUT, R.string.audit_action_logout);
+        map.put(ACTION_LOGOUT_AUTO, R.string.audit_action_logout_auto);
         map.put(ACTION_ACTIVATED, R.string.audit_action_activated);
         map.put(ACTION_PREF_CHANGED, R.string.audit_action_pref_changed);
         map.put(ACTION_USER_BLOCKED, R.string.audit_action_user_blocked);
@@ -118,6 +123,7 @@ public class AuditLogger {
         map.put(ACTION_USER_BLOCKED_TEMPORALLY, R.string.audit_action_user_blocked_temp);
         map.put(ACTION_USER_UNBLOCKED_TEMPORALLY, R.string.audit_action_user_unblocked_temp);
         map.put(ACTION_USER_PASSWORD_UPDATED, R.string.audit_action_user_password_udpated);
+        map.put(ACTION_ADMIN_APPROVED_EDIT_DELETE_PROGRAM, R.string.audit_action_admin_approved);
 
 
         //Object Names

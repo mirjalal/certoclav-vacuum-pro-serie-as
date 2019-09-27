@@ -54,7 +54,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import es.dmoral.toasty.Toasty;
 
 
 public class MonitorActivity extends CertoclavSuperActivity implements NavigationbarListener, ProfileListener, AlertListener, AutoclaveStateListener {
@@ -63,6 +62,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
     private static final int INDEX_FRAGMENT_AUTOCLAVE = 1;
     public static final int REQUEST_CODE_START_LATER = 0;
     public static final int REQUEST_CODE_LOGIN_AGAIN = 1;
+    private static final int REQUEST_CODE_LOGIN_AGAIN_BACK_BUTTON = 2;
     private ArrayList<Fragment> fragmentList = new ArrayList<Fragment>();
     private CertoclavNavigationbarClean navigationbar;
     private Calendar dateTime;
@@ -160,7 +160,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
             public void onClick(final View v) {
 
                 if (isSessionExpired()) {
-                    askForLoginAgain();
+                    askForLoginAgain(REQUEST_CODE_LOGIN_AGAIN);
                     return;
                 }
 
@@ -503,11 +503,15 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
         switch (buttonId) {
             case CertoclavNavigationbarClean.BUTTON_BACK:
                 if (!Autoclave.getInstance().getState().equals(AutoclaveState.RUNNING)) {
-                    if (Autoclave.getInstance().getState().equals(AutoclaveState.PREPARE_TO_RUN)) {
-                        AutoclaveMonitor.getInstance().cancelPrepareToRun();
+                    if (isSessionExpired()) {
+                        askForLoginAgain(REQUEST_CODE_LOGIN_AGAIN_BACK_BUTTON);
+                        return;
+                    } else {
+                        if (Autoclave.getInstance().getState().equals(AutoclaveState.PREPARE_TO_RUN)) {
+                            AutoclaveMonitor.getInstance().cancelPrepareToRun();
+                        }
+                        finish();
                     }
-                    finish();
-
                 }
                 break;
             case CertoclavNavigationbarClean.BUTTON_SETTINGS:
@@ -684,6 +688,10 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                     setSessionExpired(false);
                     buttonStop.performClick();
                 }
+            case REQUEST_CODE_LOGIN_AGAIN_BACK_BUTTON:
+                if (resultCode == RESULT_OK) {
+                    onClickNavigationbarButton(CertoclavNavigationbarClean.BUTTON_BACK);
+                }
                 break;
         }
     }
@@ -716,7 +724,9 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                         AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
                                 AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
                                 AuditLogger.OBJECT_EMPTY,
-                                getString(R.string.later), false);
+                                Autoclave.getInstance().getProfile().getName() + " (" +
+                                        getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() + ", "
+                                        + getString(R.string.status) + ": " + getString(R.string.indicator_not_completed) + ")", false);
                         DatabaseService.getInstance().updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(),
                                 AutoclaveMonitor.ERROR_CODE_INDICATOR_NOT_COMPLETED);
                         sweetAlertDialog.dismissWithAnimation();
@@ -739,7 +749,9 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                         AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
                                 AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
                                 AuditLogger.OBJECT_EMPTY,
-                                getString(R.string.failed), false);
+                                Autoclave.getInstance().getProfile().getName() + " (" +
+                                        getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() + ", "
+                                        + getString(R.string.status) + ": " + getString(R.string.indicator_failed) + ")", false);
                         DatabaseService.getInstance().updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(), AutoclaveMonitor.ERROR_CODE_INDICATOR_FAILED);
                         sweetAlertDialog.dismissWithAnimation();
                         startProtocolSync();
@@ -751,7 +763,9 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                         AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
                                 AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
                                 AuditLogger.OBJECT_EMPTY,
-                                getString(R.string.success), false);
+                                Autoclave.getInstance().getProfile().getName() + " (" +
+                                        getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() + ", "
+                                        + getString(R.string.status) + ": " + getString(R.string.indicator_success) + ")", false);
                         DatabaseService.getInstance().updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(), AutoclaveMonitor.ERROR_CODE_INDICATOR_SUCCESS);
                         sweetAlertDialog.dismissWithAnimation();
                         startProtocolSync();
@@ -764,10 +778,10 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
     }
 
 
-    private void askForLoginAgain() {
+    private void askForLoginAgain(int requestCode) {
         Intent intent = new Intent(MonitorActivity.this, LoginActivity.class);
         intent.putExtra("login_again", true);
-        startActivityForResult(intent, REQUEST_CODE_LOGIN_AGAIN);
+        startActivityForResult(intent, requestCode);
     }
 
 }

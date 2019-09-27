@@ -767,7 +767,9 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
                         AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
                                 AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
                                 AuditLogger.OBJECT_EMPTY,
-                                getString(R.string.later), false);
+                                protocol.getProfileName() + " (" +
+                                        getString(R.string.cycle) + " " + protocol.getZyklusNumber() + ", "
+                                        + getString(R.string.status) + ": " +  getString(R.string.indicator_not_completed)+")", false);
                         DatabaseService.getInstance().updateProtocolErrorCode(protocol.getProtocol_id(), AutoclaveMonitor.ERROR_CODE_INDICATOR_NOT_COMPLETED);
                         sweetAlertDialog.dismissWithAnimation();
                     }
@@ -790,7 +792,9 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
                                 AuditLogger.SCEEN_EMPTY,
                                 AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
                                 AuditLogger.OBJECT_EMPTY,
-                                getString(R.string.failed), false);
+                                protocol.getProfileName() + " (" +
+                                        getString(R.string.cycle) + " " + protocol.getZyklusNumber() + ", "
+                                        + getString(R.string.status) + ": " +  getString(R.string.indicator_failed)+")", false);
                         protocol.setErrorCode(AutoclaveMonitor.ERROR_CODE_INDICATOR_FAILED);
                         selectProtocol(aktPosition);
                         DatabaseService.getInstance().updateProtocolErrorCode(
@@ -807,7 +811,9 @@ public class ProtocolsFragment extends Fragment implements View.OnClickListener 
                                 AuditLogger.SCEEN_EMPTY,
                                 AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
                                 AuditLogger.OBJECT_EMPTY,
-                                getString(R.string.success), false);
+                                protocol.getProfileName() + " (" +
+                                        getString(R.string.cycle) + " " + protocol.getZyklusNumber() + ", "
+                                        + getString(R.string.status) + ": " + getString(R.string.indicator_success)+")", false);
                         protocol.setErrorCode(AutoclaveMonitor.ERROR_CODE_INDICATOR_SUCCESS);
                         selectProtocol(aktPosition);
                         DatabaseService.getInstance().updateProtocolErrorCode(

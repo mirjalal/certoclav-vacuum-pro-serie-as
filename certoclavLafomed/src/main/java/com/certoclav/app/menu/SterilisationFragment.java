@@ -1,9 +1,9 @@
 package com.certoclav.app.menu;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.GridView;
 
 import com.certoclav.app.AppConstants;
@@ -23,6 +24,7 @@ import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.util.AuditLogger;
 import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.MyCallback;
+import com.certoclav.app.util.MyCallbackAdminAprove;
 import com.certoclav.app.util.ProfileSyncedListener;
 
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ import java.util.ArrayList;
 public class SterilisationFragment extends Fragment implements ProfileSyncedListener {
 
 
+    private static final int REQUEST_EDIT_PROGRAM = 1;
     private GridView programGrid; //static damit programGrid nach dem Casten von Fragment auf SterilisationFragment nicht == null ist.
 
     private ProgramAdapter programAdapter;
@@ -87,10 +90,19 @@ public class SterilisationFragment extends Fragment implements ProfileSyncedList
     }
 
     public void onLongClick(View view) {
-        registerForContextMenu(view);
-        if (!(view instanceof CardView))
-            view.showContextMenu();
+        if (!Autoclave.getInstance().getUser().isAdmin()) {
+            unregisterForContextMenu(view);
+            askForAdminPassword(view);
+        } else {
+            openContextMenuToEditProgram(view);
+        }
     }
+
+    private void openContextMenuToEditProgram(View view) {
+        registerForContextMenu(view);
+        view.showContextMenu();
+    }
+
 
     @Override
     public void onPause() {
@@ -125,7 +137,7 @@ public class SterilisationFragment extends Fragment implements ProfileSyncedList
 
                 AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(),
                         AuditLogger.SCEEN_EMPTY, AuditLogger.ACTION_PROGRAM_DELETED,
-                        AuditLogger.OBJECT_EMPTY, profile.getName(),true);
+                        AuditLogger.OBJECT_EMPTY, profile.getName(), true);
                 profile.setName(AppConstants.DELETED_PROFILE_NAME);
                 if (profile.getCloudId() != null && profile.getCloudId().length() > 0) {
 //                    db.insertDeletedProfile(new DeletedProfileModel(profile.getCloudId()));
@@ -168,6 +180,31 @@ public class SterilisationFragment extends Fragment implements ProfileSyncedList
         if (programAdapter != null) {
             programAdapter.notifyDataSetChanged();
         }
+    }
+
+
+    private void askForAdminPassword(final View view) {
+        Helper.getInstance().askForAdminPassword(getContext(), REQUEST_EDIT_PROGRAM, new MyCallbackAdminAprove() {
+            @Override
+            public void onResponse(int requestId, int responseId) {
+                if (responseId == APPROVED) {
+                    //Hide keyboard when confirm has been clicked
+                    InputMethodManager imm = (InputMethodManager) getActivity()
+                            .getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getActivity()
+                            .getWindow().getCurrentFocus()
+                            .getWindowToken(), 0);
+                    AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getSelectedAdminUser(),
+                            AuditLogger.SCEEN_EMPTY,
+                            AuditLogger.ACTION_ADMIN_APPROVED_EDIT_DELETE_PROGRAM,
+                            AuditLogger.OBJECT_EMPTY,
+                            Autoclave.getInstance().getUser().getEmail_user_id(),
+                            true);
+                    openContextMenuToEditProgram(view);
+                }
+            }
+        });
+
     }
 }
 

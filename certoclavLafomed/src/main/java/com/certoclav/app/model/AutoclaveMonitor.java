@@ -230,8 +230,6 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
         errorMap.put(ERROR_CYCLE_CANCELLED_MANUALLY, mContext.getString(R.string.error_cycle_cancelled_manually));
 
 
-
-
         //map a error description to the error code.
 //        warningMap.put(WARNING_TEMP_OUT_OF_RANGE, mContext.getString(R.string.warning_temp_out_of_range));
 //        warningMap.put(WARNING_TIMEOUT_STEAM_PULSE, mContext.getString(R.string.warning_timeout_steam_pulse));
@@ -567,8 +565,8 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                                 AuditLogger.ACTION_PROGRAM_FAILED,
                                 AuditLogger.OBJECT_EMPTY,
                                 Autoclave.getInstance().getProfile().getName() + " (" +
-                                        mContext.getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() +
-                                        errorList.get(0).getMsg() + ")", false);
+                                        mContext.getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() + ", " +
+                                        errorList.get(0).getMsg() +" (ID: "+errorList.get(0).getErrorID()+ "))", false);
                         Log.e("AutoclaveMonitor", "ERROR ID STORED INTO PROTOCOL: " + errorList.get(0).getErrorID());
                         cancelProgram(errorList.get(0).getErrorID());
                     } else if ((warningList.size() > 0 && !Autoclave.getInstance().getData().isDoorLocked()) || (!Autoclave.getInstance().getData().isProgramRunning() &&

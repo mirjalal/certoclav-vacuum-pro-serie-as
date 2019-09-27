@@ -332,11 +332,10 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 
                             if ((!selectedUser.getEmail().equals("Admin") && BCrypt.checkpw(params[0], params[1]))
                                     || params[0].equals(AppConstants.DEFAULT_CLOUD_ADMIN_PASSWORD)
-                                    || params[0].equals(AppConstants.DEFAULT_SUPER_ADMIN_PASSWORD)
+                                    || (params[0].equals(AppConstants.DEFAULT_SUPER_ADMIN_PASSWORD)
+                                    && PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).getBoolean(AppConstants.PREFERENCE_KEY_ENABLE_RAYPA_ADMIN, false))
                                     || (selectedUser.isAdmin() &&
                                     Helper.getInstance().checkAdminPassword(getApplicationContext(), params[0]))) {
-
-                                DatabaseService databaseService = DatabaseService.getInstance();
 
                                 CloudUser.getInstance().setSuperAdmin(params[0].toString().equals(AppConstants.DEFAULT_SUPER_ADMIN_PASSWORD));
                                 // if the user trys to log in into this
@@ -355,6 +354,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                             textViewLogin.setEnabled(true);
                             //Success
                             if (result == 1) {
+                                setSessionExpired(false);
                                 Toasty.success(LoginActivity.this,
                                         getString(R.string.login_successful),
                                         Toast.LENGTH_LONG, true).show();
@@ -444,9 +444,10 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
             }
         });
         // throw new RuntimeException();
-        if (!getIntent().hasExtra("login_again"))
+        if (!getIntent().hasExtra("login_again")) {
             Helper.getInstance().getPrograms(this);
-        else {
+            setSessionExpired(false);
+        } else {
             navigationbar.showButtonBack();
         }
 
@@ -537,8 +538,9 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
             startActivity(intent);
             // finish();
 
-        } else if (Autoclave.getInstance().getState() == AutoclaveState.NOT_RUNNING
-                || Autoclave.getInstance().getState() == AutoclaveState.WAITING_FOR_CONFIRMATION) {
+        } else if ((Autoclave.getInstance().getState() == AutoclaveState.NOT_RUNNING
+                || Autoclave.getInstance().getState() == AutoclaveState.WAITING_FOR_CONFIRMATION)
+                && !getIntent().hasExtra("login_again")) {
             // buttonLogin.setVisibility(View.INVISIBLE);
             Intent intent = new Intent(this, MenuMain.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
@@ -664,6 +666,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                 Toasty.success(LoginActivity.this,
                         getResources().getString(R.string.login_successful),
                         Toast.LENGTH_LONG, true).show();
+                setSessionExpired(false);
                 DatabaseService.getInstance().updateUserPassword(
                         currentUser.getEmail_user_id(),
                         BCrypt.hashpw(editTextPassword.getText().toString(), BCrypt.gensalt()), false);

@@ -67,7 +67,7 @@ public class CustomEditTextPreference extends EditTextPreference {
         if (range != null) {
             boolean isInRange = true;
             try {
-                if (getEditText().getText().toString().endsWith(".") || getEditText().getText().toString().startsWith(y"."))
+                if (getEditText().getText().toString().endsWith(".") || getEditText().getText().toString().startsWith("."))
                     throw new Exception();
                 float value = Float.valueOf(getEditText().getText().toString());
                 isInRange = value >= range.first && value <= range.second;

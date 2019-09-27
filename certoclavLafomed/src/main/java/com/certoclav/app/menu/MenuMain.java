@@ -1,16 +1,17 @@
 package com.certoclav.app.menu;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.activities.CertoclavSuperActivity;
-import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.Profile;
 import com.certoclav.app.listener.NavigationbarListener;
 import com.certoclav.app.model.Autoclave;
@@ -20,6 +21,7 @@ import com.certoclav.app.model.CertoclavNavigationbar;
 import com.certoclav.app.settings.SettingsActivity;
 import com.certoclav.app.util.AuditLogger;
 import com.certoclav.app.util.Helper;
+import com.certoclav.app.util.MyCallbackAdminAprove;
 import com.certoclav.library.certocloud.GetConditionsService;
 import com.certoclav.library.view.ControlPagerAdapter;
 import com.certoclav.library.view.CustomViewPager;
@@ -214,44 +216,11 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
                 break;
 
             case CertoclavNavigationbar.BUTTON_ADD:
-                DatabaseService db = DatabaseService.getInstance();
-                List<Profile> profiles = Autoclave.getInstance().getProfilesFromAutoclave();
-                if (profiles != null) {
-                    if (profiles.size() >= AppConstants.MAX_PROGRAM_COUNT) {
-                        Toast.makeText(MenuMain.this, getString(R.string.you_can_add_maximum_programs, AppConstants.MAX_PROGRAM_COUNT), Toast.LENGTH_LONG).show();
-                        break;
-                    }
+                if (!Autoclave.getInstance().getUser().isAdmin()) {
+                    askForAdminPassword();
+                } else {
+                    askToCreateAProgram();
                 }
-                try {
-
-                    SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(MenuMain.this, SweetAlertDialog.WARNING_TYPE)
-                            .setTitleText(getString(R.string.new_program))
-                            .setContentText(getString(R.string.do_you_really_want_to_add_new_program))
-                            .setConfirmText(getString(R.string.yes))
-                            .setCancelText(getString(R.string.cancel))
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismissWithAnimation();
-                                    Intent intent = new Intent(MenuMain.this, EditProgramActivity.class);
-                                    intent.putExtra(AppConstants.INTENT_EXTRA_PROFILE_ID, Autoclave.getInstance().getUnusedProfileIndex());
-                                    startActivityForResult(intent, REQUEST_PROGRAM_EDIT);
-                                }
-                            }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                    sweetAlertDialog.dismissWithAnimation();
-                                }
-                            }).setCustomImage(R.drawable.ic_network_connection);
-                    sweetAlertDialog.setCanceledOnTouchOutside(true);
-                    sweetAlertDialog.setCancelable(true);
-                    sweetAlertDialog.show();
-
-                } catch (Exception e) {
-
-                }
-
-
                 break;
 
             case CertoclavNavigationbar.BUTTON_SETTINGS:
@@ -277,11 +246,71 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
 
     }
 
+    private void askToCreateAProgram() {
+        List<Profile> profiles = Autoclave.getInstance().getProfilesFromAutoclave();
+        if (profiles != null) {
+            if (profiles.size() >= AppConstants.MAX_PROGRAM_COUNT) {
+                Toast.makeText(MenuMain.this, getString(R.string.you_can_add_maximum_programs, AppConstants.MAX_PROGRAM_COUNT), Toast.LENGTH_LONG).show();
+                return;
+            }
+        }
+        try {
+
+            SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(MenuMain.this, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText(getString(R.string.new_program))
+                    .setContentText(getString(R.string.do_you_really_want_to_add_new_program))
+                    .setConfirmText(getString(R.string.yes))
+                    .setCancelText(getString(R.string.cancel))
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            sDialog.dismissWithAnimation();
+                            Intent intent = new Intent(MenuMain.this, EditProgramActivity.class);
+                            intent.putExtra(AppConstants.INTENT_EXTRA_PROFILE_ID, Autoclave.getInstance().getUnusedProfileIndex());
+                            startActivityForResult(intent, REQUEST_PROGRAM_EDIT);
+                        }
+                    }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
+                        }
+                    }).setCustomImage(R.drawable.ic_network_connection);
+            sweetAlertDialog.setCanceledOnTouchOutside(true);
+            sweetAlertDialog.setCancelable(true);
+            sweetAlertDialog.show();
+
+        } catch (Exception e) {
+
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_PROGRAM_EDIT && resultCode == RESULT_OK) {
             Helper.getInstance().getPrograms(this);
         }
+    }
+
+    private void askForAdminPassword() {
+        Helper.getInstance().askForAdminPassword(this, REQUEST_PROGRAM_EDIT, new MyCallbackAdminAprove() {
+            @Override
+            public void onResponse(int requestId, int responseId) {
+                if (responseId == APPROVED) {
+                    //Hide keyboard when confirm has been clicked
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getWindow().getCurrentFocus()
+                            .getWindowToken(), 0);
+                    AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getSelectedAdminUser(),
+                            AuditLogger.SCEEN_EMPTY,
+                            AuditLogger.ACTION_ADMIN_APPROVED_EDIT_DELETE_PROGRAM,
+                            AuditLogger.OBJECT_EMPTY,
+                            Autoclave.getInstance().getUser().getEmail_user_id(),
+                            true);
+                    askToCreateAProgram();
+                }
+            }
+        });
+
     }
 }

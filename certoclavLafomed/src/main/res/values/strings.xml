@@ -4,21 +4,14 @@
 
     <string name="cancel">Cancel</string>
 
-    <string-array name="email_subjects_array">
-        <item>Request for screen share appointment</item>
-        <item>Protocol Management</item>
-        <item>User Management</item>
-        <item>Program Management</item>
-        <item>Software Updates</item>
-    </string-array>
     <string name="do_you_really_want_to_logout">Do you really want to log out?</string>
     <string name="login">LOGIN</string>
     <string name="new_program">New Program</string>
     <string name="not_running">not running</string>
     <string name="running">"running "</string>
     <string name="prepare_to_run">prepare to run</string>
-
     <string name="path_video_place_item">/animation_place_item.mp4</string>
+
     <string name="path_video_door_open">/animation_lid.mp4</string>
     <string name="path_video_door_close">/animation_close_lid.mp4</string>
     <string name="path_video_fill_water">/animation_fill_water.mp4</string>
@@ -35,13 +28,13 @@
     <string name="path_video_start_program_9">/sdcard/Download/animation_start_program_9.mp4</string>
     <string name="path_video_start_program_10">/sdcard/Download/animation_start_program_10.mp4</string>
     <string name="path_video_start_program_11">/sdcard/Download/animation_start_program_11.mp4</string>
-
     <string name="video_place_item_descripton">Place items into the autoclave</string>
+
     <string name="video_lock_description">Close the door</string>
     <string name="video_fill_water_description">Refill water tank</string>
     <string name="start_program">Start</string>
-
     <string name="title_monitor">MONITOR</string>
+
     <string name="state_locked">LOCKED</string>
     <string name="state_not_running">NOT RUNNING</string>
     <string name="state_prepare_to_run">PREPARE TO RUN</string>
@@ -186,8 +179,8 @@
     <string name="venting_bevore_step_1">Venting bevore STEP 1</string>
     <string name="edit_step">EDIT STEP</string>
     <string name="device">device ID</string>
-
     <string name="title_notification">Sample Overlay View</string>
+
     <string name="message_notification">Press To Hide Overlay</string>
     <string name="scanning_for_devices">Scanning for devices</string>
     <string name="back">BACK</string>
@@ -233,8 +226,8 @@
     <string name="password_for_offline_mode">Password for offline mode</string>
     <string name="export_protocols_to_usb_stick">Export Protocols to USB-Stick</string>
     <string name="export_audits_to_usb_stick">Export Audits to USB-Stick</string>
-
     <string name="delete_user">Delete user</string>
+
     <string name="do_you_really_want_to_delete_">"Do you really want to delete "</string>
     <string name="server_not_reachable">Maintanance of RaypaCloud server</string>
     <string name="internet_not_connected">Internet not available</string>
@@ -252,9 +245,9 @@
     <string name="choose_program_from_template">Choose program from template</string>
     <string name="browse_templates">Browse templates</string>
     <string name="program_templates">Program templates</string>
-
-
     <string name="network_connection_required">Network connection required</string>
+
+
     <string name="please_connect_to_a_network_via_lan_or_wifi_">Please connect to a network via LAN or WLAN.\n</string>
     <string name="do_you_want_to_open_wifi_settings_">Do you want to open WLAN settings?</string>
     <string name="do_you_want_to_switch_to_offline_mode_">Do you want to switch to offline mode?</string>
@@ -330,9 +323,9 @@
     <string name="please_connect_to_autoclave_first">Please connect to autoclave first</string>
     <string name="cancel_program_definition">Cancel program definition</string>
     <string name="do_you_really_want_to_return_without_saving_the_program_">Do you really want to return without saving the program?</string>
-
-
     <string name="create_a_new_program_manually">Create a new program manually</string>
+
+
     <string name="notifications">Notifications</string>
     <string name="not_able_to_connect_to_certocloud">Not able to connect to RaypaCloud</string>
     <string name="by_email">by email</string>
@@ -362,8 +355,8 @@
     <string name="if_on_the_sterilizer_will_heat_up_to_50_c_before_program_execution">Heat up the chamber to 50°C before program execution</string>
     <string name="material_testing_mode">Material testing mode</string>
     <string name="if_enabled_the_user_can_enter_how_often_to_run_a_program_without_user_interaction">On program start, show a dialog to enter how often to run the program automatically</string>
-
     <string name="times">times</string>
+
     <string name="how_often_the_program_should_be_executed_one_after_another_">How often the program should be executed one after another?</string>
     <string name="of">of</string>
     <string name="cycle">Cycle</string>
@@ -438,8 +431,8 @@
     <string name="export_success">Exported successfully</string>
     <string name="export_failed">Export Failed!</string>
     <string name="material_testing">Material Testing</string>
-
     <string name="stop_program_earlier">Stop program earlier</string>
+
     <string name="do_you_want_to_stop_the_program_earlier_sterilization_result_will_be_successfull_">Do you want to stop the program earlier? Sterilization result will be successful.</string>
     <string name="stopped_by_user_">Stopped by user?</string>
     <string name="waterlevel_full_">Waterlevel full?</string>
@@ -449,9 +442,9 @@
     <string name="progr_is_running_">Progr. is running?</string>
     <string name="progr_finished_successfully">Progr. finished successfully</string>
     <string name="touchscreen_not_connected">Touchscreen not connected</string>
-
-
     <string name="dialog_send_email">Send an Email to RaypaSupport</string>
+
+
     <string name="dialog_share_screen">Share screen to RaypaSupport</string>
     <string name="share_screen">Share Screen</string>
     <string name="send_email">Send Email</string>
@@ -462,12 +455,12 @@
     <string name="loading">Loading...</string>
     <string name="checking">Checking...</string>
     <string name="adding">Adding...</string>
-
-
     <string name="bar">bar</string>
-    <string name="_c">°C</string>
 
+
+    <string name="_c">°C</string>
     <string name="header_time">TimeStamp\n[hh:mm:ss]</string>
+
     <string name="header_temp">Chamber temp.\n[%1$s]</string>
     <string name="header_media_temp">Media temp.\n[%1$s]</string>
     <string name="header_media_temp_2">Media 2 temp.\n[%1$s]</string>
@@ -481,11 +474,12 @@
     <string name="close">Close</string>
     <string name="try_again">Try Again</string>
     <string name="sign_up_account_failed">Sign up account failed!</string>
-
     <string name="account_activation_failed">Account activation failed!</string>
+
     <string name="account_activation_success">Account successfully activiated!</string>
     <string name="something_went_wrong_try_again">Something went wrong. Please try later!</string>
     <string name="something_went_wrong">Something went wrong!</string>
+    <string name="something_went_wrong_restart">Something went wrong! Please restart autoclave.</string>
     <string name="sending">Sending...</string>
     <string name="edit_success">Edited Successfully</string>
     <string name="label_printed">The label printed!</string>
@@ -512,81 +506,22 @@
     <string name="server_port">Port</string>
     <string name="server_info">Server Info</string>
     <string name="server_manual">Manual</string>
-
     <string name="import_protocols">Import protocols</string>
+
     <string name="local_account">Local Account</string>
     <string name="online_account">Online Account</string>
     <string name="certotrace_load_documentation">RaypaTrace load documentation</string>
     <string name="enable_autoclave_load_docmentation">Enable autoclave load documentation. Barcodescanner and labelprinter required.</string>
     <string name="username_or_password_is_wrong">Wrong username or password</string>
-
-
-    <string-array name="error_codes">
-        <item>0|Successfully completed</item>
-        <item>15|-1|Program cancelled by user</item>
-        <item>16|-2|Connection lost error</item>
-        <item>2|Vacuum pump defect</item>
-        <item>31|32|Steam sensor broken error</item>
-        <item>51|52|63|Steam or temperature sensor broken error</item>
-        <item>61|62|The chamber temperature sensor broken error</item>
-        <item>41|42|Chamber heating damaged</item>
-        <item>5|Output solenoid valve is blocked</item>
-        <item>6|Door damaged</item>
-        <item>7|Wrong air pressure</item>
-        <item>8|9|No water inside the tank</item>
-        <item>10|11|Electronic locker malfunction</item>
-        <item>12|Vacuum pump or fan damaged</item>
-        <item>99|Cable is not connected</item>
-    </string-array>
-
-    <string-array name="autoclave_models">
-        <item>AE-50B</item>
-        <item>AE-75B</item>
-        <item>AE-110B</item>
-        <item>AE-150B</item>
-        <item>AHS-50B</item>
-        <item>AHS-75B</item>
-        <item>TLV-50</item>
-        <item>TLV-50FA</item>
-        <item>TLV-50PD</item>
-        <item>TLV-75</item>
-        <item>TLV-75FA</item>
-        <item>TLV-75PD</item>
-        <item>TLV-110</item>
-        <item>TLV-110FA</item>
-        <item>TLV-110PD</item>
-        <item>TLV-150</item>
-        <item>TLV-150FA</item>
-        <item>TLV-150PD</item>
-    </string-array>
-
-    <string-array name="autoclave_models_values">
-        <item>AE-50B</item>
-        <item>AE-75B</item>
-        <item>AE-110B</item>
-        <item>AE-150B</item>
-        <item>AHS-50B</item>
-        <item>AHS-75B</item>
-        <item>TLV-50</item>
-        <item>TLV-50FA</item>
-        <item>TLV-50PD</item>
-        <item>TLV-75</item>
-        <item>TLV-75FA</item>
-        <item>TLV-75PD</item>
-        <item>TLV-110</item>
-        <item>TLV-110FA</item>
-        <item>TLV-110PD</item>
-        <item>TLV-150</item>
-        <item>TLV-150FA</item>
-        <item>TLV-150PD</item>
-    </string-array>
-
-
     <string name="program_1_name">Glass</string>
+
+
     <string name="program_1_description">134\u00B0C   2.1 bar   4min\nTest to evaluate the capacity\nof penetration of the steam\nin hollow loads</string>
 
     <string name="program_2_name">Glass Pulse</string>
+
     <string name="program_2_description">Vacuum Test, recommended for maintenance</string>
+
 
     <string name="program_3_name">Plastic</string>
     <string name="program_3_description">134\u00B0C   2.1 bar   4min\nPorous instruments and textiles, wrapped or unwrapped</string>
@@ -606,12 +541,12 @@
     <string name="program_8_name">Liquid B Pulse</string>
     <string name="program_8_description">134\u00B0C   2.1 bar   4min\nSingle and double wrapped solids and waste</string>
 
-
     <string name="program_13_name">Test Bowie-Dick</string>
     <string name="program_13_description">134\u00B0C   2.1 bar   4min\nTest to evaluate the capacity\nof penetration of the steam\nin hollow loads</string>
 
     <string name="program_14_name">Test VACUUM</string>
     <string name="program_14_description">Vacuum Test, recommended for maintenance</string>
+
 
     <string name="program_15_name">Porous-134</string>
     <string name="program_15_description">134\u00B0C   2.1 bar   4min\nPorous instruments and textiles, wrapped or unwrapped</string>
@@ -645,8 +580,10 @@
 
     <string name="open_the_door">Open the door</string>
     <string name="unable_to_start_vacuum_test">Unable to start the vacuum test. Please wait until the chamber is cooled down.</string>
+
     <string name="vacuum_times">Vacuum pulses:</string>
     <string name="sterilization_temperature">Ster. temperature:</string>
+
     <string name="sterilization_pressure">Ster. pressure:</string>
     <string name="drying_time">Drying time:</string>
     <string name="sterilization_holding_time">Holding time:</string>
@@ -671,12 +608,12 @@
     <string name="indicator_not_completed">Batch control not completed</string>
     <string name="permission_denied">Permission Denied</string>
     <string name="admin_user_cant_start_a_program_and_info">Admin user can\'t start a program. Change user to start a program.</string>
-
-    <!-- GLP Preferences-->
     <string name="preferences_glp_header">preferences_glp_header</string>
     <string name="preferences_reset_glp">preferences_reset_glp</string>
     <string name="preferences_glp_autoclave_name">preferences_glp_autoclave_name</string>
     <string name="preferences_glp_project_name">preferences_glp_project_name</string>
+
+    <!-- GLP Preferences-->
     <string name="glp_header">GLP Header</string>
     <string name="glp_and_gmp_data">GLP and GMP data</string>
     <string name="lock_the_glp_and_gmp_data">Lock the GLP and GMP data</string>
@@ -685,11 +622,11 @@
     <string name="print_header_on_off">Print the header on/off</string>
     <string name="autoclave_name">Autoclave Name</string>
     <string name="preferences_print_header">preferences_statistic_mode</string>
-
     <string name="preferences_print_autoclave_name">preferences_print_balance_name</string>
     <string name="preferences_print_project_name">preferences_print_project_name</string>
     <string name="preferences_print_program_name">preferences_print_program_name</string>
     <string name="preferences_print_program_result">preferences_print_program_result</string>
+
     <string name="preferences_print_program_data_points">preferences_print_program_data_points</string>
     <string name="preferences_print_program_desc">preferences_print_program_desc</string>
     <string name="preferences_print_signature">preferences_print_signature</string>
@@ -718,11 +655,11 @@
     <string name="user_name">User</string>
     <string name="project_name">Project Name</string>
     <string name="set_the_project_name">Set the project name</string>
-
     <string name="these_settings_are_locked_by_the_admin">These Settings are locked by the admin</string>
     <string name="lockout">Lockout</string>
     <string name="pressure_unit">Pressure unit</string>
     <string name="glp_program_name">Program name: </string>
+
     <string name="glp_program">Program: </string>
     <string name="glp_autoclave_name">Autoclave Name: </string>
     <string name="print_program_desc">Program load/details</string>
@@ -741,14 +678,14 @@
     <string name="glp">GLP</string>
     <string name="glp_autoclave_serial_number">Serial Number:</string>
     <string name="glp_data_points">Data Points:</string>
-
-
-    <!--Lockout-->
-    <!--The name must start with "preferences_lockout_" -->
     <string name="preferences_lockout_user_account">preferences_lockout_user_account</string>
     <string name="preferences_lockout_network">preferences_lockout_network</string>
     <string name="preferences_lockout_audit_logs">preferences_audit_logs</string>
     <string name="preferences_lockout_create_user">preferences_create_user</string>
+
+
+    <!--Lockout-->
+    <!--The name must start with "preferences_lockout_" -->
     <string name="preferences_lockout_add_program">preferences_add_program</string>
     <string name="preferences_lockout_device">preferences_lockout_device</string>
     <string name="preferences_lockout_language">preferences_lockout_language</string>
@@ -758,10 +695,8 @@
     <string name="preferences_lockout_calibration">preferences_lockout_calibration</string>
     <string name="preferences_lockout_glp">preferences_lockout_glp</string>
     <string name="preferences_lockout_service">preferences_lockout_service</string>
-
     <string name="summary_lockout_user_account">Lock the user account settings</string>
     <string name="title_lockout_user_account">User Account</string>
-
     <string name="summary_lockout_network">Lock the network settings</string>
     <string name="title_lockout_network">Network Settings</string>
 
@@ -797,23 +732,26 @@
 
     <string name="summary_lockout_service">Lock the service settings</string>
     <string name="title_lockout_service">Service Settings</string>
+
     <string name="textAuditLog"><![CDATA[<b>%1$s</b> in  <font color=\"#69B7F5\"><b>%2$s</b></font> %3$s <font color=\"#6ACC61\">%4$s</font>]]></string>
     <string name="textAuditLogWithValue"><![CDATA[<b>%1$s</b> in  <font color=\"#69B7F5\"><b>%2$s</b></font> %3$s <font color=\"#6ACC61\">%4$s</font><b>%5$s</b>]]></string>
+
     <string name="settings_audit_log">Audit Logs</string>
-
     <string name="please_enter_admin_password">Please login as admin password</string>
-
-    <!--Audit Logger-->
     <string name="audit_action_open_window"><![CDATA[<b>%1$s</b> opened \'<font color=\"#69B7F5\"><b>%2$s</b></font>\']]></string>
     <string name="audit_action_failed_to_login"><![CDATA[<b>%1$s</b> failed to login]]></string>
+    <string name="audit_action_admin_failed_to_login"><![CDATA[<b>%1$s</b> failed to approve a request. Wrong password!]]></string>
     <string name="audit_action_user_created"><![CDATA[<b>%1$s</b> created <font color=\"#69B7F5\"><b>%3$s</b></font> user]]></string>
+
     <string name="audit_action_user_deleted"><![CDATA[<b>%1$s</b> deleted <font color=\"#69B7F5\"><b>%3$s</b></font> user]]></string>
+
+    <!--Audit Logger-->
     <string name="audit_action_program_started"><![CDATA[<b>%1$s</b> started <font color=\"#69B7F5\"><b>%3$s</b></font> program]]></string>
     <string name="audit_action_program_edited"><![CDATA[<b>%1$s</b> edited <font color=\"#69B7F5\"><b>%3$s</b></font> program]]></string>
     <string name="audit_action_program_deleted"><![CDATA[<b>%1$s</b> deleted <font color=\"#69B7F5\"><b>%3$s</b></font> program]]></string>
-    <string name="audit_action_program_indicator_changed"><![CDATA[<b>%1$s</b> set indicator to <font color=\"#69B7F5\"><b>%3$s</b></font>]]></string>
+    <string name="audit_action_program_indicator_changed"><![CDATA[<b>%1$s</b> set indicator: <font color=\"#69B7F5\"><b>%3$s</b></font>]]></string>
     <string name="audit_action_program_canceled"><![CDATA[<b>%1$s</b> canceled <font color=\"#69B7F5\"><b>%3$s</b></font> program]]></string>
-    <string name="audit_action_program_finished"><![CDATA[<font color=\"#69B7F5\"><b>%3$s</b></font> program finished.]]></string>
+    <string name="audit_action_program_finished"><![CDATA[User: <b>%1$s</b>, <font color=\"#69B7F5\"><b>%3$s</b></font> program finished.]]></string>
     <string name="audit_action_program_finished_maintain"><![CDATA[<font color=\"#69B7F5\"><b>%3$s</b></font> program finished. Maintain temperature.]]></string>
     <string name="audit_action_program_failed"><![CDATA[User: <b>%1$s</b>, <font color=\"#69B7F5\"><b>%3$s</b></font> program failed.]]></string>
     <string name="audit_action_asked_for_network">asked for Network</string>
@@ -821,6 +759,7 @@
     <string name="audit_action_clicked"><![CDATA[<b>%1$s</b> clicked <font color=\"#69B7F5\"><b>%2$s</b></font> in %4$s]]></string>
     <string name="audit_action_success_to_login"><![CDATA[<b>%1$s</b> login successfully]]></string>
     <string name="audit_action_logout"><![CDATA[<b>%1$s</b> logout]]></string>
+    <string name="audit_action_logout_auto"><![CDATA[<b>%1$s</b> logout automatically]]></string>
     <string name="audit_action_activated"><![CDATA[<b>%1$s</b> was activated]]></string>
     <string name="audit_action_pref_changed"><![CDATA[<b>%1$s</b> changed <font color=\"#69B7F5\"><b>%2$s</b></font> settings <font color=\"#6ACC61\">\'%3$s\'</font> in %4$s]]></string>
     <string name="audit_action_user_blocked"><![CDATA[<b>%1$s</b> has been blocked]]></string>
@@ -830,11 +769,12 @@
     <string name="audit_action_canceled"><![CDATA[<b>%1$s</b> canceled <font color=\"#6ACC61\">\'%2$s\'</font>]]></string>
     <string name="audit_action_confirmed"><![CDATA[<b>%1$s</b> confirmed <font color=\"#6ACC61\">\'%2$s\'</font>]]></string>
     <string name="audit_action_user_password_udpated"><![CDATA[<b>%1$s</b> updated his/her password]]></string>
-
+    <string name="audit_action_admin_approved"><![CDATA[<b>%1$s</b> approved create/edit/delete program action for <font color=\"#6ACC61\">\'%3$s\'</font>]]></string>
     <string name="audit_screen_login">Login Screen</string>
     <string name="audit_object_login_button">Login button</string>
     <string name="audit_object_empty"></string>
     <string name="audit_object_login">login</string>
+
     <string name="audit_object_add_user_button">Add User</string>
     <string name="audit_object_cancel_button">Cancel</string>
     <string name="audit_object_yes_button">Confirm</string>
@@ -857,31 +797,23 @@
     <string name="temperature_title">TEMPERATURE</string>
     <string name="vacuum_pulse_times">times</string>
     <string name="drying_time_minutes">minutes</string>
-
-
-    <!--Settings-->
     <string name="preferences_autoclave_model">Model</string>
     <string name="pref_device_settings">Device</string>
     <string name="preferences_autoclave_serial">Serial Number</string>
     <string name="preferences_autoclave_pcb_serial">PCB Serial Number</string>
+
+
+    <!--Settings-->
     <string name="pref_calibration_category">Calibrations</string>
     <string name="preferences_autoclave_is_home_mode">Home mode</string>
     <string name="preferences_autoclave_is_user_mode">User mode</string>
     <string name="preferences_autoclave_degrees">Degrees</string>
-    <string-array name="preferences_autoclave_degrees_key">
-        <item>Celsius</item>
-        <item>Fahrenheit</item>
-    </string-array>
-
-    <string-array name="preferences_autoclave_degrees_values">
-        <item>C</item>
-        <item>F</item>
-    </string-array>
     <string name="settings_autoclave">Autoclave</string>
     <string name="pref_model_summary">Current model: %s</string>
     <string name="preferences_autoclave_final_temperature">Final Temperature</string>
     <string name="preferences_autoclave_std_program">Std programs.</string>
     <string name="preferences_autoclave_std_program_summary">Std assigns programs to model and delete the rest.</string>
+
     <string name="preferences_autoclave_offset_probe_1">Offset Probe 1</string>
     <string name="preferences_autoclave_offset_probe_2">Offset Probe 2</string>
     <string name="preferences_autoclave_offset_pressure_probe_1">Offset Pressure Probe 1</string>
@@ -984,15 +916,15 @@
     <string name="state_empty_wait">STABILIZING TIME</string>
     <string name="state_empty_test">TESTING TIME</string>
     <string name="later">LATER</string>
-
-
-    <!-- License Management-->
     <string name="welcome_text">Welcome to RaypaControl</string>
     <string name="welcome_settings"><![CDATA[1. Press <b>Settings</b> button to change the settings of autoclave.]]> </string>
     <string name="welcome_activate"><![CDATA[2. Press <b>Next</b> button to activate the autoclave.]]></string>
     <string name="dialog_activate_title_text">Please check the information of the autoclave before the activation.</string>
     <string name="no_license_key">You don\'t have license key. Please contract with CertoClav to get the license keys.</string>
     <string name="license_count">License Count</string>
+
+
+    <!-- License Management-->
     <string name="next">NEXT</string>
     <string name="no_license_key_title">No License Key</string>
     <string name="no_ethernet_app">Please install Ethernat app to manage the LAN configuration</string>
@@ -1082,6 +1014,79 @@
     <string name="do_you_really_want_to_reset_your_password">Do you want to reset your password?</string>
     <string name="sent">Sent</string>
     <string name="reset_instruction">Please check your email and follow the instructions to reset your password.</string>
+    <string name="enable_raypa_admin">Raypa Admin Enabled</string>
+    <string-array name="email_subjects_array">
+        <item>Request for screen share appointment</item>
+        <item>Protocol Management</item>
+        <item>User Management</item>
+        <item>Program Management</item>
+        <item>Software Updates</item>
+    </string-array>
+    <string-array name="error_codes">
+        <item>0|Successfully completed</item>
+        <item>15|-1|Program cancelled by user</item>
+        <item>16|-2|Connection lost error</item>
+        <item>2|Vacuum pump defect</item>
+        <item>31|32|Steam sensor broken error</item>
+        <item>51|52|63|Steam or temperature sensor broken error</item>
+        <item>61|62|The chamber temperature sensor broken error</item>
+        <item>41|42|Chamber heating damaged</item>
+        <item>5|Output solenoid valve is blocked</item>
+        <item>6|Door damaged</item>
+        <item>7|Wrong air pressure</item>
+        <item>8|9|No water inside the tank</item>
+        <item>10|11|Electronic locker malfunction</item>
+        <item>12|Vacuum pump or fan damaged</item>
+        <item>99|Cable is not connected</item>
+    </string-array>
+    <string-array name="autoclave_models">
+        <item>AE-50B</item>
+        <item>AE-75B</item>
+        <item>AE-110B</item>
+        <item>AE-150B</item>
+        <item>AHS-50B</item>
+        <item>AHS-75B</item>
+        <item>TLV-50</item>
+        <item>TLV-50FA</item>
+        <item>TLV-50PD</item>
+        <item>TLV-75</item>
+        <item>TLV-75FA</item>
+        <item>TLV-75PD</item>
+        <item>TLV-110</item>
+        <item>TLV-110FA</item>
+        <item>TLV-110PD</item>
+        <item>TLV-150</item>
+        <item>TLV-150FA</item>
+        <item>TLV-150PD</item>
+    </string-array>
+    <string-array name="autoclave_models_values">
+        <item>AE-50B</item>
+        <item>AE-75B</item>
+        <item>AE-110B</item>
+        <item>AE-150B</item>
+        <item>AHS-50B</item>
+        <item>AHS-75B</item>
+        <item>TLV-50</item>
+        <item>TLV-50FA</item>
+        <item>TLV-50PD</item>
+        <item>TLV-75</item>
+        <item>TLV-75FA</item>
+        <item>TLV-75PD</item>
+        <item>TLV-110</item>
+        <item>TLV-110FA</item>
+        <item>TLV-110PD</item>
+        <item>TLV-150</item>
+        <item>TLV-150FA</item>
+        <item>TLV-150PD</item>
+    </string-array>
+    <string-array name="preferences_autoclave_degrees_key">
+        <item>Celsius</item>
+        <item>Fahrenheit</item>
+    </string-array>
+    <string-array name="preferences_autoclave_degrees_values">
+        <item>C</item>
+        <item>F</item>
+    </string-array>
 
 
 </resources>
