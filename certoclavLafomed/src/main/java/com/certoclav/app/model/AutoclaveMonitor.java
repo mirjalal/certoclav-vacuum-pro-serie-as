@@ -854,11 +854,11 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
     }
 
     public String getErrorString(int errorCode) {
-        return errorMap.get(errorCode, getWarningString(errorCode));
+        return errorMap.get(errorCode, warningMap.get(errorCode, mContext.getString(R.string.cycle_cancelled_because_of_error)));
     }
 
     public String getWarningString(int errorCode) {
-        return warningMap.get(errorCode, mContext.getString(R.string.cycle_cancelled_because_of_error));
+        return warningMap.get(errorCode, null);
     }
 
     public String getErrorVideo(int errorCode) {
