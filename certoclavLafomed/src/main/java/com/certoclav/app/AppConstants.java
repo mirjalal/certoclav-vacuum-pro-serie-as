@@ -43,7 +43,7 @@ public interface AppConstants {
 
     /*TABLET AND AUTOCLAVE SELECTION*/
 
-    String TABLET_TYPE = /*TABLET_TYPE_FAYTECH;*/TABLET_TYPE_FAYTECH_RS_232;//TABLET_TYPE_LILLIPUT
+    String TABLET_TYPE = TABLET_TYPE_FAYTECH;/*TABLET_TYPE_FAYTECH_RS_232;*///TABLET_TYPE_LILLIPUT
     String MODEL_CURRENT = MODEL_RAYPA_TLV;
     Boolean isIoSimulated = false;
     String MODEL = "TLV-150FA";
@@ -123,7 +123,7 @@ public interface AppConstants {
     String PREFERENCE_KEY_FIRMWARE_VERSION = "preferences_autoclave_firmware_version";
     String PREFERENCE_KEY_CYCLE_NUMBER = "preferences_cycle_number";
     String PREFERENCE_KEY_ENABLE_FDA = "preferences_device_fda_enabled";
-    String PREFERENCE_KEY_ENABLE_RAYPA_ADMIN= "preferences_enable_raypa_admin";
+    String PREFERENCE_KEY_ENABLE_RAYPA_ADMIN = "preferences_enable_raypa_admin";
     String PREFERENCE_KEY_ENABLE_AUDIT_COMMENT = "preferences_device_audit_comment_enabled";
     String PREFERENCE_KEY_LIST_GRAPH = "islistgrapportrace";
     String PREFERENCE_KEY_ID_OF_LAST_USER = "idoflastuser";
@@ -260,7 +260,7 @@ public interface AppConstants {
     int PARAM_OFFSET_PRESSURE_2 = 46;
 
     float PERMISSION_TIMEOUT_FDA = 1f;
-    long SESSION_EXPIRE = 20 * 1000;
+    long SESSION_EXPIRE = 15 * 60 * 1000;
     long PASSWORD_EXPIRE = 15552000000l; //6 months
     int MAX_LOGIN_ATTEMPTS = 3;
     int ADMIN_BLOCK_PERIOD = 60 * 60 * 1000; //1 hour
