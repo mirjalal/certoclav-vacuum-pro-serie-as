@@ -99,8 +99,11 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
     public static final int ERROR_STERILIZATION_OVERPRESSURE = 10;
     public static final int ERROR_STERILIZATION_UNDERPRESSURE = 11;
     public static final int ERROR_PRESSURE_LEVELING_TIMEOUT = 12;
+    public static final int ERROR_PROBE_FAILURE = 13;
     public static final int ERROR_DIFFERENCE_BETWEEN_PROBES_EXCEEDED = 14;
     public static final int ERROR_DOOR_OPEN = 15;
+    public static final int ERROR_NO_WATER = 20;
+    public static final int ERROR_RESET_THERMOSTAT = 21;
     //    public static final int ERROR_NO_WATER = 24;
 //    public static final int ERROR_RESET_SAFETY_THERMOSTAT = 25;
     public static final int ERROR_VACUUM_TEST_UNDERPRESSURE = 26;
@@ -219,10 +222,11 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
         errorMap.put(ERROR_STERILIZATION_OVERPRESSURE, mContext.getString(R.string.error_sterilization_overpressure));
         errorMap.put(ERROR_STERILIZATION_UNDERPRESSURE, mContext.getString(R.string.error_sterilization_underpressure));
         errorMap.put(ERROR_PRESSURE_LEVELING_TIMEOUT, mContext.getString(R.string.error_pressure_leveling_timeout));
+        errorMap.put(ERROR_PROBE_FAILURE, mContext.getString(R.string.error_probe_failure));
         errorMap.put(ERROR_DIFFERENCE_BETWEEN_PROBES_EXCEEDED, mContext.getString(R.string.error_difference_between_probes_exceeded));
         errorMap.put(ERROR_DOOR_OPEN, mContext.getString(R.string.error_door_open));
-//        errorMap.put(ERROR_NO_WATER, mContext.getString(R.string.error_no_water));
-//        errorMap.put(ERROR_RESET_SAFETY_THERMOSTAT, mContext.getString(R.string.error_reset_safety_thermostat));
+        errorMap.put(ERROR_NO_WATER, mContext.getString(R.string.error_no_water));
+        errorMap.put(ERROR_RESET_THERMOSTAT, mContext.getString(R.string.error_reset_safety_thermostat));
         errorMap.put(ERROR_VACUUM_TEST_UNDERPRESSURE, mContext.getString(R.string.error_vacuum_test_underpressure));
         errorMap.put(ERROR_VACUUM_TEST_UNDERTEMPERATURE, mContext.getString(R.string.error_vacuum_test_undertemperature));
         errorMap.put(ERROR_VACUUM_TEST_FINAL_PRESSURE_EXCEEDED, mContext.getString(R.string.error_vacuum_test_final_pressure_exceeded));
@@ -566,12 +570,19 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                                 AuditLogger.OBJECT_EMPTY,
                                 Autoclave.getInstance().getProfile().getName() + " (" +
                                         mContext.getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() + ", " +
-                                        errorList.get(0).getMsg() +" (ID: "+errorList.get(0).getErrorID()+ "))", false);
+                                        errorList.get(0).getMsg() + " (ID: " + errorList.get(0).getErrorID() + "))", false);
                         Log.e("AutoclaveMonitor", "ERROR ID STORED INTO PROTOCOL: " + errorList.get(0).getErrorID());
                         cancelProgram(errorList.get(0).getErrorID());
                     } else if ((warningList.size() > 0 && !Autoclave.getInstance().getData().isDoorLocked()) || (!Autoclave.getInstance().getData().isProgramRunning() &&
                             !Autoclave.getInstance().getData().isProgramFinishedSucessfully()
                     )) {
+                        AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                                AuditLogger.ACTION_PROGRAM_FAILED,
+                                AuditLogger.OBJECT_EMPTY,
+                                Autoclave.getInstance().getProfile().getName() + " (" +
+                                        mContext.getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() + ", " +
+                                        warningList.get(0).getMsg() + " (ID: " + warningList.get(0).getErrorID() + "))", false);
+                        cancelProgram(warningList.get(0).getErrorID());
                         Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);
                     } else {
                         if (Autoclave.getInstance().getData().isProgramFinishedSucessfully()
@@ -843,11 +854,11 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
     }
 
     public String getErrorString(int errorCode) {
-        return errorMap.get(errorCode, mContext.getString(R.string.cycle_cancelled_because_of_error));
+        return errorMap.get(errorCode, getWarningString(errorCode));
     }
 
     public String getWarningString(int errorCode) {
-        return warningMap.get(errorCode, null);
+        return warningMap.get(errorCode, mContext.getString(R.string.cycle_cancelled_because_of_error));
     }
 
     public String getErrorVideo(int errorCode) {

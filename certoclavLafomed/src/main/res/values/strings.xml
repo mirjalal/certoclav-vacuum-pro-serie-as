@@ -995,6 +995,7 @@
     <string name="error_sterilization_overpressure">ERROR STERILIZATION OVERPRESSURE</string>
     <string name="error_sterilization_underpressure">ERROR STERILIZATION UNDERPRESSURE</string>
     <string name="error_pressure_leveling_timeout">ERROR PRESSURE LEVELING TIMEOUT</string>
+    <string name="error_probe_failure">ERROR PROBE FAILURE</string>
     <string name="error_difference_between_probes_exceeded">ERROR DIFFERENCE BETWEEN PROBES EXCEEDED</string>
     <string name="error_door_open">ERROR DOOR OPEN</string>
     <string name="error_no_water">ERROR NO WATER</string>
