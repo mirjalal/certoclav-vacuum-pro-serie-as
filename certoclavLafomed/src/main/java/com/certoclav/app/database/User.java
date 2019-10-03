@@ -2,6 +2,7 @@ package com.certoclav.app.database;
 
 
 import com.certoclav.app.AppConstants;
+import com.certoclav.app.model.Autoclave;
 import com.certoclav.library.certocloud.CloudUser;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DataType;
@@ -80,11 +81,11 @@ public class User {
     private Boolean isAdmin;
 
     public Boolean isBlocked() {
-        return loginAttempt > AppConstants.MAX_LOGIN_ATTEMPTS;
+        return loginAttempt > AppConstants.MAX_LOGIN_ATTEMPTS && Autoclave.getInstance().isFDAEnabled();
     }
 
     public Boolean isBlockedByDate() {
-        return this.dateBlockedTill != null && this.dateBlockedTill.after(new Date());
+        return this.dateBlockedTill != null && this.dateBlockedTill.after(new Date()) && Autoclave.getInstance().isFDAEnabled();
     }
 
     public int getLoginAttemptCount() {
@@ -100,7 +101,11 @@ public class User {
     }
 
     public void increaseLoginAttempt() {
-        this.loginAttempt++;
+        //Only if the FDA has been enabled
+        if (Autoclave.getInstance().isFDAEnabled())
+            this.loginAttempt++;
+        else
+            this.loginAttempt = 0;
     }
 
     @DatabaseField(columnName = FIELD_LOGIN_ATTEMPT)
@@ -298,7 +303,8 @@ public class User {
 
 
     public boolean isPasswordExpired() {
-        return passwordExpireDate == null || passwordExpireDate.before(new Date());
+        return (passwordExpireDate == null || passwordExpireDate.before(new Date()))
+                && Autoclave.getInstance().isFDAEnabled();
     }
 }
 

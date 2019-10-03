@@ -65,6 +65,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
     private View linearLayoutF0Function;
     private View linearLayoutFinalTemp;
     private View linearLayoutDry;
+    private boolean isProgramEdit;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -127,12 +128,15 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
 
         graphFragment = (ProgramDefinitionGraphFragment) getSupportFragmentManager().findFragmentById(R.id.program_defintion_fragment_graph);
 
-        if (getIntent().hasExtra(AppConstants.INTENT_EXTRA_PROFILE_ID)) {
-            programIndex = getIntent().getIntExtra(AppConstants.INTENT_EXTRA_PROFILE_ID, -1);
-            navigationbar.setHeadText(getString(R.string.title_edit_a_program));
-        } else {
+        isProgramEdit = !(getIntent().hasExtra(AppConstants.INTENT_EXTRA_NEW_PROFILE)
+                && getIntent().getBooleanExtra(AppConstants.INTENT_EXTRA_NEW_PROFILE, false));
 
+        if (!getIntent().hasExtra(AppConstants.INTENT_EXTRA_PROFILE_ID)) {
+            Toasty.error(this, getString(R.string.something_went_wrong_try_again), Toast.LENGTH_SHORT, true).show();
+            finish();
         }
+        programIndex = getIntent().getIntExtra(AppConstants.INTENT_EXTRA_PROFILE_ID, -1);
+        navigationbar.setHeadText(getString(isProgramEdit ? R.string.title_edit_a_program : R.string.title_define_a_new_program));
 
         //Change Program parameters according to the current Autoclave model
         if (!manager.isMaintaingingTempExistsInProgram()) {
@@ -300,9 +304,9 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
                 Helper.getInstance().setProgram(this, newProfile, new MyCallback() {
                     @Override
                     public void onSuccess(Object response, int requestId) {
-                        Toasty.success(getApplicationContext(), getString(R.string.program_saved), Toast.LENGTH_LONG, true).show();
+                        Toasty.success(getApplicationContext(), getString(isProgramEdit ? R.string.program_saved : R.string.program_created), Toast.LENGTH_LONG, true).show();
                         AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(),
-                                AuditLogger.SCEEN_EMPTY, AuditLogger.ACTION_PROGRAM_EDITED,
+                                AuditLogger.SCEEN_EMPTY, isProgramEdit ? AuditLogger.ACTION_PROGRAM_EDITED : AuditLogger.ACTION_PROGRAM_CREATED,
                                 AuditLogger.OBJECT_EMPTY, getChangedParameters(), true);
                         setResult(RESULT_OK);
                         finish();
@@ -658,9 +662,9 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
 
 
     private String getChangedParameters() {
-        StringBuilder paramters = new StringBuilder(newProfile.getName() + ": [ ");
+        StringBuilder paramters = new StringBuilder(newProfile.getName().replaceAll("_", " ") + ": [ ");
 
-        paramters.append(getChangingString(R.string.program_name, oldProfile.getName(), newProfile.getName()))
+        paramters.append(getChangingString(R.string.program_name, oldProfile.getName().replaceAll(" ", "_"), newProfile.getName()))
                 .append(getChangingString(R.string.is_liquid_program, oldProfile.isLiquidProgram(), newProfile.isLiquidProgram()))
                 .append(getChangingString(R.string.is_cont_by_flex_probe_1, oldProfile.isContByFlexProbe1Enabled(), newProfile.isContByFlexProbe1Enabled()))
                 .append(getChangingString(R.string.is_cont_by_flex_probe_2, oldProfile.isContByFlexProbe2Enabled(), newProfile.isContByFlexProbe2Enabled()))
@@ -671,6 +675,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
                 .append(getChangingString(R.string.z_value_title, oldProfile.getzValue(false), newProfile.getzValue(false)))
                 .append(getChangingString(R.string.temperature, oldProfile.getSterilisationTemperature(false), newProfile.getSterilisationTemperature(false)))
                 .append(getChangingString(R.string.holding_time, oldProfile.getSterilisationTime(), newProfile.getSterilisationTime()))
+                .append(getChangingString(R.string.drying_time_title, oldProfile.getDryTime(), newProfile.getDryTime()))
                 .append(getChangingString(R.string.vacuum_pulse, oldProfile.getVacuumTimes(), newProfile.getVacuumTimes()));
 
         return paramters.append(" ]").toString();

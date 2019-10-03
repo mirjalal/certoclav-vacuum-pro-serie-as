@@ -43,7 +43,7 @@ public interface AppConstants {
 
     /*TABLET AND AUTOCLAVE SELECTION*/
 
-    String TABLET_TYPE = TABLET_TYPE_FAYTECH;/*TABLET_TYPE_FAYTECH_RS_232;*///TABLET_TYPE_LILLIPUT
+    String TABLET_TYPE = TABLET_TYPE_FAYTECH;/*TABLET_TYPE_FAYTECH_RS_232*/;//TABLET_TYPE_LILLIPUT
     String MODEL_CURRENT = MODEL_RAYPA_TLV;
     Boolean isIoSimulated = false;
     String MODEL = "TLV-150FA";
@@ -115,6 +115,7 @@ public interface AppConstants {
     String PREFERENCE_KEY_EXPORT_AUDIT_USB = "preferences_export_audit_usb";
     String PREFERENCE_KEY_EXPORT_SD = "preferences_export_sdcard";
     String PREFERENCE_KEY_VERSION = "preferences_software_version";
+    String PREFERENCE_KEY_STMAX_VERSION = "preferences_stmax_software_version";
     String PREFERENCE_KEY_LANGUAGE_WAS_SET = "preferences_language_was_set";
     String PREFERENCE_KEY_INTRODUCTION_DONE = "preference_intro_done";
     String PREFERENCE_KEY_SOFTWARE_UPDATE_USB = "preferences_software_update_usb";
@@ -242,6 +243,7 @@ public interface AppConstants {
     String ACTION_BAR_TITLE = "Program Selection & Control";
     String INFO_MESSAGE_RUNNING_PROFILE = "The User Interface is locked while process is runnig.";
     String INTENT_EXTRA_PROFILE_ID = "extra_profile_id";
+    String INTENT_EXTRA_NEW_PROFILE = "extra_new_profile";
     String PACKAGENAME = "com.certoclav.app";
     String PREFERENCE_KEY_SERIAL_DEVICE = "DEVICE";
     String PREFERENCE_KEY_SERIAL_BAUDRATE = "BAUDRATE";
@@ -261,6 +263,7 @@ public interface AppConstants {
 
     float PERMISSION_TIMEOUT_FDA = 1f;
     long SESSION_EXPIRE = 15 * 60 * 1000;
+//    long SESSION_EXPIRE = 60 * 1000;
     long PASSWORD_EXPIRE = 15552000000l; //6 months
     int MAX_LOGIN_ATTEMPTS = 3;
     int ADMIN_BLOCK_PERIOD = 60 * 60 * 1000; //1 hour

@@ -90,7 +90,7 @@ public class SterilisationFragment extends Fragment implements ProfileSyncedList
     }
 
     public void onLongClick(View view) {
-        if (!Autoclave.getInstance().getUser().isAdmin()) {
+        if (!Autoclave.getInstance().getUser().isAdmin() && Autoclave.getInstance().isFDAEnabled()) {
             unregisterForContextMenu(view);
             askForAdminPassword(view);
         } else {
@@ -200,6 +200,15 @@ public class SterilisationFragment extends Fragment implements ProfileSyncedList
                             AuditLogger.OBJECT_EMPTY,
                             Autoclave.getInstance().getUser().getEmail_user_id(),
                             true);
+                    openContextMenuToEditProgram(view);
+                }
+                if (responseId == NO_APPROVE_NEED) {
+                    //Hide keyboard when confirm has been clicked
+                    InputMethodManager imm = (InputMethodManager) getActivity()
+                            .getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getActivity()
+                            .getWindow().getCurrentFocus()
+                            .getWindowToken(), 0);
                     openContextMenuToEditProgram(view);
                 }
             }

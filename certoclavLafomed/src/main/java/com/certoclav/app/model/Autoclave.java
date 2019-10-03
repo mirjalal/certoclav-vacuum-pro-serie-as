@@ -119,10 +119,9 @@ public class Autoclave extends Observable {
 
     public SerialService getSerialsServiceProtocolPrinter() {
         if (serialServiceProtocolPrinter == null) {
-            if(AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH)){
+            if (AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH)) {
                 serialServiceProtocolPrinter = new SerialService("/dev/ttyS5", 9600);//COM1
-            }
-            else{
+            } else {
                 serialServiceProtocolPrinter = new SerialService("/dev/ttymxc0", 9600);//COM1
             }
         }
@@ -131,10 +130,9 @@ public class Autoclave extends Observable {
 
     public SerialService getSerialsServiceInternalPrinter() {
         if (serialServiceInternalPrinter == null) {
-            if(AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH)){
+            if (AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH)) {
                 serialServiceInternalPrinter = new SerialService("/dev/ttyS0", 9600);//COM4
-            }
-            else{
+            } else {
                 serialServiceInternalPrinter = new SerialService("/dev/ttyS4", 9600);
             }
         }
@@ -316,7 +314,7 @@ public class Autoclave extends Observable {
     public void setProgramStep(String programStep) {
 
         //If Step doesn't change it means that state also hasn't changed
-        if(this.programStep.equals(programStep))
+        if (this.programStep.equals(programStep))
             return;
 
         this.programStep = programStep;
@@ -331,9 +329,9 @@ public class Autoclave extends Observable {
 
     public SerialService getSerialsService() {
         if (serialService == null) {
-            if(AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH)){
+            if (AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH)) {
                 serialService = new SerialService("/dev/ttyUSB0", 38400);
-            }else {
+            } else {
                 serialService = new SerialService("/dev/ttymxc3", 9600);
             }
         }
@@ -342,9 +340,9 @@ public class Autoclave extends Observable {
 
     public SerialService getSerialsServiceLabelPrinter() {
         if (serialServiceLabelPrinter == null) {
-            if(AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH)){
+            if (AppConstants.TABLET_TYPE.equals(AppConstants.TABLET_TYPE_FAYTECH)) {
                 serialServiceLabelPrinter = new SerialService("/dev/ttyS4", 9600);//COM0
-            }else {
+            } else {
                 serialServiceLabelPrinter = new SerialService("/dev/ttymxc1", 9600);//COM2
             }
         }
@@ -481,6 +479,11 @@ public class Autoclave extends Observable {
         data = new AutoclaveData();
         controller = new Controller("unknown", "unknown", "unknown", "unknown", 0, "unknown");
         profileSyncedListeners = new ArrayList<>();
+    }
+
+    public boolean isFDAEnabled() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ApplicationController.getContext());
+        return prefs.getBoolean(AppConstants.PREFERENCE_KEY_ENABLE_FDA, false);
     }
 
     private void updateSimulatedPrograms() {
@@ -1325,7 +1328,7 @@ public class Autoclave extends Observable {
                 return;
             }
             this.debugData = new String[]{debugData[0], debugData[1]};
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

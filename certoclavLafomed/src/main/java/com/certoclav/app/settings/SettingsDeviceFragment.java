@@ -37,6 +37,7 @@ import com.certoclav.app.model.AutoclaveData;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.service.ReadAndParseSerialService;
+import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.MyCallback;
 import com.certoclav.app.util.Requests;
@@ -293,6 +294,9 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                 e.printStackTrace();
             }
 
+            //StMax Software Version
+            String version = AutoclaveModelManager.getInstance().getStMaxVersion();
+            findPreference(AppConstants.PREFERENCE_KEY_STMAX_VERSION).setSummary(version);
 
             //serial number
 //            try {

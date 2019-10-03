@@ -61,6 +61,7 @@ public class CertocloudConstants {
     public final static String REST_API_UNBLOCK_USER = "/api/profiles/unblockUser";
     public final static String REST_API_GET_PROTOCOL = "/api/protocols/";
     public final static String REST_API_ENABLE_FDA = "/devices/fda/";// auth.login);
+    public final static String REST_API_UPDATE_STMAX_VERSION = "/devices/stmaxversion/";// auth.login);
     public final static String REST_API_ENABLE_FDA_PERMISSION = "/api/devices/permission/";// auth.login);
 
     public final static String REST_POST_SUPPORT = "/api/support";// support.send); send email to certosupport

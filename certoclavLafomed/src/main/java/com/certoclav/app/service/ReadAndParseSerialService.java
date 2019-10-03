@@ -229,6 +229,9 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
         } else if (AutoclaveModelManager.getInstance().getPCBSerialNumber() == null) {
             commandQueue.clear();
             commandQueue.add(COMMANDS.CREATE(COMMANDS.GET_PARAMETER, 4));
+        } else if (AutoclaveModelManager.getInstance().getStMaxVersion() == null) {
+            commandQueue.clear();
+            commandQueue.add(COMMANDS.CREATE(COMMANDS.GET_PARAMETER, 10));
         }
 
         handler.removeCallbacks(runnableOtherCommands);

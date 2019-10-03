@@ -63,6 +63,10 @@
             android:key="preferences_software_version"
             android:title="@string/settings_software_version" />
 
+        <Preference
+            android:enabled="false"
+            android:key="preferences_stmax_software_version"
+            android:title="@string/settings_stmax_software_version" />
 
         <Preference
             android:enabled="false"
@@ -87,10 +91,6 @@
             android:key="preferences_device_fda_enabled"
             android:title="@string/enable_fda" />
 
-        <Preference
-            android:key="preferences_export_audit_usb"
-            android:title="@string/export_audits_to_usb_stick" />
-
         <CheckBoxPreference
             android:defaultValue="false"
             android:enabled="false"
@@ -101,6 +101,10 @@
             android:defaultValue="true"
             android:key="preferences_device_show_logs"
             android:title="Show UART Logs" />
+
+        <Preference
+            android:key="preferences_export_audit_usb"
+            android:title="@string/export_audits_to_usb_stick" />
     </PreferenceCategory>
 
 

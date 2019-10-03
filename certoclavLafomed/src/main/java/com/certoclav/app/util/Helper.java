@@ -834,7 +834,8 @@ public class Helper {
                     return;
                 }
                 if (AutoclaveModelManager.getInstance().getSerialNumber() == null
-                        || AutoclaveModelManager.getInstance().getModel() == null) {
+                        || AutoclaveModelManager.getInstance().getModel() == null
+                        || AutoclaveModelManager.getInstance().getStMaxVersion() == null) {
                     onError(null, requestId);
                     return;
                 }
@@ -1514,6 +1515,12 @@ public class Helper {
 
 
     public void askForAdminPassword(final Context context, final int requestCode, final MyCallbackAdminAprove myCallbackAdminAprove) {
+
+        if (Autoclave.getInstance().getUser().isAdmin() && !Autoclave.getInstance().isFDAEnabled()) {
+            myCallbackAdminAprove.onResponse(requestCode, MyCallbackAdminAprove.NO_APPROVE_NEED);
+            return;
+        }
+
 
         final SweetAlertDialog dialog = new SweetAlertDialog(context, R.layout.dialog_admin_password, SweetAlertDialog.WARNING_TYPE);
         dialog.setContentView(R.layout.dialog_admin_password);

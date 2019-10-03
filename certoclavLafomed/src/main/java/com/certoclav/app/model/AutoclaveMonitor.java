@@ -992,6 +992,8 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
     private void checkWarnings() {
 
         try {
+            if (Autoclave.getInstance().getWarningList() == null)
+                return;
             String binary = String.format("%40s", new BigInteger(Autoclave.getInstance().getWarningList()
                     , 16).toString(2)).replace(" ", "0");
 

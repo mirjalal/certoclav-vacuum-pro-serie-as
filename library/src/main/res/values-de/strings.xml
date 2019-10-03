@@ -105,6 +105,7 @@
         <string name="settings_device_key_security_key">Geräteschlüssel | Sicherheitsschlüssel</string>
         <string name="settings_batch_number">Batch Nummer</string>
         <string name="settings_software_version">Software Version</string>
+        <string name="settings_stmax_software_version">StMax Software Version</string>
         <string name="settings_contact_via_mail">Kontakt via Mail</string>
         <string name="settings_contact_certoclav_support_via_mail">CertClav Support via Mail kontaktieren</string>
         <string name="settings_contact_via_phone">Kontakt via Telefon</string>

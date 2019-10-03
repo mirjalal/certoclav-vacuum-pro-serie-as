@@ -262,6 +262,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                 if (currentUser != null)
                     logUser(currentUser.getEmail_user_id(), currentUser.getEmail(), currentUser.getFirstName() + " " + currentUser.getLastName());
 
+                CloudUser.getInstance().setSuperAdmin(false);
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
                 Editor editor = prefs.edit();
                 editor.putInt(AppConstants.PREFERENCE_KEY_ID_OF_LAST_USER,
@@ -392,14 +393,14 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 
                                     currentUser.increaseLoginAttempt();
 
-                                    if (currentUser.isBlocked()) {
+                                    if (currentUser.isBlocked() && Autoclave.getInstance().isFDAEnabled()) {
                                         AuditLogger.getInstance().addAuditLog(
                                                 currentUser, -1,
                                                 currentUser.isAdmin() ? AuditLogger.ACTION_USER_BLOCKED_TEMPORALLY : AuditLogger.ACTION_USER_BLOCKED,
                                                 AuditLogger.OBJECT_EMPTY,
                                                 null,
                                                 true);
-                                        if (currentUser.isAdmin())
+                                        if (currentUser.isAdmin() && Autoclave.getInstance().isFDAEnabled())
                                             currentUser.setBlockedByDate(new Date(new Date().getTime() + AppConstants.ADMIN_BLOCK_PERIOD));
                                         result = -2;
                                     } else {

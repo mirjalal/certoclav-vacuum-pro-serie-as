@@ -125,6 +125,7 @@
     <string name="settings_device_key_security_key">Device Key | Security Key</string>
     <string name="settings_batch_number">Batch Number</string>
     <string name="settings_software_version">Software Version</string>
+    <string name="settings_stmax_software_version">StMax Software Version</string>
     <string name="settings_contact_via_mail">Contact via mail</string>
     <string name="settings_contact_certoclav_support_via_mail">Contact CertoClav Support via mail</string>
     <string name="settings_contact_via_phone">Contact via phone</string>

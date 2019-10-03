@@ -23,9 +23,11 @@ import com.certoclav.app.model.AutoclaveParameter;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.service.ReadAndParseSerialService;
+import com.certoclav.app.util.AuditLogger;
 import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.MyCallback;
+import com.certoclav.app.util.MyCallbackAdminAprove;
 import com.certoclav.library.application.ApplicationController;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -57,6 +59,13 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
     private Double offsetMedia2;
     private double offsetPress;
     private double offsetPress2;
+
+    private Double offsetTemp1Prev;
+    private Double offsetMediaPrev;
+    private Double offsetMedia2Prev;
+    private double offsetPressPrev;
+    private double offsetPress2Prev;
+
     private boolean isLocked;
     private SweetAlertDialog barProgressDialog;
 
@@ -144,16 +153,32 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
                         return;
                     }
 
-                    barProgressDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
-                    barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                    barProgressDialog.setTitleText(getString(R.string.saving));
-                    barProgressDialog.setContentText(null);
-                    barProgressDialog.showCancelButton(false);
-                    barProgressDialog.setCancelable(false);
-                    barProgressDialog.setCanceledOnTouchOutside(false);
-                    barProgressDialog.show();
-                    ReadAndParseSerialService.getInstance().setParameter(currentOffsetReadParameter = AppConstants.PARAM_OFFSET_STEAM,
-                            Helper.getInstance().currentUnitToCelsius(offsetTemp1.floatValue()));
+
+                    Helper.getInstance().askForAdminPassword(getContext(), 1, new MyCallbackAdminAprove() {
+                        @Override
+                        public void onResponse(int requestId, int responseId) {
+                            if (responseId == APPROVED || responseId == NO_APPROVE_NEED) {
+                                if (responseId != NO_APPROVE_NEED)
+                                    AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getSelectedAdminUser(),
+                                            AuditLogger.SCEEN_EMPTY,
+                                            AuditLogger.ACTION_ADMIN_APPROVED_EDIT_CALIBRARION,
+                                            AuditLogger.OBJECT_EMPTY,
+                                            Autoclave.getInstance().getUser().getEmail_user_id(),
+                                            true);
+
+                                barProgressDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
+                                barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                                barProgressDialog.setTitleText(getString(R.string.saving));
+                                barProgressDialog.setContentText(null);
+                                barProgressDialog.showCancelButton(false);
+                                barProgressDialog.setCancelable(false);
+                                barProgressDialog.setCanceledOnTouchOutside(false);
+                                barProgressDialog.show();
+                                ReadAndParseSerialService.getInstance().setParameter(currentOffsetReadParameter = AppConstants.PARAM_OFFSET_STEAM,
+                                        Helper.getInstance().currentUnitToCelsius(offsetTemp1.floatValue()));
+                            }
+                        }
+                    });
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -276,27 +301,60 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
                     currentOffsetReadParameter = AppConstants.PARAM_OFFSET_MEDIA;
                     ReadAndParseSerialService.getInstance().setParameter(AppConstants.PARAM_OFFSET_MEDIA,
                             Helper.getInstance().currentUnitToCelsius(offsetMedia.floatValue()));
+
+                    if (isOffsetValueDifferent(Autoclave.getInstance().getData().getTemp1().getOffset(), offsetTemp1))
+                        AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CAL_CHANGED,
+                                R.string.offset_of_steam_sensor, Autoclave.getInstance().getData().getTemp1().getOffsetValueString() + " "
+                                        + Helper.getInstance().getTemperatureUnitText(null) + " \u00BB " + offsetTemp1 + " "
+                                        + Helper.getInstance().getTemperatureUnitText(null), true);
                     break;
                 case AppConstants.PARAM_OFFSET_MEDIA:
                     currentOffsetReadParameter = AppConstants.PARAM_OFFSET_MEDIA_2;
                     ReadAndParseSerialService.getInstance().setParameter(AppConstants.PARAM_OFFSET_MEDIA_2,
                             Helper.getInstance().currentUnitToCelsius(offsetMedia2.floatValue()));
+
+                    if (isOffsetValueDifferent(Autoclave.getInstance().getData().getTemp2().getOffset(), offsetMedia))
+                        AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CAL_CHANGED,
+                                R.string.offset_of_media_sensor, Autoclave.getInstance().getData().getTemp2().getOffsetValueString() + " "
+                                        + Helper.getInstance().getTemperatureUnitText(null) + " \u00BB " + offsetMedia + " "
+                                        + Helper.getInstance().getTemperatureUnitText(null), true);
                     break;
                 case AppConstants.PARAM_OFFSET_MEDIA_2:
                     currentOffsetReadParameter = AppConstants.PARAM_OFFSET_PRESSURE_1;
                     ReadAndParseSerialService.getInstance().setParameter(AppConstants.PARAM_OFFSET_PRESSURE_1, offsetPress);
+                    if (isOffsetValueDifferent(Autoclave.getInstance().getData().getTemp3().getOffset(), offsetMedia2))
+                        AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CAL_CHANGED,
+                                R.string.offset_of_media_2_sensor, Autoclave.getInstance().getData().getTemp3().getOffsetValueString() + " "
+                                        + Helper.getInstance().getTemperatureUnitText(null) + " \u00BB " + offsetMedia2 + " "
+                                        + Helper.getInstance().getTemperatureUnitText(null), true);
                     break;
                 case AppConstants.PARAM_OFFSET_PRESSURE_1:
                     ReadAndParseSerialService.getInstance().setParameter(AppConstants.PARAM_OFFSET_PRESSURE_2, offsetPress2);
                     currentOffsetReadParameter = AppConstants.PARAM_OFFSET_PRESSURE_2;
+                    if (isOffsetValueDifferent(Autoclave.getInstance().getData().getPress().getOffset(), offsetPress))
+                        AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CAL_CHANGED,
+                                R.string.offset_of_pressure_sensor_kpa_, Autoclave.getInstance().getData().getPress().getOffsetValueString() + " "
+                                        + " \u00BB " + offsetPress + " "
+                                , true);
                     break;
                 case AppConstants.PARAM_OFFSET_PRESSURE_2:
                     ReadAndParseSerialService.getInstance().getParameter(AppConstants.PARAM_OFFSET_STEAM);
                     Toasty.success(getActivity(), getString(R.string.calibration_parameters_saved), Toast.LENGTH_SHORT, true).show();
                     barProgressDialog.dismissWithAnimation();
+
+                    if (isOffsetValueDifferent(Autoclave.getInstance().getData().getPress2().getOffset(), offsetPress2))
+                        AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CAL_CHANGED,
+                                R.string.offset_of_pressure_sensor_2_kpa_, Autoclave.getInstance().getData().getPress2().getOffsetValueString() + " "
+                                        + " \u00BB " + offsetPress2 + " "
+                                , true);
+
                     break;
             }
         }
+    }
+
+    private boolean isOffsetValueDifferent(double v1, double v2) {
+        return ((int) (v1 * 100)) != ((int) (v2 * 100));
     }
 
     @Override

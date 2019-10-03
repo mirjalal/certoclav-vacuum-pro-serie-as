@@ -41,6 +41,7 @@ public class AutoclaveModelManager implements MyCallback {
 
     private AutoclaveParameter model;
     private AutoclaveParameter serialNumber;
+    private AutoclaveParameter stMaxVersion;
     private AutoclaveParameter pcbSerialNumber;
     private AutoclaveParameter temperatureSymbol;
 
@@ -49,6 +50,13 @@ public class AutoclaveModelManager implements MyCallback {
             return null;
         }
         return serialNumber.getValue().toString();
+    }
+
+    public String getStMaxVersion() {
+        if (stMaxVersion == null) {
+            return null;
+        }
+        return stMaxVersion.getValue().toString();
     }
 
     public String getPCBSerialNumber() {
@@ -72,6 +80,10 @@ public class AutoclaveModelManager implements MyCallback {
 
     public void setSerialNumber(AutoclaveParameter serialNumber) {
         this.serialNumber = serialNumber;
+    }
+
+    public void setStMaxVersion(AutoclaveParameter stMaxVersion) {
+        this.stMaxVersion = stMaxVersion;
     }
 
     public String getModel() {
@@ -243,7 +255,6 @@ public class AutoclaveModelManager implements MyCallback {
                 serialNumber = (AutoclaveParameter) response;
                 ReadAndParseSerialService.getInstance().getParameter(4);
             }
-
             if (((AutoclaveParameter) response).getParameterId() == 4) {
                 pcbSerialNumber = (AutoclaveParameter) response;
                 ReadAndParseSerialService.getInstance().getParameter(8);
@@ -251,6 +262,12 @@ public class AutoclaveModelManager implements MyCallback {
 
             if (((AutoclaveParameter) response).getParameterId() == 8) {
                 temperatureSymbol = (AutoclaveParameter) response;
+                ReadAndParseSerialService.getInstance().getParameter(10);
+            }
+
+            if (((AutoclaveParameter) response).getParameterId() == 10) {
+                stMaxVersion = (AutoclaveParameter) response;
+                Requests.getInstance().updateStMaxVersion(null, stMaxVersion.getValue().toString(), 1);
             }
         }
     }

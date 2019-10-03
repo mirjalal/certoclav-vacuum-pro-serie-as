@@ -91,6 +91,7 @@
     <string name="step">STEP</string>
     <string name="add_new_step">ADD NEW STEP</string>
     <string name="program_saved">Program saved</string>
+    <string name="program_created">Program created</string>
     <string name="set_temperature_and_duration">Set Temperature and Duration</string>
     <string name="settings_user_account">User account</string>
     <string name="settings_network">Network</string>
@@ -119,6 +120,7 @@
     <string name="settings_device_key_security_key">Device Key | Security Key</string>
     <string name="settings_batch_number">Batch Number</string>
     <string name="settings_software_version">Software Version</string>
+    <string name="settings_stmax_software_version">StMax Software Version</string>
     <string name="settings_contact_via_mail">Contact via mail</string>
     <string name="settings_contact_certoclav_support_via_mail">Contact RaypaSupport via mail</string>
     <string name="settings_contact_via_phone">Contact via phone</string>
@@ -391,6 +393,7 @@
     <string name="offset_of_steam_generator_sensor_c_">Offset of steam generator sensor [%1$s]</string>
     <string name="offset_of_media_sensor_c_">Offset of media sensor [%1$s]</string>
     <string name="offset_of_media_2_sensor_c_">Offset of media 2 sensor [%1$s]</string>
+    <string name="offset_of_media_2_sensor">Offset of media 2 sensor</string>
     <string name="offset_of_pressure_sensor_kpa_">Offset of pressure sensor [bar]</string>
     <string name="offset_of_pressure_sensor_2_kpa_">Offset of pressure sensor 2[bar]</string>
     <string name="if_maintenance_is_required_please_notify_me">If maintenance is required, please notify me</string>
@@ -748,6 +751,7 @@
     <!--Audit Logger-->
     <string name="audit_action_program_started"><![CDATA[<b>%1$s</b> started <font color=\"#69B7F5\"><b>%3$s</b></font> program]]></string>
     <string name="audit_action_program_edited"><![CDATA[<b>%1$s</b> edited <font color=\"#69B7F5\"><b>%3$s</b></font> program]]></string>
+    <string name="audit_action_program_created"><![CDATA[<b>%1$s</b> created <font color=\"#69B7F5\"><b>%3$s</b></font> program]]></string>
     <string name="audit_action_program_deleted"><![CDATA[<b>%1$s</b> deleted <font color=\"#69B7F5\"><b>%3$s</b></font> program]]></string>
     <string name="audit_action_program_indicator_changed"><![CDATA[<b>%1$s</b> set indicator: <font color=\"#69B7F5\"><b>%3$s</b></font>]]></string>
     <string name="audit_action_program_canceled"><![CDATA[<b>%1$s</b> canceled <font color=\"#69B7F5\"><b>%3$s</b></font> program]]></string>
@@ -762,6 +766,7 @@
     <string name="audit_action_logout_auto"><![CDATA[<b>%1$s</b> logout automatically]]></string>
     <string name="audit_action_activated"><![CDATA[<b>%1$s</b> was activated]]></string>
     <string name="audit_action_pref_changed"><![CDATA[<b>%1$s</b> changed <font color=\"#69B7F5\"><b>%2$s</b></font> settings <font color=\"#6ACC61\">\'%3$s\'</font> in %4$s]]></string>
+    <string name="audit_action_cal_changed"><![CDATA[<b>%1$s</b> changed <font color=\"#69B7F5\"><b>%2$s</b></font> calibration <font color=\"#6ACC61\">\'%3$s\'</font> in %4$s]]></string>
     <string name="audit_action_user_blocked"><![CDATA[<b>%1$s</b> has been blocked]]></string>
     <string name="audit_action_user_unblocked_temp"><![CDATA[<b>%1$s</b> has been unblocked after 1 hour]]></string>
     <string name="audit_action_user_blocked_temp"><![CDATA[<b>%1$s</b> has been blocked for 1 hour]]></string>
@@ -770,6 +775,7 @@
     <string name="audit_action_confirmed"><![CDATA[<b>%1$s</b> confirmed <font color=\"#6ACC61\">\'%2$s\'</font>]]></string>
     <string name="audit_action_user_password_udpated"><![CDATA[<b>%1$s</b> updated his/her password]]></string>
     <string name="audit_action_admin_approved"><![CDATA[<b>%1$s</b> approved create/edit/delete program action for <font color=\"#6ACC61\">\'%3$s\'</font>]]></string>
+    <string name="audit_action_admin_approved_edit_calibration"><![CDATA[<b>%1$s</b> approved edit calibration action for <font color=\"#6ACC61\">\'%3$s\'</font>]]></string>
     <string name="audit_screen_login">Login Screen</string>
     <string name="audit_object_login_button">Login button</string>
     <string name="audit_object_empty"></string>

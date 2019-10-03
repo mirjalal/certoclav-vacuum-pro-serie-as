@@ -68,6 +68,9 @@ public class AuditLogger {
     public static final int ACTION_ADMIN_APPROVED_EDIT_DELETE_PROGRAM = 38;//R.string.audit_action_program_edited;
     public static final int ACTION_ADMIN_FAILED_LOGIN = 39;//R.string.audit_action_failed_to_login;
     public static final int ACTION_LOGOUT_AUTO = 40;//R.string.audit_action_logout;
+    public static final int ACTION_CAL_CHANGED = 41;//R.string.audit_action_pref_changed;
+    public static final int ACTION_ADMIN_APPROVED_EDIT_CALIBRARION = 42;//R.string.audit_action_program_edited;
+    public static final int ACTION_PROGRAM_CREATED = 43;//R.string.audit_action_program_edited;
 
 
     //Object Names
@@ -105,6 +108,7 @@ public class AuditLogger {
         map.put(ACTION_USER_DELETED, R.string.audit_action_user_deleted);
         map.put(ACTION_PROGRAM_STARTED, R.string.audit_action_program_started);
         map.put(ACTION_PROGRAM_EDITED, R.string.audit_action_program_edited);
+        map.put(ACTION_PROGRAM_CREATED, R.string.audit_action_program_created);
         map.put(ACTION_PROGRAM_DELETED, R.string.audit_action_program_deleted);
         map.put(ACTION_PROGRAM_INDICATOR_CHANGED, R.string.audit_action_program_indicator_changed);
         map.put(ACTION_PROGRAM_CANCELED, R.string.audit_action_program_canceled);
@@ -118,12 +122,14 @@ public class AuditLogger {
         map.put(ACTION_LOGOUT_AUTO, R.string.audit_action_logout_auto);
         map.put(ACTION_ACTIVATED, R.string.audit_action_activated);
         map.put(ACTION_PREF_CHANGED, R.string.audit_action_pref_changed);
+        map.put(ACTION_CAL_CHANGED, R.string.audit_action_cal_changed);
         map.put(ACTION_USER_BLOCKED, R.string.audit_action_user_blocked);
         map.put(ACTION_USER_UNBLOCKED, R.string.audit_action_user_unblocked);
         map.put(ACTION_USER_BLOCKED_TEMPORALLY, R.string.audit_action_user_blocked_temp);
         map.put(ACTION_USER_UNBLOCKED_TEMPORALLY, R.string.audit_action_user_unblocked_temp);
         map.put(ACTION_USER_PASSWORD_UPDATED, R.string.audit_action_user_password_udpated);
         map.put(ACTION_ADMIN_APPROVED_EDIT_DELETE_PROGRAM, R.string.audit_action_admin_approved);
+        map.put(ACTION_ADMIN_APPROVED_EDIT_CALIBRARION, R.string.audit_action_admin_approved_edit_calibration);
 
 
         //Object Names
@@ -189,7 +195,7 @@ public class AuditLogger {
     public static int getResource(int id) {
         if (map.containsKey(id))
             return map.get(id);
-        return -1;
+        return id;
     }
 
     private boolean isCommentEnabled() {

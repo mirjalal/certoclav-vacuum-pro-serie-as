@@ -40,5 +40,8 @@ public class Sensor {
         return String.format(Locale.US,"%."+floatingPointNumber+"f", currentValue);
     }
 
+    public String getOffsetValueString() {
+        return String.format(Locale.US,"%."+floatingPointNumber+"f", offset);
+    }
 
 }

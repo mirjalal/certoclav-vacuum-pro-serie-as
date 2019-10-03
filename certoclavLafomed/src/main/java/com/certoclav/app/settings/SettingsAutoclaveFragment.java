@@ -24,6 +24,7 @@ import com.certoclav.app.util.AuditLogger;
 import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.MyCallback;
+import com.certoclav.app.util.Requests;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.certocloud.CloudUser;
 
@@ -57,7 +58,6 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
         getPreferenceScreen().removeAll();
 
         addPreferencesFromResource(R.xml.preference_autoclave);
-
 
 
         findPreference("preferences_autoclave_parameter_std_assign")
@@ -304,6 +304,12 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
                     }
                     if (parameter.getParameterId() == 3) {
                         AutoclaveModelManager.getInstance().setSerialNumber(parameter);
+                        updatePreferences();
+                    }
+
+                    if (parameter.getParameterId() == 10) {
+                        AutoclaveModelManager.getInstance().setStMaxVersion(parameter);
+                        Requests.getInstance().updateStMaxVersion(null, parameter.getValue().toString(), 1);
                         updatePreferences();
                     }
 

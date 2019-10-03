@@ -63,9 +63,10 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
     protected void onResume() {
         Autoclave.getInstance().setOnSensorDataListener(this);
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
-        if (!(this instanceof LoginActivity))
+        if (!(this instanceof LoginActivity) && Autoclave.getInstance().isFDAEnabled())
             handler.postDelayed(getRunnableLogout(), AppConstants.SESSION_EXPIRE);
-        overrideAllTouch(getWindow().getDecorView());
+        if (Autoclave.getInstance().isFDAEnabled())
+            overrideAllTouch(getWindow().getDecorView());
         super.onResume();
     }
 
@@ -184,8 +185,7 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
                     AuditLogger.SCEEN_EMPTY, AuditLogger.ACTION_LOGOUT_AUTO,
                     AuditLogger.OBJECT_EMPTY, null, false);
 
-            if ((CertoclavSuperActivity.this instanceof MonitorActivity
-                    && Autoclave.getInstance().getState() == AutoclaveState.RUNNING)
+            if (CertoclavSuperActivity.this instanceof MonitorActivity
                     || CertoclavSuperActivity.this instanceof LoginActivity)
                 return;
 
@@ -202,7 +202,7 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && Autoclave.getInstance().isFDAEnabled()) {
             handler.removeCallbacks(getRunnableLogout());
             handler.postDelayed(getRunnableLogout(), AppConstants.SESSION_EXPIRE);
 //            Toast.makeText(this, "touch", Toast.LENGTH_SHORT).show();
