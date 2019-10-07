@@ -676,7 +676,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        currentProgramStep = Autoclave.PROGRAM_STEPS.NOT_DEFINED;
         switch (requestCode) {
             case REQUEST_CODE_START_LATER:
                 if (resultCode == RESULT_OK) {
@@ -688,6 +688,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                     setSessionExpired(false);
                     buttonStop.performClick();
                 }
+                break;
             case REQUEST_CODE_LOGIN_AGAIN_BACK_BUTTON:
                 if (resultCode == RESULT_OK) {
                     onClickNavigationbarButton(CertoclavNavigationbarClean.BUTTON_BACK);
