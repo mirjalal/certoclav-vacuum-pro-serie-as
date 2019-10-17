@@ -21,11 +21,13 @@
         android:title="@string/title_lockout_audit_logs" />
 
 
+<!--
     <CheckBoxPreference
         android:defaultValue="@bool/preferences_lockout_create_user"
         android:key="@string/preferences_lockout_create_user"
         android:summary="@string/summary_lockout_create_user"
         android:title="@string/title_lockout_create_user" />
+-->
 
     <CheckBoxPreference
         android:defaultValue="@bool/preferences_lockout_add_program"

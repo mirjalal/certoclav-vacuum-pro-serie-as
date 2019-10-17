@@ -613,15 +613,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                 break;
             case CertoclavNavigationbarClean.BUTTON_ADD:
 
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                if ((!Autoclave.getInstance().getUser().isAdmin() || Autoclave.getInstance().getState() == AutoclaveState.LOCKED) &&
-                        prefs.getBoolean(ApplicationController.getContext().getString(R.string.preferences_lockout_create_user),
-                                ApplicationController.getContext().getResources().getBoolean(R.bool.preferences_lockout_create_user))) {
-                    Toasty.warning(this, getString(R.string.these_settings_are_locked_by_the_admin), Toast.LENGTH_SHORT, true).show();
-                    askForAdminPassword(REQUEST_CREATE_ACCOUNT);
-                } else {
-                    askForSelecteOption();
-                }
+                askForAdminPassword(REQUEST_CREATE_ACCOUNT);
 
                 break;
             case CertoclavNavigationbarClean.BUTTON_BACK:
