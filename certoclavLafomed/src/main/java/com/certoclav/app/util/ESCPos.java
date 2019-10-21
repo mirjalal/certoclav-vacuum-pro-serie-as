@@ -7,13 +7,11 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.preference.PreferenceManager;
 
-import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.database.Protocol;
 import com.certoclav.app.database.ProtocolEntry;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveMonitor;
-import com.certoclav.app.model.Log;
 import com.certoclav.library.application.ApplicationController;
 import com.j256.ormlite.dao.ForeignCollection;
 
@@ -125,11 +123,29 @@ public class ESCPos {
             sb.append(SPACING);
         }
 
+
+        /*
+         * ERROR_CODE_SUCCESSFULL = 0
+         * ERROR_CODE_INDICATOR_FAILED = 50
+         * ERROR_CODE_INDICATOR_SUCCESS = 51
+         * ERROR_CODE_INDICATOR_NOT_COMPLETED = 52
+         * */
         if (isPrefEnabled(R.string.preferences_print_program_result, R.bool.preferences_print_program_result)) {
-            if (protocol.getErrorCode() == 0) {
-                sb.append(getPrintLine()).append(context.getString(R.string.result)).append(": ").append(context.getString(R.string.passed).toUpperCase()).append("\n");
+            if (protocol.getErrorCode() == 0 || protocol.getErrorCode() == 51  || protocol.getErrorCode() == 52) {
+                sb.append(getPrintLine())
+                        .append(context.getString(R.string.result))
+                        .append(": ")
+                        .append(context.getString(R.string.passed).toUpperCase())
+                        .append(protocol.getErrorCode() == 51 ? ("( " + context.getString(R.string.indicator_success).toUpperCase() + " )") : "")
+                        .append(protocol.getErrorCode() == 52 ? ("( " + context.getString(R.string.indicator_not_completed).toUpperCase() + " )") : "")
+                        .append("\n");
             } else {
-                sb.append(getPrintLine()).append(context.getString(R.string.result)).append(": ").append(context.getString(R.string.failed).toUpperCase()).append("\n");
+                sb.append(getPrintLine())
+                        .append(context.getString(R.string.result))
+                        .append(": ")
+                        .append(context.getString(R.string.failed).toUpperCase())
+                        .append(protocol.getErrorCode() == 50 ? ("( " + context.getString(R.string.indicator_failed).toUpperCase() + " )") : "")
+                        .append("\n");
                 sb.append(getPrintLine()).append(AutoclaveMonitor.getInstance().getErrorString(protocol.getErrorCode())).append("\n");
             }
             sb.append(SPACING);

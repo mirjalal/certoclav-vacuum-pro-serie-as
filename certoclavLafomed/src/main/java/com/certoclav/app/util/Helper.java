@@ -34,6 +34,7 @@ import com.certoclav.app.database.ProtocolEntry;
 import com.certoclav.app.database.User;
 import com.certoclav.app.listener.BroadcastListener;
 import com.certoclav.app.model.Autoclave;
+import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.responsemodels.DeviceProgramsResponseModel;
 import com.certoclav.app.responsemodels.UserProtocolResponseModel;
@@ -1579,6 +1580,19 @@ public class Helper {
 
         dialog.show();
 
+    }
+
+    public boolean isSettingsLocked(Context context) {
+        //If the user isn't an admin, settings for admin are not locked
+        if (!(Autoclave.getInstance().getState() != AutoclaveState.LOCKED && Autoclave.getInstance().getUser().isAdmin())
+                && LockoutManager.getInstance().isLockedAll()) {
+            Toasty.warning(context,
+                    context.getString(R.string.these_settings_are_locked_by_the_admin),
+                    Toast.LENGTH_SHORT,
+                    true).show();
+            return true;
+        }
+        return false;
     }
 
 }

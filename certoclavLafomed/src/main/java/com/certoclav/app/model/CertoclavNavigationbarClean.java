@@ -138,6 +138,9 @@ public class CertoclavNavigationbarClean implements SensorDataListener {
         actionItemSettings.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (Helper.getInstance().isSettingsLocked(mActivity)) {
+                    return;
+                }
                 Intent intent = new Intent(mActivity, SettingsActivity.class);
                 mActivity.startActivity(intent);
 

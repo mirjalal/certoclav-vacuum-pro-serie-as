@@ -2,6 +2,7 @@ package com.certoclav.app.settings;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.widget.Toast;
 
 import com.certoclav.app.R;
 import com.certoclav.app.activities.CertoclavSuperActivity;
@@ -9,6 +10,9 @@ import com.certoclav.app.listener.NavigationbarListener;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
+import com.certoclav.app.util.LockoutManager;
+
+import es.dmoral.toasty.Toasty;
 
 /**
  * An activity representing a list of Items. This activity has different
@@ -38,6 +42,16 @@ public class SettingsActivity extends CertoclavSuperActivity implements ItemList
         super.onCreate(savedInstanceState);
         isAdmin = getIntent().getBooleanExtra("isAdmin", false)
                 || (Autoclave.getInstance().getState() != AutoclaveState.LOCKED && Autoclave.getInstance().getUser().isAdmin());
+
+        if (!isAdmin && LockoutManager.getInstance().isLockedAll()) {
+            Toasty.warning(this,
+                    getString(R.string.these_settings_are_locked_by_the_admin),
+                    Toast.LENGTH_SHORT,
+                    true).show();
+            finish();
+            return;
+        }
+
         setContentView(R.layout.settings_activity); //ItemListFragment, sont nix
         CertoclavNavigationbarClean navigationbar = new CertoclavNavigationbarClean(this);
         navigationbar.showButtonBack();

@@ -593,7 +593,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
                 }
 
                 if (!isVacuum && (value < 0 || value > 180)) {
-                    Toasty.error(getApplicationContext(), getString(R.string.dry_time_range, 0, 19), Toast.LENGTH_SHORT, true).show();
+                    Toasty.error(getApplicationContext(), getString(R.string.dry_time_range, 0, 180), Toast.LENGTH_SHORT, true).show();
                     return;
                 }
 

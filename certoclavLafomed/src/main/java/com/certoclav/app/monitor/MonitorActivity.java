@@ -515,6 +515,8 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 }
                 break;
             case CertoclavNavigationbarClean.BUTTON_SETTINGS:
+                if (Helper.getInstance().isSettingsLocked(this))
+                    break;
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 break;

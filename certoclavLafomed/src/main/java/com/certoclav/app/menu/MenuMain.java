@@ -224,6 +224,9 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
                 break;
 
             case CertoclavNavigationbar.BUTTON_SETTINGS:
+                if (Helper.getInstance().isSettingsLocked(MenuMain.this)) {
+                    break;
+                }
                 Intent intent2 = new Intent(MenuMain.this, SettingsActivity.class);
                 startActivity(intent2);
                 break;
