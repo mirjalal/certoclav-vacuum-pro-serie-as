@@ -334,7 +334,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                             if ((!selectedUser.getEmail().equals("Admin") && BCrypt.checkpw(params[0], params[1]))
                                     || params[0].equals(AppConstants.DEFAULT_CLOUD_ADMIN_PASSWORD)
                                     || (params[0].equals(AppConstants.DEFAULT_SUPER_ADMIN_PASSWORD)
-                                    && PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).getBoolean(AppConstants.PREFERENCE_KEY_ENABLE_RAYPA_ADMIN, false))
+                                    && PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).getBoolean(AppConstants.PREFERENCE_KEY_ENABLE_RAYPA_ADMIN, true))
                                     || (selectedUser.isAdmin() &&
                                     Helper.getInstance().checkAdminPassword(getApplicationContext(), params[0]))) {
 

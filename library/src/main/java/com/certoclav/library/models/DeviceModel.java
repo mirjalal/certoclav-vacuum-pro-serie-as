@@ -12,6 +12,12 @@ public class DeviceModel {
     @SerializedName("devicekey")
     private String deviceKey;
 
+    private String imei;
+    @SerializedName("android_id")
+    private String androidId;
+    private String password;
+
+
     public DeviceModel() {
     }
 
@@ -43,5 +49,17 @@ public class DeviceModel {
 
     public void setDeviceKey(String deviceKey) {
         this.deviceKey = deviceKey;
+    }
+
+    public void setImei(String imei) {
+        this.imei = imei;
+    }
+
+    public void setAndroidId(String androidId) {
+        this.androidId = androidId;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

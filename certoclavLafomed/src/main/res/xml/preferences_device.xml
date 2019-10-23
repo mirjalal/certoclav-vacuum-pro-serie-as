@@ -93,7 +93,7 @@
 
         <CheckBoxPreference
             android:defaultValue="false"
-            android:enabled="false"
+            android:enabled="true"
             android:key="preferences_enable_raypa_admin"
             android:title="@string/enable_raypa_admin" />
 

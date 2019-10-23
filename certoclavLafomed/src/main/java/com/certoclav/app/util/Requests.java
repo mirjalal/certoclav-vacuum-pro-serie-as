@@ -21,6 +21,7 @@ import com.certoclav.app.responsemodels.UserProtocolResponseModel;
 import com.certoclav.app.responsemodels.UserProtocolsResponseModel;
 import com.certoclav.library.certocloud.CertocloudConstants;
 import com.certoclav.library.certocloud.CloudUser;
+import com.certoclav.library.models.DeviceModel;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -74,12 +75,14 @@ public class Requests {
         sendRequest(url, myCallback, requestId, null, null, null, LicenseCountModel.class, null, Request.Method.POST);
     }
 
-    public void activateAutoclave(MyCallback myCallback, int requestId) {
-        String url = Uri.parse(CertocloudConstants.SERVER_CERTOCLOUD_URL + CertocloudConstants.REST_API_GET_LICENSE_COUNT)
+    public void activateAutoclave(MyCallback myCallback, DeviceModel deviceModel, int requestId) {
+        String url = Uri.parse(CertocloudConstants.SERVER_CERTOCLOUD_URL + CertocloudConstants.REST_API_ACTICATE_AUTOCLAVE)
                 .buildUpon()
                 .build().toString();
 
-        sendRequest(url, myCallback, requestId, null, null, null, LicenseCountModel.class, null, Request.Method.POST);
+        Gson gson = new Gson();
+
+        sendRequest(url, myCallback, requestId, null, null, gson.toJson(deviceModel), LicenseCountModel.class, null, Request.Method.POST);
     }
 
     public void enableDeviceFDA(MyCallback myCallback, boolean isEnabled, int requestId) {
@@ -289,7 +292,7 @@ public class Requests {
                     }
                 }
                 if (body != null && body.length() > 400) body = "Something went wrong.";
-                errorModel.setMessage(body != null ? body : error.getMessage() != null ? error.getMessage().toString() : "No Internet");
+                errorModel.setMessage(body != null ? body : error.getMessage() != null ? error.getMessage() : "No Internet");
                 if (myCallback != null)
                     myCallback.onError(errorModel, requestId);
             }

@@ -3,11 +3,140 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.certoclav.app"
     android:versionCode="111"
-    android:versionName="111">
+    android:versionName="1.0.0">
 
-    <uses-sdk
-        android:targetSdkVersion="26"
-        tools:overrideLibrary="com.teamviewer.sdk.screensharing,com.android.databinding.library.baseAdapters,com.android.databinding.library,android.support.compat,android.arch.lifecycle,android.support.coreutils" />
+    <application
+        android:name=".util.AppController"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.Material.Light.NoActionBar.Fullscreen">
+        <!--
+            <activity
+            android:name=".menu.ScanActiviy"
+            android:launchMode="singleInstance"
+            android:screenOrientation="sensorLandscape"></activity>
+        -->
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="sensorLandscape" />
+        <activity
+            android:name=".menu.ScanActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name=".menu.MenuLabelPrinterActivity"
+            android:screenOrientation="sensorLandscape" />
+
+        <activity
+            android:name=".menu.MenuMain"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".sterilisationassistant.AssistantActivity"
+            android:screenOrientation="sensorLandscape" />
+        <activity
+            android:name=".menu.LoginActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateAlwaysVisible"></activity>
+
+        <activity
+            android:name=".license.LicenseManagerActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateAlwaysHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+        <activity
+            android:name=".menu.RegisterActivity"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateAlwaysVisible" />
+
+        <activity
+            android:name=".monitor.MonitorActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="sensorLandscape" />
+        <activity
+            android:name=".monitor.MonitorNotificationActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="sensorLandscape" />
+        <activity
+            android:name=".menu.VideoActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="sensorLandscape" />
+
+        <activity
+            android:name=".menu.VideoFullscreenActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="sensorLandscape" />
+
+        <activity
+            android:name=".settings.TimePickerActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="sensorLandscape" />
+        <activity
+            android:name=".settings.SettingsLanguagePickerActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="sensorLandscape" />
+        <activity
+            android:name=".settings.SettingsEmailActivity"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".menu.ActivateCloudAccountActivity"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateAlwaysVisible" />
+        <activity
+            android:name=".menu.AddCloudAccountActivity"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateAlwaysVisible" />
+        <activity
+            android:name=".menu.RegisterCloudAccountActivity"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateAlwaysVisible" />
+        <activity
+            android:name=".menu.UpdateUserPasswordAccountActivity"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateAlwaysVisible" />
+
+        <activity android:name=".activities.ProgramTimerActivity" />
+
+        <activity android:name=".menu.AuditLogActivity" />
+        <activity android:name=".menu.EditProgramActivity" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="0e8d486e3f12f90c374d72e9854c12ebe4fe950e" />
+        <receiver android:name=".receiver.PlugInControlReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".settings.SettingsNetworkFragment$WifiReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="com.certoclav.library.certocloud.GetConditionsService" />
+        <service android:name=".service.CloudSocketService" />
+        <service android:name=".service.PostProtocolsService" />
+    </application>
 
     <uses-permission android:name="android.permission.ACCESS_CHECKIN_PROPERTIES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -143,135 +272,8 @@
     <uses-permission android:name="android.permission.WRITE_USER_DICTIONARY" />
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
 
-    <application
-        android:name=".util.AppController"
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@android:style/Theme.Material.Light.NoActionBar.Fullscreen">
-        <!--
-            <activity
-            android:name=".menu.ScanActiviy"
-            android:launchMode="singleInstance"
-            android:screenOrientation="sensorLandscape"></activity>
-        -->
-        <activity
-            android:name=".settings.SettingsActivity"
-            android:launchMode="singleInstance"
-            android:screenOrientation="sensorLandscape" />
-        <activity
-            android:name=".menu.ScanActivity"
-            android:launchMode="singleInstance"
-            android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateHidden" />
-
-        <receiver android:name=".receiver.PlugInControlReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
-                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.HOME" />
-            </intent-filter>
-        </receiver>
-
-        <activity
-            android:name=".menu.MenuLabelPrinterActivity"
-            android:screenOrientation="sensorLandscape" />
-        <activity
-            android:name=".menu.MenuMain"
-            android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name=".sterilisationassistant.AssistantActivity"
-            android:screenOrientation="sensorLandscape" />
-
-        <service android:name="com.certoclav.library.certocloud.GetConditionsService" />
-        <service android:name=".service.CloudSocketService" />
-
-        <activity
-            android:name=".menu.LoginActivity"
-            android:launchMode="singleInstance"
-            android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateAlwaysVisible">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.HOME" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".license.LicenseManagerActivity"
-            android:launchMode="singleInstance"
-            android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateAlwaysHidden"></activity>
-        <activity
-            android:name=".menu.RegisterActivity"
-            android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateAlwaysVisible" />
-
-        <receiver android:name=".settings.SettingsNetworkFragment$WifiReceiver">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
-
-        <activity
-            android:name=".monitor.MonitorActivity"
-            android:launchMode="singleInstance"
-            android:screenOrientation="sensorLandscape" />
-        <activity
-            android:name=".monitor.MonitorNotificationActivity"
-            android:launchMode="singleInstance"
-            android:screenOrientation="sensorLandscape" />
-        <activity
-            android:name=".menu.VideoActivity"
-            android:launchMode="singleInstance"
-            android:screenOrientation="sensorLandscape" />
-        <activity
-            android:name=".menu.VideoFullscreenActivity"
-            android:launchMode="singleInstance"
-            android:screenOrientation="sensorLandscape" />
-        <activity
-            android:name=".settings.TimePickerActivity"
-            android:launchMode="singleInstance"
-            android:screenOrientation="sensorLandscape" />
-        <activity
-            android:name=".settings.SettingsLanguagePickerActivity"
-            android:launchMode="singleInstance"
-            android:screenOrientation="sensorLandscape" />
-        <activity
-            android:name=".settings.SettingsEmailActivity"
-            android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="adjustPan" />
-
-        <service android:name=".service.PostProtocolsService" />
-
-        <activity
-            android:name=".menu.ActivateCloudAccountActivity"
-            android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateAlwaysVisible" />
-        <activity
-            android:name=".menu.AddCloudAccountActivity"
-            android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateAlwaysVisible" />
-        <activity
-            android:name=".menu.RegisterCloudAccountActivity"
-            android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateAlwaysVisible" />
-        <activity
-            android:name=".menu.UpdateUserPasswordAccountActivity"
-            android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateAlwaysVisible" />
-
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="0e8d486e3f12f90c374d72e9854c12ebe4fe950e" />
-
-        <activity android:name=".activities.ProgramTimerActivity" />
-        <activity android:name=".menu.AuditLogActivity" />
-        <activity android:name=".menu.EditProgramActivity" />
-    </application>
+    <uses-sdk
+        android:targetSdkVersion="26"
+        tools:overrideLibrary="com.teamviewer.sdk.screensharing,com.android.databinding.library.baseAdapters,com.android.databinding.library,android.support.compat,android.arch.lifecycle,android.support.coreutils" />
 
 </manifest>
