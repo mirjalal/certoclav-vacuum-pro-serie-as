@@ -21,13 +21,12 @@ import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.Protocol;
-import com.certoclav.app.database.ProtocolEntry;
 import com.certoclav.app.listener.UserProgramListener;
 import com.certoclav.app.menu.MenuLabelPrinterActivity;
 import com.certoclav.app.model.Autoclave;
-import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.ErrorModel;
+import com.certoclav.app.util.ESCPos;
 import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.MyCallback;
 import com.certoclav.app.util.ServerConfigs;
@@ -273,37 +272,20 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
                 try {
                     final int numberOfProtocols = protocols.size();
                     int i = 0;
+                    ESCPos printUtils = new ESCPos();
                     while (i < numberOfProtocols) {
 
-                        StringBuilder sb = new StringBuilder();
-                        Protocol protocol = protocols.get(i);
+                        String sb = printUtils.protocolToString(protocols.get(i), false, getContext());
 
-                        String filename = Autoclave.getInstance().getController().getSerialnumber() + "-" + protocol.getZyklusNumber();
+                        String filename = Autoclave.getInstance().getController().getSerialnumber() + "-" + protocols.get(i).getZyklusNumber();
                         //	barProgressDialog.setMessage("Copy " + filename + ".txt");
 
-                        sb.append("Protocol CertoClav Vacuum Pro Series").append("\r\n")
-                                .append("S/N.: ").append(Autoclave.getInstance().getController().getSerialnumber()).append("\r\n")
-                                .append("\r\n")
-                                .append("Program: ").append(protocol.getProfileName()).append("\r\n")
-                                .append("Program description: ").append(protocol.getProfileDescription()).append("\r\n")
-                                .append("Cycle number: ").append(protocol.getZyklusNumber()).append("\r\n")
-                                .append("Start time: ").append(protocol.getStartTime()).append("\r\n")
-                                .append("End time: ").append(protocol.getEndTime()).append("\r\n")
-                                .append("Status: ").append(protocol.getErrorCode()).append("\r\n")
-                                .append("\r\n")
-                                .append("h:m:s").append("\t").append("temperature").append("\t").append("pressure").append("\r\n");
-                        for (ProtocolEntry pE : protocol.getProtocolEntry()) {
-                            sb.append(pE.getFormatedTimeStampShort()).append("\t").append(pE.getTemperature()).append("\t").append(pE.getPressure()).append("\r\n");
-                        }
-
-
-                        sb.append("Summary: ").append(AutoclaveMonitor.getInstance().getErrorString(protocol.getErrorCode()));
                         ExportUtils expUtils = new ExportUtils();
                         boolean success = false;
                         if (target_id == EXPORT_TARGET_USB) {
-                            success = expUtils.writeToExtUsbFile("Raypa protocols", filename, "txt", sb.toString());
+                            success = expUtils.writeToExtUsbFile("Raypa protocols", filename, "txt", sb);
                         } else {
-                            success = expUtils.writeToExtSDFile("Raypa protocols", filename, "txt", sb.toString());
+                            success = expUtils.writeToExtSDFile("Raypa protocols", filename, "txt", sb);
                         }
                         if (success == false) {
                             return false;

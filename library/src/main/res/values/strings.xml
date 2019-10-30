@@ -351,5 +351,7 @@
     <string name="exhaust_mode">Exhaust Mode</string>
     <string name="fast_cooling">Fast Cooling</string>
     <string name="fast">Fast</string>
+    <string name="notification_error_desc">If an error occured, send notification</string>
+    <string name="notification_success_desc">If program finished successfully, send notification</string>
 
 </resources>

@@ -36,8 +36,7 @@ public class ESCPos {
 
     }
 
-
-    public void printProtocol(Protocol protocol, Context context) {
+    public String protocolToString(Protocol protocol, boolean isPrinting, Context context) {
         //get version
         //Print line
         i = 5;
@@ -82,22 +81,22 @@ public class ESCPos {
         //GLP Header
         if (isPrefEnabled(R.string.preferences_print_header, R.bool.preferences_print_header)
                 && prefs.getString("preferences_glp_header", "").length() > 0) {
-            sb.append(getPrintLine()).append(prefs.getString("preferences_glp_header", "") + "\n");
+            sb.append(getPrintLine(isPrinting)).append(prefs.getString("preferences_glp_header", "") + "\n");
         }
         //Autoclave Name
         if (isPrefEnabled(R.string.preferences_print_autoclave_name, R.bool.preferences_print_autoclave_name))
-            sb.append(getPrintLine()).append(context.getString(R.string.glp_autoclave_name)).append(" ").append(
+            sb.append(getPrintLine(isPrinting)).append(context.getString(R.string.glp_autoclave_name)).append(" ").append(
                     prefs.getString(context.getString(R.string.preferences_glp_autoclave_name),
                             context.getString(R.string.preferences_print_autoclave_name_value)) + "\n");
 
         //Serial Number
         if (isPrefEnabled(R.string.preferences_print_autoclave_serial_number, R.bool.preferences_print_autoclave_serial_number))
-            sb.append(getPrintLine()).append(context.getString(R.string.glp_autoclave_serial_number)).append(" ").append(
+            sb.append(getPrintLine(isPrinting)).append(context.getString(R.string.glp_autoclave_serial_number)).append(" ").append(
                     Autoclave.getInstance().getController().getSavetyKey()).append(version).append("\n");
 
         //Project Name
         if (isPrefEnabled(R.string.preferences_print_project_name, R.bool.preferences_print_project_name))
-            sb.append(getPrintLine()).append(context.getString(R.string.glp_project_name)).append(" ").append(
+            sb.append(getPrintLine(isPrinting)).append(context.getString(R.string.glp_project_name)).append(" ").append(
                     prefs.getString(context.getString(R.string.preferences_glp_project_name),
                             "") + "\n");
 
@@ -106,19 +105,19 @@ public class ESCPos {
 
         //Program Name
         if (isPrefEnabled(R.string.preferences_print_program_name, R.bool.preferences_print_program_name)) {
-            sb.append(getPrintLine()).append(context.getString(R.string.glp_program_name)).append(" ")
+            sb.append(getPrintLine(isPrinting)).append(context.getString(R.string.glp_program_name)).append(" ")
                     .append(protocol.getProfileName().replace("\u00B0", "")).append("\n");
         }
         //Program description
         if (isPrefEnabled(R.string.preferences_print_program_desc, R.bool.preferences_print_program_desc)) {
-            sb.append(getPrintLine()).append(context.getString(R.string.print_program_desc)).append(":").append("\n");
+            sb.append(getPrintLine(isPrinting)).append(context.getString(R.string.print_program_desc)).append(":").append("\n");
             sb.append("   ").append(protocol.getProfileDescription().replace("\u00B0", "")
                     .replaceAll("\u2103", "C")
                     .replaceAll("\u2109", "F")
                     .replace("\n", "\n   ")).append("\n");
-            sb.append(getPrintLine()).append(context.getString(R.string.date)).append(": ")
+            sb.append(getPrintLine(isPrinting)).append(context.getString(R.string.date)).append(": ")
                     .append(startTimeString).append("\n");
-            sb.append(getPrintLine()).append(context.getString(R.string.cycle)).append(": ")
+            sb.append(getPrintLine(isPrinting)).append(context.getString(R.string.cycle)).append(": ")
                     .append(protocol.getZyklusNumber()).append("\n");
             sb.append(SPACING);
         }
@@ -131,8 +130,8 @@ public class ESCPos {
          * ERROR_CODE_INDICATOR_NOT_COMPLETED = 52
          * */
         if (isPrefEnabled(R.string.preferences_print_program_result, R.bool.preferences_print_program_result)) {
-            if (protocol.getErrorCode() == 0 || protocol.getErrorCode() == 51  || protocol.getErrorCode() == 52) {
-                sb.append(getPrintLine())
+            if (protocol.getErrorCode() == 0 || protocol.getErrorCode() == 51 || protocol.getErrorCode() == 52) {
+                sb.append(getPrintLine(isPrinting))
                         .append(context.getString(R.string.result))
                         .append(": ")
                         .append(context.getString(R.string.passed).toUpperCase())
@@ -140,26 +139,26 @@ public class ESCPos {
                         .append(protocol.getErrorCode() == 52 ? ("( " + context.getString(R.string.indicator_not_completed).toUpperCase() + " )") : "")
                         .append("\n");
             } else {
-                sb.append(getPrintLine())
+                sb.append(getPrintLine(isPrinting))
                         .append(context.getString(R.string.result))
                         .append(": ")
                         .append(context.getString(R.string.failed).toUpperCase())
                         .append(protocol.getErrorCode() == 50 ? ("( " + context.getString(R.string.indicator_failed).toUpperCase() + " )") : "")
                         .append("\n");
-                sb.append(getPrintLine()).append(AutoclaveMonitor.getInstance().getErrorString(protocol.getErrorCode())).append("\n");
+                sb.append(getPrintLine(isPrinting)).append(AutoclaveMonitor.getInstance().getErrorString(protocol.getErrorCode())).append("\n");
             }
             sb.append(SPACING);
-            sb.append(getPrintLine()).append(context.getString(R.string.glp_temperature)).append(": ")
+            sb.append(getPrintLine(isPrinting)).append(context.getString(R.string.glp_temperature)).append(": ")
                     .append(Helper.getInstance().celsiusToCurrentUnit(protocol.getSterilisationTemperature())).append("\n");
-            sb.append(getPrintLine()).append(context.getString(R.string.glp_pressure)).append(": ").append(protocol.getSterilisationPressure()).append("\n");
-            sb.append(getPrintLine()).append(context.getString(R.string.glp_time)).append(": ").append(protocol.getSterilisationTime()).append("\n");
-            sb.append(getPrintLine()).append(context.getString(R.string.glp_start)).append(": ").append(startTimeString).append("\n");
-            sb.append(getPrintLine()).append("End").append(": ").append(endTimeString).append("\n");
+            sb.append(getPrintLine(isPrinting)).append(context.getString(R.string.glp_pressure)).append(": ").append(protocol.getSterilisationPressure()).append("\n");
+            sb.append(getPrintLine(isPrinting)).append(context.getString(R.string.glp_time)).append(": ").append(protocol.getSterilisationTime()).append("\n");
+            sb.append(getPrintLine(isPrinting)).append(context.getString(R.string.glp_start)).append(": ").append(startTimeString).append("\n");
+            sb.append(getPrintLine(isPrinting)).append("End").append(": ").append(endTimeString).append("\n");
             sb.append(SPACING);
         }
 
         if (isPrefEnabled(R.string.preferences_print_user_name, R.bool.preferences_print_user_name)) {
-            sb.append(getPrintLine()).append(context.getString(R.string.email)).append(": ").append(protocol.getUserEmail()).append("\n");
+            sb.append(getPrintLine(isPrinting)).append(context.getString(R.string.email)).append(": ").append(protocol.getUserEmail()).append("\n");
             sb.append(SPACING);
         }
         if (isPrefEnabled(R.string.preferences_print_program_data_points, R.bool.preferences_print_program_data_points)) {
@@ -175,7 +174,7 @@ public class ESCPos {
                 break;
             }
 
-            sb.append(getPrintLine()).append(context.getString(R.string.glp_data_points)).append("\n");
+            sb.append(getPrintLine(isPrinting)).append(context.getString(R.string.glp_data_points)).append("\n");
             sb.append(String.format("%-8s", "t[h:m]"))
                     .append(String.format("%-8s", "P[bar]"))
                     .append(String.format("%-8s", "S[" + AutoclaveModelManager.getInstance().getTemperatureUnit() + "]"))
@@ -211,19 +210,22 @@ public class ESCPos {
 
         //Printed Date
         if (isPrefEnabled(R.string.preferences_print_date, R.bool.preferences_print_date))
-            sb.append(getPrintLine()).append(context.getString(R.string.glp_date)).append("\t").append(startTimeString).append("\n");
+            sb.append(getPrintLine(isPrinting)).append(context.getString(R.string.glp_date)).append("\t").append(startTimeString).append("\n");
 
         if (isPrefEnabled(R.string.preferences_print_signature, R.bool.preferences_print_signature)) {
             sb.append("\n");
-            sb.append(getPrintLine()).append(context.getString(R.string.signature) + ":    _______________" + "\n");
+            sb.append(getPrintLine(isPrinting)).append(context.getString(R.string.signature) + ":    _______________" + "\n");
             sb.append("\n");
-            sb.append(getPrintLine()).append(context.getString(R.string.verified_by) + ":  _______________" + "\n");
+            sb.append(getPrintLine(isPrinting)).append(context.getString(R.string.verified_by) + ":  _______________" + "\n");
         }
 
 
-        android.util.Log.e("printed", sb.toString());
-        printString(sb.toString());
+        return sb.toString();
+    }
 
+
+    public void printProtocol(Protocol protocol, Context context) {
+        printString(protocolToString(protocol, true, context));
     }
 
     private boolean isPrefEnabled(int resId, int defaultResId) {
@@ -232,7 +234,9 @@ public class ESCPos {
 
     int i = 5;
 
-    private String getPrintLine() {
+    private String getPrintLine(boolean isPrinting) {
+        if (!isPrinting)
+            return "";
         i += 5;
         return i + " ";
     }
@@ -372,7 +376,7 @@ public class ESCPos {
      * Encode and print QR code
      *
      * @param str        String to be encoded in QR.
-     * @param The        degree of error correction. (48 <= n <= 51)
+     * @param errCorrect        degree of error correction. (48 <= n <= 51)
      *                   48 = level L / 7% recovery capacity.
      *                   49 = level M / 15% recovery capacity.
      *                   50 = level Q / 25% recovery capacity.

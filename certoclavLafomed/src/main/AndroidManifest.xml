@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.certoclav.app"
-    android:versionCode="111"
+    android:versionCode="112"
     android:versionName="1.0.0">
 
     <application
@@ -42,13 +42,8 @@
             android:name=".menu.LoginActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateAlwaysVisible"></activity>
+            android:windowSoftInputMode="stateAlwaysVisible">
 
-        <activity
-            android:name=".license.LicenseManagerActivity"
-            android:launchMode="singleInstance"
-            android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,6 +51,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".license.LicenseManagerActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateAlwaysHidden">
 
         </activity>
         <activity

@@ -323,6 +323,7 @@
     <string name="connected">Verbunden</string>
 
     <string name="application_is_up_to_date">Software ist auf aktuellen Stand</string>
-    
+    <string name="notification_error_desc">If an error occured, send notification</string>
+
 
 </resources>

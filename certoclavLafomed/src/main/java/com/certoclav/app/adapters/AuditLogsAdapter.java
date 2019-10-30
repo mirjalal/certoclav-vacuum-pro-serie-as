@@ -83,9 +83,13 @@ public class AuditLogsAdapter extends ArrayAdapter<AuditLog> {
         screenId = log.getScreenId();
         eventId = log.getEventId();
 
-        holder.textViewAuditLog.setText(Html.fromHtml(mContext.getString(eventId,
-                username, objectId != -1 ? mContext.getString(objectId) : "", log.getValue(),
-                (screenId != -1 ? mContext.getString(screenId) : -1))));
+        try {
+            holder.textViewAuditLog.setText(Html.fromHtml(mContext.getString(eventId,
+                    username, objectId != -1 ? mContext.getString(objectId) : "", log.getValue(),
+                    (screenId != -1 ? mContext.getString(screenId) : -1))));
+        }catch (Exception e){
+            holder.textViewAuditLog.setText("Something is wrong!");
+        }
 
         holder.textViewAuditLogDate.setText(format.format(log.getDate()));
         holder.textViewAuditLogComment.setText(log.getComment());

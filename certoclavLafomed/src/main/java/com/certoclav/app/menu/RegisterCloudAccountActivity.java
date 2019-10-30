@@ -245,7 +245,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().length() > 3 || (s.toString().isEmpty() && currentUser != null))
+                if (s.toString().length() > 5 || (s.toString().isEmpty() && currentUser != null))
                     editPasswordItem.setHasValidString(true);
             }
 
@@ -308,7 +308,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                 if (currentUser == null)
                     for (User user : databaseService.getUsers()) {
                         if (editEmailItem.getText().equals(user.getEmail())) {
-                            Toasty.warning(RegisterCloudAccountActivity.this, getString(R.string.email_already_exists), Toast.LENGTH_SHORT, true).show();
+                            Toasty.error(RegisterCloudAccountActivity.this, getString(R.string.email_already_exists), Toast.LENGTH_SHORT, true).show();
                             return;
                         }
                     }
@@ -319,7 +319,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                 }
                 Log.e("RegisterActivity", "onclickRegisterButton");
 
-                if (!editPasswordItem.hasValidString()) {
+                if (!editPasswordItem.hasValidString() || editPasswordItem.getText().length() < 6) {
                     Toast.makeText(RegisterCloudAccountActivity.this, getString(R.string.passwords_min_length), Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -413,8 +413,8 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                                 onBackPressed();
                             }
                         } else {
-                            Toast.makeText(getApplicationContext(), (response == null || response.getMessage().isEmpty()) ? getString(R.string.sign_up_account_failed) : response.getMessage(),
-                                    Toast.LENGTH_SHORT).show();
+                            Toasty.error(getApplicationContext(), (response == null || response.getMessage().isEmpty()) ? getString(R.string.sign_up_account_failed) : response.getMessage(),
+                                    Toast.LENGTH_SHORT, true).show();
                         }
                         super.onPostExecute(response);
                     }
@@ -524,18 +524,27 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
     }
 
     private void showDialog() {
-        if (pDialog != null && pDialog.isShowing())
-            pDialog.dismiss();
-        pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-        pDialog.setCancelable(false);
-        pDialog.setTitleText(getString(R.string.loading));
-        pDialog.show();
+        try {
+            if (pDialog != null && pDialog.isShowing())
+                pDialog.dismiss();
+            pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            pDialog.setCancelable(false);
+            pDialog.setTitleText(getString(R.string.loading));
+            pDialog.show();
+        } catch (Exception e) {
+
+        }
     }
 
     private void hideDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismissWithAnimation();
+        try {
+
+            if (pDialog.isShowing())
+                pDialog.dismissWithAnimation();
+        } catch (Exception e) {
+
+        }
     }
 
     private void askForAdminPassword() {

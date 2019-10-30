@@ -6,7 +6,6 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
@@ -40,6 +39,7 @@ import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.MyCallback;
+import com.certoclav.app.util.MyCallbackAdminAprove;
 import com.certoclav.app.util.Requests;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.certocloud.CloudUser;
@@ -102,6 +102,12 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                 }
             });
 
+
+            findPreference(AppConstants.PREFERENCE_KEY_ADMIN_PASSWORD).setEnabled(
+                    Autoclave.getInstance().getUser().isAdmin()
+                            && Autoclave.getInstance().getUser().getEmail().equalsIgnoreCase("Admin"));
+
+
             findPreference(AppConstants.PREFERENCE_KEY_ADMIN_PASSWORD).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
                 @Override
@@ -150,58 +156,71 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 
 
 //Factory Reset
+
+//            findPreference(AppConstants.PREFERENCE_KEY_RESET).setEnabled(
+//                    Autoclave.getInstance().getUser().isAdmin());
+
+
             findPreference(AppConstants.PREFERENCE_KEY_RESET).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    try {
-                        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
-                                .setTitleText(getString(R.string.factory_reset))
-                                .setContentText(getString(R.string.do_you_really_want_to) + " " + getString(R.string.delete_all_data_))
-                                .setConfirmText(getString(R.string.yes))
-                                .setCancelText(getString(R.string.cancel))
-                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sDialog) {
-                                        if (!DatabaseService.getInstance().exportDB())
-                                            return;
-                                        sDialog.dismissWithAnimation();
-                                        if (AppConstants.TABLET_HAS_ROOT) {
+                    Helper.getInstance().askForAdminPassword(getContext(), 1, new MyCallbackAdminAprove() {
+                        @Override
+                        public void onResponse(int requestId, int responseId) {
 
-                                            try {
+                            if (responseId == APPROVED) {
+                                try {
+                                    SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                                            .setTitleText(getString(R.string.factory_reset))
+                                            .setContentText(getString(R.string.do_you_really_want_to) + " " + getString(R.string.delete_all_data_))
+                                            .setConfirmText(getString(R.string.yes))
+                                            .setCancelText(getString(R.string.cancel))
+                                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                @Override
+                                                public void onClick(SweetAlertDialog sDialog) {
+                                                    if (!DatabaseService.getInstance().exportDB())
+                                                        return;
+                                                    sDialog.dismissWithAnimation();
+                                                    if (AppConstants.TABLET_HAS_ROOT) {
 
-                                                String command;
-                                                command = "pm clear com.certoclav.app";
-                                                Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", command});//, envp);
-                                                proc.waitFor();
+                                                        try {
 
-                                            } catch (Exception ex) {
-                                                Log.e("SettingsDeviceFragment", "error clear app data");
-                                                Log.e("SettingsDeviceFragment", ex.toString());
-                                            }
-                                        } else {
-                                            // closing Entire Application
-                                            Editor editor = getActivity().getSharedPreferences("clear_cache", Context.MODE_PRIVATE).edit();
-                                            editor.clear();
-                                            editor.commit();
-                                            ApplicationController.getInstance().clearApplicationData();
-                                            android.os.Process.killProcess(android.os.Process.myPid());
-                                        }
-                                    }
-                                }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                        sweetAlertDialog.dismissWithAnimation();
-                                    }
-                                });
-                        sweetAlertDialog.setCanceledOnTouchOutside(true);
-                        sweetAlertDialog.setCancelable(true);
-                        sweetAlertDialog.show();
+                                                            String command;
+                                                            command = "pm clear com.certoclav.app";
+                                                            Process proc = Runtime.getRuntime().exec(new String[]{"su", "-c", command});//, envp);
+                                                            proc.waitFor();
+
+                                                        } catch (Exception ex) {
+                                                            Log.e("SettingsDeviceFragment", "error clear app data");
+                                                            Log.e("SettingsDeviceFragment", ex.toString());
+                                                        }
+                                                    } else {
+                                                        // closing Entire Application
+                                                        SharedPreferences.Editor editor = getActivity().getSharedPreferences("clear_cache", Context.MODE_PRIVATE).edit();
+                                                        editor.clear();
+                                                        editor.commit();
+                                                        ApplicationController.getInstance().clearApplicationData();
+                                                        android.os.Process.killProcess(android.os.Process.myPid());
+                                                    }
+                                                }
+                                            }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                @Override
+                                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                    sweetAlertDialog.dismissWithAnimation();
+                                                }
+                                            });
+                                    sweetAlertDialog.setCanceledOnTouchOutside(true);
+                                    sweetAlertDialog.setCancelable(true);
+                                    sweetAlertDialog.show();
 
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    });
 
                     return false;
                 }
@@ -270,9 +289,17 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                 public boolean onPreferenceClick(Preference preference) {
                     //Toast.makeText(getActivity(), getActivity().getString(R.string.please_use_secondary_lcd_screen_to_change_the_time), Toast.LENGTH_LONG).show();
 //                    setTimeAndDate(true);
-                    Intent intent = new Intent(Settings.ACTION_DATE_SETTINGS);
-                    intent.putExtra("extra_prefs_show_button_bar", true);
-                    startActivityForResult(intent, 0);
+
+                    Helper.getInstance().askForAdminPassword(getContext(), 2, new MyCallbackAdminAprove() {
+                        @Override
+                        public void onResponse(int requestId, int responseId) {
+                            if (responseId == APPROVED) {
+                                Intent intent = new Intent(Settings.ACTION_DATE_SETTINGS);
+                                intent.putExtra("extra_prefs_show_button_bar", true);
+                                startActivityForResult(intent, 0);
+                            }
+                        }
+                    });
 
                     return false;
                 }
@@ -555,17 +582,21 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                     for (AuditLog auditLog : audits) {
 
                         currentIndex++;
-                        sb.append(auditLog.getEmail()).append(",")
-                                .append(Html.fromHtml(getString(auditLog.getEventId(),
-                                        auditLog.getEmail(), auditLog.getObjectId() != -1 ? getString(auditLog.getObjectId()) : "", auditLog.getValue(),
-                                        (auditLog.getScreenId() != -1 ? getString(auditLog.getScreenId()) : -1)))).append(",")
-                                .append(auditLog.getComment()).append(",")
-                                .append(format.format(auditLog.getDate())).append("\r\n");
+                        try {
+                            sb.append(auditLog.getEmail()).append(",")
+                                    .append(Html.fromHtml(getString(auditLog.getEventId(),
+                                            auditLog.getEmail(), auditLog.getObjectId() != -1 ? getString(auditLog.getObjectId()) : "", auditLog.getValue(),
+                                            (auditLog.getScreenId() != -1 ? getString(auditLog.getScreenId()) : -1)))).append(",")
+                                    .append(auditLog.getComment()).append(",")
+                                    .append(format.format(auditLog.getDate())).append("\r\n");
+                        }catch (Exception e){
+
+                        }
                         if (currentIndex % updateRate == 0) {
                             final int finalCurrentIndex = currentIndex;
                             getActivity().runOnUiThread(new Runnable() {
                                 public void run() {
-                                    barProgressDialog.setTitleText(getActivity().getString(R.string.coping_protocols) + " (" + ((100 * finalCurrentIndex) / numberOfAudits) + "%)");
+                                    barProgressDialog.setTitleText(getActivity().getString(R.string.coping_logs) + " (" + ((100 * finalCurrentIndex) / numberOfAudits) + "%)");
                                 }
                             });
                         }

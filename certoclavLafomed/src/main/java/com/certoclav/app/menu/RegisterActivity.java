@@ -29,6 +29,7 @@ import com.certoclav.library.bcrypt.BCrypt;
 import java.util.Date;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
 
 public class RegisterActivity extends CertoclavSuperActivity {
 
@@ -170,7 +171,7 @@ public class RegisterActivity extends CertoclavSuperActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().length() > 3)
+                if (s.toString().length() > 5)
                     editPasswordItem.setHasValidString(true);
             }
 
@@ -235,7 +236,7 @@ public class RegisterActivity extends CertoclavSuperActivity {
                     for (User user : databaseService.getUsers()) {
                         if (editEmailItem.getText().equals(user.getEmail())) {
                             isEmailAlreadyExists = true;
-                            Toast.makeText(RegisterActivity.this, "Email already exists", Toast.LENGTH_LONG).show();
+                            Toasty.error(RegisterActivity.this, "Email already exists", Toast.LENGTH_SHORT, true).show();
                         }
                     }
 
@@ -243,23 +244,23 @@ public class RegisterActivity extends CertoclavSuperActivity {
                 Log.e("RegisterActivity", "onclickRegisterButton");
                 if (editPasswordItem.getVisibility() == View.VISIBLE) {
 
-                    if (!editPasswordItem.hasValidString()) {
-                        Toast.makeText(RegisterActivity.this, getString(R.string.passwords_min_length), Toast.LENGTH_LONG).show();
+                    if (!editPasswordItem.hasValidString() || editPasswordItem.getText().length() < 6) {
+                        Toasty.warning(RegisterActivity.this, getString(R.string.passwords_min_length), Toast.LENGTH_SHORT, true).show();
                         return;
                     }
 
                     if (!editPasswordItem.hasValidString() || !editPasswordItemConfirm.hasValidString()) {
-                        Toast.makeText(RegisterActivity.this, getString(R.string.passwords_do_not_match), Toast.LENGTH_LONG).show();
+                        Toasty.warning(RegisterActivity.this, getString(R.string.passwords_do_not_match), Toast.LENGTH_SHORT, true).show();
                         return;
                     }
 
                     if (!editEmailItem.hasValidString()) {
-                        Toast.makeText(RegisterActivity.this, getString(R.string.please_enter_a_valid_email_address), Toast.LENGTH_LONG).show();
+                        Toasty.warning(RegisterActivity.this, getString(R.string.please_enter_a_valid_email_address), Toast.LENGTH_SHORT, true).show();
                         return;
                     }
                 }
                 if (isEmailAlreadyExists) {
-                    Toast.makeText(RegisterActivity.this, getString(R.string.email_already_exists), Toast.LENGTH_LONG).show();
+                    Toasty.warning(RegisterActivity.this, getString(R.string.email_already_exists), Toast.LENGTH_SHORT, true).show();
                     return;
                 }
 
@@ -270,7 +271,7 @@ public class RegisterActivity extends CertoclavSuperActivity {
                     DatabaseService db = DatabaseService.getInstance();
                     int retval = db.deleteUser(db.getUserById(getIntent().getExtras().getInt(AppConstants.INTENT_EXTRA_USER_ID)));
                     if (retval != 1) {
-                        Toast.makeText(RegisterActivity.this, "Failed to apply changes", Toast.LENGTH_LONG).show();
+                        Toasty.error(RegisterActivity.this, "Failed to apply changes", Toast.LENGTH_SHORT, true).show();
                         return;
                     }
                 }
@@ -312,10 +313,16 @@ public class RegisterActivity extends CertoclavSuperActivity {
                         hideDialog();
                         buttonRegister.setEnabled(true);
                         if (result == true) {
-                            Toast.makeText(getApplicationContext(), isEdit ? R.string.edit_success : R.string.account_created, Toast.LENGTH_LONG).show();
+                            Toasty.success(getApplicationContext(),
+                                    getString(isEdit ? R.string.edit_success : R.string.account_created),
+                                    Toast.LENGTH_SHORT,
+                                    true).show();
                             finish();
                         } else {
-                            Toast.makeText(getApplicationContext(), getString(R.string.database_error), Toast.LENGTH_LONG).show();
+                            Toasty.error(getApplicationContext(),
+                                    getString(R.string.database_error),
+                                    Toast.LENGTH_LONG,
+                                    true).show();
                         }
                         super.onPostExecute(result);
                     }
