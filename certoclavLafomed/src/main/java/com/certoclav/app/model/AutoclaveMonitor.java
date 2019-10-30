@@ -889,7 +889,8 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                             if (condition.getEmailAddress().isEmpty() == false) {
                                 Log.e("AutoclaveMonitor", "Tyring to send mail now");
                                 notificationService.executePostEmailTask(condition.getEmailAddress(),
-                                        Autoclave.getInstance().getUser().getFirstName(), "Automatic generated notification from autoclave SN: " + Autoclave.getInstance().getController().getSerialnumber(),
+                                        Autoclave.getInstance().getUser().getFirstName(), "Automatic generated notification from autoclave SN: "
+                                                + Autoclave.getInstance().getController().getSavetyKey(),
                                         "The program" + " " +
                                                 Autoclave.getInstance().getProfile().getName() + " " +
                                                 "has been cancelled.");
@@ -898,7 +899,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                                 Log.e("AutoclaveMonitor", "Tyring to send sms now");
                                 notificationService.executePostSmsTask(condition.getSMSNumber(),
                                         "Automatic generated notification from autoclave with SN " +
-                                                Autoclave.getInstance().getController().getSerialnumber() +
+                                                Autoclave.getInstance().getController().getSavetyKey() +
                                                 "\n" +
                                                 "The program" +
                                                 " " +
@@ -925,7 +926,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                             if (condition.getEmailAddress().isEmpty() == false) {
                                 Log.e("AutoclaveMonitor", "Tyring to send mail now");
                                 notificationService.executePostEmailTask(condition.getEmailAddress(),
-                                        "", "Automatic generated notification from autoclave SN: " + Autoclave.getInstance().getController().getSerialnumber(),
+                                        "", "Automatic generated notification from autoclave SN: " + Autoclave.getInstance().getController().getSavetyKey(),
                                         "The program" +
                                                 " " +
                                                 Autoclave.getInstance().getProfile().getName() +
@@ -936,7 +937,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                                 Log.e("AutoclaveMonitor", "Tyring to send sms now");
                                 notificationService.executePostSmsTask(condition.getSMSNumber(),
                                         "Automatic generated notification from autoclave with SN " +
-                                                Autoclave.getInstance().getController().getSerialnumber() +
+                                                Autoclave.getInstance().getController().getSavetyKey() +
                                                 "\n" +
                                                 "The program" +
                                                 " " +
