@@ -116,7 +116,8 @@ public class SettingsConditionFragment extends Fragment implements Navigationbar
     public void onResume() {
 
 
-        if (CloudUser.getInstance().isLoggedIn() && !Autoclave.getInstance().getUser().isAdmin()) {
+        if (CloudUser.getInstance().isLoggedIn()
+                && Autoclave.getInstance().isOnlineMode(getContext())) {
             viewText.setVisibility(View.GONE);
             buttonSave.setVisibility(View.VISIBLE);
             for (Condition conditionCloud : CloudDatabase.getInstance().getConditionList()) {
