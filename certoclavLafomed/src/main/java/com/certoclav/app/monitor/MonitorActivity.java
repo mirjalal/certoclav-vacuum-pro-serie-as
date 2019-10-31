@@ -381,7 +381,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                                 AuditLogger.ACTION_PROGRAM_FINISHED,
                         AuditLogger.OBJECT_EMPTY,
                         Autoclave.getInstance().getProfile().getName() + " (" + getString(R.string.cycle) + " "
-                                + Autoclave.getInstance().getController().getCycleNumber() + ")", false);
+                                + (Autoclave.getInstance().getController().getCycleNumber()-1) + ")", false);
 
 
                 if (currentProgramStep == Autoclave.PROGRAM_STEPS.FINISHED) {
@@ -728,7 +728,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                                 AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
                                 AuditLogger.OBJECT_EMPTY,
                                 Autoclave.getInstance().getProfile().getName() + " (" +
-                                        getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() + ", "
+                                        getString(R.string.cycle) + " " + (Autoclave.getInstance().getController().getCycleNumber()-1) + ", "
                                         + getString(R.string.status) + ": " + getString(R.string.indicator_not_completed) + ")", false);
                         DatabaseService.getInstance().updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(),
                                 AutoclaveMonitor.ERROR_CODE_INDICATOR_NOT_COMPLETED);
@@ -753,7 +753,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                                 AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
                                 AuditLogger.OBJECT_EMPTY,
                                 Autoclave.getInstance().getProfile().getName() + " (" +
-                                        getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() + ", "
+                                        getString(R.string.cycle) + " " + (Autoclave.getInstance().getController().getCycleNumber()-1) + ", "
                                         + getString(R.string.status) + ": " + getString(R.string.indicator_failed) + ")", false);
                         DatabaseService.getInstance().updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(), AutoclaveMonitor.ERROR_CODE_INDICATOR_FAILED);
                         sweetAlertDialog.dismissWithAnimation();
@@ -767,7 +767,7 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                                 AuditLogger.ACTION_PROGRAM_INDICATOR_CHANGED,
                                 AuditLogger.OBJECT_EMPTY,
                                 Autoclave.getInstance().getProfile().getName() + " (" +
-                                        getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() + ", "
+                                        getString(R.string.cycle) + " " + (Autoclave.getInstance().getController().getCycleNumber()-1) + ", "
                                         + getString(R.string.status) + ": " + getString(R.string.indicator_success) + ")", false);
                         DatabaseService.getInstance().updateProtocolErrorCode(Autoclave.getInstance().getProtocol().getProtocol_id(), AutoclaveMonitor.ERROR_CODE_INDICATOR_SUCCESS);
                         sweetAlertDialog.dismissWithAnimation();
