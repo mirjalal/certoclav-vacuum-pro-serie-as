@@ -329,8 +329,18 @@ public class Autoclave extends Observable {
         isEmailSentForCycle = value;
     }
 
-    public boolean isEmailSentForCycle() {
+    boolean isEmailSentForCycle() {
         return isEmailSentForCycle;
+    }
+
+    private boolean isAuditLogWritten = false;
+
+    public void setAuditLogWritten(boolean value) {
+        isAuditLogWritten = value;
+    }
+
+    public boolean isAuditLogWritten() {
+        return isAuditLogWritten;
     }
 
     public void setSecondsSinceStart(long secondsSinceStart) {

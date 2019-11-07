@@ -887,17 +887,13 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                         Log.e("AutoclaveMonitor", "Try to send notifications now");
                         try {
                             if (condition.getEmailAddress().isEmpty() == false) {
-                                if (!Autoclave.getInstance().isEmailSentForCycle()) {
-                                    Log.e("AutoclaveMonitor", "Tyring to send mail now");
-                                    notificationService.executePostEmailTask(condition.getEmailAddress(),
-                                            Autoclave.getInstance().getUser().getFirstName(), "Automatic generated notification from autoclave SN: "
-                                                    + Autoclave.getInstance().getController().getSavetyKey(),
-                                            "The program" + " " +
-                                                    Autoclave.getInstance().getProfile().getName() + " " +
-                                                    "has been cancelled.");
-
-                                    Autoclave.getInstance().setEmailSentForCycle(true);
-                                }
+                                Log.e("AutoclaveMonitor", "Tyring to send mail now");
+                                notificationService.executePostEmailTask(condition.getEmailAddress(),
+                                        Autoclave.getInstance().getUser().getFirstName(), "Automatic generated notification from autoclave SN: "
+                                                + Autoclave.getInstance().getController().getSavetyKey(),
+                                        "The program" + " " +
+                                                Autoclave.getInstance().getProfile().getName() + " " +
+                                                "has been cancelled.");
                             }
                             if (condition.getSMSNumber().isEmpty() == false) {
                                 Log.e("AutoclaveMonitor", "Tyring to send sms now");

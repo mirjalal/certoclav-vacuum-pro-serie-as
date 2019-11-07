@@ -375,14 +375,17 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                     textState.setText(R.string.state_finished);
                 }
 
-                AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
-                        currentProgramStep == Autoclave.PROGRAM_STEPS.MAINTAIN_TEMP ?
-                                AuditLogger.ACTION_PROGRAM_FINISHED_MAINTAIN_TEMP :
-                                AuditLogger.ACTION_PROGRAM_FINISHED,
-                        AuditLogger.OBJECT_EMPTY,
-                        Autoclave.getInstance().getProfile().getName() + " (" + getString(R.string.cycle) + " "
-                                + (Autoclave.getInstance().getController().getCycleNumber()-1) + ")", false);
+                if (!Autoclave.getInstance().isAuditLogWritten()) {
+                    AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                            currentProgramStep == Autoclave.PROGRAM_STEPS.MAINTAIN_TEMP ?
+                                    AuditLogger.ACTION_PROGRAM_FINISHED_MAINTAIN_TEMP :
+                                    AuditLogger.ACTION_PROGRAM_FINISHED,
+                            AuditLogger.OBJECT_EMPTY,
+                            Autoclave.getInstance().getProfile().getName() + " (" + getString(R.string.cycle) + " "
+                                    + (Autoclave.getInstance().getController().getCycleNumber() - 1) + ")", false);
 
+                    Autoclave.getInstance().setAuditLogWritten(true);
+                }
 
                 if (currentProgramStep == Autoclave.PROGRAM_STEPS.FINISHED) {
                     askForIndicator();
@@ -399,12 +402,13 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 }
                 buttonStop.setText(R.string.stop);
 
-                /**
-                 * PROGRAM IS RUNNING.
-                 *
-                 * Set email related flag to `true`.
+                /*
+                  PROGRAM IS RUNNING.
+
+                  Set email and audit logging related flags to `false`.
                  */
                 Autoclave.getInstance().setEmailSentForCycle(false);
+                Autoclave.getInstance().setAuditLogWritten(false);
 
                 textState.setText(R.string.state_running);
                 textState.append(" (");
