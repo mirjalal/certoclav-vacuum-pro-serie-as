@@ -155,7 +155,7 @@ public class Controller {
             }
             return model;
         }
-        return AutoclaveModelManager.getInstance().getPCBSerialNumber();
+        return AutoclaveModelManager.getInstance().getSerialNumber();
     }
 
     public String getDeviceModel() {

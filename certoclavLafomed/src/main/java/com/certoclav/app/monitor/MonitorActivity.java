@@ -398,6 +398,14 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                     buttonStop.setVisibility(View.VISIBLE);
                 }
                 buttonStop.setText(R.string.stop);
+
+                /**
+                 * PROGRAM IS RUNNING.
+                 *
+                 * Set email related flag to `true`.
+                 */
+                Autoclave.getInstance().setEmailSentForCycle(false);
+
                 textState.setText(R.string.state_running);
                 textState.append(" (");
                 textState.append(Helper.getInstance().getStateText());

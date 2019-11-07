@@ -754,7 +754,7 @@
     <string name="audit_action_program_created"><![CDATA[<b>%1$s</b> created <font color=\"#69B7F5\"><b>%3$s</b></font> program]]></string>
     <string name="audit_action_program_deleted"><![CDATA[<b>%1$s</b> deleted <font color=\"#69B7F5\"><b>%3$s</b></font> program]]></string>
     <string name="audit_action_program_indicator_changed"><![CDATA[<b>%1$s</b> set indicator: <font color=\"#69B7F5\"><b>%3$s</b></font>]]></string>
-    <string name="audit_action_program_canceled"><![CDATA[<b>%1$s</b> canceled <font color=\"#69B7F5\"><b>%3$s</b></font> program]]></string>
+    <string name="audit_action_program_canceled"><![CDATA[<b>%1$s</b> cancelled <font color=\"#69B7F5\"><b>%3$s</b></font> program]]></string>
     <string name="audit_action_program_finished"><![CDATA[User: <b>%1$s</b>, <font color=\"#69B7F5\"><b>%3$s</b></font> program finished.]]></string>
     <string name="audit_action_program_finished_maintain"><![CDATA[<font color=\"#69B7F5\"><b>%3$s</b></font> program finished. Maintain temperature.]]></string>
     <string name="audit_action_program_failed"><![CDATA[User: <b>%1$s</b>, <font color=\"#69B7F5\"><b>%3$s</b></font> program failed.]]></string>

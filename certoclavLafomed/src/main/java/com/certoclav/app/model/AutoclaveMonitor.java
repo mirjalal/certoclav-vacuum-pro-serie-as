@@ -569,7 +569,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                                 AuditLogger.ACTION_PROGRAM_FAILED,
                                 AuditLogger.OBJECT_EMPTY,
                                 Autoclave.getInstance().getProfile().getName() + " (" +
-                                        mContext.getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() + ", " +
+                                        mContext.getString(R.string.cycle) + " " + (Autoclave.getInstance().getController().getCycleNumber() - 1) + ", " +
                                         errorList.get(0).getMsg() + " (ID: " + errorList.get(0).getErrorID() + "))", false);
                         Log.e("AutoclaveMonitor", "ERROR ID STORED INTO PROTOCOL: " + errorList.get(0).getErrorID());
                         cancelProgram(errorList.get(0).getErrorID());
@@ -580,7 +580,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                                 AuditLogger.ACTION_PROGRAM_FAILED,
                                 AuditLogger.OBJECT_EMPTY,
                                 Autoclave.getInstance().getProfile().getName() + " (" +
-                                        mContext.getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() + ", " +
+                                        mContext.getString(R.string.cycle) + " " + (Autoclave.getInstance().getController().getCycleNumber() - 1) + ", " +
                                         warningList.get(0).getMsg() + " (ID: " + warningList.get(0).getErrorID() + "))", false);
                         cancelProgram(warningList.get(0).getErrorID());
                         Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);
@@ -887,13 +887,17 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                         Log.e("AutoclaveMonitor", "Try to send notifications now");
                         try {
                             if (condition.getEmailAddress().isEmpty() == false) {
-                                Log.e("AutoclaveMonitor", "Tyring to send mail now");
-                                notificationService.executePostEmailTask(condition.getEmailAddress(),
-                                        Autoclave.getInstance().getUser().getFirstName(), "Automatic generated notification from autoclave SN: "
-                                                + Autoclave.getInstance().getController().getSavetyKey(),
-                                        "The program" + " " +
-                                                Autoclave.getInstance().getProfile().getName() + " " +
-                                                "has been cancelled.");
+                                if (!Autoclave.getInstance().isEmailSentForCycle()) {
+                                    Log.e("AutoclaveMonitor", "Tyring to send mail now");
+                                    notificationService.executePostEmailTask(condition.getEmailAddress(),
+                                            Autoclave.getInstance().getUser().getFirstName(), "Automatic generated notification from autoclave SN: "
+                                                    + Autoclave.getInstance().getController().getSavetyKey(),
+                                            "The program" + " " +
+                                                    Autoclave.getInstance().getProfile().getName() + " " +
+                                                    "has been cancelled.");
+
+                                    Autoclave.getInstance().setEmailSentForCycle(true);
+                                }
                             }
                             if (condition.getSMSNumber().isEmpty() == false) {
                                 Log.e("AutoclaveMonitor", "Tyring to send sms now");
@@ -924,14 +928,18 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                         Log.e("AutoclaveMonitor", "Try to send notifications now");
                         try {
                             if (condition.getEmailAddress().isEmpty() == false) {
-                                Log.e("AutoclaveMonitor", "Tyring to send mail now");
-                                notificationService.executePostEmailTask(condition.getEmailAddress(),
-                                        "", "Automatic generated notification from autoclave SN: " + Autoclave.getInstance().getController().getSavetyKey(),
-                                        "The program" +
-                                                " " +
-                                                Autoclave.getInstance().getProfile().getName() +
-                                                " " +
-                                                "finished successfully.");
+                                if (!Autoclave.getInstance().isEmailSentForCycle()) {
+                                    Log.e("AutoclaveMonitor", "Tyring to send mail now");
+                                    notificationService.executePostEmailTask(condition.getEmailAddress(),
+                                            "", "Automatic generated notification from autoclave SN: " + Autoclave.getInstance().getController().getSavetyKey(),
+                                            "The program" +
+                                                    " " +
+                                                    Autoclave.getInstance().getProfile().getName() +
+                                                    " " +
+                                                    "finished successfully.");
+
+                                    Autoclave.getInstance().setEmailSentForCycle(true);
+                                }
                             }
                             if (condition.getSMSNumber().isEmpty() == false) {
                                 Log.e("AutoclaveMonitor", "Tyring to send sms now");

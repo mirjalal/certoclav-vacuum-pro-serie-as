@@ -59,7 +59,7 @@ public class NotificationService {
     }
 
 
-    public Response sendSms(String phoneNumber, String message) {
+    private Response sendSms(String phoneNumber, String message) {
 
         PostUtil postUtil = new PostUtil();
 
@@ -75,7 +75,7 @@ public class NotificationService {
     }
 
 
-    public Response sendEmail(String emailAddressReceiver, String nameOfReceiver, String subjectOfMail, String contentOfMail) {
+    private Response sendEmail(String emailAddressReceiver, String nameOfReceiver, String subjectOfMail, String contentOfMail) {
 
         PostUtil postUtil = new PostUtil();
 
