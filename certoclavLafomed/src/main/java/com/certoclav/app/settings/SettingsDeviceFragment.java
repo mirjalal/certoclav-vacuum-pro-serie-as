@@ -423,7 +423,8 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
             try {
 
                 final CheckBoxPreference checkBoxPreferenceAuditComment = (CheckBoxPreference) findPreference(AppConstants.PREFERENCE_KEY_ENABLE_AUDIT_COMMENT);
-                checkBoxPreferenceAuditComment.setEnabled(Autoclave.getInstance().getUser().isAdmin());
+                checkBoxPreferenceAuditComment.setEnabled(//Autoclave.getInstance().getUser().isAdmin() &&
+                        PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(AppConstants.PREFERENCE_KEY_ENABLE_FDA, false));
             } catch (Exception e) {
                 e.printStackTrace();
             }

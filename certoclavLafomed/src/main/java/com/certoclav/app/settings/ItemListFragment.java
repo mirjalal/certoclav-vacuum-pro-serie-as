@@ -2,11 +2,13 @@ package com.certoclav.app.settings;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
 
+import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.adapters.SettingsAdapter;
 import com.certoclav.app.fragments.AuditLogFragment;
@@ -107,8 +109,6 @@ public class ItemListFragment extends ListFragment {
         //following settings are always visible
         if (Autoclave.getInstance().getUser() != null || isAdmin) {
             if (isAdmin || Autoclave.getInstance().getState() != AutoclaveState.LOCKED) {
-
-
                 //Always if it is logged in.
                 if (isAdmin || !LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.AUTOCLAVE)
                         || Autoclave.getInstance().getUser().isAdmin())
@@ -120,11 +120,14 @@ public class ItemListFragment extends ListFragment {
                             R.drawable.ic_device_settings, R.drawable.ic_device_settings_selected,
                             new SettingsDeviceFragment());
 
-                if (isAdmin || !LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.AUDIT_LOGS)
-                        || Autoclave.getInstance().getUser().isAdmin())
-                    AddItem(getListView(), getActivity().getString(R.string.settings_audit_log),
-                            R.drawable.ic_audit_logs, R.drawable.ic_audit_logs_selected,
-                            new AuditLogFragment());
+                if (PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(AppConstants.PREFERENCE_KEY_ENABLE_FDA, false)) {
+                    if (isAdmin || !LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.AUDIT_LOGS)
+                            || Autoclave.getInstance().getUser().isAdmin())
+                        AddItem(getListView(), getActivity().getString(R.string.settings_audit_log),
+                                R.drawable.ic_audit_logs, R.drawable.ic_audit_logs_selected,
+                                new AuditLogFragment());
+                }
+
                 if (isAdmin || !LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.NOTIFICATIONS)
                         || Autoclave.getInstance().getUser().isAdmin())
                     AddItem(getListView(), getActivity().getString(R.string.notifications),
@@ -142,6 +145,7 @@ public class ItemListFragment extends ListFragment {
                     AddItem(getListView(), getActivity().getString(R.string.calibration),
                             R.drawable.ic_calibartion_settings, R.drawable.ic_calibartion_settings_selected,
                             new CalibrateFragment());
+
                 if (isAdmin || Autoclave.getInstance().getUser().isAdmin())
                     AddItem(getListView(), getActivity().getString(R.string.lockout),
                             R.drawable.ic_lock, R.drawable.ic_lock_selected,
