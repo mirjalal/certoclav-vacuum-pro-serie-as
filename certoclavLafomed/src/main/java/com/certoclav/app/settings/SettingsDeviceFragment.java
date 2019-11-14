@@ -428,7 +428,6 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                 e.printStackTrace();
             }
 
-
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             if ((!Autoclave.getInstance().getUser().isAdmin() || Autoclave.getInstance().getState() == AutoclaveState.LOCKED) &&
                     prefs.getBoolean(ApplicationController.getContext().getString(R.string.preferences_lockout_device),
@@ -445,13 +444,11 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
         super.onResume();
     }
 
-
     @Override
     public void onPause() {
         Autoclave.getInstance().removeOnSensorDataListener(this);
         super.onPause();
     }
-
 
     public long FreeMemory() {
         StatFs statFs = new StatFs(Environment.getExternalStorageDirectory().getAbsolutePath());
@@ -466,7 +463,6 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
             return "0" + String.valueOf(c);
     }
 
-
     @Override
     public void onSensorDataChange(AutoclaveData data) {
         //update date and time
@@ -474,7 +470,6 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                 .append(Autoclave.getInstance().getDate())                // Month is 0 based so add 1
                 .append(" ")
                 .append(Autoclave.getInstance().getTime()));
-
     }
 
     @Override
@@ -488,13 +483,10 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
             Calendar calendar = Calendar.getInstance();
             // Do something with the contact here (bigger example below)
             ReadAndParseSerialService.getInstance().setParameter(93, new SimpleDateFormat("yyMMddHHmmss").format(calendar.getTime()));
-
         }
     }
 
     private void setTimeAndDate(boolean isDate) {
-
-
         if (isDate) {
             dateTime = Calendar.getInstance();
             DatePickerDialog datepickerdialog = new DatePickerDialog(
@@ -531,7 +523,6 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
     }
 
     public void uploadAllAuditsTo(final int target_id) {
-
         barProgressDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
         barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         barProgressDialog.setTitleText(getString(R.string.import_protocols));
@@ -547,11 +538,9 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
         }
         barProgressDialog.show();
 
-
         final DatabaseService databaseServie = DatabaseService.getInstance();
 
         new AsyncTask<Void, Boolean, Boolean>() {
-
             @Override
             protected Boolean doInBackground(Void... params) {
                 List<AuditLog> audits = databaseServie.getAuditLogs(null, null, false);
@@ -580,7 +569,6 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                     int updateRate = numberOfAudits / 100;
                     updateRate = updateRate == 0 ? 1 : updateRate;
                     for (AuditLog auditLog : audits) {
-
                         currentIndex++;
                         try {
                             sb.append(auditLog.getEmail()).append(",")
@@ -600,8 +588,6 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                                 }
                             });
                         }
-
-
                     }//end while
 
                     ExportUtils expUtils = new ExportUtils();
@@ -612,14 +598,11 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                     } else {
                         return expUtils.writeToExtSDFile(getString(R.string.audits), filename, "csv", sb.toString());
                     }
-
-
                 } catch (Exception e) {
                     Log.e("ExportUtils", "Exception during copying audits: " + e.toString());
                     e.printStackTrace();
                     return false;
                 }
-
             }
 
             @Override
@@ -638,12 +621,6 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                 }
                 super.onPostExecute(result);
             }
-
-
         }.execute();
-
-
     }
-
-
 }

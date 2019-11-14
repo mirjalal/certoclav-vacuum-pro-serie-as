@@ -1,6 +1,5 @@
 package com.certoclav.app.settings;
 
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -38,13 +37,11 @@ import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-
 public class SettingsSterilisationFragment extends PreferenceFragment {
 
     private SweetAlertDialog barProgressDialog;
     private static final int EXPORT_TARGET_USB = 1;
     private static final int EXPORT_TARGET_SD = 2;
-
 
     private OnSharedPreferenceChangeListener listener;
 
@@ -61,21 +58,17 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         //upload protocols to USB
-        ((Preference) findPreference(AppConstants.PREFERENCE_KEY_EXPORT_USB)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
-
+        Preference protocolExporter = findPreference(AppConstants.PREFERENCE_KEY_EXPORT_USB);
+        protocolExporter.setEnabled(Autoclave.getInstance().getUser().isAdmin());
+        protocolExporter.setOnPreferenceClickListener(new OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-
-
                 ExportUtils exportUtils = new ExportUtils();
-
 
                 if (exportUtils.checkExternalMedia()) { //check if usb flash drive is available
                     uploadAllProtocolsTo(EXPORT_TARGET_USB);
                 } else {
-
                     try {
-
                         SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
                                 .setTitleText(getString(R.string.mount_usb_stick))
                                 .setContentText(getString(R.string.reboot_neccessary))
@@ -89,14 +82,11 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
                         sweetAlertDialog.setCanceledOnTouchOutside(true);
                         sweetAlertDialog.setCancelable(true);
                         sweetAlertDialog.show();
-
-
                     } catch (Exception e) {
 
                     }
                 }
                 return false;
-
             }
         });
 
@@ -139,7 +129,6 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
                         }
                     });
                 } else {
-
                     SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.CUSTOM_IMAGE_TYPE)
                             .setTitleText(getString(R.string.enable_network_communication))
                             .setConfirmText(getString(R.string.ok))
@@ -154,10 +143,8 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
                     sweetAlertDialog.show();
                 }
                 return false;
-
             }
         });
-
 
         //OPEN LABEL PRINTER UTIL
         ((Preference) findPreference(AppConstants.PREFERENCE_KEY_PRINT_LABEL)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -171,7 +158,6 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
                 return false;
             }
         });
-
 
         //upload protocols to SD
 //        ((Preference) findPreference(AppConstants.PREFERENCE_KEY_EXPORT_SD)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -214,20 +200,14 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
 //        });
 
         prefs.registerOnSharedPreferenceChangeListener(listener);
-
-
     }
-
 
     @Override
     public void onResume() {
-
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 //        ((CheckBoxPreference) findPreference(AppConstants.PREFREENCE_KEY_PREHEAT)).setChecked(Autoclave.getInstance().isPreheat());
         // ((CheckBoxPreference) findPreference(AppConstants.PREFREENCE_KEY_KEEP_TEMP)).setChecked(Autoclave.getInstance().isPreheat());
         ((CheckBoxPreference) findPreference(AppConstants.PREFERENCE_KEY_STEP_BY_STEP)).setChecked(prefs.getBoolean(AppConstants.PREFERENCE_KEY_STEP_BY_STEP, false));
-
 
         if (AppConstants.IS_CERTOASSISTANT) {
             ((CheckBoxPreference) findPreference(AppConstants.PREFERENCE_KEY_STEP_BY_STEP)).setEnabled(false);
@@ -245,7 +225,6 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
     }
 
     public void uploadAllProtocolsTo(final int target_id) {
-
         barProgressDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
         barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         barProgressDialog.setTitleText(getString(R.string.import_protocols));
@@ -261,11 +240,9 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
         }
         barProgressDialog.show();
 
-
         final DatabaseService databaseServie = DatabaseService.getInstance();
 
         new AsyncTask<Void, Boolean, Boolean>() {
-
             @Override
             protected Boolean doInBackground(Void... params) {
                 List<Protocol> protocols = databaseServie.getProtocols();
@@ -298,13 +275,9 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
                                 barProgressDialog.setTitleText(getActivity().getString(R.string.coping_protocols) + " (" + ((100 * finalI) / numberOfProtocols) + "%)");
                             }
                         });
-
-
                     }//end while
                     //all protocols copied sucessfully
                     return true;
-
-
                 } catch (Exception e) {
                     Log.e("ExportUtils", "Exception during copying protocols: " + e.toString());
                     e.printStackTrace();
@@ -329,20 +302,14 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
                 }
                 super.onPostExecute(result);
             }
-
-
         }.execute();
-
-
     }
-
 
     public class EditProgramDialog extends Dialog {
 
         public EditProgramDialog(Context context) {
             super(context);
         }
-
 
         public void setOnUserProgramReceivedListener(UserProgramListener listener) {
             Autoclave.getInstance().setOnUserProgramListener(listener);
@@ -351,8 +318,5 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
         public void removeOnUserProgramReceivedListener(UserProgramListener listener) {
             Autoclave.getInstance().removeOnUserProgramListener(listener);
         }
-
     }
-
-
 }
