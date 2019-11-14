@@ -24,7 +24,6 @@ import com.certoclav.library.application.ApplicationController;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * The ProfileAdapter class provides access to the profile data items. <br>
  * ProfileAdapter is also responsible for making a view for each item in the
@@ -54,7 +53,6 @@ public class UserAdapter extends ArrayAdapter<User> {
     private SharedPreferences prefs;
     private boolean isLocked = false;
 
-
     /**
      * Constructor
      *
@@ -73,9 +71,7 @@ public class UserAdapter extends ArrayAdapter<User> {
         } else {
             isLocked = false;
         }
-
     }
-
 
     /**
      * Gets a View that displays the data at the specified position in the data
@@ -85,18 +81,14 @@ public class UserAdapter extends ArrayAdapter<User> {
      */
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-
-
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         //	if(convertView == null){
         convertView = inflater.inflate(R.layout.user_list_row, parent, false);
         LinearLayout containerItems = (LinearLayout) convertView.findViewById(R.id.user_list_element_container_button);
 
-
         actionItemEdit = (QuickActionItem) inflater.inflate(R.layout.quickaction_item, containerItems, false);
         actionItemDelete = (QuickActionItem) inflater.inflate(R.layout.quickaction_item, containerItems, false);
-
 
         if (!isLocked)
             if (Autoclave.getInstance().getUser() != null && Autoclave.getInstance().getState() != AutoclaveState.LOCKED
@@ -124,17 +116,17 @@ public class UserAdapter extends ArrayAdapter<User> {
 				actionItemDelete.setVisibility(View.INVISIBLE);
 			}*/
 
-
         TextView firstLine = (TextView) convertView.findViewById(R.id.first_line);
         firstLine.setText(getItem(position).getEmail());
 
         final TextView secondLine = (TextView) convertView.findViewById(R.id.second_line);
         secondLine.setText(getItem(position).getIsLocal() ? mContext.getString(R.string.local_account) : mContext.getString(R.string.online_account));
 
-
         actionItemDelete.setChecked(false);
         actionItemDelete.setImageResource(R.drawable.btn_remove);
-
+        actionItemDelete.setVisibility(
+            Autoclave.getInstance().getUser().isAdmin() ? View.VISIBLE : View.GONE
+        );
         //actionItemDelete.setText(getContext().getString(R.string.delete));
         actionItemDelete.setOnClickListener(new OnClickListener() {
             @Override
@@ -142,11 +134,8 @@ public class UserAdapter extends ArrayAdapter<User> {
                 for (OnClickButtonListener listener : onClickButtonListeners) {
                     listener.onClickButtonDelete(getItem(position));
                 }
-
-
             }
         });
-
 
         actionItemEdit.setChecked(false);
         actionItemEdit.setImageResource(R.drawable.ic_menu_edit);
@@ -158,8 +147,6 @@ public class UserAdapter extends ArrayAdapter<User> {
                 for (OnClickButtonListener listener : onClickButtonListeners) {
                     listener.onClickButtonEdit(getItem(position));
                 }
-
-
             }
         });
 
