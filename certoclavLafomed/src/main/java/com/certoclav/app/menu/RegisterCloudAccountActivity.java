@@ -418,8 +418,6 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                         }
                         super.onPostExecute(response);
                     }
-
-
                 }.execute(editEmailItem.getText(),
                         editPasswordItem.getText().length() > 0 ?
                                 editPasswordItem.getText() :
@@ -432,11 +430,8 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                         editMobile.getText(),
                         editCurPasswordItem.getText(),
                         checkBoxIsAdmin.isChecked() + "");
-
-
             }
         });
-
 
         if (currentUser != null) {
             editEmailItem.setText(currentUser.getEmail());
@@ -478,12 +473,13 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                 UserInfoResponseModel responseModel = (UserInfoResponseModel) response;
                 if (responseModel.isOk() && responseModel.getUser() != null) {
                     User user = responseModel.getUser();
+                    checkBoxIsAdmin.setChecked(user.isAdmin());
+                    checkBoxIsAdmin.setEnabled(user.isAdmin());
                     editEmailItem.setText(user.getEmail());
                     editFirstName.setText(user.getFirstName());
                     editLastName.setText(user.getLastName());
                     editMobile.setText(user.getMobile());
                     isManual = false;
-                    checkBoxIsAdmin.setChecked(user.isAdmin());
                     isManual = true;
                 }
         }
@@ -548,7 +544,6 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
     }
 
     private void askForAdminPassword() {
-
         final List<User> adminUsers = new ArrayList<>();
         for (User u : DatabaseService.getInstance().getUsers())
             if (u.isAdmin())
@@ -558,7 +553,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
         final SweetAlertDialog dialog = new SweetAlertDialog(this, R.layout.dialog_admin_password, SweetAlertDialog.WARNING_TYPE);
         dialog.setContentView(R.layout.dialog_admin_password);
         dialog.setTitle(R.string.register_new_user);
-        dialog.setCancelable(true);
+        dialog.setCancelable(false); // if TRUE, no  need for this dialog :D
         dialog.setCanceledOnTouchOutside(true);
         final EditText editTextPassword = dialog.findViewById(R.id.editTextDesc);
         Button buttonLogin = (Button) dialog

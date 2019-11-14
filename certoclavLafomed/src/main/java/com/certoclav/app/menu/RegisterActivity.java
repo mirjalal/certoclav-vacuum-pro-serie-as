@@ -13,30 +13,36 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.activities.CertoclavSuperActivity;
+import com.certoclav.app.adapters.UserDropdownAdapter;
+import com.certoclav.app.button.CheckboxItem;
 import com.certoclav.app.button.EditTextItem;
 import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.database.User;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
+import com.certoclav.app.util.Helper;
 import com.certoclav.library.bcrypt.BCrypt;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 
 public class RegisterActivity extends CertoclavSuperActivity {
-
-
     private LinearLayout linEditTextItemContainer;
     private Button buttonRegister;
 
+    private CheckboxItem checkBoxIsAdmin;
     private EditTextItem editEmailItem;
     private EditTextItem editPasswordItem;
     private EditTextItem editPasswordItemConfirm;
@@ -46,6 +52,7 @@ public class RegisterActivity extends CertoclavSuperActivity {
     private SweetAlertDialog pDialog;
     private boolean isEdit;
 
+    private boolean isManual = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +66,18 @@ public class RegisterActivity extends CertoclavSuperActivity {
 
         linEditTextItemContainer = (LinearLayout) findViewById(R.id.register_container_edit_text_items);
 
+        //Checkbox is Admin
+        checkBoxIsAdmin = (CheckboxItem) getLayoutInflater().inflate(R.layout.checkbox_item, linEditTextItemContainer, false);
+        checkBoxIsAdmin.setText(getString(R.string.admin));
+        checkBoxIsAdmin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (isManual)
+                    askForAdminPassword();
+                isManual = true;
+            }
+        });
+        linEditTextItemContainer.addView(checkBoxIsAdmin);
 
         editEmailItem = (EditTextItem) getLayoutInflater().inflate(R.layout.edit_text_item, linEditTextItemContainer, false);
         editEmailItem.setHint(getString(R.string.email));
@@ -298,7 +317,7 @@ public class RegisterActivity extends CertoclavSuperActivity {
                                 "",
                                 BCrypt.hashpw(params[4], BCrypt.gensalt()),
                                 new Date(),
-                                false,
+                                Boolean.valueOf(params[5]),
                                 isLocal);
 
                         int retval = databaseService.insertUser(user);
@@ -326,17 +345,10 @@ public class RegisterActivity extends CertoclavSuperActivity {
                         }
                         super.onPostExecute(result);
                     }
-
-
-                }.execute(editFirstName.getText(), editLastName.getText(), editEmailItem.getText(), editMobile.getText(), editPasswordItem.getText());
-
-
+                }.execute(editFirstName.getText(), editLastName.getText(), editEmailItem.getText(), editMobile.getText(), editPasswordItem.getText(), checkBoxIsAdmin.isChecked() + "");
             }
         });
-
-
     }
-
 
     @Override
     protected void onResume() {
@@ -345,6 +357,8 @@ public class RegisterActivity extends CertoclavSuperActivity {
             try {
                 DatabaseService db = DatabaseService.getInstance();
                 User user = db.getUserById(getIntent().getExtras().getInt(AppConstants.INTENT_EXTRA_USER_ID));
+                checkBoxIsAdmin.setChecked(user.isAdmin());
+                checkBoxIsAdmin.setEnabled(user.isAdmin());
                 editEmailItem.setText(user.getEmail());
                 editEmailItem.setEnabled(false);
                 editMobile.setText(user.getMobile());
@@ -397,5 +411,51 @@ public class RegisterActivity extends CertoclavSuperActivity {
     private void hideDialog() {
         if (pDialog.isShowing())
             pDialog.dismissWithAnimation();
+    }
+
+    private void askForAdminPassword() {
+        final List<User> adminUsers = new ArrayList<>();
+        for (User u : DatabaseService.getInstance().getUsers())
+            if (u.isAdmin())
+                adminUsers.add(u);
+        UserDropdownAdapter adapterUserDropdown = new UserDropdownAdapter(this, adminUsers);
+
+        final SweetAlertDialog dialog = new SweetAlertDialog(this, R.layout.dialog_admin_password, SweetAlertDialog.WARNING_TYPE);
+        dialog.setContentView(R.layout.dialog_admin_password);
+        dialog.setTitle(R.string.register_new_user);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(true);
+        final EditText editTextPassword = dialog.findViewById(R.id.editTextDesc);
+        Button buttonLogin = (Button) dialog
+                .findViewById(R.id.dialogButtonLogin);
+        Button buttonCancel = (Button) dialog
+                .findViewById(R.id.dialogButtonCancel);
+
+        final Spinner spinnerAdmins = dialog.findViewById(R.id.login_spinner);
+        spinnerAdmins.setAdapter(adapterUserDropdown);
+        buttonLogin.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Helper.getInstance().checkUserValidation(
+                        RegisterActivity.this,
+                        adminUsers.get(spinnerAdmins.getSelectedItemPosition()),
+                        editTextPassword.getText().toString())) {
+                    dialog.dismiss();
+                } else {
+                    Toasty.error(RegisterActivity.this, getString(R.string.admin_password_wrong), Toast.LENGTH_SHORT, true).show();
+                }
+            }
+        });
+
+        buttonCancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isManual = false;
+                checkBoxIsAdmin.setChecked(!checkBoxIsAdmin.isChecked());
+                dialog.dismissWithAnimation();
+            }
+        });
+
+        dialog.show();
     }
 }
