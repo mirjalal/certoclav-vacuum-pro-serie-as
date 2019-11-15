@@ -250,15 +250,13 @@ public class RegisterActivity extends CertoclavSuperActivity {
             @Override
             public void onClick(View v) {
 
-                boolean isEmailAlreadyExists = false;
                 if (!isEdit)
                     for (User user : databaseService.getUsers()) {
-                        if (editEmailItem.getText().equals(user.getEmail())) {
-                            isEmailAlreadyExists = true;
+                        if (editEmailItem.getText().toLowerCase().equals(user.getEmail().toLowerCase())) {
                             Toasty.error(RegisterActivity.this, "Email already exists", Toast.LENGTH_SHORT, true).show();
+                            return;
                         }
                     }
-
 
                 Log.e("RegisterActivity", "onclickRegisterButton");
                 if (editPasswordItem.getVisibility() == View.VISIBLE) {
@@ -278,11 +276,6 @@ public class RegisterActivity extends CertoclavSuperActivity {
                         return;
                     }
                 }
-                if (isEmailAlreadyExists) {
-                    Toasty.warning(RegisterActivity.this, getString(R.string.email_already_exists), Toast.LENGTH_SHORT, true).show();
-                    return;
-                }
-
 
                 final Boolean isLocal = true;
 

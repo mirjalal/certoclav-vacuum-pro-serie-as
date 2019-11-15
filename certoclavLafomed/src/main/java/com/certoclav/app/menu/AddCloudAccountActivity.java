@@ -125,22 +125,15 @@ public class AddCloudAccountActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                boolean isEmailAlreadyExists = false;
                 for (User user : databaseService.getUsers()) {
-                    if (editEmailItem.getText().equals(user.getEmail())) {
-                        isEmailAlreadyExists = true;
+                    if (editEmailItem.getText().toLowerCase().equals(user.getEmail().toLowerCase())) {
                         Toast.makeText(AddCloudAccountActivity.this, getString(R.string.email_already_exists), Toast.LENGTH_LONG).show();
+                        return;
                     }
                 }
 
-
                 if (!editEmailItem.hasValidString()) {
                     Toast.makeText(AddCloudAccountActivity.this, getString(R.string.please_enter_a_valid_email_address), Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                if (isEmailAlreadyExists) {
-                    Toast.makeText(AddCloudAccountActivity.this, getString(R.string.email_already_exists), Toast.LENGTH_LONG).show();
                     return;
                 }
 

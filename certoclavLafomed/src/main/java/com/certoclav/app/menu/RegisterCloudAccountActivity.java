@@ -307,7 +307,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
 
                 if (currentUser == null)
                     for (User user : databaseService.getUsers()) {
-                        if (editEmailItem.getText().equals(user.getEmail())) {
+                        if (editEmailItem.getText().toLowerCase().equals(user.getEmail().toLowerCase())) {
                             Toasty.error(RegisterCloudAccountActivity.this, getString(R.string.email_already_exists), Toast.LENGTH_SHORT, true).show();
                             return;
                         }
