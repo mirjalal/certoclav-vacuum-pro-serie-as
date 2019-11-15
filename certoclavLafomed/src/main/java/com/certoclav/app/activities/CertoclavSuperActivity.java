@@ -157,16 +157,16 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
 
         if (sharedPreferences.getAll().get(key) instanceof Boolean) {
             AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_PREF_CHANGED,
-                    key.hashCode(), allPreferences.get(key) + " \u00BB " + sharedPreferences.getBoolean(key, false) + "", true);
+                    key.hashCode(), allPreferences.get(key) + " -> " + sharedPreferences.getBoolean(key, false) + "", true);
         } else if (sharedPreferences.getAll().get(key) instanceof String) {
             AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_PREF_CHANGED,
-                    key.hashCode(), allPreferences.get(key) + " \u00BB " + sharedPreferences.getString(key, "") + "", true);
+                    key.hashCode(), allPreferences.get(key) + " -> " + sharedPreferences.getString(key, "") + "", true);
         } else if (sharedPreferences.getAll().get(key) instanceof Integer) {
             AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_PREF_CHANGED,
-                    key.hashCode(), allPreferences.get(key) + " \u00BB " + sharedPreferences.getInt(key, -1) + "", true);
+                    key.hashCode(), allPreferences.get(key) + " -> " + sharedPreferences.getInt(key, -1) + "", true);
         } else if (sharedPreferences.getAll().get(key) instanceof Float) {
             AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_PREF_CHANGED,
-                    key.hashCode(), allPreferences.get(key) + " \u00BB " + sharedPreferences.getFloat(key, 0f) + "", true);
+                    key.hashCode(), allPreferences.get(key) + " -> " + sharedPreferences.getFloat(key, 0f) + "", true);
         }
 
         allPreferences = sharedPreferences.getAll();

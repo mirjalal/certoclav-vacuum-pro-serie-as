@@ -305,7 +305,7 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
                     if (isOffsetValueDifferent(Autoclave.getInstance().getData().getTemp1().getOffset(), offsetTemp1))
                         AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CAL_CHANGED,
                                 R.string.offset_of_steam_sensor, Autoclave.getInstance().getData().getTemp1().getOffsetValueString() + " "
-                                        + Helper.getInstance().getTemperatureUnitText(null) + " \u00BB " + offsetTemp1 + " "
+                                        + Helper.getInstance().getTemperatureUnitText(null) + " -> " + offsetTemp1 + " "
                                         + Helper.getInstance().getTemperatureUnitText(null), true);
                     break;
                 case AppConstants.PARAM_OFFSET_MEDIA:
@@ -316,7 +316,7 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
                     if (isOffsetValueDifferent(Autoclave.getInstance().getData().getTemp2().getOffset(), offsetMedia))
                         AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CAL_CHANGED,
                                 R.string.offset_of_media_sensor, Autoclave.getInstance().getData().getTemp2().getOffsetValueString() + " "
-                                        + Helper.getInstance().getTemperatureUnitText(null) + " \u00BB " + offsetMedia + " "
+                                        + Helper.getInstance().getTemperatureUnitText(null) + " -> " + offsetMedia + " "
                                         + Helper.getInstance().getTemperatureUnitText(null), true);
                     break;
                 case AppConstants.PARAM_OFFSET_MEDIA_2:
@@ -325,7 +325,7 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
                     if (isOffsetValueDifferent(Autoclave.getInstance().getData().getTemp3().getOffset(), offsetMedia2))
                         AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CAL_CHANGED,
                                 R.string.offset_of_media_2_sensor, Autoclave.getInstance().getData().getTemp3().getOffsetValueString() + " "
-                                        + Helper.getInstance().getTemperatureUnitText(null) + " \u00BB " + offsetMedia2 + " "
+                                        + Helper.getInstance().getTemperatureUnitText(null) + " -> " + offsetMedia2 + " "
                                         + Helper.getInstance().getTemperatureUnitText(null), true);
                     break;
                 case AppConstants.PARAM_OFFSET_PRESSURE_1:
@@ -334,7 +334,7 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
                     if (isOffsetValueDifferent(Autoclave.getInstance().getData().getPress().getOffset(), offsetPress))
                         AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CAL_CHANGED,
                                 R.string.offset_of_pressure_sensor_kpa_, Autoclave.getInstance().getData().getPress().getOffsetValueString() + " "
-                                        + " \u00BB " + offsetPress + " "
+                                        + " -> " + offsetPress + " "
                                 , true);
                     break;
                 case AppConstants.PARAM_OFFSET_PRESSURE_2:
@@ -345,7 +345,7 @@ public class CalibrateFragment extends Fragment implements CalibrationListener, 
                     if (isOffsetValueDifferent(Autoclave.getInstance().getData().getPress2().getOffset(), offsetPress2))
                         AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_SETTINGS, AuditLogger.ACTION_CAL_CHANGED,
                                 R.string.offset_of_pressure_sensor_2_kpa_, Autoclave.getInstance().getData().getPress2().getOffsetValueString() + " "
-                                        + " \u00BB " + offsetPress2 + " "
+                                        + " -> " + offsetPress2 + " "
                                 , true);
 
                     break;

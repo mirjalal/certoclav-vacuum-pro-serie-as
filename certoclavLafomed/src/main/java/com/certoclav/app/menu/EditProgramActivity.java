@@ -683,7 +683,7 @@ public class EditProgramActivity extends CertoclavSuperActivity implements Navig
 
     private String getChangingString(int resId, Object oldValue, Object newValue) {
         return !newValue.equals(oldValue) ?
-                (getString(resId) + ": " + oldValue + " \u00BB " + newValue + ", ") : "";
+                (getString(resId) + ": " + oldValue + " -> " + newValue + ", ") : "";
 
     }
 
