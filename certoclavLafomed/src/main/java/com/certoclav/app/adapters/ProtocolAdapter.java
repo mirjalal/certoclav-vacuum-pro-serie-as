@@ -66,7 +66,7 @@ public class ProtocolAdapter extends ArrayAdapter<Protocol> {
 
 
             TextView id = (TextView) convertView.findViewById(R.id.protocols_element_id);
-            id.setText(Integer.toString(getItem(position).getZyklusNumber()));
+            id.setText(Integer.toString(getItem(position).getZyklusNumber() - 1)); // cycleNumber - 1
 
             TextView startTime = (TextView) convertView.findViewById(R.id.protocols_element_startTime);
             startTime.setText(getItem(position).getFormatedStartTimeHoursMinutes());
