@@ -278,12 +278,11 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
     @Override
     public void onResume() {
         Autoclave.getInstance().setOnSensorDataListener(this);
-//show date and time
 
+        //show date and time
         try {
-
-
-            findPreference(AppConstants.PREFERENCE_KEY_DATE).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            Preference dateTimePreference = findPreference(AppConstants.PREFERENCE_KEY_DATE);
+            dateTimePreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -304,7 +303,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                     return false;
                 }
             });
-
+            dateTimePreference.setEnabled(CloudUser.getInstance().isSuperAdmin());
 
             //Storage
             findPreference(AppConstants.PREFERENCE_KEY_STORAGE)
