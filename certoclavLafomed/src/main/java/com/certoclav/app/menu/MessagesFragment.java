@@ -2,6 +2,7 @@ package com.certoclav.app.menu;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,7 +98,17 @@ public class MessagesFragment extends Fragment {
             public void onClick(View v) {
                 try {
                     dialog.dismissWithAnimation();
-                    showStartScreenShareDialog();
+                    //                    showStartScreenShareDialog();
+
+                    // open teamviewer quick support apk
+                    if(!Autoclave.getInstance().isFDAEnabled()) {
+                        Intent launchIntent = getContext().getPackageManager().getLaunchIntentForPackage("com.teamviewer.quicksupport.market");
+                        if (launchIntent != null) {
+                            startActivity(launchIntent);
+                        }
+                    } else
+                        Toast.makeText(getContext(), getResources().getString(R.string.disable_fda), Toast.LENGTH_LONG).show();
+
                 } catch (Exception e) {
                     Toast.makeText(getActivity(), getString(R.string.please_select_a_protocol_first), Toast.LENGTH_LONG).show();
                 }

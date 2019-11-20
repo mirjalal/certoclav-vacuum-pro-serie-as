@@ -595,6 +595,7 @@
     <string name="error_power_supply_failure">ERROR_POWER_SUPPLY_FAILURE</string>
     <string name="error_cycle_cancelled_error">ERROR CYCLE CANCELLED BY ERROR</string>
     <string name="error_cycle_cancelled_manually">ERROR CYCLE CANCELLED MANUALLY</string>
+    <string name="disable_fda">Disable FDA mode to activate screen sharing</string>
 
 
 </resources>

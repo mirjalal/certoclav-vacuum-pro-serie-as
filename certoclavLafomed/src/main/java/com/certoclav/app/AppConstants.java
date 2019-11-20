@@ -266,6 +266,6 @@ public interface AppConstants {
     long SESSION_EXPIRE = 15 * 60 * 1000;
 //    long SESSION_EXPIRE = 20 * 1000;
     long PASSWORD_EXPIRE = 15552000000l; //6 months
-    int MAX_LOGIN_ATTEMPTS = 3;
+    int MAX_LOGIN_ATTEMPTS = 5;
     int ADMIN_BLOCK_PERIOD = 60 * 60 * 1000; //1 hour
 }

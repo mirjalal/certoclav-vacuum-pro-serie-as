@@ -391,7 +391,10 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 
                                     //Here increase the login attempt only for non admin user
 
-                                    currentUser.increaseLoginAttempt();
+                                    if(!currentUser.isAdmin())
+                                        currentUser.increaseLoginAttempt();
+
+                                    Log.e("ATTEMPTS", String.valueOf(currentUser.getLoginAttemptCount()));
 
                                     if (currentUser.isBlocked() && Autoclave.getInstance().isFDAEnabled()) {
                                         AuditLogger.getInstance().addAuditLog(

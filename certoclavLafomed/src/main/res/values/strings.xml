@@ -1024,6 +1024,7 @@
     <string name="enable_raypa_admin">Raypa Admin Enabled</string>
     <string name="activated_success">The device has been activated. A license has been used.</string>
     <string name="coping_logs">Copying logs...</string>
+    <string name="disable_fda">Disable FDA mode to activate screen sharing</string>
     <string-array name="email_subjects_array">
         <item>Request for screen share appointment</item>
         <item>Protocol Management</item>
