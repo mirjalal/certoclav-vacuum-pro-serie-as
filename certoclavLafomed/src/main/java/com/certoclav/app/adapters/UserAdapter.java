@@ -139,7 +139,9 @@ public class UserAdapter extends ArrayAdapter<User> {
 
         actionItemEdit.setChecked(false);
         actionItemEdit.setImageResource(R.drawable.ic_menu_edit);
-
+        actionItemEdit.setVisibility(
+            Autoclave.getInstance().getUser().getIsLocal() ? View.VISIBLE : View.GONE // disable password change option for online accounts
+        );
         //actionItemEdit.setText(getContext().getString(R.string.edit));
         actionItemEdit.setOnClickListener(new OnClickListener() {
             @Override
