@@ -131,6 +131,9 @@ public class User {
         return email;
     }
 
+    public boolean isLocalAdmin() {
+        return isAdmin && isLocal;
+    }
 
     User() {
         // needed by ormlite

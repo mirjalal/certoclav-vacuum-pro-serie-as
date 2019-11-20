@@ -1242,6 +1242,11 @@ public class Autoclave extends Observable {
 
     }
 
+    public boolean canChangeDateTime() {
+        return PreferenceManager
+                .getDefaultSharedPreferences(ApplicationController.getContext())
+                .getInt(AppConstants.PREFERENCE_KEY_TIMES_DATE_TIME_UPDATED, 0) == 0;
+    }
 
     public Controller getController() {
 

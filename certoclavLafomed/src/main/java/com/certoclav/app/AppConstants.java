@@ -102,6 +102,7 @@ public interface AppConstants {
     String PREFERENCE_KEY_PROGRAMOPTIONS_VISIBLE = "options_programs_visible";
     String PREFERENCE_KEY_STORAGE = "preferences_storage";
     String PREFERENCE_KEY_DATE = "preferences_date";
+    String PREFERENCE_KEY_TIMES_DATE_TIME_UPDATED = "preference_date_time_update_count";
     String PREFERENCE_KEY_RESET = "preferences_reset";
     String PREFERENCE_KEY_LANGUAGE = "preferences_language";
     String PREFERENCE_KEY_HELP_PHONE = "preferences_help_phone";

@@ -279,15 +279,23 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
     public void onResume() {
         Autoclave.getInstance().setOnSensorDataListener(this);
 
-        //show date and time
         try {
-            Preference dateTimePreference = findPreference(AppConstants.PREFERENCE_KEY_DATE);
+            //show date and time
+            final Preference dateTimePreference = findPreference(AppConstants.PREFERENCE_KEY_DATE);
             dateTimePreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     //Toast.makeText(getActivity(), getActivity().getString(R.string.please_use_secondary_lcd_screen_to_change_the_time), Toast.LENGTH_LONG).show();
 //                    setTimeAndDate(true);
+
+                    if (!CloudUser.getInstance().isSuperAdmin()) {
+                        PreferenceManager.getDefaultSharedPreferences(ApplicationController.getContext())
+                                .edit()
+                                .putInt(AppConstants.PREFERENCE_KEY_TIMES_DATE_TIME_UPDATED, 1)
+                                .apply();
+                        dateTimePreference.setEnabled(false);
+                    }
 
                     Helper.getInstance().askForAdminPassword(getContext(), 2, new MyCallbackAdminAprove() {
                         @Override
@@ -303,7 +311,10 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                     return false;
                 }
             });
-            dateTimePreference.setEnabled(CloudUser.getInstance().isSuperAdmin());
+            dateTimePreference.setEnabled(
+                CloudUser.getInstance().isSuperAdmin() ||
+                (Autoclave.getInstance().getUser().isLocalAdmin() && Autoclave.getInstance().canChangeDateTime())
+            );
 
             //Storage
             findPreference(AppConstants.PREFERENCE_KEY_STORAGE)
@@ -359,10 +370,12 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 //
 //            Enable FDA
             try {
+                //Enable Audit Comment
+                final CheckBoxPreference checkBoxPreferenceAuditComment = (CheckBoxPreference) findPreference(AppConstants.PREFERENCE_KEY_ENABLE_AUDIT_COMMENT);
+                checkBoxPreferenceAuditComment.setEnabled(Autoclave.getInstance().getUser().isAdmin() && Autoclave.getInstance().isFDAEnabled());
 
                 final CheckBoxPreference checkBoxPreferenceFDA = (CheckBoxPreference) findPreference(AppConstants.PREFERENCE_KEY_ENABLE_FDA);
                 checkBoxPreferenceFDA.setEnabled(CloudUser.getInstance().isSuperAdmin());
-
                 checkBoxPreferenceFDA.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                     @Override
                     public boolean onPreferenceChange(Preference preference, Object o) {
@@ -382,6 +395,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                                 dialog.setTitleText(getString(R.string.success));
                                 dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                                 dialog.setConfirmText(getString(R.string.ok));
+                                checkBoxPreferenceAuditComment.setEnabled(true);
                             }
 
                             @Override
@@ -414,14 +428,6 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
             try {
                 final CheckBoxPreference checkBoxPreferenceEnabledRaypaAdmin = (CheckBoxPreference) findPreference(AppConstants.PREFERENCE_KEY_ENABLE_RAYPA_ADMIN);
                 checkBoxPreferenceEnabledRaypaAdmin.setEnabled(Autoclave.getInstance().getUser().isAdmin());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            //Enable Audit Comment
-            try {
-                final CheckBoxPreference checkBoxPreferenceAuditComment = (CheckBoxPreference) findPreference(AppConstants.PREFERENCE_KEY_ENABLE_AUDIT_COMMENT);
-                checkBoxPreferenceAuditComment.setEnabled(Autoclave.getInstance().getUser().isAdmin() && Autoclave.getInstance().isFDAEnabled());
             } catch (Exception e) {
                 e.printStackTrace();
             }
