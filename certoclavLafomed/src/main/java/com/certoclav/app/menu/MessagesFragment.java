@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.certoclav.app.R;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.settings.SettingsEmailActivity;
-
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MessagesFragment extends Fragment {
@@ -20,12 +19,10 @@ public class MessagesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.menu_fragment_information_messages, container, false);
-
         rootView.findViewById(R.id.card_view).setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
                     showSupportDialog();
                 } else {
@@ -36,7 +33,6 @@ public class MessagesFragment extends Fragment {
         });
         return rootView;
     }
-
 
     @Override
     public void onResume() {
