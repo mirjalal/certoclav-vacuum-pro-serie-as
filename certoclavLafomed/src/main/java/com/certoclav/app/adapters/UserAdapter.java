@@ -125,7 +125,7 @@ public class UserAdapter extends ArrayAdapter<User> {
         actionItemDelete.setChecked(false);
         actionItemDelete.setImageResource(R.drawable.btn_remove);
         actionItemDelete.setVisibility(
-            Autoclave.getInstance().getUser().isAdmin() ? View.VISIBLE : View.GONE
+            Autoclave.getInstance().getUser().getIsLocalAdmin() ? View.VISIBLE : View.GONE
         );
         //actionItemDelete.setText(getContext().getString(R.string.delete));
         actionItemDelete.setOnClickListener(new OnClickListener() {

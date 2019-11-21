@@ -102,13 +102,11 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                 }
             });
 
-
-            findPreference(AppConstants.PREFERENCE_KEY_ADMIN_PASSWORD).setEnabled(
-                    Autoclave.getInstance().getUser().isAdmin()
-                            && Autoclave.getInstance().getUser().getEmail().equalsIgnoreCase("Admin"));
-
-
-            findPreference(AppConstants.PREFERENCE_KEY_ADMIN_PASSWORD).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            // regarding to the talk with Josep, ALL LOCAL ADMINS CAN CHANGE default Admin's password.
+            // there is no limitation related with their names
+            Preference changeAdminPasswordPreference = findPreference(AppConstants.PREFERENCE_KEY_ADMIN_PASSWORD);
+            changeAdminPasswordPreference.setEnabled(Autoclave.getInstance().getUser().getIsLocalAdmin());
+            changeAdminPasswordPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -313,7 +311,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
             });
             dateTimePreference.setEnabled(
                 CloudUser.getInstance().isSuperAdmin() ||
-                (Autoclave.getInstance().getUser().isLocalAdmin() && Autoclave.getInstance().canChangeDateTime())
+                (Autoclave.getInstance().getUser().getIsLocalAdmin() && Autoclave.getInstance().canChangeDateTime())
             );
 
             //Storage
@@ -321,6 +319,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                     .setSummary(getString(R.string.free_memory) + ": "
                             + Long.toString(FreeMemory())
                             + " MB");
+
             //Software Version
             PackageInfo pInfo;
             try {
@@ -368,12 +367,13 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 //                }
 //            }
 //
-//            Enable FDA
+
             try {
                 //Enable Audit Comment
                 final CheckBoxPreference checkBoxPreferenceAuditComment = (CheckBoxPreference) findPreference(AppConstants.PREFERENCE_KEY_ENABLE_AUDIT_COMMENT);
                 checkBoxPreferenceAuditComment.setEnabled(Autoclave.getInstance().getUser().isAdmin() && Autoclave.getInstance().isFDAEnabled());
 
+                // Enable FDA
                 final CheckBoxPreference checkBoxPreferenceFDA = (CheckBoxPreference) findPreference(AppConstants.PREFERENCE_KEY_ENABLE_FDA);
                 checkBoxPreferenceFDA.setEnabled(CloudUser.getInstance().isSuperAdmin());
                 checkBoxPreferenceFDA.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {

@@ -131,7 +131,7 @@ public class User {
         return email;
     }
 
-    public boolean isLocalAdmin() {
+    public boolean getIsLocalAdmin() {
         return isAdmin && isLocal;
     }
 
