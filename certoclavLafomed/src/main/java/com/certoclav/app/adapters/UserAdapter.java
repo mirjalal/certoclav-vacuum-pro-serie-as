@@ -20,6 +20,7 @@ import com.certoclav.app.database.User;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.library.application.ApplicationController;
+import com.certoclav.library.certocloud.CloudUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,7 +141,7 @@ public class UserAdapter extends ArrayAdapter<User> {
         actionItemEdit.setChecked(false);
         actionItemEdit.setImageResource(R.drawable.ic_menu_edit);
         actionItemEdit.setVisibility(
-            Autoclave.getInstance().getUser().getIsLocal() ? View.VISIBLE : View.GONE // disable password change option for online accounts
+            (Autoclave.getInstance().getUser().getIsLocal() && !CloudUser.getInstance().isSuperAdmin()) ? View.VISIBLE : View.GONE // disable password change option for online accounts
         );
         //actionItemEdit.setText(getContext().getString(R.string.edit));
         actionItemEdit.setOnClickListener(new OnClickListener() {
