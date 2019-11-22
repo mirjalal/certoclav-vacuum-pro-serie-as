@@ -265,18 +265,14 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                     }
                 }
                 return false;
-
             }
         });
-
-
     }
 
 
     @Override
     public void onResume() {
         Autoclave.getInstance().setOnSensorDataListener(this);
-
         try {
             //show date and time
             final Preference dateTimePreference = findPreference(AppConstants.PREFERENCE_KEY_DATE);
@@ -310,6 +306,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                 }
             });
             dateTimePreference.setEnabled(
+                !Autoclave.getInstance().isFDAEnabled() &&
                 CloudUser.getInstance().isSuperAdmin() ||
                 (Autoclave.getInstance().getUser().getIsLocalAdmin() && Autoclave.getInstance().canChangeDateTime())
             );
