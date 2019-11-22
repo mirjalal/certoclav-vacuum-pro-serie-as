@@ -229,22 +229,18 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                     true).show();
         }
 
-        //upload Audits to USB
-        ((Preference) findPreference(AppConstants.PREFERENCE_KEY_EXPORT_AUDIT_USB)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        // export Audits to USB
+        Preference exportAuditLogs = findPreference(AppConstants.PREFERENCE_KEY_EXPORT_AUDIT_USB);
+        exportAuditLogs.setEnabled(Autoclave.getInstance().isFDAEnabled() && Autoclave.getInstance().getUser().isAdmin());
+        exportAuditLogs.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
             @Override
             public boolean onPreferenceClick(Preference preference) {
-
-
                 ExportUtils exportUtils = new ExportUtils();
-
-
                 if (exportUtils.checkExternalMedia()) { //check if usb flash drive is available
                     uploadAllAuditsTo(EXPORT_TARGET_USB);
                 } else {
-
                     try {
-
                         SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
                                 .setTitleText(getString(R.string.mount_usb_stick))
                                 .setContentText(getString(R.string.reboot_neccessary))
@@ -258,20 +254,14 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                         sweetAlertDialog.setCanceledOnTouchOutside(true);
                         sweetAlertDialog.setCancelable(true);
                         sweetAlertDialog.show();
-
-
                     } catch (Exception e) {
 
                     }
                 }
                 return false;
-
             }
         });
-
-
     }
-
 
     @Override
     public void onResume() {
@@ -316,7 +306,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
             //Storage
             findPreference(AppConstants.PREFERENCE_KEY_STORAGE)
                     .setSummary(getString(R.string.free_memory) + ": "
-                            + Long.toString(FreeMemory())
+                            + FreeMemory()
                             + " MB");
 
             //Software Version
@@ -469,7 +459,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
         if (c >= 10)
             return String.valueOf(c);
         else
-            return "0" + String.valueOf(c);
+            return "0" + c;
     }
 
     @Override

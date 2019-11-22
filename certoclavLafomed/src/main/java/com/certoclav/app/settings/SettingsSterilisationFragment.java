@@ -90,8 +90,8 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
             }
         });
 
-        ((Preference) findPreference(AppConstants.PREFERENCE_KEY_DOWNLOAD_PROTOCOLS)).setEnabled(CloudUser.getInstance().isLoggedIn() && Autoclave.getInstance().isOnlineMode(getActivity()));
-        ((Preference) findPreference(AppConstants.PREFERENCE_KEY_DOWNLOAD_PROTOCOLS)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        findPreference(AppConstants.PREFERENCE_KEY_DOWNLOAD_PROTOCOLS).setEnabled(CloudUser.getInstance().isLoggedIn() && Autoclave.getInstance().isOnlineMode(getActivity()));
+        findPreference(AppConstants.PREFERENCE_KEY_DOWNLOAD_PROTOCOLS).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -147,7 +147,7 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
         });
 
         //OPEN LABEL PRINTER UTIL
-        ((Preference) findPreference(AppConstants.PREFERENCE_KEY_PRINT_LABEL)).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        findPreference(AppConstants.PREFERENCE_KEY_PRINT_LABEL).setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -210,7 +210,7 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
         ((CheckBoxPreference) findPreference(AppConstants.PREFERENCE_KEY_STEP_BY_STEP)).setChecked(prefs.getBoolean(AppConstants.PREFERENCE_KEY_STEP_BY_STEP, false));
 
         if (AppConstants.IS_CERTOASSISTANT) {
-            ((CheckBoxPreference) findPreference(AppConstants.PREFERENCE_KEY_STEP_BY_STEP)).setEnabled(false);
+            findPreference(AppConstants.PREFERENCE_KEY_STEP_BY_STEP).setEnabled(false);
         }
 
         if ((!Autoclave.getInstance().getUser().isAdmin() || Autoclave.getInstance().getState() == AutoclaveState.LOCKED) &&

@@ -120,9 +120,8 @@ public class ItemListFragment extends ListFragment {
                             R.drawable.ic_device_settings, R.drawable.ic_device_settings_selected,
                             new SettingsDeviceFragment());
 
-                if (Autoclave.getInstance().isFDAEnabled()) {
-                    if (isAdmin || !LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.AUDIT_LOGS)
-                            || Autoclave.getInstance().getUser().isAdmin())
+                if (Autoclave.getInstance().isFDAEnabled() && Autoclave.getInstance().getUser().isAdmin()) {
+                    if (isAdmin || !LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.AUDIT_LOGS))
                         AddItem(getListView(), getActivity().getString(R.string.settings_audit_log),
                                 R.drawable.ic_audit_logs, R.drawable.ic_audit_logs_selected,
                                 new AuditLogFragment());
