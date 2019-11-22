@@ -289,7 +289,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                                 .putInt(AppConstants.PREFERENCE_KEY_TIMES_DATE_TIME_UPDATED, dateTimeModificationCount + 1)
                                 .apply();
                         // enable the date time setting item if modification count is less than 3
-                        dateTimePreference.setEnabled(dateTimeModificationCount + 1 < 3);
+                        dateTimePreference.setEnabled(dateTimeModificationCount + 1 < 2);
                     }
 
                     startDateTimeIntent();
@@ -297,11 +297,20 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                     return false;
                 }
             });
+            /*
+             * WHEN FDA DISABLED
+             * 1) super admin can edit
+             * 2) other admins can edit always
+             *
+             * WHEN FDA ENABLED
+             * 1) super admin can edit
+             * 2) other admins can edit only 2 times in forever
+             */
             dateTimePreference.setEnabled(
                 CloudUser.getInstance().isSuperAdmin() ||
                 (
-                    !Autoclave.getInstance().isFDAEnabled() &&
-                    (Autoclave.getInstance().getUser().getIsLocalAdmin() && Autoclave.getInstance().canChangeDateTime())
+                    (!Autoclave.getInstance().isFDAEnabled() && Autoclave.getInstance().getUser().getIsLocalAdmin()) ||
+                    (Autoclave.getInstance().isFDAEnabled() && Autoclave.getInstance().getUser().getIsLocalAdmin() && Autoclave.getInstance().canChangeDateTime())
                 )
             );
 
