@@ -1242,10 +1242,18 @@ public class Autoclave extends Observable {
 
     }
 
+    /**
+     * Checks if user (local admin) can change date/time or not.
+     * Date/time change action allowed when this function returns
+     * `true`, otherwise disallowed.
+     *
+     * @return `true` if preference value is less than & not equals to 3,
+     *         `false` otherwise.
+     */
     public boolean canChangeDateTime() {
         return PreferenceManager
                 .getDefaultSharedPreferences(ApplicationController.getContext())
-                .getInt(AppConstants.PREFERENCE_KEY_TIMES_DATE_TIME_UPDATED, 0) == 0;
+                .getInt(AppConstants.PREFERENCE_KEY_TIMES_DATE_TIME_UPDATED, 0) < 3;
     }
 
     public Controller getController() {

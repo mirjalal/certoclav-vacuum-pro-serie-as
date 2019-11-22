@@ -288,30 +288,29 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 //                    setTimeAndDate(true);
 
                     if (!CloudUser.getInstance().isSuperAdmin()) {
-                        PreferenceManager.getDefaultSharedPreferences(ApplicationController.getContext())
-                                .edit()
-                                .putInt(AppConstants.PREFERENCE_KEY_TIMES_DATE_TIME_UPDATED, 1)
+                        // get date time modification related preference
+                        SharedPreferences dateTimeModificationPreference = PreferenceManager.getDefaultSharedPreferences(ApplicationController.getContext());
+                        // get current integer value of the preference
+                        int dateTimeModificationCount = dateTimeModificationPreference.getInt(AppConstants.PREFERENCE_KEY_TIMES_DATE_TIME_UPDATED, 0);
+                        // increase the value by 1
+                        dateTimeModificationPreference.edit()
+                                .putInt(AppConstants.PREFERENCE_KEY_TIMES_DATE_TIME_UPDATED, dateTimeModificationCount + 1)
                                 .apply();
-                        dateTimePreference.setEnabled(false);
+                        // enable the date time setting item if modification count is less than 3
+                        dateTimePreference.setEnabled(dateTimeModificationCount + 1 < 3);
                     }
 
-                    Helper.getInstance().askForAdminPassword(getContext(), 2, new MyCallbackAdminAprove() {
-                        @Override
-                        public void onResponse(int requestId, int responseId) {
-                            if (responseId == APPROVED) {
-                                Intent intent = new Intent(Settings.ACTION_DATE_SETTINGS);
-                                intent.putExtra("extra_prefs_show_button_bar", true);
-                                startActivityForResult(intent, 0);
-                            }
-                        }
-                    });
+                    startDateTimeIntent();
 
                     return false;
                 }
             });
             dateTimePreference.setEnabled(
                 CloudUser.getInstance().isSuperAdmin() ||
-                (Autoclave.getInstance().getUser().getIsLocalAdmin() && Autoclave.getInstance().canChangeDateTime())
+                (
+                    !Autoclave.getInstance().isFDAEnabled() &&
+                    (Autoclave.getInstance().getUser().getIsLocalAdmin() && Autoclave.getInstance().canChangeDateTime())
+                )
             );
 
             //Storage
@@ -452,6 +451,12 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
     public void onPause() {
         Autoclave.getInstance().removeOnSensorDataListener(this);
         super.onPause();
+    }
+
+    private void startDateTimeIntent() {
+        Intent intent = new Intent(Settings.ACTION_DATE_SETTINGS);
+        intent.putExtra("extra_prefs_show_button_bar", true);
+        startActivityForResult(intent, 0);
     }
 
     public long FreeMemory() {
