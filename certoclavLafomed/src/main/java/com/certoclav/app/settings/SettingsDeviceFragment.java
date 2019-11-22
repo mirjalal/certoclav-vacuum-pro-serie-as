@@ -159,7 +159,9 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 //                    Autoclave.getInstance().getUser().isAdmin());
 
 
-            findPreference(AppConstants.PREFERENCE_KEY_RESET).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            Preference factoryResetPreference = findPreference(AppConstants.PREFERENCE_KEY_RESET);
+            factoryResetPreference.setEnabled(CloudUser.getInstance().isSuperAdmin());
+            factoryResetPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
