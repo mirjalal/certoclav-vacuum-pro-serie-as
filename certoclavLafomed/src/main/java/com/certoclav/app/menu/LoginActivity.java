@@ -89,7 +89,6 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
     private ProgressBar progressBar = null; // progess bar which shows cloud
     private AutoclaveModelManager modelManager;
 
-
     // login process
 
     // Need handler for callbacks to the UI thread
@@ -403,6 +402,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                                                 AuditLogger.OBJECT_EMPTY,
                                                 null,
                                                 true);
+                                            Log.e("USER", "BLOCKED");
                                         if (currentUser.isAdmin() && Autoclave.getInstance().isFDAEnabled())
                                             currentUser.setBlockedByDate(new Date(new Date().getTime() + AppConstants.ADMIN_BLOCK_PERIOD));
                                         result = -2;
@@ -722,6 +722,34 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                 break;
             case PostUtil.RETURN_ERROR_UNAUTHORISED_PASSWORD:
                 loginFailedMessage = getString(R.string.password_not_correct_);
+                if(!currentUser.isAdmin())
+                    currentUser.increaseLoginAttempt();
+                Log.e("ATTEMPTS", String.valueOf(currentUser.getLoginAttemptCount()));
+                if (currentUser.isBlocked() && Autoclave.getInstance().isFDAEnabled()) {
+
+                    AuditLogger.getInstance().addAuditLog(
+                            currentUser, -1,
+                            currentUser.isAdmin() ? AuditLogger.ACTION_USER_BLOCKED_TEMPORALLY : AuditLogger.ACTION_USER_BLOCKED,
+                            AuditLogger.OBJECT_EMPTY,
+                            null,
+                            true);
+                    if (currentUser.isAdmin() && Autoclave.getInstance().isFDAEnabled())
+                        currentUser.setBlockedByDate(new Date(new Date().getTime() + AppConstants.ADMIN_BLOCK_PERIOD));
+
+                    Log.e("ONLINE USER", "BLOCKED");
+                    Toasty.error(getApplicationContext(),
+                            getString(currentUser.isAdmin() ? R.string.user_blocked_temp : R.string.user_blocked),
+                            Toast.LENGTH_LONG, true).show();
+                    AuditLogger.getInstance().addAuditLog(currentUser,
+                            -1,
+                            AuditLogger.ACTION_FAILED_LOGIN,
+                            AuditLogger.OBJECT_EMPTY,
+                            null,
+                            false);
+                    if (!currentUser.isAdmin())
+                        askForAdminPassword(REQUEST_UNBLOCK_USER);
+                    return;
+                }
                 break;
             case PostUtil.RETURN_ERROR_UNAUTHORISED_MAIL:
                 loginFailedMessage = getString(R.string.email_does_not_exist_please_create_a_certocloud_account_with_this_email_first_);
