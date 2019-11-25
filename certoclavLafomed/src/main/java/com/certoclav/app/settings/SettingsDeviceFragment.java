@@ -441,6 +441,8 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
             } else {
                 getPreferenceScreen().setEnabled(true);
             }
+
+            findPreference(AppConstants.PREFERENCE_KEY_SHOW_UART_LOGS).setEnabled(Autoclave.getInstance().getUser().isAdmin());
         } catch (Exception e) {
             getActivity().finish();
         }

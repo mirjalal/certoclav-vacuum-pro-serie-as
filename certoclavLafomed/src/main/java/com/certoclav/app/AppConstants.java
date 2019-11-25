@@ -126,6 +126,7 @@ public interface AppConstants {
     String PREFERENCE_KEY_CYCLE_NUMBER = "preferences_cycle_number";
     String PREFERENCE_KEY_ENABLE_FDA = "preferences_device_fda_enabled";
     String PREFERENCE_KEY_ENABLE_RAYPA_ADMIN = "preferences_enable_raypa_admin";
+    String PREFERENCE_KEY_SHOW_UART_LOGS = "preferences_device_show_logs";
     String PREFERENCE_KEY_ENABLE_AUDIT_COMMENT = "preferences_device_audit_comment_enabled";
     String PREFERENCE_KEY_LIST_GRAPH = "islistgrapportrace";
     String PREFERENCE_KEY_ID_OF_LAST_USER = "idoflastuser";

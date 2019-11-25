@@ -90,8 +90,9 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
             }
         });
 
-        findPreference(AppConstants.PREFERENCE_KEY_DOWNLOAD_PROTOCOLS).setEnabled(CloudUser.getInstance().isLoggedIn() && Autoclave.getInstance().isOnlineMode(getActivity()));
-        findPreference(AppConstants.PREFERENCE_KEY_DOWNLOAD_PROTOCOLS).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        Preference downloadProtocolsFromRaypa = findPreference(AppConstants.PREFERENCE_KEY_DOWNLOAD_PROTOCOLS);
+        downloadProtocolsFromRaypa.setEnabled(CloudUser.getInstance().isLoggedIn() && Autoclave.getInstance().isOnlineMode(getActivity()));
+        downloadProtocolsFromRaypa.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
             @Override
             public boolean onPreferenceClick(Preference preference) {

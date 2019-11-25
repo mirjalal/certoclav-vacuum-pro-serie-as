@@ -50,7 +50,7 @@ public class CertoclavSuperActivity extends FragmentActivity implements SensorDa
         textMedia = findViewById(R.id.certoclav_statusbar_text_media);
         textMedia2 = findViewById(R.id.certoclav_statusbar_text_media_2);
         textPressure = findViewById(R.id.certoclav_statusbar_text_pressure);
-//        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("preferences_device_show_logs", true))
+//        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("PREFERENCE_KEY_SHOW_UART_LOGS", true))
 //            ((ViewGroup) findViewById(R.id.fragment_debugger_uart).getParent()).removeView(findViewById(R.id.fragment_debugger_uart));
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);

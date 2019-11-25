@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.databinding.FragmentDebuggerUartBinding;
 import com.certoclav.app.service.ReadAndParseSerialService;
@@ -78,10 +79,9 @@ public class DebuggerUARTFragment extends Fragment implements ReadAndParseSerial
     }
 
     private void updateLogs() {
-
         if (logs.size() > MAX_LOG_COUNT)
             logs.remove(0);
-        if (!PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("preferences_device_show_logs", true)) {
+        if (!PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(AppConstants.PREFERENCE_KEY_SHOW_UART_LOGS, true)) {
             if (binding.textViewLogs.getText().length() > 0)
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
