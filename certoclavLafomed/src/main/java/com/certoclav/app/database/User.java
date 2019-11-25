@@ -132,7 +132,7 @@ public class User {
     }
 
     public boolean getIsLocalAdmin() {
-        return isAdmin && isLocal && !CloudUser.getInstance().isSuperAdmin();
+        return isAdmin && !CloudUser.getInstance().isSuperAdmin();
     }
 
     User() {
