@@ -14,6 +14,10 @@ import com.certoclav.app.R;
 import com.certoclav.app.databinding.FragmentDebuggerUartBinding;
 import com.certoclav.app.service.ReadAndParseSerialService;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,11 +34,24 @@ public class DebuggerUARTFragment extends Fragment implements ReadAndParseSerial
         return fragment;
     }
 
+    private BufferedOutputStream uartLogWriter;
+    private static final String UART_LOG_DIR_PATH = "/storage/emulated/0/logs";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (logs == null)
             logs = new ArrayList<>();
+
+        File uartLogDir = new File(UART_LOG_DIR_PATH);
+        if (!uartLogDir.exists()) {
+            uartLogDir.mkdirs();
+        }
+        try {
+            uartLogWriter = new BufferedOutputStream(new FileOutputStream(new File(uartLogDir, "uart.log"), true));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -63,22 +80,32 @@ public class DebuggerUARTFragment extends Fragment implements ReadAndParseSerial
         ReadAndParseSerialService.getInstance().removeSerialReadWriteListener(this);
     }
 
+    private static String uartSingleLog;
     private static List<String> logs;
     private final static int MAX_LOG_COUNT = 15;
 
     @Override
     public void onRead(final String message) {
-        logs.add("<< " + message + "");
+        uartSingleLog = "<< " + message + "";
+        logs.add(uartSingleLog);
         updateLogs();
     }
 
     @Override
     public void onWrote(final String message) {
-        logs.add(">> " + message + "");
+        uartSingleLog = "<< " + message + "";
+        logs.add(uartSingleLog);
         updateLogs();
     }
 
     private void updateLogs() {
+        try {
+            uartLogWriter.write(uartSingleLog.getBytes());
+            uartLogWriter.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         if (logs.size() > MAX_LOG_COUNT)
             logs.remove(0);
         if (!PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(AppConstants.PREFERENCE_KEY_SHOW_UART_LOGS, true)) {
