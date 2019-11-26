@@ -569,7 +569,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                                         AuditLogger.ACTION_PROGRAM_CANCELED,
                                         AuditLogger.OBJECT_EMPTY,
                                         Autoclave.getInstance().getProfile().getName() +
-                                                " (" + mContext.getString(R.string.cycle) + " " + (Autoclave.getInstance().getController().getCycleNumber() - 1) + ")", true);
+                                                " (" + mContext.getString(R.string.cycle) + " " + (Autoclave.getInstance().getController().getCycleNumber()) + ")", true);
                             }
                         });
                     }

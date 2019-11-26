@@ -569,7 +569,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                                 AuditLogger.ACTION_PROGRAM_FAILED,
                                 AuditLogger.OBJECT_EMPTY,
                                 Autoclave.getInstance().getProfile().getName() + " (" +
-                                        mContext.getString(R.string.cycle) + " " + (Autoclave.getInstance().getController().getCycleNumber() - 1) + ", " +
+                                        mContext.getString(R.string.cycle) + " " + (Autoclave.getInstance().getController().getCycleNumber()) + ", " +
                                         errorList.get(0).getMsg() + " (ID: " + errorList.get(0).getErrorID() + "))", false);
                         Log.e("AutoclaveMonitor", "ERROR ID STORED INTO PROTOCOL: " + errorList.get(0).getErrorID());
                         cancelProgram(errorList.get(0).getErrorID());
@@ -580,7 +580,7 @@ public class AutoclaveMonitor implements SensorDataListener, ConnectionStatusLis
                                 AuditLogger.ACTION_PROGRAM_FAILED,
                                 AuditLogger.OBJECT_EMPTY,
                                 Autoclave.getInstance().getProfile().getName() + " (" +
-                                        mContext.getString(R.string.cycle) + " " + (Autoclave.getInstance().getController().getCycleNumber() - 1) + ", " +
+                                        mContext.getString(R.string.cycle) + " " + (Autoclave.getInstance().getController().getCycleNumber()) + ", " +
                                         warningList.get(0).getMsg() + " (ID: " + warningList.get(0).getErrorID() + "))", false);
                         cancelProgram(warningList.get(0).getErrorID());
                         Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);
