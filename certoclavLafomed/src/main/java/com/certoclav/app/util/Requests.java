@@ -291,7 +291,7 @@ public class Requests {
                         e.printStackTrace();
                     }
                 }
-                if (body != null && body.length() > 400) body = "Something went wrong.";
+//                if (body != null && body.length() > 400) body = "Something went wrong.";
                 errorModel.setMessage(body != null ? body : error.getMessage() != null ? error.getMessage() : "No Internet");
                 if (myCallback != null)
                     myCallback.onError(errorModel, requestId);
