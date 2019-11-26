@@ -308,8 +308,8 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
             dateTimePreference.setEnabled(
                 CloudUser.getInstance().isSuperAdmin() ||
                 (
-                    (!Autoclave.getInstance().isFDAEnabled() && Autoclave.getInstance().getUser().getIsLocalAdmin()) ||
-                    (Autoclave.getInstance().isFDAEnabled() && Autoclave.getInstance().getUser().getIsLocalAdmin() && Autoclave.getInstance().canChangeDateTime())
+                    (!Autoclave.getInstance().isFDAEnabled() && Autoclave.getInstance().getUser().getIsNotSuperAdmin()) ||
+                    (Autoclave.getInstance().isFDAEnabled() && Autoclave.getInstance().getUser().getIsNotSuperAdmin() && Autoclave.getInstance().canChangeDateTime())
                 )
             );
 
