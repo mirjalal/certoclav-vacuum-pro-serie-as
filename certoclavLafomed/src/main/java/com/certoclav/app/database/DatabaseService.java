@@ -670,14 +670,13 @@ public class DatabaseService {
     }
 
     public int insertUser(User user) {
-
         try {
             int result = userDao.create(user);
             if (result != -1)
-                AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getSelectedAdminUser(), AuditLogger.SCEEN_EMPTY,
+                AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
                         AuditLogger.ACTION_USER_CREATED,
                         AuditLogger.OBJECT_EMPTY,
-                        user.getEmail(), true);
+                        user.getEmail(), false);
             return result;
         } catch (java.sql.SQLException e) {
             e.printStackTrace();
@@ -1129,14 +1128,42 @@ public class DatabaseService {
 
     public int updateUser(User user) {
         try {
-            int r = userDao.update(user);
-            return r;
+            return userDao.update(user);
         } catch (java.sql.SQLException e) {
             //
             e.printStackTrace();
+            return -1;
         }
-        return -1;
+    }
 
+    /**
+     * This method stands for to update the user profile.
+     * Due to some reasons (actually I really don't know why)
+     * userDao.update() method does NOT operates as expected.
+     * So, in this method the user will be deleted by its id,
+     * then the same user will be created with new id & data.
+     *
+     * @param user to be deleted
+     * @param oldUserID user to be updated
+     * @return `1` IF AND ONLY IF insert method succeedes,
+     *         `-1` otherwise.
+     *
+     * @author mirjalal
+     */
+    public int updateUserProfile(User user, int oldUserID) {
+        try {
+            userDao.deleteById(oldUserID);
+            int result = userDao.create(user);
+            if (result == 1)
+                AuditLogger.getInstance().addAuditLog(Autoclave.getInstance().getUser(), AuditLogger.SCEEN_EMPTY,
+                        AuditLogger.ACTION_USER_UPDATED,
+                        AuditLogger.OBJECT_LOGIN,
+                        user.getEmail(), false);
+
+            return result;
+        } catch (Exception e) {
+            return -1;
+        }
     }
 
     public List<Profile> getProfilesWhithValidCloudId() {

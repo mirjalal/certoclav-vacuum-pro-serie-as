@@ -131,8 +131,20 @@ public class User {
         return email;
     }
 
-    public boolean getIsLocalAdmin() {
+    public boolean getIsNotSuperAdmin() {
         return isAdmin && !CloudUser.getInstance().isSuperAdmin();
+    }
+
+    public boolean getIsDefaultAdmin() {
+        return getIsNotSuperAdmin() && isLocal && email.equals("Admin");
+    }
+
+    public boolean getIsUserAdmin() {
+        return getIsNotSuperAdmin() && !email.equals("Admin");
+    }
+
+    public boolean getIsNormalLocalUser() {
+        return isLocal && !isAdmin && !email.equals("Admin") && !CloudUser.getInstance().isSuperAdmin();
     }
 
     User() {
@@ -174,13 +186,6 @@ public class User {
 
     public void setCloudId(String cloudId) {
         this.cloudId = cloudId;
-    }
-
-    @Override
-    public String toString() {
-        String test = "test";
-        return test;
-
     }
 
     public Boolean getIsLocal() {

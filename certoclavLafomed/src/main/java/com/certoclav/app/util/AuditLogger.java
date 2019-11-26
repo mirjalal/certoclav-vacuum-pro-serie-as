@@ -71,7 +71,7 @@ public class AuditLogger {
     public static final int ACTION_CAL_CHANGED = 41;//R.string.audit_action_pref_changed;
     public static final int ACTION_ADMIN_APPROVED_EDIT_CALIBRARION = 42;//R.string.audit_action_program_edited;
     public static final int ACTION_PROGRAM_CREATED = 43;//R.string.audit_action_program_edited;
-
+    public static final int ACTION_USER_UPDATED = 44; // R.string.audit_action_user_updated
 
     //Object Names
     public static final int OBJECT_NETWORK_SETTINGS = 19;//R.string.network_settings;
@@ -130,7 +130,7 @@ public class AuditLogger {
         map.put(ACTION_USER_PASSWORD_UPDATED, R.string.audit_action_user_password_udpated);
         map.put(ACTION_ADMIN_APPROVED_EDIT_DELETE_PROGRAM, R.string.audit_action_admin_approved);
         map.put(ACTION_ADMIN_APPROVED_EDIT_CALIBRARION, R.string.audit_action_admin_approved_edit_calibration);
-
+        map.put(ACTION_USER_UPDATED, R.string.audit_action_user_updated);
 
         //Object Names
         map.put(OBJECT_NETWORK_SETTINGS, R.string.network_settings);

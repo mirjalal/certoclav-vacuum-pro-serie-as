@@ -63,8 +63,7 @@ public class RegisterActivity extends CertoclavSuperActivity {
         isEdit = getIntent().hasExtra(AppConstants.INTENT_EXTRA_USER_ID);
         navigationbar.setHeadText(getString(isEdit ? R.string.edit_user : R.string.register_new_user));
 
-
-        linEditTextItemContainer = (LinearLayout) findViewById(R.id.register_container_edit_text_items);
+        linEditTextItemContainer = findViewById(R.id.register_container_edit_text_items);
 
         //Checkbox is Admin
         checkBoxIsAdmin = (CheckboxItem) getLayoutInflater().inflate(R.layout.checkbox_item, linEditTextItemContainer, false);
@@ -243,7 +242,7 @@ public class RegisterActivity extends CertoclavSuperActivity {
 
 
         final DatabaseService databaseService = DatabaseService.getInstance();
-        buttonRegister = (Button) findViewById(R.id.register_button_ok);
+        buttonRegister = findViewById(R.id.register_button_ok);
 
         buttonRegister.setOnClickListener(new OnClickListener() {
 
@@ -279,14 +278,14 @@ public class RegisterActivity extends CertoclavSuperActivity {
 
                 final Boolean isLocal = true;
 
-                if (getIntent().hasExtra(AppConstants.INTENT_EXTRA_USER_ID)) {
-                    DatabaseService db = DatabaseService.getInstance();
-                    int retval = db.deleteUser(db.getUserById(getIntent().getExtras().getInt(AppConstants.INTENT_EXTRA_USER_ID)));
-                    if (retval != 1) {
-                        Toasty.error(RegisterActivity.this, "Failed to apply changes", Toast.LENGTH_SHORT, true).show();
-                        return;
-                    }
-                }
+//                if (getIntent().hasExtra(AppConstants.INTENT_EXTRA_USER_ID)) {
+//                    DatabaseService db = DatabaseService.getInstance();
+//                    int retval = db.deleteUser(db.getUserById(getIntent().getExtras().getInt(AppConstants.INTENT_EXTRA_USER_ID)));
+//                    if (retval != 1) {
+//                        Toasty.error(RegisterActivity.this, "Failed to apply changes", Toast.LENGTH_SHORT, true).show();
+//                        return;
+//                    }
+//                }
                 buttonRegister.setEnabled(false);
 
                 new AsyncTask<String, Boolean, Boolean>() {
@@ -313,11 +312,7 @@ public class RegisterActivity extends CertoclavSuperActivity {
                                 Boolean.valueOf(params[5]),
                                 isLocal);
 
-                        int retval = databaseService.insertUser(user);
-                        if (retval == 1) {
-                            return true;
-                        } else
-                            return false;
+                        return (isEdit ? databaseService.updateUserProfile(user, getIntent().getExtras().getInt(AppConstants.INTENT_EXTRA_USER_ID)) : databaseService.insertUser(user)) == 1;
                     }
 
                     @Override
@@ -376,7 +371,7 @@ public class RegisterActivity extends CertoclavSuperActivity {
 
         if (v instanceof EditText) {
             View w = getCurrentFocus();
-            int scrcoords[] = new int[2];
+            int[] scrcoords = new int[2];
             w.getLocationOnScreen(scrcoords);
             float x = event.getRawX() + w.getLeft() - scrcoords[0];
             float y = event.getRawY() + w.getTop() - scrcoords[1];
@@ -392,12 +387,14 @@ public class RegisterActivity extends CertoclavSuperActivity {
     }
 
     private void showDialog() {
-        if (pDialog != null && pDialog.isShowing())
+        if (pDialog != null && pDialog.isShowing()) {
             pDialog.dismiss();
+            pDialog = null;
+        }
         pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
         pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         pDialog.setCancelable(false);
-        pDialog.setTitleText(getString(R.string.adding));
+        pDialog.setTitleText(isEdit ? getString(R.string.editing) : getString(R.string.adding));
         pDialog.show();
     }
 
@@ -419,9 +416,9 @@ public class RegisterActivity extends CertoclavSuperActivity {
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(true);
         final EditText editTextPassword = dialog.findViewById(R.id.editTextDesc);
-        Button buttonLogin = (Button) dialog
+        Button buttonLogin = dialog
                 .findViewById(R.id.dialogButtonLogin);
-        Button buttonCancel = (Button) dialog
+        Button buttonCancel = dialog
                 .findViewById(R.id.dialogButtonCancel);
 
         final Spinner spinnerAdmins = dialog.findViewById(R.id.login_spinner);

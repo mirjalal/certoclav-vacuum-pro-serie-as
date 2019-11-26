@@ -458,6 +458,7 @@
     <string name="loading">Loading...</string>
     <string name="checking">Checking...</string>
     <string name="adding">Adding...</string>
+    <string name="editing">Applying changes...</string>
     <string name="bar">bar</string>
 
 
@@ -774,6 +775,7 @@
     <string name="audit_action_canceled"><![CDATA[<b>%1$s</b> canceled <font color=\"#6ACC61\">\'%2$s\'</font>]]></string>
     <string name="audit_action_confirmed"><![CDATA[<b>%1$s</b> confirmed <font color=\"#6ACC61\">\'%2$s\'</font>]]></string>
     <string name="audit_action_user_password_udpated"><![CDATA[<b>%1$s</b> updated his/her password]]></string>
+    <string name="audit_action_user_updated"><![CDATA[<b>%1$s</b> updated <font color=\"#69B7F5\"><b>%3$s</b></font> user]]></string>
     <string name="audit_action_admin_approved"><![CDATA[<b>%1$s</b> approved create/edit/delete program action for <font color=\"#6ACC61\">\'%3$s\'</font>]]></string>
     <string name="audit_action_admin_approved_edit_calibration"><![CDATA[<b>%1$s</b> approved edit calibration action for <font color=\"#6ACC61\">\'%3$s\'</font>]]></string>
     <string name="audit_screen_login">Login Screen</string>
