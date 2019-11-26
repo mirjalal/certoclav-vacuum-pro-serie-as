@@ -20,7 +20,6 @@ import com.certoclav.app.database.User;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.library.application.ApplicationController;
-import com.certoclav.library.certocloud.CloudUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +37,7 @@ public class UserAdapter extends ArrayAdapter<User> {
         void onClickButtonEdit(User user);
     }
 
-    ArrayList<OnClickButtonListener> onClickButtonListeners = new ArrayList<OnClickButtonListener>();
+    private ArrayList<OnClickButtonListener> onClickButtonListeners = new ArrayList<OnClickButtonListener>();
 
     public void setOnClickButtonListener(OnClickButtonListener listener) {
         onClickButtonListeners.add(listener);
@@ -49,11 +48,10 @@ public class UserAdapter extends ArrayAdapter<User> {
     }
 
     private final Context mContext;
-    private QuickActionItem actionItemDelete;
-    private QuickActionItem actionItemEdit;
-    private SharedPreferences prefs;
     private boolean isLocked = false;
 
+    private final User loggedInUser = Autoclave.getInstance().getUser();
+    
     /**
      * Constructor
      *
@@ -63,8 +61,8 @@ public class UserAdapter extends ArrayAdapter<User> {
     public UserAdapter(Context context, List<User> values) {
         super(context, R.layout.user_list_row, values);
         this.mContext = context;
-        prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        if ((!Autoclave.getInstance().getUser().isAdmin() || Autoclave.getInstance().getState() == AutoclaveState.LOCKED) &&
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        if ((!loggedInUser.isAdmin() || Autoclave.getInstance().getState() == AutoclaveState.LOCKED) &&
                 prefs.getBoolean(ApplicationController.getContext().getString(R.string.preferences_lockout_user_account),
                         ApplicationController.getContext().getResources().getBoolean(R.bool.preferences_lockout_user_account))) {
             Toast.makeText(mContext, R.string.these_settings_are_locked_by_the_admin, Toast.LENGTH_SHORT).show();
@@ -86,70 +84,73 @@ public class UserAdapter extends ArrayAdapter<User> {
 
         //	if(convertView == null){
         convertView = inflater.inflate(R.layout.user_list_row, parent, false);
-        LinearLayout containerItems = (LinearLayout) convertView.findViewById(R.id.user_list_element_container_button);
+        LinearLayout containerItems = convertView.findViewById(R.id.user_list_element_container_button);
 
-        actionItemEdit = (QuickActionItem) inflater.inflate(R.layout.quickaction_item, containerItems, false);
-        actionItemDelete = (QuickActionItem) inflater.inflate(R.layout.quickaction_item, containerItems, false);
+        QuickActionItem actionItemEdit = (QuickActionItem) inflater.inflate(R.layout.quickaction_item, containerItems, false);
+        QuickActionItem actionItemDelete = (QuickActionItem) inflater.inflate(R.layout.quickaction_item, containerItems, false);
 
-        if (!isLocked)
-            if (Autoclave.getInstance().getUser() != null && Autoclave.getInstance().getState() != AutoclaveState.LOCKED
-                    && (getItem(position).getEmail().equals(Autoclave.getInstance().getUser().getEmail())
-                    || Autoclave.getInstance().getUser().isAdmin())) {
-                if ((getItem(position).getIsLocal() || Autoclave.getInstance().isOnlineMode(mContext)))
-                    if (!(getItem(position).getEmail().equalsIgnoreCase("admin") &&
-                            !Autoclave.getInstance().getUser().getEmail().equalsIgnoreCase("admin")))
-                        containerItems.addView(actionItemEdit);
+        final User currentUserItem = getItem(position);
 
-                if (!getItem(position).getEmail().equalsIgnoreCase("admin"))
-                    containerItems.addView(actionItemDelete);
-            }
+        if (loggedInUser != null && Autoclave.getInstance().getState() != AutoclaveState.LOCKED) {
+            containerItems.addView(actionItemEdit);
+            containerItems.addView(actionItemDelete);
+        }
 
-            /*if(Autoclave.getInstance().getUser() != null){
-                if(Autoclave.getInstance().getUser().getEmail().equals(getItem(position).getEmail()) && Autoclave.getInstance().getState() != AutoclaveState.WAITING_FOR_LOGIN){
-					actionItemEdit.setVisibility(View.VISIBLE);
-					actionItemDelete.setVisibility(View.VISIBLE);
-				}else{
-					actionItemEdit.setVisibility(View.INVISIBLE);
-					actionItemDelete.setVisibility(View.INVISIBLE);
-				}
-			}else{
-				actionItemEdit.setVisibility(View.INVISIBLE);
-				actionItemDelete.setVisibility(View.INVISIBLE);
-			}*/
+        TextView firstLine = convertView.findViewById(R.id.first_line);
+        firstLine.setText(currentUserItem.getEmail());
 
-        TextView firstLine = (TextView) convertView.findViewById(R.id.first_line);
-        firstLine.setText(getItem(position).getEmail());
+        final TextView secondLine = convertView.findViewById(R.id.second_line);
+        secondLine.setText(currentUserItem.getIsLocal() ? mContext.getString(R.string.local_account) : mContext.getString(R.string.online_account));
 
-        final TextView secondLine = (TextView) convertView.findViewById(R.id.second_line);
-        secondLine.setText(getItem(position).getIsLocal() ? mContext.getString(R.string.local_account) : mContext.getString(R.string.online_account));
+        // according to USERS.xlsx file
+        boolean deleteButtonVisibility = false;
+        if (!Autoclave.getInstance().isOnlineMode(getContext())) { // offline mode
+            if (loggedInUser.getIsDefaultAdmin())
+                deleteButtonVisibility = !currentUserItem.getIsDefaultAdmin();
+
+            if (loggedInUser.getIsUserAdmin())
+                deleteButtonVisibility = !currentUserItem.getIsDefaultAdmin();
+        } else { // online mode
+            if (loggedInUser.getIsDefaultAdmin() ||
+                loggedInUser.getIsUserAdmin())
+                deleteButtonVisibility = true;
+        }
 
         actionItemDelete.setChecked(false);
         actionItemDelete.setImageResource(R.drawable.btn_remove);
-        actionItemDelete.setVisibility(
-            Autoclave.getInstance().getUser().getIsLocalAdmin() ? View.VISIBLE : View.GONE
-        );
-        //actionItemDelete.setText(getContext().getString(R.string.delete));
+        actionItemDelete.setVisibility(deleteButtonVisibility ? View.VISIBLE : View.GONE);
         actionItemDelete.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 for (OnClickButtonListener listener : onClickButtonListeners) {
-                    listener.onClickButtonDelete(getItem(position));
+                    listener.onClickButtonDelete(currentUserItem);
                 }
             }
         });
 
+        boolean editButtonVisibility = false;
+        // according to USERS.xlsx file
+        if (!Autoclave.getInstance().isOnlineMode(getContext())) { // offline mode
+            if (loggedInUser.getIsDefaultAdmin())
+                editButtonVisibility = !currentUserItem.getIsDefaultAdmin();
+
+            if (loggedInUser.getIsUserAdmin())
+                editButtonVisibility = !currentUserItem.getIsDefaultAdmin();
+
+            if (loggedInUser.getIsNormalLocalUser())
+                editButtonVisibility = loggedInUser.getUserId() == currentUserItem.getUserId();
+        } else { // online mode
+            // nothing to do here, edit button has already been disabled
+        }
+
         actionItemEdit.setChecked(false);
         actionItemEdit.setImageResource(R.drawable.ic_menu_edit);
-        actionItemEdit.setVisibility(
-            (Autoclave.getInstance().getUser().getIsLocal() && !CloudUser.getInstance().isSuperAdmin()) ? View.VISIBLE : View.GONE // disable password change option for online accounts
-        );
-        //actionItemEdit.setText(getContext().getString(R.string.edit));
+        actionItemEdit.setVisibility(editButtonVisibility ? View.VISIBLE : View.GONE);
         actionItemEdit.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (OnClickButtonListener listener : onClickButtonListeners) {
-                    listener.onClickButtonEdit(getItem(position));
-                }
+                for (OnClickButtonListener listener : onClickButtonListeners)
+                    listener.onClickButtonEdit(currentUserItem);
             }
         });
 

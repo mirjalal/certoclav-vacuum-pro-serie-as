@@ -102,10 +102,9 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                 }
             });
 
-            // regarding to the talk with Josep, ALL LOCAL ADMINS CAN CHANGE default Admin's password.
-            // there is no limitation related with their names
             Preference changeAdminPasswordPreference = findPreference(AppConstants.PREFERENCE_KEY_ADMIN_PASSWORD);
-            changeAdminPasswordPreference.setEnabled(Autoclave.getInstance().getUser().getIsLocalAdmin());
+            // according to USERS.xlsx file
+            changeAdminPasswordPreference.setEnabled(Autoclave.getInstance().getUser().getIsDefaultAdmin() || CloudUser.getInstance().isSuperAdmin());
             changeAdminPasswordPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
                 @Override
