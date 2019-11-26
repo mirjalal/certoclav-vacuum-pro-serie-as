@@ -937,6 +937,17 @@ public class Helper {
                         .findViewById(R.id.dialogButtonLogin);
                 Button buttonCancel = (Button) dialog
                         .findViewById(R.id.dialogButtonCancel);
+
+                List<User> listUsers = DatabaseService.getInstance().getUsers();
+                final List<User> adminUsers = new ArrayList<>();
+                for (User u : listUsers)
+                    if (u.isAdmin())
+                        adminUsers.add(u);
+                UserDropdownAdapter adapterUserDropdown = new UserDropdownAdapter(context, adminUsers);
+
+                final Spinner spinnerAdmins = dialog.findViewById(R.id.login_spinner);
+                spinnerAdmins.setAdapter(adapterUserDropdown);
+
                 buttonLogin.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
