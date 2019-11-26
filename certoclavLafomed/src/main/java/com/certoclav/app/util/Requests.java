@@ -275,7 +275,7 @@ public class Requests {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                VolleyLog.e(TAG, "Error: " + error.getMessage());
                 ErrorModel errorModel = new ErrorModel();
                 String body = null;
                 //get status code here
@@ -284,7 +284,7 @@ public class Requests {
                     errorModel.setStatusCode(error.networkResponse.statusCode);
                     try {
                         if (error.networkResponse.statusCode == 404) {
-                            errorModel.setMessage("Something went wrong.");
+                            errorModel.setMessage(error.getMessage());
                         } else
                             body = new String(error.networkResponse.data, "UTF-8");
                     } catch (UnsupportedEncodingException e) {
