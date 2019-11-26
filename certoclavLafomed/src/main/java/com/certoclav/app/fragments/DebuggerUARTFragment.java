@@ -99,38 +99,46 @@ public class DebuggerUARTFragment extends Fragment implements ReadAndParseSerial
     }
 
     private void updateLogs() {
-        try {
-            uartLogWriter.write(uartSingleLog.getBytes());
-            uartLogWriter.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         if (logs.size() > MAX_LOG_COUNT)
             logs.remove(0);
-        if (!PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(AppConstants.PREFERENCE_KEY_SHOW_UART_LOGS, true)) {
-            if (binding.textViewLogs.getText().length() > 0)
+        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(AppConstants.PREFERENCE_KEY_SHOW_UART_LOGS, false)) {
+//            if (binding.textViewLogs.getText().length() > 0)
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        binding.textViewLogs.setText("");
+//                    }
+//                });
+//            return;
+
+            try {
+                uartLogWriter.write(uartSingleLog.getBytes());
+                uartLogWriter.flush();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            final StringBuilder log = new StringBuilder();
+            for (String l : logs)
+                log.append(l);
+
+            try {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        binding.textViewLogs.setText("");
+                        binding.textViewLogs.setText(log.toString());
                     }
                 });
-            return;
-        }
-        final StringBuilder log = new StringBuilder();
-        for (String l : logs)
-            log.append(l);
-
-        try {
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    binding.textViewLogs.setText(log.toString());
+                    binding.textViewLogs.setText("");
                 }
             });
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }
