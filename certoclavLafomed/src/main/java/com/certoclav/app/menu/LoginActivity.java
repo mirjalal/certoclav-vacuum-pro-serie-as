@@ -38,6 +38,7 @@ import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.app.model.ErrorModel;
 import com.certoclav.app.monitor.MonitorActivity;
+import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.app.util.AuditLogger;
 import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.app.util.Helper;
@@ -57,7 +58,9 @@ import com.crashlytics.android.Crashlytics;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -178,6 +181,10 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
         final DatabaseService databaseService = DatabaseService.getInstance();
+
+        // send updated date/time to STMAX
+        if(modelManager.getModel() != null)
+            ReadAndParseSerialService.getInstance().setParameter(93, new SimpleDateFormat("yyMMddHHmmss").format(Calendar.getInstance().getTime()));
 
 //        databaseService.fillDatabaseWithProgramIfEmpty();
 
