@@ -108,24 +108,26 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
         } else
             viewHolder = (ViewHolder) convertView.getTag();
 
-        viewHolder.firstLine.setText(getItem(position).getName());
-        viewHolder.textDuration.setText(getItem(position).getDescription(true));
+        final Profile profileItem = getItem(position);
+
+        viewHolder.firstLine.setText(profileItem.getName());
+        viewHolder.textDuration.setText(profileItem.getDescription(true));
 
         if (CloudUser.getInstance().isLoggedIn() == false) {
             viewHolder.imageViewCloud.setImageResource(R.drawable.ic_cloud_no_user);
         } else {
-            viewHolder.imageViewCloud.setImageResource(getItem(position).isLocal() ? R.drawable.ic_cloud_no_user : R.drawable.ic_cloud_user);
+            viewHolder.imageViewCloud.setImageResource(profileItem.isLocal() ? R.drawable.ic_cloud_no_user : R.drawable.ic_cloud_user);
         }
-        viewHolder.imageViewMenu.setVisibility(isLocked ? View.GONE : View.VISIBLE);
+        viewHolder.imageViewMenu.setVisibility(isLocked || CloudUser.getInstance().isSuperAdmin() ? View.GONE : View.VISIBLE);
 
-        if (!getItem(position).isEditable()) {
+        if (!profileItem.isEditable()) {
             viewHolder.imageViewMenu.setVisibility(View.GONE);
         }
 
         viewHolder.cardView.setTag(position);
         viewHolder.imageViewMenu.setTag(position);
 
-        viewHolder.item = getItem(position);
+        viewHolder.item = profileItem;
 
 
         return convertView;
@@ -177,6 +179,8 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
 
     private void onItemClickListener(final int position) {
         Log.e("ProgramAdapter", "onclick");
+
+        final Profile profileItem = getItem(position);
         if (Autoclave.getInstance().getUser().isAdmin()
                 && Autoclave.getInstance().getUser().getEmail().equalsIgnoreCase("admin")) {
             SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
@@ -198,8 +202,8 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
 
         if (Autoclave.getInstance().getProgramStep() == Autoclave.PROGRAM_STEPS.PRE_HEATING
                 && AutoclaveModelManager.getInstance().isWarmingUpEnabled()
-                && getItem(position) != null
-                && getItem(position).getIndex() != AutoclaveModelManager.getInstance().getVacuumProgramIndex()) {
+                && profileItem != null
+                && profileItem.getIndex() != AutoclaveModelManager.getInstance().getVacuumProgramIndex()) {
             SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
                     .setTitleText(mContext.getString(R.string.can_not_start_program))
                     .setContentText(mContext.getString(R.string.can_not_start_program_please_wait_warming_up_finished))
@@ -210,17 +214,17 @@ public class ProgramAdapter extends ArrayAdapter<Profile> {
 
         SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
                 .setTitleText(mContext.getString(R.string.start_program))
-                .setContentText(mContext.getString(R.string.do_you_really_want_to_start) + " " + getItem(position).getName() + "?")
+                .setContentText(mContext.getString(R.string.do_you_really_want_to_start) + " " + profileItem.getName() + "?")
                 .setConfirmText(mContext.getString(R.string.yes))
                 .setCancelText(mContext.getString(R.string.cancel))
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {
                         sDialog.dismissWithAnimation();
-                        Autoclave.getInstance().setProfile(getItem(position));
+                        Autoclave.getInstance().setProfile(profileItem);
                         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ApplicationController.getContext());
                         Boolean defaultvalue = mContext.getResources().getBoolean(R.bool.switch_step_by_step_default);
-                        getItem(position).setRecentUsedDate(new Date().getTime());
+                        profileItem.setRecentUsedDate(new Date().getTime());
 
                         if (prefs.getBoolean(AppConstants.PREFERENCE_KEY_SCAN_ITEM_ENABLED, false)) {
                             Intent intent = new Intent(mContext, ScanActivity.class);
