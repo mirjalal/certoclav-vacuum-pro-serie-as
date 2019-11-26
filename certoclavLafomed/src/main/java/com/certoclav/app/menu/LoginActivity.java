@@ -311,17 +311,17 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                                 if (selectedUser.isAdmin()) {
                                     if (selectedUser.isBlockedByDate())
                                         return -2;
-                                    else {
-                                        //Unblock the admin user
-                                        selectedUser.resetLoginAttempt();
-                                        databaseService.updateUser(selectedUser);
-                                        AuditLogger.getInstance().addAuditLog(
-                                                currentUser, -1,
-                                                AuditLogger.ACTION_USER_UNBLOCKED_TEMPORALLY,
-                                                AuditLogger.OBJECT_EMPTY,
-                                                null,
-                                                true);
-                                    }
+//                                    else {
+//                                        //Unblock the admin user
+//                                        selectedUser.resetLoginAttempt();
+//                                        databaseService.updateUser(selectedUser);
+//                                        AuditLogger.getInstance().addAuditLog(
+//                                                currentUser, -1,
+//                                                AuditLogger.ACTION_USER_UNBLOCKED_TEMPORALLY,
+//                                                AuditLogger.OBJECT_EMPTY,
+//                                                null,
+//                                                true);
+//                                    }
                                 } else return -2;
 
                             }
@@ -390,7 +390,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 
                                     //Here increase the login attempt only for non admin user
 
-                                    if(!currentUser.isAdmin())
+//                                    if(!currentUser.isAdmin())
                                         currentUser.increaseLoginAttempt();
 
                                     Log.e("ATTEMPTS", String.valueOf(currentUser.getLoginAttemptCount()));
@@ -404,6 +404,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                                                 true);
                                             Log.e("USER", "BLOCKED");
                                         if (currentUser.isAdmin() && Autoclave.getInstance().isFDAEnabled())
+                                            Log.e("ADMIN", "BLOCKED");
                                             currentUser.setBlockedByDate(new Date(new Date().getTime() + AppConstants.ADMIN_BLOCK_PERIOD));
                                         result = -2;
                                     } else {
@@ -722,7 +723,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                 break;
             case PostUtil.RETURN_ERROR_UNAUTHORISED_PASSWORD:
                 loginFailedMessage = getString(R.string.password_not_correct_);
-                if(!currentUser.isAdmin())
+//                if(!currentUser.isAdmin())
                     currentUser.increaseLoginAttempt();
                 Log.e("ATTEMPTS", String.valueOf(currentUser.getLoginAttemptCount()));
                 if (currentUser.isBlocked() && Autoclave.getInstance().isFDAEnabled()) {

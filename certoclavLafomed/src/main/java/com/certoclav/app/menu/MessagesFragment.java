@@ -69,14 +69,9 @@ public class MessagesFragment extends Fragment {
                 try {
                     dialog.dismissWithAnimation();
                     // open teamviewer quick support apk
-                    if(!Autoclave.getInstance().isFDAEnabled()) {
-                        Intent launchIntent = getContext().getPackageManager().getLaunchIntentForPackage("com.teamviewer.quicksupport.market");
-                        if (launchIntent != null) {
-                            startActivity(launchIntent);
-                        }
-                    } else
-                        Toast.makeText(getContext(), getResources().getString(R.string.disable_fda), Toast.LENGTH_LONG).show();
-
+                    Intent launchIntent = getContext().getPackageManager().getLaunchIntentForPackage("com.teamviewer.quicksupport.market");
+                    if (launchIntent != null)
+                        startActivity(launchIntent);
                 } catch (Exception e) {
                     Toast.makeText(getActivity(), getString(R.string.please_select_a_protocol_first), Toast.LENGTH_LONG).show();
                 }
