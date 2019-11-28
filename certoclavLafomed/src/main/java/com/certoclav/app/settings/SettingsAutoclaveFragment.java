@@ -79,7 +79,9 @@ public class SettingsAutoclaveFragment extends PreferenceFragment implements OnS
                     }
                 });
 
-        findPreference("preferences_autoclave_parameter_update").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        Preference preferenceAutoclaveUpdate = findPreference("preferences_autoclave_parameter_update");
+        preferenceAutoclaveUpdate.setEnabled(Autoclave.getInstance().getUser().isAdmin());
+        preferenceAutoclaveUpdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 ReadAndParseSerialService.getInstance().requestForFirmwareUpdate();
