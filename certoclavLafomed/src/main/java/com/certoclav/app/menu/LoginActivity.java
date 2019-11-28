@@ -21,7 +21,6 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.activities.CertoclavSuperActivity;
@@ -55,20 +54,16 @@ import com.certoclav.library.certocloud.PostUtil;
 import com.certoclav.library.util.Response;
 import com.certoclav.library.util.SettingsDeviceUtils;
 import com.crashlytics.android.Crashlytics;
-
 import org.json.JSONObject;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import cn.pedant.SweetAlert.ProgressHelper;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 import io.fabric.sdk.android.Fabric;
-
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 public class LoginActivity extends CertoclavSuperActivity implements NavigationbarListener, DatabaseRefreshedListener, ControllerInfoListener, PutUserLoginTaskFinishedListener {

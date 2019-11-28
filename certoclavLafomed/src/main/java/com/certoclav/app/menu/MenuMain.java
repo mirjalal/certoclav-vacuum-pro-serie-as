@@ -193,6 +193,7 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
                                             AuditLogger.SCEEN_EMPTY, AuditLogger.ACTION_LOGOUT,
                                             AuditLogger.OBJECT_EMPTY, null, false);
                                     Intent intent = new Intent(MenuMain.this, LoginActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);
                                     finish();
                                 }
@@ -228,6 +229,7 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
                     break;
                 }
                 Intent intent2 = new Intent(MenuMain.this, SettingsActivity.class);
+                intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent2);
                 break;
 

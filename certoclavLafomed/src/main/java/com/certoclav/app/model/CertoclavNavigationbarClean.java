@@ -142,6 +142,7 @@ public class CertoclavNavigationbarClean implements SensorDataListener {
                     return;
                 }
                 Intent intent = new Intent(mActivity, SettingsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 mActivity.startActivity(intent);
 
             }

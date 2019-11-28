@@ -11,7 +11,6 @@ import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.CertoclavNavigationbarClean;
 import com.certoclav.app.util.LockoutManager;
-
 import es.dmoral.toasty.Toasty;
 
 /**
@@ -36,6 +35,7 @@ public class SettingsActivity extends CertoclavSuperActivity implements ItemList
      * device.
      */
     private boolean isAdmin;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -3,6 +3,7 @@ package com.certoclav.app.menu;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -92,6 +93,8 @@ public class MessagesFragment extends Fragment {
 
         dialog.show();
     }
+
+
 
     /**
      * Called when the activity is first created.

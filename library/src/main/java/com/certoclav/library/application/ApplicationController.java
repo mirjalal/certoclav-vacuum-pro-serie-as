@@ -28,7 +28,8 @@ public class ApplicationController extends Application {
 		mContext = this;
 		instance = this;
 	}
-	
+
+
 	public static Context getContext(){
         return mContext;
     }

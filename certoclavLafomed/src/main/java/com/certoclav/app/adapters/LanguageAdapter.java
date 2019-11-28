@@ -56,12 +56,13 @@ public class LanguageAdapter extends ArrayAdapter<Locale> {
 		
 		TextView language = (TextView) convertView.findViewById(R.id.language_first_line);
 		
-	
+
 		language.setText(getItem(position).getDisplayLanguage(getItem(position)));
 		TextView country = (TextView) convertView.findViewById(R.id.language_second_line);
-        country.setText(getItem(position).getDisplayCountry(getItem(position)));
+		country.setVisibility(View.INVISIBLE);
+//        country.setText(getItem(position).getDisplayCountry(getItem(position)));
         
-		convertView.findViewById(R.id.buttonDelete).setVisibility(View.GONE);
+//		convertView.findViewById(R.id.buttonDelete).setVisibility(View.GONE);
 		
 		return convertView;
 	}

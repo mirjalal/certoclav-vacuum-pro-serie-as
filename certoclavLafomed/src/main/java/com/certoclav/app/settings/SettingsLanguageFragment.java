@@ -42,13 +42,14 @@ public class SettingsLanguageFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceClick(Preference preference) {
 
-                Intent i = new Intent();
-                i.setAction(android.provider.Settings.ACTION_LOCALE_SETTINGS);
-                i.addCategory(Intent.CATEGORY_DEFAULT);
-                startActivity(i);
+//                Intent i = new Intent();
+//                i.setAction(android.provider.Settings.ACTION_LOCALE_SETTINGS);
+//                i.addCategory(Intent.CATEGORY_DEFAULT);
+//                startActivity(i);
 
-                //Intent intent = new Intent(getActivity(), SettingsLanguagePickerActivity.class);
-                //getActivity().startActivity(intent);
+                Intent intent = new Intent(getActivity(), SettingsLanguagePickerActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                getActivity().startActivity(intent);
                 return false;
             }
         });
@@ -67,7 +68,7 @@ public class SettingsLanguageFragment extends PreferenceFragment {
         Log.e("SettingsLanguage", "oncreate finished");
     }
 
-    
+
 
     @Override
     public void onResume() {
