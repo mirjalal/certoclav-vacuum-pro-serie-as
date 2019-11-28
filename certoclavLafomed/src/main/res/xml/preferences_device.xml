@@ -36,6 +36,10 @@
             android:summary="@string/change_admin_password"
             android:title="@string/admin_password" />
 
+        <Preference
+            android:key="preference_backup"
+            android:title="@string/software_backup_preference_title" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

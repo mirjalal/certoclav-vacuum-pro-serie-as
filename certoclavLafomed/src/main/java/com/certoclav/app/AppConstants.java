@@ -45,7 +45,7 @@ public interface AppConstants {
 
     String TABLET_TYPE = /*TABLET_TYPE_FAYTECH;*/TABLET_TYPE_FAYTECH_RS_232;//TABLET_TYPE_LILLIPUT
     String MODEL_CURRENT = MODEL_RAYPA_TLV;
-    Boolean isIoSimulated = true;
+    Boolean isIoSimulated = false;
     String MODEL = "TLV-150FA";
     String SIMULATED_SAVETY_KEY = "FF000003957204830";//63FBE2987481D9B6A";
 
@@ -104,6 +104,7 @@ public interface AppConstants {
     String PREFERENCE_KEY_DATE = "preferences_date";
     String PREFERENCE_KEY_TIMES_DATE_TIME_UPDATED = "preference_date_time_update_count";
     String PREFERENCE_KEY_RESET = "preferences_reset";
+    String PREFERENCE_KEY_SOFTWARE_BACKUP = "preference_backup";
     String PREFERENCE_KEY_LANGUAGE = "preferences_language";
     String PREFERENCE_KEY_HELP_PHONE = "preferences_help_phone";
     String PREFERENCE_KEY_HELP_EMAIL = "preferences_help_email";

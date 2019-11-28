@@ -26,6 +26,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
+import com.certoclav.app.BuildConfig;
 import com.certoclav.app.R;
 import com.certoclav.app.database.AuditLog;
 import com.certoclav.app.database.DatabaseService;
@@ -41,6 +42,7 @@ import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.MyCallback;
 import com.certoclav.app.util.MyCallbackAdminAprove;
 import com.certoclav.app.util.Requests;
+import com.certoclav.app.util.Zipper;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.certocloud.CloudUser;
 import com.certoclav.library.util.DownloadUtils;
@@ -71,9 +73,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
         addPreferencesFromResource(R.xml.preferences_device);
 
         try {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
-//Device Key
+            //Device Key
             String deviceKey = "-";
             if (Autoclave.getInstance().getController() != null) {
                 if (Autoclave.getInstance().getController().getSavetyKey() != null) {
@@ -152,12 +152,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 //            });
 
 
-//Factory Reset
-
-//            findPreference(AppConstants.PREFERENCE_KEY_RESET).setEnabled(
-//                    Autoclave.getInstance().getUser().isAdmin());
-
-
+            //Factory Reset
             Preference factoryResetPreference = findPreference(AppConstants.PREFERENCE_KEY_RESET);
             factoryResetPreference.setEnabled(CloudUser.getInstance().isSuperAdmin());
             factoryResetPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -224,6 +219,21 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                     return false;
                 }
             });
+
+            // Software backup preference
+            Preference preferenceSoftwareBackup = findPreference(AppConstants.PREFERENCE_KEY_SOFTWARE_BACKUP);
+            preferenceSoftwareBackup.setEnabled(Autoclave.getInstance().getUser().isAdmin());
+            preferenceSoftwareBackup.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    ExportUtils exportUtils = new ExportUtils();
+                    if (exportUtils.checkExternalMedia()) //check if usb flash drive is available
+                        getSoftwareBackup();
+                    else
+                        showUsbNotMountedDialog();
+                    return false;
+                }
+            });
         } catch (Exception e) {
             getActivity().finish();
             Toasty.warning(getContext(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT,
@@ -240,25 +250,8 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                 ExportUtils exportUtils = new ExportUtils();
                 if (exportUtils.checkExternalMedia()) { //check if usb flash drive is available
                     uploadAllAuditsTo(EXPORT_TARGET_USB);
-                } else {
-                    try {
-                        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
-                                .setTitleText(getString(R.string.mount_usb_stick))
-                                .setContentText(getString(R.string.reboot_neccessary))
-                                .setConfirmText(getString(R.string.ok))
-                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sDialog) {
-                                        sDialog.dismissWithAnimation();
-                                    }
-                                });
-                        sweetAlertDialog.setCanceledOnTouchOutside(true);
-                        sweetAlertDialog.setCancelable(true);
-                        sweetAlertDialog.show();
-                    } catch (Exception e) {
-
-                    }
-                }
+                } else
+                    showUsbNotMountedDialog();
                 return false;
             }
         });
@@ -633,5 +626,35 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                 super.onPostExecute(result);
             }
         }.execute();
+    }
+
+    private void getSoftwareBackup() {
+        barProgressDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+        barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        barProgressDialog.setTitleText(getString(R.string.getting_software_backup));
+        barProgressDialog.setContentText(getString(R.string.exporting));
+        barProgressDialog.setCancelable(false);
+        barProgressDialog.show();
+
+        if (Zipper.zipDirectory("/data/data/com.certoclav.app/"))
+            barProgressDialog.setConfirmText("OK").setContentText(getString(R.string.export_success)).changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+        else
+            barProgressDialog.setContentText(getString(R.string.export_failed)).setConfirmText("OK").changeAlertType(SweetAlertDialog.ERROR_TYPE);
+    }
+
+    private void showUsbNotMountedDialog() {
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(getString(R.string.mount_usb_stick))
+                .setContentText(getString(R.string.reboot_neccessary))
+                .setConfirmText(getString(R.string.ok))
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+                    }
+                });
+        sweetAlertDialog.setCanceledOnTouchOutside(true);
+        sweetAlertDialog.setCancelable(true);
+        sweetAlertDialog.show();
     }
 }

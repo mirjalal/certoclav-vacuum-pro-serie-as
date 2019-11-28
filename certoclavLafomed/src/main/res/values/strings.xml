@@ -492,6 +492,7 @@
     <string name="change_admin_password">Change Admin Password</string>
     <string name="admin_password_wrong">Admin password is wrong!</string>
     <string name="admin_password">Admin Password</string>
+    <string name="software_backup_preference_title">Backup software data</string>
     <string name="power_loss_during_record">Power loss during record</string>
     <string name="kpa">kPa</string>
     <string name="choose_server">CHOOSE SERVER</string>
@@ -511,6 +512,7 @@
     <string name="server_info">Server Info</string>
     <string name="server_manual">Manual</string>
     <string name="import_protocols">Import protocols</string>
+    <string name="getting_software_backup">Creating a backup</string>
 
     <string name="local_account">Local Account</string>
     <string name="online_account">Online Account</string>
