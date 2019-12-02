@@ -182,27 +182,30 @@ public class UpdateUtils {
 
                     if (source == SOURCE_USB) {
                         try {
-
-                            File rootUSB = new File(rootFolder + "/udisk/");
-
-                            File dirUSB = new File(rootUSB.getAbsolutePath());
-                            File[] usbFiles = dirUSB.listFiles();
-                            for (File usbFile : usbFiles) {
-                                if (usbFile.isFile()) {
-                                    if (usbFile.getName().equals(FILENAME_UPDATE)) {
-                                        String sourceFile = usbFile.getAbsolutePath();
-                                        String destinationFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + usbFile.getName();
-                                        copied = copyFile(sourceFile, destinationFile);
-                                        publishProgress(PROGRESS_COPYING);
-                                        if (!copied) {
-                                            return RESULT_SOMETHING_WENT_WRONG;
+                            File[] udisks = new File(rootFolder).listFiles();
+                            for (File f : udisks) {
+                                if (f.getName().startsWith("udisk")) {
+                                    File dirUSB = new File(f.getAbsolutePath());
+                                    File[] usbFiles = dirUSB.listFiles();
+                                    for (File usbFile : usbFiles) {
+                                        if (usbFile.isFile()) {
+                                            if (usbFile.getName().equals(FILENAME_UPDATE)) {
+                                                String sourceFile = usbFile.getAbsolutePath();
+                                                String destinationFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + usbFile.getName();
+                                                copied = copyFile(sourceFile, destinationFile);
+                                                publishProgress(PROGRESS_COPYING);
+                                                if (!copied) {
+                                                    return RESULT_SOMETHING_WENT_WRONG;
+                                                }
+                                                break;
+                                            }
                                         }
-                                        break;
                                     }
+                                    break;
                                 }
                             }
-
                         } catch (Exception e) {
+                            System.out.println(e.getMessage());
                             return RESULT_SOMETHING_WENT_WRONG;
                         }
                     }
@@ -276,6 +279,7 @@ public class UpdateUtils {
                     }//end for(installing files)
 
                 } catch (Exception e) {
+                    System.out.println(e.getMessage());
                     e.printStackTrace();
                     return RESULT_SOMETHING_WENT_WRONG;
                 }
