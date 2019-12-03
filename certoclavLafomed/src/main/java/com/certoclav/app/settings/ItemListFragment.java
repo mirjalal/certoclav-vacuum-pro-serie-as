@@ -120,17 +120,30 @@ public class ItemListFragment extends ListFragment {
                             R.drawable.ic_device_settings, R.drawable.ic_device_settings_selected,
                             new SettingsDeviceFragment());
 
-                if (!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.AUDIT_LOGS)) {
-                    AddItem(getListView(), getActivity().getString(R.string.settings_audit_log),
-                            R.drawable.ic_audit_logs, R.drawable.ic_audit_logs_selected,
-                            new AuditLogFragment());
-                } else {
-                    if (Autoclave.getInstance().isFDAEnabled() && Autoclave.getInstance().getUser().isAdmin()) {
+                if (Autoclave.getInstance().isFDAEnabled()) {
+                    if (Autoclave.getInstance().getUser().isAdmin())
                         AddItem(getListView(), getActivity().getString(R.string.settings_audit_log),
                                 R.drawable.ic_audit_logs, R.drawable.ic_audit_logs_selected,
                                 new AuditLogFragment());
+                    else {
+                        if (LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.AUDIT_LOGS))
+                            AddItem(getListView(), getActivity().getString(R.string.settings_audit_log),
+                                    R.drawable.ic_audit_logs, R.drawable.ic_audit_logs_selected,
+                                    new AuditLogFragment());
                     }
                 }
+
+//                if (!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.AUDIT_LOGS)) {
+//                    AddItem(getListView(), getActivity().getString(R.string.settings_audit_log),
+//                            R.drawable.ic_audit_logs, R.drawable.ic_audit_logs_selected,
+//                            new AuditLogFragment());
+//                } else {
+//                    if (Autoclave.getInstance().isFDAEnabled() && Autoclave.getInstance().getUser().isAdmin()) {
+//                        AddItem(getListView(), getActivity().getString(R.string.settings_audit_log),
+//                                R.drawable.ic_audit_logs, R.drawable.ic_audit_logs_selected,
+//                                new AuditLogFragment());
+//                    }
+//                }
 
 //                if (Autoclave.getInstance().isFDAEnabled() && Autoclave.getInstance().getUser().isAdmin()) {
 //                    if (isAdmin || !LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.AUDIT_LOGS))

@@ -26,7 +26,6 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.certoclav.app.AppConstants;
-import com.certoclav.app.BuildConfig;
 import com.certoclav.app.R;
 import com.certoclav.app.database.AuditLog;
 import com.certoclav.app.database.DatabaseService;
@@ -42,7 +41,7 @@ import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.MyCallback;
 import com.certoclav.app.util.MyCallbackAdminAprove;
 import com.certoclav.app.util.Requests;
-import com.certoclav.app.util.Zipper;
+import com.certoclav.app.util.SoftwareBackupUtil;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.certocloud.CloudUser;
 import com.certoclav.library.util.DownloadUtils;
@@ -222,7 +221,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 
             // Software backup preference
             Preference preferenceSoftwareBackup = findPreference(AppConstants.PREFERENCE_KEY_SOFTWARE_BACKUP);
-            preferenceSoftwareBackup.setEnabled(Autoclave.getInstance().getUser().isAdmin());
+            preferenceSoftwareBackup.setEnabled(Autoclave.getInstance().getUser().isAdmin() && Autoclave.getInstance().isFDAEnabled());
             preferenceSoftwareBackup.setOnPreferenceClickListener(new OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -234,6 +233,21 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                     return false;
                 }
             });
+
+            // Import software backup preference
+//            Preference preferenceImportSoftwareBackup = findPreference(AppConstants.PREFERENCE_KEY_IMPORT_SOFTWARE_BACKUP);
+//            preferenceImportSoftwareBackup.setEnabled(Autoclave.getInstance().getUser().isAdmin() && Autoclave.getInstance().isFDAEnabled());
+//            preferenceImportSoftwareBackup.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+//                @Override
+//                public boolean onPreferenceClick(Preference preference) {
+//                    ExportUtils exportUtils = new ExportUtils();
+//                    if (exportUtils.checkExternalMedia()) //check if usb flash drive is available
+//                        importSoftwareBackup();
+//                    else
+//                        showUsbNotMountedDialog();
+//                    return false;
+//                }
+//            });
         } catch (Exception e) {
             getActivity().finish();
             Toasty.warning(getContext(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT,
@@ -636,10 +650,24 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
         barProgressDialog.setCancelable(false);
         barProgressDialog.show();
 
-        if (Zipper.zipDirectory("/data/data/com.certoclav.app/"))
+        if (SoftwareBackupUtil.getBackup("/data/data/com.certoclav.app/"))
             barProgressDialog.setConfirmText("OK").setContentText(getString(R.string.export_success)).changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
         else
             barProgressDialog.setContentText(getString(R.string.export_failed)).setConfirmText("OK").changeAlertType(SweetAlertDialog.ERROR_TYPE);
+    }
+
+    private void importSoftwareBackup() {
+//        barProgressDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+//        barProgressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+//        barProgressDialog.setTitleText(getString(R.string.importing_software_backup));
+//        barProgressDialog.setContentText(getString(R.string.importing));
+//        barProgressDialog.setCancelable(false);
+//        barProgressDialog.show();
+//
+//        if (SoftwareBackupUtil.importBackup() == null)
+//            barProgressDialog.setConfirmText("OK").setContentText(getString(R.string.import_success)).changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+//        else
+//            barProgressDialog.setContentText(getString(R.string.import_failed)).setConfirmText("OK").changeAlertType(SweetAlertDialog.ERROR_TYPE);
     }
 
     private void showUsbNotMountedDialog() {

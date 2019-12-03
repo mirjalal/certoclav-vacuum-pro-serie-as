@@ -105,6 +105,7 @@ public interface AppConstants {
     String PREFERENCE_KEY_TIMES_DATE_TIME_UPDATED = "preference_date_time_update_count";
     String PREFERENCE_KEY_RESET = "preferences_reset";
     String PREFERENCE_KEY_SOFTWARE_BACKUP = "preference_backup";
+    String PREFERENCE_KEY_IMPORT_SOFTWARE_BACKUP = "preference_import_backup";
     String PREFERENCE_KEY_LANGUAGE = "preferences_language";
     String PREFERENCE_KEY_HELP_PHONE = "preferences_help_phone";
     String PREFERENCE_KEY_HELP_EMAIL = "preferences_help_email";
