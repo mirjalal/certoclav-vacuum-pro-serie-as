@@ -255,7 +255,7 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
 
                         String sb = printUtils.protocolToString(protocols.get(i), false, getContext());
 
-                        String filename = Autoclave.getInstance().getController().getSerialnumber() + "-" + protocols.get(i).getZyklusNumber() + 1;
+                        String filename = Autoclave.getInstance().getController().getSerialnumber() + "-" + protocols.get(i).getZyklusNumber();
                         //	barProgressDialog.setMessage("Copy " + filename + ".txt");
 
                         ExportUtils expUtils = new ExportUtils();

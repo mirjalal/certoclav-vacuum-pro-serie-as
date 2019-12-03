@@ -554,7 +554,7 @@ public class ReadAndParseSerialService implements MessageReceivedListener {
                                 AuditLogger.ACTION_PROGRAM_STARTED,
                                 AuditLogger.OBJECT_EMPTY,
                                 Autoclave.getInstance().getProfile().getName() +
-                                        " (" + mContext.getString(R.string.cycle) + " " + Autoclave.getInstance().getController().getCycleNumber() + ")", false);
+                                        " (" + mContext.getString(R.string.cycle) + " " + (Autoclave.getInstance().getController().getCycleNumber() + 1) + ")", false);
                     break;
                 case RESPONSES.ACK_STOP:
                     delayForGetData = DELAY_PROGRAM_RUNNING;

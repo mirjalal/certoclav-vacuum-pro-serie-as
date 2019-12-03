@@ -40,6 +40,10 @@
             android:key="preference_backup"
             android:title="@string/software_backup_preference_title" />
 
+<!--        <Preference-->
+<!--            android:key="preference_import_backup"-->
+<!--            android:title="@string/import_software_backup_preference_title" />-->
+
     </PreferenceCategory>
 
     <PreferenceCategory
