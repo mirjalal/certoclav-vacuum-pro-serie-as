@@ -45,7 +45,7 @@ public interface AppConstants {
 
     String TABLET_TYPE = /*TABLET_TYPE_FAYTECH;*/TABLET_TYPE_FAYTECH_RS_232;//TABLET_TYPE_LILLIPUT
     String MODEL_CURRENT = MODEL_RAYPA_TLV;
-    Boolean isIoSimulated = true;
+    Boolean isIoSimulated = false;
     String MODEL = "TLV-150FA";
     String SIMULATED_SAVETY_KEY = "FF000003957204830";//63FBE2987481D9B6A";
 
