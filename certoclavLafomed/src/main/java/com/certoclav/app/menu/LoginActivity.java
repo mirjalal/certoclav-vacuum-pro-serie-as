@@ -177,12 +177,7 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 
         final DatabaseService databaseService = DatabaseService.getInstance();
 
-        // send updated date/time to STMAX
-        if(modelManager.getModel() != null)
-            ReadAndParseSerialService.getInstance().setParameter(93, new SimpleDateFormat("yyMMddHHmmss").format(Calendar.getInstance().getTime()));
-
 //        databaseService.fillDatabaseWithProgramIfEmpty();
-
 
         // initialize navigationbar
         navigationbar = new CertoclavNavigationbarClean(this);
@@ -494,6 +489,9 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
         CloudUser.getInstance().setLoggedIn(false);
         AutoclaveMonitor.getInstance();
         Autoclave.getInstance().setOnControllerInfoListener(this);
+        // send updated date/time to STMAX
+        if(modelManager.getModel() != null)
+            ReadAndParseSerialService.getInstance().setParameter(93, new SimpleDateFormat("yyMMddHHmmss").format(Calendar.getInstance().getTime()));
         refreshUI();
     }
 

@@ -18,8 +18,10 @@ import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveMonitor;
 import com.certoclav.app.model.AutoclaveState;
 import com.certoclav.app.model.CertoclavNavigationbar;
+import com.certoclav.app.service.ReadAndParseSerialService;
 import com.certoclav.app.settings.SettingsActivity;
 import com.certoclav.app.util.AuditLogger;
+import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.MyCallbackAdminAprove;
 import com.certoclav.library.certocloud.GetConditionsService;
@@ -27,7 +29,9 @@ import com.certoclav.library.view.ControlPagerAdapter;
 import com.certoclav.library.view.CustomViewPager;
 import com.crashlytics.android.Crashlytics;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -42,6 +46,7 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
 
     private CertoclavNavigationbar navigationbar;
     private ArrayList<Fragment> fragmentList;
+    private AutoclaveModelManager modelManager;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -66,7 +71,7 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
         Fabric.with(this, new Crashlytics());
         AutoclaveMonitor.getInstance();
         Autoclave.getInstance().setState(AutoclaveState.NOT_RUNNING);
-
+        modelManager = AutoclaveModelManager.getInstance();
         // You can call any combination of these three methods
         Crashlytics.setUserIdentifier("12345");
         Crashlytics.setUserEmail("user@fabric.io");
@@ -150,6 +155,8 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
 
         Log.e("MenuMain", "set navigationbarlistener");
         navigationbar.setNavigationbarListener(MenuMain.this);
+        if(modelManager.getModel() != null)
+            ReadAndParseSerialService.getInstance().setParameter(93, new SimpleDateFormat("yyMMddHHmmss").format(Calendar.getInstance().getTime()));
         super.onResume();
     }
 
