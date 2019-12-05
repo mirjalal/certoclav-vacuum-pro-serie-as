@@ -102,18 +102,20 @@ public class UserAdapter extends ArrayAdapter<User> {
         final TextView secondLine = convertView.findViewById(R.id.second_line);
         secondLine.setText(currentUserItem.getIsLocal() ? mContext.getString(R.string.local_account) : mContext.getString(R.string.online_account));
 
-        // according to USERS.xlsx file
+        // according to USERS1_reviewed.xlsx file
         boolean deleteButtonVisibility = false;
         if (!Autoclave.getInstance().isOnlineMode(getContext())) { // offline mode
             if (loggedInUser.getIsDefaultAdmin())
                 deleteButtonVisibility = !currentUserItem.getIsDefaultAdmin();
 
-            if (loggedInUser.getIsUserAdmin())
+            if (loggedInUser.getIsOfflineUserAdmin())
+                deleteButtonVisibility = !currentUserItem.getIsDefaultAdmin();
+
+            if (loggedInUser.getIsOnlineUserAdmin())
                 deleteButtonVisibility = !currentUserItem.getIsDefaultAdmin();
         } else { // online mode
-            if (loggedInUser.getIsDefaultAdmin() ||
-                loggedInUser.getIsUserAdmin())
-                deleteButtonVisibility = true;
+            if (loggedInUser.getIsOnlineUserAdmin())
+                deleteButtonVisibility = !currentUserItem.getIsDefaultAdmin();
         }
 
         actionItemDelete.setChecked(false);
@@ -129,18 +131,25 @@ public class UserAdapter extends ArrayAdapter<User> {
         });
 
         boolean editButtonVisibility = false;
-        // according to USERS.xlsx file
+        // according to USERS1_reviewed.xlsx file
         if (!Autoclave.getInstance().isOnlineMode(getContext())) { // offline mode
             if (loggedInUser.getIsDefaultAdmin())
-                editButtonVisibility = !currentUserItem.getIsDefaultAdmin();
+                editButtonVisibility = currentUserItem.getIsOfflineUserAdmin() || currentUserItem.getIsNormalOfflineUser();
 
-            if (loggedInUser.getIsUserAdmin())
-                editButtonVisibility = !currentUserItem.getIsDefaultAdmin();
+            if (loggedInUser.getIsOfflineUserAdmin())
+                editButtonVisibility = currentUserItem.getIsOfflineUserAdmin() || currentUserItem.getIsNormalOfflineUser();
 
-            if (loggedInUser.getIsNormalLocalUser())
+            if (loggedInUser.getIsOnlineUserAdmin())
+                editButtonVisibility = currentUserItem.getIsNormalOfflineUser();
+
+            if (loggedInUser.getIsNormalOfflineUser())
                 editButtonVisibility = loggedInUser.getUserId() == currentUserItem.getUserId();
         } else { // online mode
-            // nothing to do here, edit button has already been disabled
+            if (loggedInUser.getIsOnlineUserAdmin())
+                editButtonVisibility = !currentUserItem.getIsDefaultAdmin() && !currentUserItem.getIsNormalOnlineUser();
+
+            if (loggedInUser.getIsNormalOnlineUser())
+                editButtonVisibility = loggedInUser.getUserId() == currentUserItem.getUserId();
         }
 
         actionItemEdit.setChecked(false);
