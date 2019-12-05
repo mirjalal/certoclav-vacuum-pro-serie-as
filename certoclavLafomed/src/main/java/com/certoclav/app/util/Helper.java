@@ -1428,10 +1428,10 @@ public class Helper {
     public String getTemperatureUnitText(String unit) {
         if (unit == null)
             return AutoclaveModelManager.getInstance().
-                    getTemperatureUnit().equals("F") ? "°F" : "°C";
+                    getTemperatureUnit().equals("F") ? "F" : "C";
 
         return (unit != null && unit.equals("F"))
-                ? "°F" : "°C";
+                ? "F" : "C";
     }
 
     public float currentUnitToCelsius(float temp) {

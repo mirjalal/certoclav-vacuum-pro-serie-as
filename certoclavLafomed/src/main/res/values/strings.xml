@@ -138,8 +138,8 @@
     <string name="information">INFORMATION</string>
     <string name="intro_account_created">account created</string>
     <string name="temperature">Steam [℃]</string>
-    <string name="celcius">°C</string>
-    <string name="fahrenheit">°F</string>
+    <string name="celcius">C</string>
+    <string name="fahrenheit">F</string>
     <string name="time_in_minutes">Time [min]</string>
     <string name="settings">SETTINGS</string>
     <string name="do_you_really_want_to_start">Do you really want to start</string>
