@@ -722,10 +722,12 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                 loginFailedMessage = getString(R.string.timout_during_login_please_check_internet_availability_);
                 break;
             case PostUtil.RETURN_ERROR_UNAUTHORISED_PASSWORD:
-                loginFailedMessage = getString(R.string.password_not_correct_);
 //                if(!currentUser.isAdmin())
                     currentUser.increaseLoginAttempt();
                 Log.e("ATTEMPTS", String.valueOf(currentUser.getLoginAttemptCount()));
+                Log.e("ATTEMPTS LEFT", String.valueOf(currentUser.getAttemptsLeft()));
+                loginFailedMessage = String.format(getString(R.string.password_not_correct_), currentUser.getAttemptsLeft());
+
                 if (currentUser.isBlocked() && Autoclave.getInstance().isFDAEnabled()) {
 
                     AuditLogger.getInstance().addAuditLog(

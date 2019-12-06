@@ -268,7 +268,7 @@
     <string name="autoclave_serial_number">PCB Serial Number</string>
     <string name="an_error_occured_during_login_please_try_again_later_">An error occured during login. Please try again later.\n</string>
     <string name="timout_during_login_please_check_internet_availability_">Timout during login. Please check internet availability.\n</string>
-    <string name="password_not_correct_">Password not correct.\n</string>
+    <string name="password_not_correct_">Password is not correct. You have %1$d trials left until the account gets blocked</string>
     <string name="email_does_not_exist_please_create_a_certocloud_account_with_this_email_first_">Email does not exist. Please create a RaypaCloud account with this email first.\n</string>
     <string name="device_doesnt_exists">This device doesn\'t exist\n</string>
     <string name="not_able_to_connect_to_certocloud_">Not able to connect to RaypaCloud.\n</string>

@@ -121,10 +121,10 @@
         android:id="@+id/title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="40sp"
+        android:textSize="35sp"
         android:textColor="#575757"
         android:layout_marginTop="10dp"
-        android:maxLines="1"
+        android:maxLines="2"
         android:text="@string/dialog_default_title" />
 
     <TextView

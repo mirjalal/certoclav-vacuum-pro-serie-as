@@ -92,24 +92,35 @@ public class User {
         return loginAttempt;
     }
 
+    public int getAttemptsLeft() {
+        return attemptsLeft;
+    }
+
     public void setBlockedByDate(Date dateBlockedTill) {
         this.dateBlockedTill = dateBlockedTill;
     }
 
     public void resetLoginAttempt() {
         this.loginAttempt = 0;
+        this.attemptsLeft = 6;
     }
 
     public void increaseLoginAttempt() {
         //Only if the FDA has been enabled
-        if (Autoclave.getInstance().isFDAEnabled())
+        if (Autoclave.getInstance().isFDAEnabled()) {
             this.loginAttempt++;
-        else
+            this.attemptsLeft = 6 - this.loginAttempt;
+        }
+        else {
             this.loginAttempt = 0;
+            this.attemptsLeft = 6;
+        }
     }
 
     @DatabaseField(columnName = FIELD_LOGIN_ATTEMPT)
     private int loginAttempt;
+
+    private int attemptsLeft = 6;
 
     @DatabaseField(columnName = "is_visible")
     private Boolean isVisible;

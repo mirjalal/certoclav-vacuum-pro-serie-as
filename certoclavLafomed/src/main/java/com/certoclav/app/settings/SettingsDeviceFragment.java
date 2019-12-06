@@ -44,6 +44,7 @@ import com.certoclav.app.util.Requests;
 import com.certoclav.app.util.SoftwareBackupUtil;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.certocloud.CloudUser;
+import com.certoclav.library.certocloud.PostSoftwareUpdateService;
 import com.certoclav.library.util.DownloadUtils;
 import com.certoclav.library.util.ExportUtils;
 import com.certoclav.library.util.UpdateUtils;
@@ -92,6 +93,10 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                     if (ApplicationController.getInstance().isNetworkAvailable()) {
                         List<String> downloadUrls = new ArrayList<String>();
                         downloadUrls.add(AppConstants.DOWNLOAD_LINK);
+//                        // remove
+//                        PostSoftwareUpdateService service = new PostSoftwareUpdateService();
+//                        service.postDeviceData(deviceKey, softVersion);
+
                         DownloadUtils downloadUtils = new DownloadUtils(getActivity(), deviceKey, softVersion);
                         downloadUtils.Download(downloadUrls);
                     } else {
