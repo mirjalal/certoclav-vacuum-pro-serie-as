@@ -41,7 +41,7 @@
         <string name="certoclav_account">Raypa Benutzerkonto</string>
         <string name="create_new_account">Neues Benutzerkonto erstellen</string>
         <string name="_accounts_created">" Benutzerkonten erstellt"</string>
-        <string name="password_not_correct">Passwort oder Benutzername nicht korrekt</string>
+        <string name="password_not_correct">Passwort oder Benutzername nicht korrekt! You have %1$d trials left until the account gets blocked</string>
         <string name="maintenance">Wartung</string>
         <string name="please_change_the_seal_of_the_lid">Bitte die Dichtung des Deckels wechseln</string>
         <string name="please_calibrate_temperature_sensor">Bitte Temperatursensoren kalibrieren lassen</string>
@@ -596,6 +596,8 @@
     <string name="error_cycle_cancelled_error">ERROR CYCLE CANCELLED BY ERROR</string>
     <string name="error_cycle_cancelled_manually">ERROR CYCLE CANCELLED MANUALLY</string>
     <string name="disable_fda">Disable FDA mode to activate screen sharing</string>
+    <string name="password_not_correct_for_fda_disabled">Passwort nicht korrekt.</string>
+    <string name="password_or_username_not_correct">Passwort oder Benutzername nicht korrekt</string>
 
 
 </resources>

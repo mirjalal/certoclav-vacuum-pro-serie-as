@@ -33,7 +33,7 @@ public class PostSoftwareUpdateService {
                 String body = object.toString();
                 //Post information to CertoCloud
                 postUtil = new PostUtil();
-                return postUtil.postToCertocloud(body, CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_POST_DEVICE_SOFTWARE, true);
+                return postUtil.putToCertocloud(body, CertocloudConstants.getServerUrl() + CertocloudConstants.REST_API_POST_DEVICE_SOFTWARE, true);
 
             } catch (Exception e) {
                 e.printStackTrace();

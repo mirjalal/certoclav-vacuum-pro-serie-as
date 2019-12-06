@@ -127,6 +127,7 @@ public class SettingsEmailActivity extends CertoclavSuperActivity {
 		buttonSend.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				String to = Autoclave.getInstance().getUser().getEmail();
+				Log.e("EMAIL", to);
 				String message = txtMessage.getText().toString();
 				if (to != null && to.length() == 0) {
 					Toast.makeText(SettingsEmailActivity.this,

@@ -381,16 +381,11 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
 
                                 if (result == 0) {
                                     //Wrong login attempt
-                                    Toasty.error(getApplicationContext(),
-                                            getString(R.string.password_not_correct),
-                                            Toast.LENGTH_LONG, true).show();
-
-                                    //Here increase the login attempt only for non admin user
 
 //                                    if(!currentUser.isAdmin())
                                         currentUser.increaseLoginAttempt();
-
                                     Log.e("ATTEMPTS", String.valueOf(currentUser.getLoginAttemptCount()));
+                                    Log.e("ATTEMPTS LEFT", String.valueOf(currentUser.getAttemptsLeft()));
 
                                     if (currentUser.isBlocked() && Autoclave.getInstance().isFDAEnabled()) {
                                         AuditLogger.getInstance().addAuditLog(
@@ -405,6 +400,16 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                                             currentUser.setBlockedByDate(new Date(new Date().getTime() + AppConstants.ADMIN_BLOCK_PERIOD));
                                         result = -2;
                                     } else {
+                                        if(Autoclave.getInstance().isFDAEnabled()) {
+                                            Toasty.error(getApplicationContext(),
+                                                    String.format(getString(R.string.password_not_correct), currentUser.getAttemptsLeft()),
+                                                    Toast.LENGTH_LONG, true).show();
+                                        }
+                                        else {
+                                            Toasty.error(getApplicationContext(),
+                                                    getString(R.string.password_or_username_not_correct),
+                                                    Toast.LENGTH_LONG, true).show();
+                                        }
                                         AuditLogger.getInstance().addAuditLog(currentUser,
                                                 -1,
                                                 AuditLogger.ACTION_FAILED_LOGIN,
@@ -726,7 +731,9 @@ public class LoginActivity extends CertoclavSuperActivity implements Navigationb
                     currentUser.increaseLoginAttempt();
                 Log.e("ATTEMPTS", String.valueOf(currentUser.getLoginAttemptCount()));
                 Log.e("ATTEMPTS LEFT", String.valueOf(currentUser.getAttemptsLeft()));
-                loginFailedMessage = String.format(getString(R.string.password_not_correct_), currentUser.getAttemptsLeft());
+                if(Autoclave.getInstance().isFDAEnabled())
+                    loginFailedMessage = String.format(getString(R.string.password_not_correct_), currentUser.getAttemptsLeft());
+                else loginFailedMessage = getString(R.string.password_not_correct_for_fda_disabled);
 
                 if (currentUser.isBlocked() && Autoclave.getInstance().isFDAEnabled()) {
 

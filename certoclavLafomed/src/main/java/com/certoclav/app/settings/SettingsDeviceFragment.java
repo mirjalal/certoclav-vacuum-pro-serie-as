@@ -93,10 +93,6 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                     if (ApplicationController.getInstance().isNetworkAvailable()) {
                         List<String> downloadUrls = new ArrayList<String>();
                         downloadUrls.add(AppConstants.DOWNLOAD_LINK);
-//                        // remove
-//                        PostSoftwareUpdateService service = new PostSoftwareUpdateService();
-//                        service.postDeviceData(deviceKey, softVersion);
-
                         DownloadUtils downloadUtils = new DownloadUtils(getActivity(), deviceKey, softVersion);
                         downloadUtils.Download(downloadUrls);
                     } else {
