@@ -62,7 +62,7 @@
     <string name="certoclav_account">CertoClav account</string>
     <string name="create_new_account">Create New Account</string>
     <string name="_accounts_created">" accounts created"</string>
-    <string name="password_not_correct">Password not correct</string>
+    <string name="password_not_correct">Password not correct! You have %1$d trials left until the account gets blocked</string>
     <string name="maintenance">Maintenance</string>
     <string name="please_change_the_seal_of_the_lid">Please change the seal of the lid</string>
     <string name="please_calibrate_temperature_sensor">Please calibrate temperature sensor</string>
@@ -247,7 +247,8 @@
     <string name="autoclave_serial_number">PCB Serial Number</string>
     <string name="an_error_occured_during_login_please_try_again_later_">An error occurred during login. Please try again later.\n</string>
     <string name="timout_during_login_please_check_internet_availability_">Timout during login. Please check internet availability.\n</string>
-    <string name="password_not_correct_">Password not correct.\n</string>
+    <string name="password_not_correct_">Password is not correct. You have %1$d trials left until the account gets blocked</string>
+    <string name="password_not_correct_for_fda_disabled">Password is not correct.</string>
     <string name="email_does_not_exist_please_create_a_certocloud_account_with_this_email_first_">Email does not exist. Please create a CertoCloud account with this email first.\n</string>
     <string name="not_able_to_connect_to_certocloud_">Not able to connect to CertoCloud.\n</string>
     <string name="login_notification_offline">Autoclave is in offline mode\nNo CertoCloud, automatic backups, remote control, support and software updates available</string>
