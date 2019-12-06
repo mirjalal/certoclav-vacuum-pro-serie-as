@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.certoclav.library.R;
+import com.certoclav.library.certocloud.PostSoftwareUpdateService;
 
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
@@ -72,7 +73,7 @@ public class UpdateUtils {
 
     //pass source from where the update should be installed
 //SOURCE_USB or SOURCE_FOLDER_DOWNLOAD
-    public void installUpdateZip(int source) {
+    public void installUpdateZip(int source, final String deviceKey, final String softVersion) {
 
 
         new AsyncTask<Integer, Integer, Integer>() {
@@ -106,6 +107,9 @@ public class UpdateUtils {
                     case RESULT_UP_TO_DATE:
                         dialogLocal.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                         dialogLocal.setTitleText(context.getString(R.string.application_is_up_to_date));
+                        // upload to cloud
+                        PostSoftwareUpdateService service = new PostSoftwareUpdateService();
+                        service.postDeviceData(deviceKey, softVersion);
                         break;
                     case RESULT_WRONG_FILE:
                         dialogLocal.changeAlertType(SweetAlertDialog.ERROR_TYPE);

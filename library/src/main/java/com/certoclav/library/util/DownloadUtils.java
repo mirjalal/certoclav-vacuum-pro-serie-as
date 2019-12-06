@@ -36,10 +36,14 @@ public class DownloadUtils {
     private int numberOfDownloads;
     private int counterDownload;
     SweetAlertDialog barProgressDialog;
+    private String deviceKey;
+    private String softVersion;
 
 
-    public DownloadUtils(Context context) {
+    public DownloadUtils(Context context, String deviceKey, String softVersion) {
         this.mContext = context;
+        this.deviceKey = deviceKey;
+        this.softVersion = softVersion;
         downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 
         //set filter to only when download is complete and register broadcast receiver
@@ -272,8 +276,11 @@ public class DownloadUtils {
                   //  barProgressDialog.dismiss();
                     counterDownload = counterDownload + 1;
                     if (counterDownload == numberOfDownloads) {
+
+
+
                         UpdateUtils updateutils = new UpdateUtils(mContext);
-                        updateutils.installUpdateZip(UpdateUtils.SOURCE_FOLDER_DOWNLOAD);
+                        updateutils.installUpdateZip(UpdateUtils.SOURCE_FOLDER_DOWNLOAD, deviceKey, softVersion);
                         barProgressDialog
                                 .setConfirmText("OK")
                                 .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);

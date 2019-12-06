@@ -66,6 +66,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
     private static final int EXPORT_TARGET_USB = 1;
     private static final int EXPORT_TARGET_SD = 2;
     private Calendar dateTime;
+    private String softVersion;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,12 +75,12 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
 
         try {
             //Device Key
-            String deviceKey = "-";
+            final String deviceKey;
             if (Autoclave.getInstance().getController() != null) {
                 if (Autoclave.getInstance().getController().getSavetyKey() != null) {
                     deviceKey = Autoclave.getInstance().getController().getSavetyKey();
-                }
-            }
+                } else deviceKey = "-";
+            } else deviceKey = "-";
 
             findPreference(AppConstants.PREFERENCE_KEY_DEVICE_KEY).setSummary(deviceKey);
 
@@ -92,7 +93,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                     if (ApplicationController.getInstance().isNetworkAvailable()) {
                         List<String> downloadUrls = new ArrayList<String>();
                         downloadUrls.add(AppConstants.DOWNLOAD_LINK);
-                        DownloadUtils downloadUtils = new DownloadUtils(getActivity());
+                        DownloadUtils downloadUtils = new DownloadUtils(getActivity(), deviceKey, softVersion);
                         downloadUtils.Download(downloadUrls);
                     } else {
                         Toasty.warning(getActivity(), getString(R.string.please_connect_to_internet), Toast.LENGTH_SHORT, true).show();
@@ -125,7 +126,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                         Toasty.error(getActivity(), getActivity().getString(R.string.can_not_read_usb_flash_disk), Toast.LENGTH_LONG, true).show();
                     } else {
                         UpdateUtils updateUtils = new UpdateUtils(getActivity());
-                        updateUtils.installUpdateZip(UpdateUtils.SOURCE_USB);
+                        updateUtils.installUpdateZip(UpdateUtils.SOURCE_USB, deviceKey, softVersion);
                     }
                     preference.setEnabled(true);
                     return false;
@@ -316,8 +317,8 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
             PackageInfo pInfo;
             try {
                 pInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
-                String version = pInfo.versionName + " (" + pInfo.versionCode + ")";
-                findPreference(AppConstants.PREFERENCE_KEY_VERSION).setSummary(version);
+                softVersion = pInfo.versionName + " (" + pInfo.versionCode + ")";
+                findPreference(AppConstants.PREFERENCE_KEY_VERSION).setSummary(softVersion);
             } catch (NameNotFoundException e) {
                 e.printStackTrace();
             }

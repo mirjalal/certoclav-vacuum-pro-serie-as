@@ -48,6 +48,7 @@ public class PostUtil {
         String token = "bypass";
         if (auth) {
             token = CloudUser.getInstance().getToken();
+            Log.e("POST TOKEN", token);
             if (token.isEmpty()) {
                 response.setError(true);
                 response.setMessage("Invalid Token or Key");
@@ -66,6 +67,7 @@ public class PostUtil {
             conn.setRequestProperty("X-Access-Token", token);
             if (auth == true) {
                 conn.setRequestProperty("X-Key", CloudUser.getInstance().getEmail());
+                Log.e("EMAIL", CloudUser.getInstance().getEmail());
             }
             conn.setRequestProperty("Content-Type", "application/json");
             Log.e("PostUtil", "before conn.getoutputstream");

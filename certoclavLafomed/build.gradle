@@ -66,5 +66,4 @@ dependencies {
         transitive = true;
     }
 
-    compile "android.arch.work:work-runtime:1.0.1"
 }

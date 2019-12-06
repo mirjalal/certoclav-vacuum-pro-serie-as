@@ -68,7 +68,7 @@ public class CertocloudConstants {
     public final static String REST_RESET_PASSWORD = "/recovery/sendcode";// support.send); send email to certosupport
     public final static String REST_API_POST_EMAIL = "/api/support/email/"; //send notification email to a specific email address
     public final static String REST_API_POST_SMS = "/api/support/sms/"; // send notification sms to a specific phone
-
+    public final static String REST_API_POST_DEVICE_SOFTWARE = "/api/devices/software";
     /**
      * Routes that can be accessed only by admin users
      */
