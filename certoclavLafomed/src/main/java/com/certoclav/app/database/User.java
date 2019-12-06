@@ -139,12 +139,20 @@ public class User {
         return getIsNotSuperAdmin() && isLocal && email.equals("Admin");
     }
 
-    public boolean getIsUserAdmin() {
-        return getIsNotSuperAdmin() && !email.equals("Admin");
+    public boolean getIsOnlineUserAdmin() {
+        return getIsNotSuperAdmin() && !email.equals("Admin") && !isLocal;
     }
 
-    public boolean getIsNormalLocalUser() {
+    public boolean getIsOfflineUserAdmin() {
+        return getIsNotSuperAdmin() && !email.equals("Admin") && isLocal;
+    }
+
+    public boolean getIsNormalOfflineUser() {
         return isLocal && !isAdmin && !email.equals("Admin") && !CloudUser.getInstance().isSuperAdmin();
+    }
+
+    public boolean getIsNormalOnlineUser() {
+        return !isLocal && !isAdmin && !email.equals("Admin") && !CloudUser.getInstance().isSuperAdmin();
     }
 
     User() {

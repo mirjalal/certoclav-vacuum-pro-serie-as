@@ -138,8 +138,8 @@
     <string name="information">INFORMATION</string>
     <string name="intro_account_created">account created</string>
     <string name="temperature">Steam [℃]</string>
-    <string name="celcius">\u2103</string>
-    <string name="fahrenheit">\u2109</string>
+    <string name="celcius">C</string>
+    <string name="fahrenheit">F</string>
     <string name="time_in_minutes">Time [min]</string>
     <string name="settings">SETTINGS</string>
     <string name="do_you_really_want_to_start">Do you really want to start</string>
@@ -432,7 +432,9 @@
     <string name="no_sdcard_detected">No SD-Card detected. Please reboot this touch terminal and try again.</string>
     <string name="coping_protocols">Copying protocols...</string>
     <string name="export_success">Exported successfully</string>
+    <string name="import_success">Imported successfully</string>
     <string name="export_failed">Export Failed!</string>
+    <string name="import_failed">Import Failed!</string>
     <string name="material_testing">Material Testing</string>
     <string name="stop_program_earlier">Stop program earlier</string>
 
@@ -493,6 +495,7 @@
     <string name="admin_password_wrong">Admin password is wrong!</string>
     <string name="admin_password">Admin Password</string>
     <string name="software_backup_preference_title">Backup software data</string>
+    <string name="import_software_backup_preference_title">Import backup data</string>
     <string name="power_loss_during_record">Power loss during record</string>
     <string name="kpa">kPa</string>
     <string name="choose_server">CHOOSE SERVER</string>
@@ -513,6 +516,8 @@
     <string name="server_manual">Manual</string>
     <string name="import_protocols">Import protocols</string>
     <string name="getting_software_backup">Creating a backup</string>
+    <string name="importing_software_backup">Importing software backup</string>
+    <string name="importing">Importing…</string>
 
     <string name="local_account">Local Account</string>
     <string name="online_account">Online Account</string>
