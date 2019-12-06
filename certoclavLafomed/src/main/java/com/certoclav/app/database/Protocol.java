@@ -339,7 +339,7 @@ public class Protocol {
 
 
     public int getZyklusNumber() {
-        return zyklusNumber;
+        return zyklusNumber + 1;
     }
 
     public void setZyklusNumber(int zyklusNumber) {

@@ -146,7 +146,7 @@ public class UserAdapter extends ArrayAdapter<User> {
                 editButtonVisibility = loggedInUser.getUserId() == currentUserItem.getUserId();
         } else { // online mode
             if (loggedInUser.getIsOnlineUserAdmin())
-                editButtonVisibility = !currentUserItem.getIsDefaultAdmin() && !currentUserItem.getIsNormalOnlineUser();
+                editButtonVisibility = !currentUserItem.getIsDefaultAdmin();
 
             if (loggedInUser.getIsNormalOnlineUser())
                 editButtonVisibility = loggedInUser.getUserId() == currentUserItem.getUserId();
