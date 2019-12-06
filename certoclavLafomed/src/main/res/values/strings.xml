@@ -472,7 +472,7 @@
     <string name="header_media_temp_2">Media 2 temp.\n[%1$s]</string>
     <string name="header_pressure">Pressure\n[bar]</string>
     <string name="download_protocols_from_cloud">Download Protocols from RaypaCloud</string>
-    <string name="cur_password">Currrent Password</string>
+    <string name="cur_password">Current Password</string>
     <string name="password_confirm">Confirm Password</string>
     <string name="edit_user">Edit User</string>
     <string name="please_enter_password">Please enter your current password!</string>
@@ -494,6 +494,7 @@
     <string name="change_admin_password">Change Admin Password</string>
     <string name="admin_password_wrong">Admin password is wrong!</string>
     <string name="admin_password">Admin Password</string>
+    <string name="current_password_wrong">Current password is wrong!</string>
     <string name="software_backup_preference_title">Backup software data</string>
     <string name="import_software_backup_preference_title">Import backup data</string>
     <string name="power_loss_during_record">Power loss during record</string>

@@ -44,6 +44,7 @@ public class RegisterActivity extends CertoclavSuperActivity {
 
     private CheckboxItem checkBoxIsAdmin;
     private EditTextItem editEmailItem;
+    private EditTextItem editCurPasswordItem;
     private EditTextItem editPasswordItem;
     private EditTextItem editPasswordItemConfirm;
     private EditTextItem editMobile;
@@ -51,6 +52,7 @@ public class RegisterActivity extends CertoclavSuperActivity {
     private EditTextItem editLastName;
     private SweetAlertDialog pDialog;
     private boolean isEdit;
+    private User userToBeEdited;
 
     private boolean isManual = true;
 
@@ -61,6 +63,10 @@ public class RegisterActivity extends CertoclavSuperActivity {
         setContentView(R.layout.login_register);
         CertoclavNavigationbarClean navigationbar = new CertoclavNavigationbarClean(this);
         isEdit = getIntent().hasExtra(AppConstants.INTENT_EXTRA_USER_ID);
+        if (isEdit) {
+            DatabaseService db = DatabaseService.getInstance();
+            userToBeEdited = db.getUserById(getIntent().getExtras().getInt(AppConstants.INTENT_EXTRA_USER_ID));
+        }
         navigationbar.setHeadText(getString(isEdit ? R.string.edit_user : R.string.register_new_user));
 
         linEditTextItemContainer = findViewById(R.id.register_container_edit_text_items);
@@ -182,6 +188,34 @@ public class RegisterActivity extends CertoclavSuperActivity {
         linEditTextItemContainer.addView(editMobile);
 
 
+        editCurPasswordItem = (EditTextItem) getLayoutInflater().inflate(R.layout.edit_text_item, linEditTextItemContainer, false);
+        editCurPasswordItem.setHint(getString(R.string.cur_password));
+        editCurPasswordItem.setEditTextInputtype(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        editCurPasswordItem.addTextChangedListner(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().length() > 3)
+                    editCurPasswordItem.setHasValidString(true);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                //
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+
+            }
+        });
+        if (userToBeEdited != null && userToBeEdited.getEmail() != null && !userToBeEdited.getEmail().isEmpty())
+            linEditTextItemContainer.addView(editCurPasswordItem);
+
+
         editPasswordItem = (EditTextItem) getLayoutInflater().inflate(R.layout.edit_text_item, linEditTextItemContainer, false);
         editPasswordItem.setHint(getString(R.string.new_password));
         editPasswordItem.setEditTextInputtype(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -288,7 +322,7 @@ public class RegisterActivity extends CertoclavSuperActivity {
 //                }
                 buttonRegister.setEnabled(false);
 
-                new AsyncTask<String, Boolean, Boolean>() {
+                new AsyncTask<String, Boolean, Integer>() {
                     @Override
                     protected void onPreExecute() {
                         showDialog();
@@ -296,30 +330,38 @@ public class RegisterActivity extends CertoclavSuperActivity {
                     }
 
                     @Override
-                    protected Boolean doInBackground(String... params) {
-                        User user = new User(
-                                params[0],
-                                "",
-                                params[1],
-                                params[2],
-                                params[3],
-                                "",
-                                "",
-                                "",
-                                "",
-                                BCrypt.hashpw(params[4], BCrypt.gensalt()),
-                                new Date(),
-                                Boolean.valueOf(params[5]),
-                                isLocal);
+                    protected Integer doInBackground(String... params) {
+                        if (BCrypt.checkpw(params[4], userToBeEdited.getPassword())) { // current password is correct
+                            User user = new User(
+                                    params[0],
+                                    "",
+                                    params[1],
+                                    params[2],
+                                    params[3],
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    BCrypt.hashpw(params[5], BCrypt.gensalt()),
+                                    new Date(),
+                                    Boolean.valueOf(params[6]),
+                                    isLocal);
 
-                        return (isEdit ? databaseService.updateUserProfile(user, getIntent().getExtras().getInt(AppConstants.INTENT_EXTRA_USER_ID)) : databaseService.insertUser(user)) == 1;
+                            return (isEdit ? databaseService.updateUserProfile(user, getIntent().getExtras().getInt(AppConstants.INTENT_EXTRA_USER_ID)) : databaseService.insertUser(user))/* == 1*/;
+                        } else
+                            return -1;
                     }
 
                     @Override
-                    protected void onPostExecute(Boolean result) {
+                    protected void onPostExecute(Integer result) {
                         hideDialog();
                         buttonRegister.setEnabled(true);
-                        if (result == true) {
+                        if (result == -1) {
+                            Toasty.error(getApplicationContext(),
+                                    getString(R.string.current_password_wrong),
+                                    Toast.LENGTH_LONG,
+                                    true).show();
+                        } else if (result == 1) {
                             Toasty.success(getApplicationContext(),
                                     getString(isEdit ? R.string.edit_success : R.string.account_created),
                                     Toast.LENGTH_SHORT,
@@ -333,7 +375,7 @@ public class RegisterActivity extends CertoclavSuperActivity {
                         }
                         super.onPostExecute(result);
                     }
-                }.execute(editFirstName.getText(), editLastName.getText(), editEmailItem.getText(), editMobile.getText(), editPasswordItem.getText(), checkBoxIsAdmin.isChecked() + "");
+                }.execute(editFirstName.getText(), editLastName.getText(), editEmailItem.getText(), editMobile.getText(), editCurPasswordItem.getText(), editPasswordItem.getText(), checkBoxIsAdmin.isChecked() + "");
             }
         });
     }
