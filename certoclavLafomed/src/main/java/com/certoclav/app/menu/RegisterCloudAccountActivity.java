@@ -393,11 +393,10 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                         else
                             databaseService.insertUser(user);
 
-                        if (currentUser != null && currentUser.getEmail().equalsIgnoreCase(user.getEmail()))
+                        if (currentUser != null &&  Autoclave.getInstance().getUser().getEmail().equals(user.getEmail()))
                             currentUser = user;
 
                         UserController userController = new UserController(user, Autoclave.getInstance().getController());
-
 
                         return response;
                     }
@@ -406,18 +405,16 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                     protected void onPostExecute(Response response) {
                         hideDialog();
                         if (response != null && response.isOK()) {
-                            Toasty.success(getApplicationContext(), response.getMessage().isEmpty() ? getString(currentUser != null ? R.string.account_created : R.string.updated_successfully) : response.getMessage(),
-                                    Toast.LENGTH_SHORT, true).show();
-                            if (currentUser != null) {
+                            Toasty.success(getApplicationContext(), response.getMessage().isEmpty() ? getString(currentUser != null ? R.string.account_created : R.string.updated_successfully) : response.getMessage(), Toast.LENGTH_SHORT, true).show();
+
+                            if (currentUser != null && Autoclave.getInstance().getUser().getEmail().equals(currentUser.getEmail()))
                                 Autoclave.getInstance().setUser(currentUser);
-                            }
-                            if (response.getStatus() == 200) {
+
+                            if (response.getStatus() == 200)
                                 onBackPressed();
-                            }
-                        } else {
-                            Toasty.error(getApplicationContext(), (response == null || response.getMessage().isEmpty()) ? getString(R.string.sign_up_account_failed) : response.getMessage(),
-                                    Toast.LENGTH_SHORT, true).show();
-                        }
+
+                        } else
+                            Toasty.error(getApplicationContext(), (response == null || response.getMessage().isEmpty()) ? getString(R.string.sign_up_account_failed) : response.getMessage(), Toast.LENGTH_SHORT, true).show();
                         super.onPostExecute(response);
                     }
                 }.execute(editEmailItem.getText(),
