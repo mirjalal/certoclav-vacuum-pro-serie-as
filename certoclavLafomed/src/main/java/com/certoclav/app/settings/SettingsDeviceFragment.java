@@ -1,6 +1,5 @@
 package com.certoclav.app.settings;
 
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -24,7 +23,6 @@ import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import com.certoclav.app.AppConstants;
 import com.certoclav.app.R;
 import com.certoclav.app.database.AuditLog;
@@ -44,20 +42,16 @@ import com.certoclav.app.util.Requests;
 import com.certoclav.app.util.SoftwareBackupUtil;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.certocloud.CloudUser;
-import com.certoclav.library.certocloud.PostSoftwareUpdateService;
 import com.certoclav.library.util.DownloadUtils;
 import com.certoclav.library.util.ExportUtils;
 import com.certoclav.library.util.UpdateUtils;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
-
 
 public class SettingsDeviceFragment extends PreferenceFragment implements SensorDataListener {
 
