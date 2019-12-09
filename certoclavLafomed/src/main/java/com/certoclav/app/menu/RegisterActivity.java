@@ -116,7 +116,7 @@ public class RegisterActivity extends CertoclavSuperActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().isEmpty() == false)
+                if (!s.toString().isEmpty())
                     editFirstName.setHasValidString(true);
             }
 
@@ -142,7 +142,7 @@ public class RegisterActivity extends CertoclavSuperActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().isEmpty() == false)
+                if (!s.toString().isEmpty())
                     editLastName.setHasValidString(true);
             }
 
@@ -168,7 +168,7 @@ public class RegisterActivity extends CertoclavSuperActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().isEmpty() == false)
+                if (!s.toString().isEmpty())
                     editMobile.setHasValidString(true);
             }
 
@@ -456,7 +456,7 @@ public class RegisterActivity extends CertoclavSuperActivity {
         dialog.setContentView(R.layout.dialog_admin_password);
         dialog.setTitle(R.string.register_new_user);
         dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCanceledOnTouchOutside(false);
         final EditText editTextPassword = dialog.findViewById(R.id.editTextDesc);
         Button buttonLogin = dialog
                 .findViewById(R.id.dialogButtonLogin);
