@@ -125,6 +125,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                     if (exportUtils.checkExternalMedia() == false) {
                         Toasty.error(getActivity(), getActivity().getString(R.string.can_not_read_usb_flash_disk), Toast.LENGTH_LONG, true).show();
                     } else {
+                        Toast.makeText(getContext(), "DEVICE KEY: " + deviceKey + ", SOFT VERSION: " + softVersion, Toast.LENGTH_LONG).show();
                         UpdateUtils updateUtils = new UpdateUtils(getActivity());
                         updateUtils.installUpdateZip(UpdateUtils.SOURCE_USB, deviceKey, softVersion);
                     }
