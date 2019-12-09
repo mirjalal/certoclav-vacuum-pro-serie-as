@@ -367,8 +367,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                         if (response.getStatus() != PostUtil.RETURN_OK_200) {
                             return response;
                         }
-                        if (currentUser != null)
-                            databaseService.deleteUser(currentUser);
+
                         User user = new User(
                                 params[3],
                                 "",
@@ -389,7 +388,10 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                             user.setPassword(BCrypt.hashpw(params[1], BCrypt.gensalt()));
                         }
 
-                        databaseService.insertUser(user);
+                        if (currentUser != null)
+                            databaseService.updateUserProfile(user, currentUser.getUserId());
+                        else
+                            databaseService.insertUser(user);
 
                         if (currentUser != null && currentUser.getEmail().equalsIgnoreCase(user.getEmail()))
                             currentUser = user;
@@ -474,7 +476,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                 if (responseModel.isOk() && responseModel.getUser() != null) {
                     User user = responseModel.getUser();
                     checkBoxIsAdmin.setChecked(user.isAdmin());
-                    checkBoxIsAdmin.setEnabled(user.isAdmin());
+                    //checkBoxIsAdmin.setEnabled(user.isAdmin());
                     editEmailItem.setText(user.getEmail());
                     editFirstName.setText(user.getFirstName());
                     editLastName.setText(user.getLastName());
@@ -554,7 +556,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
         dialog.setContentView(R.layout.dialog_admin_password);
         dialog.setTitle(R.string.register_new_user);
         dialog.setCancelable(false); // if TRUE, no  need for this dialog :D
-        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCanceledOnTouchOutside(false);
         final EditText editTextPassword = dialog.findViewById(R.id.editTextDesc);
         Button buttonLogin = (Button) dialog
                 .findViewById(R.id.dialogButtonLogin);
