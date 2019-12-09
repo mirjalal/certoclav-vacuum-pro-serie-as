@@ -2,8 +2,6 @@ package com.certoclav.library.certocloud;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
-
 import com.certoclav.library.util.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,8 +22,6 @@ public class PostSoftwareUpdateService {
 
         protected Response doInBackground(String... pw) {
             try {
-                Log.e("DEVICE KEY", deviceKey);
-                Log.e("SOFTWARE VERSION", softwareVersion);
                 JSONObject object = new JSONObject();
                 try {
                     object.put("devicekey", deviceKey);
