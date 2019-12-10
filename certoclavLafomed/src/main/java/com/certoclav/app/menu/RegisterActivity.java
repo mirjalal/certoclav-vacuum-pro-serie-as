@@ -331,25 +331,28 @@ public class RegisterActivity extends CertoclavSuperActivity {
 
                     @Override
                     protected Integer doInBackground(String... params) {
-                        if (BCrypt.checkpw(params[4], userToBeEdited.getPassword())) { // current password is correct
-                            User user = new User(
-                                    params[0],
-                                    "",
-                                    params[1],
-                                    params[2],
-                                    params[3],
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    BCrypt.hashpw(params[5], BCrypt.gensalt()),
-                                    new Date(),
-                                    Boolean.valueOf(params[6]),
-                                    isLocal);
+                        User user = new User(
+                                params[0],
+                                "",
+                                params[1],
+                                params[2],
+                                params[3],
+                                "",
+                                "",
+                                "",
+                                "",
+                                BCrypt.hashpw(params[5], BCrypt.gensalt()),
+                                new Date(),
+                                Boolean.valueOf(params[6]),
+                                isLocal);
 
-                            return (isEdit ? databaseService.updateUserProfile(user, getIntent().getExtras().getInt(AppConstants.INTENT_EXTRA_USER_ID)) : databaseService.insertUser(user))/* == 1*/;
+                        if (isEdit) {
+                            if (BCrypt.checkpw(params[4], userToBeEdited.getPassword())) // current password is correct
+                                return databaseService.updateUserProfile(user, userToBeEdited.getUserId());
+                            else
+                                return -1;
                         } else
-                            return -1;
+                            return databaseService.insertUser(user);
                     }
 
                     @Override
