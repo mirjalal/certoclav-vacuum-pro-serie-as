@@ -111,7 +111,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (android.util.Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches())
+                if (android.util.Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches() && s.toString().length() < 5)
                     editEmailItem.setHasValidString(true);
             }
 
@@ -473,7 +473,6 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
                 if (responseModel.isOk() && responseModel.getUser() != null) {
                     User user = responseModel.getUser();
                     checkBoxIsAdmin.setChecked(user.isAdmin());
-                    //checkBoxIsAdmin.setEnabled(user.isAdmin());
                     editEmailItem.setText(user.getEmail());
                     editFirstName.setText(user.getFirstName());
                     editLastName.setText(user.getLastName());

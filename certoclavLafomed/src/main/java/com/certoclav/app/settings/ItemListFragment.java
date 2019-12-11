@@ -126,7 +126,7 @@ public class ItemListFragment extends ListFragment {
                                 R.drawable.ic_audit_logs, R.drawable.ic_audit_logs_selected,
                                 new AuditLogFragment());
                     else {
-                        if (LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.AUDIT_LOGS))
+                        if (!LockoutManager.getInstance().isLocked(LockoutManager.LOCKS.AUDIT_LOGS))
                             AddItem(getListView(), getActivity().getString(R.string.settings_audit_log),
                                     R.drawable.ic_audit_logs, R.drawable.ic_audit_logs_selected,
                                     new AuditLogFragment());

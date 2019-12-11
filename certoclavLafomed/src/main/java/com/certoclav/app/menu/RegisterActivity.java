@@ -391,7 +391,6 @@ public class RegisterActivity extends CertoclavSuperActivity {
                 DatabaseService db = DatabaseService.getInstance();
                 User user = db.getUserById(getIntent().getExtras().getInt(AppConstants.INTENT_EXTRA_USER_ID));
                 checkBoxIsAdmin.setChecked(user.isAdmin());
-                checkBoxIsAdmin.setEnabled(user.isAdmin());
                 editEmailItem.setText(user.getEmail());
                 editEmailItem.setEnabled(false);
                 editMobile.setText(user.getMobile());
