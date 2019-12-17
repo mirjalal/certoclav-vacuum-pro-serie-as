@@ -2,6 +2,8 @@ package com.certoclav.app.menu;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -25,6 +27,7 @@ import com.certoclav.app.util.AutoclaveModelManager;
 import com.certoclav.app.util.Helper;
 import com.certoclav.app.util.MyCallbackAdminAprove;
 import com.certoclav.library.certocloud.GetConditionsService;
+import com.certoclav.library.certocloud.PostSoftwareUpdateService;
 import com.certoclav.library.view.ControlPagerAdapter;
 import com.certoclav.library.view.CustomViewPager;
 import com.crashlytics.android.Crashlytics;
@@ -157,6 +160,27 @@ public class MenuMain extends CertoclavSuperActivity implements NavigationbarLis
         navigationbar.setNavigationbarListener(MenuMain.this);
         if(modelManager.getModel() != null)
             ReadAndParseSerialService.getInstance().setParameter(93, new SimpleDateFormat("yyMMddHHmmss").format(Calendar.getInstance().getTime()));
+
+        // update software version everytime u load main page
+        if (!AppConstants.isIoSimulated && Autoclave.getInstance().getController() != null) {
+            if (Autoclave.getInstance().getController().getSavetyKey() != null) {
+                String deviceKey = Autoclave.getInstance().getController().getSavetyKey();
+                String softVersion = "";
+                //Software Version
+                PackageInfo pInfo;
+                try {
+                    pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                    softVersion = pInfo.versionName + " (" + pInfo.versionCode + ")";
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+                PostSoftwareUpdateService service = new PostSoftwareUpdateService();
+                Log.e("SOFT VERSION", softVersion);
+                Log.e("DEVICE", deviceKey);
+                service.postDeviceData(deviceKey, softVersion);
+            }
+        }
+
         super.onResume();
     }
 
