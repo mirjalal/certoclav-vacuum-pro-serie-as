@@ -138,7 +138,7 @@ public class PostUtil {
 
 
     public Response putToCertocloud(String body, String urlpath, boolean auth) {
-        Log.e("PostUtil", "send to Server: " + body);
+        Log.e("PutUtil", "send to Server: " + body);
         Response response = new Response();
         int returnval = RETURN_UNKNOWN;
         String token = "bypass";
