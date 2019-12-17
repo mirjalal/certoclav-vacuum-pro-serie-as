@@ -191,7 +191,7 @@ public class Protocol {
             String description = this.profileDescription;
             String temp = description.substring(description.indexOf("[") + 1, description.indexOf("]"));
             return description.replaceAll("\\[(.*?)\\]",
-                    String.valueOf(Helper.getInstance().celsiusToCurrentUnit(Float.valueOf(temp)))
+                    Helper.getInstance().celsiusToCurrentUnit(Float.valueOf(temp))
                             + " " + Helper.getInstance().getTemperatureUnitText(null) + " ");
         } catch (Exception e) {
             e.printStackTrace();

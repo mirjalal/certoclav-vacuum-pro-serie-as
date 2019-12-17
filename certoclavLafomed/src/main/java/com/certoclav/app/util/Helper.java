@@ -1375,10 +1375,10 @@ public class Helper {
                         .append(Helper.getInstance().getTemperatureUnitText(AutoclaveModelManager.getInstance().getTemperatureUnit()))
                         .append("\r\n");
             }
-
+            // protocol.getSterilisationPressure() == profile.getSterilisationPressure() --> this equality IS ALWAYS TRUE as Michael said on 17.12.2019 skype conversation
             if (protocol.getSterilisationPressure() != 0) {
                 sbuilder.append("Sterilisation pressure: ")
-                        .append(roundFloat((protocol.getSterilisationPressure() * 0.01f) + 1f).toString())
+                        .append(protocol.getSterilisationPressure())
                         .append(" bar")
                         .append("\r\n");
             }
