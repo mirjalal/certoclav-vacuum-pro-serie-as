@@ -111,7 +111,7 @@ public class RegisterCloudAccountActivity extends CertoclavSuperActivity impleme
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (android.util.Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches() && s.toString().length() < 5)
+                if (android.util.Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches() && s.toString().length() > 0)
                     editEmailItem.setHasValidString(true);
             }
 
