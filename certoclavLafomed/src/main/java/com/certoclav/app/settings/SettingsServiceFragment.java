@@ -57,21 +57,21 @@ public class SettingsServiceFragment extends Fragment implements SensorDataListe
     public void onSensorDataChange(AutoclaveData data) {
 
         TextView v = (TextView) mRootView.findViewById(R.id.text_temp);
-        v.setText("Temperature 1 (Chamber):  " + data.getTemp1().getValueString() + "\n"
-                + "Temperature 2 (Probe):    " + data.getTemp2().getValueString() + "\n"
-                + "Temperature 3 (Heater):   " + data.getTemp3().getValueString() + "\n"
-                + "Temperature 4 (Not Used): " + data.getTemp4().getValueString() + "\n"
-                + "Pressure 1 (Chamber):     " + data.getPress().getValueString() + "\n"
-                + "Pressure 2 (Steam Gen.):  " + data.getPress2().getValueString() + "\n"
-                + "State:                    " + Autoclave.getInstance().getState().toString() + "\n"
-                + "Program Step:             " +Autoclave.getInstance().getProgramStep() + "\n"
-                + "Is Connected:             " + Autoclave.getInstance().isMicrocontrollerReachable() + "\n"
-                + "Index of running program: " + Autoclave.getInstance().getIndexOfRunningProgram() + "\n"
-                + "Date:                     " + Autoclave.getInstance().getDate() + "\n"
-                + "Time:                     " + Autoclave.getInstance().getTime() + "\n"
-                + "ErrorCode:                " + Autoclave.getInstance().getErrorCode() + "\n"
-                + "WarningCode:                " + Autoclave.getInstance().getWarningList() + "\n"
-                + "CycleNumber:              " + Autoclave.getInstance().getController().getCycleNumber() + "\n");
+        v.setText(getString(R.string.temp1_chamber) + data.getTemp1().getValueString() + "\n"
+                + getString(R.string.temp2_probe) + data.getTemp2().getValueString() + "\n"
+                + getString(R.string.temp3_heater) + data.getTemp3().getValueString() + "\n"
+                + getString(R.string.temp4_not_used) + data.getTemp4().getValueString() + "\n"
+                + getString(R.string.pressure1_chamber) + data.getPress().getValueString() + "\n"
+                + getString(R.string.pressure2_steam_gen) + data.getPress2().getValueString() + "\n"
+                + getString(R.string.state) + Autoclave.getInstance().getState().toString() + "\n"
+                + getString(R.string.program_step) +Autoclave.getInstance().getProgramStep() + "\n"
+                + getString(R.string.is_connected) + Autoclave.getInstance().isMicrocontrollerReachable() + "\n"
+                + getString(R.string.index_of_running_program) + Autoclave.getInstance().getIndexOfRunningProgram() + "\n"
+                + getString(R.string.date_of_text_view) + Autoclave.getInstance().getDate() + "\n"
+                + getString(R.string.time) + Autoclave.getInstance().getTime() + "\n"
+                + getString(R.string.error_code) + Autoclave.getInstance().getErrorCode() + "\n"
+                + getString(R.string.warning_code) + Autoclave.getInstance().getWarningList() + "\n"
+                + getString(R.string.cycle_number) + Autoclave.getInstance().getController().getCycleNumber() + "\n");
 
         v.setTypeface(Typeface.MONOSPACE);
         CheckBox cb = (CheckBox) mRootView.findViewById(R.id.checkBox_program_finished);

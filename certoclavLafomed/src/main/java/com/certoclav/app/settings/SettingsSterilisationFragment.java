@@ -235,9 +235,9 @@ public class SettingsSterilisationFragment extends PreferenceFragment {
 
         barProgressDialog.setTitle("");
         if (target_id == EXPORT_TARGET_USB) {
-            barProgressDialog.setContentText("copy protocols to USB flash drive");
+            barProgressDialog.setContentText(getString(R.string.copy_protocols_usb));
         } else {
-            barProgressDialog.setContentText("copy protocols to SD card");
+            barProgressDialog.setContentText(getString(R.string.copy_protocols_sdcard));
         }
         barProgressDialog.show();
 

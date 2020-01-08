@@ -77,7 +77,7 @@ public class ActivateCloudAccountActivity extends CertoclavSuperActivity {
 
 
         buttonResendActivationKey = (Button) findViewById(R.id.register_button_resend_mail);
-        buttonResendActivationKey.setText("Send activation key to " + Autoclave.getInstance().getUser().getEmail());
+        buttonResendActivationKey.setText(getString(R.string.send_activation_key_to) + " " + Autoclave.getInstance().getUser().getEmail());
         buttonResendActivationKey.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -123,7 +123,7 @@ public class ActivateCloudAccountActivity extends CertoclavSuperActivity {
             }
         });
         buttonActivateAccount = (Button) findViewById(R.id.register_button_activate);
-        buttonActivateAccount.setText("Activate account");
+        buttonActivateAccount.setText(getString(R.string.activate_account));
 
         buttonActivateAccount.setOnClickListener(new OnClickListener() {
 
@@ -132,7 +132,7 @@ public class ActivateCloudAccountActivity extends CertoclavSuperActivity {
 
 
                 if (!editActivationKeyItem.hasValidString()) {
-                    Toast.makeText(ActivateCloudAccountActivity.this, "Entered code is not valid", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ActivateCloudAccountActivity.this, getString(R.string.code_not_valid), Toast.LENGTH_LONG).show();
                     return;
                 }
 

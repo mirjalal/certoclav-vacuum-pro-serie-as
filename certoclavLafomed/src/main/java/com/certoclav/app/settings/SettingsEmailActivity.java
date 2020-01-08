@@ -155,10 +155,10 @@ public class SettingsEmailActivity extends CertoclavSuperActivity {
 						public void onTaskFinished(int responseCode) {
 							try {
 								if (responseCode == PostUtil.RETURN_OK) {
-									Toast.makeText(SettingsEmailActivity.this, "Message has been sent", Toast.LENGTH_LONG).show();
+									Toast.makeText(SettingsEmailActivity.this, getString(R.string.email_sent), Toast.LENGTH_LONG).show();
 									finish();
 								} else {
-									Toast.makeText(SettingsEmailActivity.this, "Message could not be send", Toast.LENGTH_LONG).show();
+									Toast.makeText(SettingsEmailActivity.this, getString(R.string.email_not_sent), Toast.LENGTH_LONG).show();
 								}
 							}catch (Exception e){
 								e.printStackTrace();

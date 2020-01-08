@@ -519,7 +519,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
                     dateTime.get(Calendar.DAY_OF_MONTH)
             );
 
-            datepickerdialog.setTitle("Please select a date"); //dialog title
+            datepickerdialog.setTitle(getString(R.string.select_a_date)); //dialog title
             datepickerdialog.show(); //show dialog
         } else {
             TimePickerDialog timepickerdialog = new TimePickerDialog(getContext(),
@@ -548,7 +548,7 @@ public class SettingsDeviceFragment extends PreferenceFragment implements Sensor
         if (target_id == EXPORT_TARGET_USB) {
             barProgressDialog.setContentText(getString(R.string.exporting));
         } else {
-            barProgressDialog.setContentText("copy protocols to SD card");
+            barProgressDialog.setContentText(getString(R.string.copy_protocols_sdcard));
         }
         barProgressDialog.show();
 
