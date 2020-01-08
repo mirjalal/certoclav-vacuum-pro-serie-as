@@ -1360,50 +1360,51 @@ public class Helper {
     }
 
     public String generateProfileDescription(Protocol protocol) {
-
+        Context context = AppController.getContext();
         try {
             StringBuilder sbuilder = new StringBuilder();
             if (protocol.getVacuumTimes() != 0) {
-                sbuilder.append("\r\nVacuum times: ")
+                sbuilder.append("\r\n" + context.getString(R.string.vacuum_times))
                         .append(protocol.getVacuumTimes())
                         .append("\r\n");
             }
 
             if (protocol.getSterilisationTemperature() != 0) {
-                sbuilder.append("Sterilisation temperature: ")
+                sbuilder.append(context.getString(R.string.sterilization_temp))
                         .append(protocol.getSterilisationTemperature())
+                        .append(" ")
                         .append(Helper.getInstance().getTemperatureUnitText(AutoclaveModelManager.getInstance().getTemperatureUnit()))
                         .append("\r\n");
             }
             // protocol.getSterilisationPressure() == profile.getSterilisationPressure() --> this equality IS ALWAYS TRUE as Michael said on 17.12.2019 skype conversation
             if (protocol.getSterilisationPressure() != 0) {
-                sbuilder.append("Sterilisation pressure: ")
+                sbuilder.append(context.getString(R.string.sterilization_press))
                         .append(protocol.getSterilisationPressure())
                         .append(" bar")
                         .append("\r\n");
             }
 
             if (protocol.getSterilisationTime() != 0) {
-                sbuilder.append("Sterilisation holding time: ")
+                sbuilder.append(context.getString(R.string.sterilization_time))
                         .append(protocol.getSterilisationTime())
                         .append(" min")
                         .append("\r\n");
             }
 
             if (protocol.getVacuumPersistTemperature() != 0) {
-                sbuilder.append("Vacuum persist temperature: ")
+                sbuilder.append(context.getString(R.string.vacuum_persis_temp))
                         .append(protocol.getVacuumPersistTemperature())
                         .append(Helper.getInstance().getTemperatureUnitText(AutoclaveModelManager.getInstance().getTemperatureUnit()))
                         .append("\r\n");
             }
             if (protocol.getVacuumPersistTime() != 0) {
-                sbuilder.append("Vacuum persist time: ")
+                sbuilder.append(context.getString(R.string.vacuum_persis_time))
                         .append(protocol.getVacuumPersistTime())
                         .append(" min")
                         .append("\r\n");
             }
             if (protocol.getDryTime() != 0) {
-                sbuilder.append("Drying time: ")
+                sbuilder.append(context.getString(R.string.drying_time))
                         .append(protocol.getDryTime())
                         .append(" min");
             }

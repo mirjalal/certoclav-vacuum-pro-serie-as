@@ -1,5 +1,6 @@
 package com.certoclav.app.util;
 
+import com.certoclav.app.R;
 import com.certoclav.app.model.Autoclave;
 
 import java.text.Format;
@@ -49,9 +50,9 @@ public class LabelPrinterUtils {
             clearCurentBuffer();
             sendInitConfigToBuffer();
             if (passed) {
-                sendTextToBuffer("Result: PASSED", 56, 1 * 8);
+                sendTextToBuffer(AppController.getContext().getString(R.string.result_passes), 56, 8);
             } else {
-                sendTextToBuffer("Result: FAILED", 56, 1 * 8);
+                sendTextToBuffer(AppController.getContext().getString(R.string.result_failed), 56, 8);
             }
             sendBarcodeToBuffer(serialAutoclave + "." + cycleNumber, 56, 15 * 8); //text,x,y
             Format formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -216,7 +217,7 @@ public class LabelPrinterUtils {
         //TEXT 20,40,"4",0,1,1\
         //TEXT x,y,"fontName",rotation,x-multiplication,y-multiplication,text
 
-        //If font “0” is used, the font width and font height is
+        //If font ï¿½0ï¿½ is used, the font width and font height is
         //stretchable by x-multiplication and y-multiplication
         //parameter. It is expressed by pt (point). 1 point=1/72inch.
 

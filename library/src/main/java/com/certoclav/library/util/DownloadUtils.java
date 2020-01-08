@@ -200,33 +200,33 @@ public class DownloadUtils {
 
         switch (c.getInt(c.getColumnIndex(DownloadManager.COLUMN_STATUS))) {
             case DownloadManager.STATUS_FAILED:
-                msg = "Download failed!";
+                msg = mContext.getString(R.string.download_failed);
                 //barProgressDialog.setMessage("Downlaod failed");
                 barProgressDialog.dismiss();
                 //Toast.makeText(mContext, "Download failed", Toast.LENGTH_LONG);
                 break;
 
             case DownloadManager.STATUS_PAUSED:
-                msg = "Download paused!";
+                msg = mContext.getString(R.string.download_paused);
                 //barProgressDialog.setMessage("Downlaod paused");
                 break;
 
             case DownloadManager.STATUS_PENDING:
-                msg = "Download pending!";
+                msg = mContext.getString(R.string.download_pending);
                 //barProgressDialog.setMessage("Downlaod pending");
                 break;
 
             case DownloadManager.STATUS_RUNNING:
-                msg = "Download in progress!";
+                msg = mContext.getString(R.string.download_in_progress);
                 //barProgressDialog.setMessage("Downlaoding update.zip");
                 break;
 
             case DownloadManager.STATUS_SUCCESSFUL:
-                msg = "Download complete!";
+                msg = mContext.getString(R.string.download_complete);
                 break;
 
             default:
-                msg = "Download is nowhere in sight";
+                msg = mContext.getString(R.string.download_is_nowhere);
                 break;
         }
 
