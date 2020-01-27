@@ -4,8 +4,12 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -17,6 +21,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -45,6 +51,7 @@ import com.certoclav.app.service.PostProtocolsService;
 import com.certoclav.app.settings.SettingsActivity;
 import com.certoclav.app.util.AuditLogger;
 import com.certoclav.app.util.Helper;
+import com.certoclav.app.util.Stopwatch;
 import com.certoclav.library.application.ApplicationController;
 import com.certoclav.library.view.ControlPagerAdapter;
 import com.certoclav.library.view.CustomViewPager;
@@ -52,6 +59,8 @@ import com.certoclav.library.view.CustomViewPager;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -83,20 +92,99 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
     private TextView textCycleCount;
     private SweetAlertDialog sweetAlertDialogCanNotStop;
 
+    // moved from MonitorCountdownFragment.java
+    private TextView textNumber;
+    private TextView loadingBarText;
+    private TextView timeLeft;
+    private ProgressBar loadingBar;
+    private RelativeLayout loadingBarLayout;
+
+    private static final int MSG_START_TIMER = 360;
+    private static final int MSG_STOP_TIMER = 448;
+    private static final int MSG_UPDATE_TIMER = 138;
+    private static final int REFRESH_RATE = 1000;
+    private static final Stopwatch stopwatch = new Stopwatch();
+    private final Handler stopwatchHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_START_TIMER:
+                    stopwatch.start(); //start timer
+                    stopwatchHandler.sendEmptyMessage(MSG_UPDATE_TIMER);
+                    break;
+
+                case MSG_UPDATE_TIMER:
+                    final long elapsedTimeSecs = stopwatch.getElapsedTimeSecs();
+                    final long s = elapsedTimeSecs % 60;
+                    final long m = (elapsedTimeSecs / 60) % 60;
+                    final long h = (elapsedTimeSecs / 60 / 60) % 24;
+
+                    String sBuilder =
+                            String.format(Locale.ROOT, "%02d", h) + ":" + String.format(Locale.ROOT, "%02d", m) + ":" + String.format(Locale.ROOT, "%02d", s);
+                    textNumber.setText(sBuilder);
+
+                    stopwatchHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIMER, REFRESH_RATE); // text view is updated every second, though the timer is still running
+
+                    // moved from MonitorCountdownFragment.java file
+                    float timeLeftSeconds = Autoclave.getInstance().getTimeOrPercent();
+                    if (Autoclave.getInstance().getProfile().isF0Enabled()) {
+                        loadingBar.setProgress((int) (timeLeftSeconds * 10));
+                        loadingBarText.setText(String.valueOf((int) (timeLeftSeconds)) + "%");
+
+                        //Following the progress of Loading bar
+                        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(loadingBarText.getLayoutParams());
+                        int margin = (loadingBarLayout.getMeasuredWidth() * (int) (timeLeftSeconds * 10)) / 1000 - 35;
+                        margin = margin < 0 ? 5 : margin;
+                        lp.setMargins(margin, 0, 0, 0);
+                        loadingBarText.setLayoutParams(lp);
+                    } else {
+                        int timeLeftSecondsInt = (int) timeLeftSeconds;
+                        timeLeft.setText(String.format("%02d:%02d:%02d",
+                                (timeLeftSecondsInt / 60 / 60) % 24,
+                                (timeLeftSecondsInt / 60) % 60,
+                                timeLeftSecondsInt % 60));
+                    }
+
+                    break;
+
+                case MSG_STOP_TIMER:
+                    stopwatchHandler.removeMessages(MSG_UPDATE_TIMER); // no more updates
+                    stopwatch.stop(); // stop the timer
+                    break;
+
+                default:
+                    break;
+            }
+
+            return true;
+        }
+    });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.monitor_activity);
         navigationbar = new CertoclavNavigationbarClean(this);
         navigationbar.setHeadText(getString(R.string.title_monitor));
-        if (AppConstants.APPLICATION_DEBUGGING_MODE == true) {
+        if (AppConstants.APPLICATION_DEBUGGING_MODE)
             navigationbar.setSettingsVisible();
-        }
         textSteps = findViewById(R.id.monitor_text_steps);
         textCycleCount = findViewById(R.id.monitor_text_cycle_count);
         textProgram = findViewById(R.id.monitor_text_programname);
         textState = findViewById(R.id.monitor_text_state);
         buttonStop = findViewById(R.id.monitor_button_stop);
+
+        // moved from MonitorCountdownFragment.java
+        textNumber = findViewById(R.id.monitor_countdown_number);
+        loadingBarText = findViewById(R.id.progressBarF0FunctionText);
+        timeLeft = findViewById(R.id.monitor_countdown_left);
+        loadingBar = findViewById(R.id.progressBarF0Function);
+        loadingBarLayout = findViewById(R.id.progressBarF0FunctionLayout);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            loadingBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#3297DB")));
+
+        loadingBarLayout.setVisibility(Autoclave.getInstance().getProfile().isF0Enabled() ? View.VISIBLE : View.GONE);
+        timeLeft.setVisibility(Autoclave.getInstance().getProfile().isF0Enabled() ? View.GONE : View.VISIBLE);
 
         if (Autoclave.getInstance().getProfile() != null) {
             textProgram.setText(Autoclave.getInstance().getProfile().getName());
@@ -355,6 +443,8 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 break;
             case DOOR_UNLOCKED:
             case PROGRAM_FINISHED:
+                stopwatchHandler.sendEmptyMessage(MSG_STOP_TIMER);
+
                 buttonStop.setEnabled(false);
                 buttonStop.setText(getString(Autoclave.getInstance().isDoorLocked() ?
                         R.string.please_wait_door_unlocking :
@@ -402,6 +492,8 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 }
                 buttonStop.setText(R.string.stop);
 
+                stopwatchHandler.sendEmptyMessage(MSG_START_TIMER);
+
                 /*
                   PROGRAM IS RUNNING.
 
@@ -426,6 +518,8 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 }
                 textState.setText(R.string.state_cancelled);
                 navigationbar.showButtonBack();
+
+                stopwatchHandler.sendEmptyMessage(MSG_STOP_TIMER);
 
                 break;
             case WAITING_FOR_CONFIRMATION:
@@ -533,12 +627,6 @@ public class MonitorActivity extends CertoclavSuperActivity implements Navigatio
                 startActivity(intent);
                 break;
         }
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        Log.e("LoginActivity", "Hardware Button Back disabled");
     }
 
     @Override

@@ -36,7 +36,7 @@
         android:textColor="#666666"
         android:textSize="40sp"
         android:textStyle="bold"
-        tools:ignore="HardcodedText"></TextView>
+        tools:ignore="HardcodedText"/>
 
     <TextView
         android:id="@+id/monitor_countdown_left"
@@ -47,7 +47,7 @@
         android:textColor="#666666"
         android:textSize="20sp"
         android:textStyle="bold"
-        tools:ignore="HardcodedText"></TextView>
+        tools:ignore="HardcodedText"/>
 
 
     <RelativeLayout

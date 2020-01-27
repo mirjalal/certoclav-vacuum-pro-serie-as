@@ -467,6 +467,17 @@ public class DatabaseService {
         return null;
     }
 
+    public List<AuditLog> getPagedAuditLogs(int pageNumber, int limit) {
+        try {
+            int lastId = auditLogDao.queryBuilder().orderBy(AuditLog.FIELD_AUDIT_ID, false).limit(1L).query().get(0).getAuditId();
+            QueryBuilder<AuditLog, Integer> query = auditLogDao.queryBuilder();
+            query.where().between(AuditLog.FIELD_AUDIT_ID, lastId - limit * (pageNumber + 1), lastId - limit * pageNumber);
+            query.orderBy(AuditLog.FIELD_AUDIT_ID, false);
+            return query.query();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     public int insertMessage(Message message) {
 

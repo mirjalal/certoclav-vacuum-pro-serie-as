@@ -1,6 +1,7 @@
 package com.certoclav.app.fragments;
 
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -9,56 +10,50 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.certoclav.app.R;
 import com.certoclav.app.adapters.AuditLogsAdapter;
+import com.certoclav.app.database.AuditLog;
+import com.certoclav.app.database.DatabaseService;
 import com.certoclav.app.model.Autoclave;
 import com.certoclav.app.model.AutoclaveState;
-import com.certoclav.app.util.AuditLogger;
 import com.certoclav.library.application.ApplicationController;
+import com.paging.listview.PagingListView;
 
-import needle.Needle;
-import needle.UiRelatedTask;
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class AuditLogFragment extends Fragment {
 
-    private ListView listViewAuditLogs;
+    private static final int MAX_AUDIT_LOG_ITEM_PER_PAGE = 25;
+
+    private PagingListView listViewAuditLogs;
     private TextView textViewLockout;
-    private AuditLogger auditLogger;
-    private ProgressBar progressBar;
+    private DatabaseService databaseService;
+    private static int pageNumber = 0;
+    private AuditLogsAdapter auditLogsAdapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_audit_log, container, false); //je nach mIten k�nnte man hier anderen Inhalt laden.
-        auditLogger = AuditLogger.getInstance();
-        listViewAuditLogs = rootView.findViewById(R.id.listViewAuditLogs);
+
+        listViewAuditLogs = rootView.findViewById(R.id.audit_logs_list);
         textViewLockout = rootView.findViewById(R.id.textViewLockout);
-        progressBar = rootView.findViewById(R.id.progressBar);
+        ProgressBar progressBar = rootView.findViewById(R.id.progressBar);
 
         progressBar.setVisibility(View.VISIBLE);
         listViewAuditLogs.setVisibility(View.GONE);
         textViewLockout.setVisibility(View.GONE);
 
-        Needle.onBackgroundThread().execute(new UiRelatedTask<AuditLogsAdapter>() {
-            @Override
-            protected AuditLogsAdapter doWork() {
-                return new AuditLogsAdapter(getActivity(),
-                        auditLogger.getAuditLogs(null, null, false));
-            }
+        databaseService = DatabaseService.getInstance();
 
-            @Override
-            protected void thenDoUiRelatedWork(AuditLogsAdapter result) {
-                listViewAuditLogs.setAdapter(result);
-                progressBar.setVisibility(View.GONE);
-                listViewAuditLogs.setVisibility(View.VISIBLE);
-            }
-        });
+        auditLogsAdapter = new AuditLogsAdapter(getActivity(), new ArrayList<AuditLog>());
+        listViewAuditLogs.setItemsCanFocus(true);
+        listViewAuditLogs.setAdapter(auditLogsAdapter);
 
         return rootView;
     }
@@ -78,6 +73,40 @@ public class AuditLogFragment extends Fragment {
             textViewLockout.setVisibility(View.GONE);
             if (listViewAuditLogs.getAdapter() != null)
                 listViewAuditLogs.setVisibility(View.VISIBLE);
+
+            pageNumber = 0;
+            auditLogsAdapter.clear();
+            listViewAuditLogs.setHasMoreItems(true);
+            listViewAuditLogs.setPagingableListener(new PagingListView.Pagingable() {
+                @Override
+                public void onLoadMoreItems() {
+                    AuditLogLoader auditLogLoader = new AuditLogLoader();
+                    auditLogLoader.execute(pageNumber, MAX_AUDIT_LOG_ITEM_PER_PAGE);
+                }
+            });
+        }
+    }
+
+    private class AuditLogLoader extends AsyncTask<Integer, Void, List<AuditLog>> {
+
+        @Override
+        protected List<AuditLog> doInBackground(Integer... integers) {
+            return databaseService.getPagedAuditLogs(integers[0], integers[1]);
+        }
+
+        @Override
+        protected void onPostExecute(List<AuditLog> auditLogs) {
+            if (AuditLogFragment.this.isVisible()) {
+                if (auditLogs != null) {
+                    AuditLogFragment.pageNumber += 1;
+                    auditLogsAdapter.addAll(auditLogs);
+
+                    auditLogsAdapter.notifyDataSetChanged();
+                    listViewAuditLogs.onFinishLoading(auditLogs.size() > 0, auditLogs);
+                } else
+                    listViewAuditLogs.onFinishLoading(false, null);
+            }
+            super.onPostExecute(auditLogs);
         }
     }
 }

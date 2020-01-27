@@ -5,12 +5,11 @@
     android:orientation="vertical"
     android:layout_height="match_parent">
 
-
-    <ListView
-        android:id="@+id/listViewAuditLogs"
+    <com.paging.listview.PagingListView
+        android:id="@+id/audit_logs_list"
         android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:choiceMode="none" />
 
     <TextView
         android:id="@+id/textViewLockout"

@@ -338,7 +338,6 @@
     <string name="application_is_up_to_date">Application is up to date</string>
     <string name="downloading">Downloading...</string>
     <string name="download_success">Success!</string>
-    <string name="download_failed">Download failed!</string>
     <string name="checking">Checking...</string>
     <string name="no_update_file">Can\'t find update.zip file.</string>
     <string name="something_went_wrong">Something went wrong! Try again!</string>
